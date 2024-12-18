@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source">
+      <UniqueIdentifier>{f6f9bf4e-5f2b-45c2-8704-d66a44e36f95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Food">
+      <UniqueIdentifier>{58bebd79-f4d3-4732-8a19-37d0d49252ca}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Source\Main.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Food\Food.cpp">
+      <Filter>Source\Food</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Food\Fruit.cpp">
+      <Filter>Source\Food</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Source\Food\Food.h">
+      <Filter>Source\Food</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Food\Fruit.h">
+      <Filter>Source\Food</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
