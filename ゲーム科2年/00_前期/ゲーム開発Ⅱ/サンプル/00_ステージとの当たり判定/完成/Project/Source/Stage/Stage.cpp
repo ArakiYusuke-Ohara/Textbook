@@ -14,7 +14,9 @@ Stage::~Stage()
 
 void Stage::Load()
 {
+	// 描画するモデルをロード
 	m_Handle = MV1LoadModel("Data/Stage/Stage.x");
+	// 当たり判定用のモデルをロード
 	m_CollisionHandle = MV1LoadModel("Data/Stage/StageCollision.x");
 }
 
@@ -35,6 +37,8 @@ void Stage::Fin()
 	MV1TerminateCollInfo(m_CollisionHandle);
 	// 画像を削除
 	MV1DeleteModel(m_Handle);
+	// 当たり判定用のモデルも削除
+	MV1DeleteModel(m_CollisionHandle);
 }
 
 bool Stage::CheckCollisionSphere(VECTOR pos, float r)

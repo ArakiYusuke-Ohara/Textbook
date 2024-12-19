@@ -232,13 +232,14 @@ void Player::HitStage(Stage* stage)
 		MV1_COLL_RESULT_POLY polygon = hitResult.Dim[i];
 
 		// 法線のY成分が0.1以下の場合は壁なので無視
-		float normalY = polygon.Normal.y > 0.0f ? polygon.Normal.y : -polygon.Normal.y;
-		if (normalY <= 0.1f) continue;
+		if (polygon.Normal.y <= 0.1f) continue;
 
 		// 中心から足元にラインを引き当たり判定を取る
-		VECTOR lineStart = m_SphereCollision->GetWorldPos();
-		VECTOR lineEnd = m_Pos;
-		HITRESULT_LINE lineResult = HitCheck_Line_Triangle(lineStart, lineEnd, polygon.Position[0], polygon.Position[1], polygon.Position[2]);
+		VECTOR lineStart = m_SphereCollision->GetWorldPos();	// 球の当たり判定の中心座標
+		VECTOR lineEnd = m_Pos;									// プレイヤーの足元の座標
+
+		HITRESULT_LINE lineResult = HitCheck_Line_Triangle(lineStart, lineEnd, 
+			polygon.Position[0], polygon.Position[1], polygon.Position[2]);
 
 		// ラインに何も当たらなければ次のポリゴンへ
 		if (!lineResult.HitFlag) continue;
