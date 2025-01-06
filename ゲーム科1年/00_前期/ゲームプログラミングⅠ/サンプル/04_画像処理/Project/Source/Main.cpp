@@ -13,7 +13,7 @@ int g_SkyHandle = 0;
 void GameInit()
 {
 	// 空の画像をロードする
-	g_SkyHandle = LoadGraph("Resource/BG/Sky.png");
+	g_SkyHandle = LoadGraph("Data/BG/Sky.png");
 }
 
 // 更新関数
