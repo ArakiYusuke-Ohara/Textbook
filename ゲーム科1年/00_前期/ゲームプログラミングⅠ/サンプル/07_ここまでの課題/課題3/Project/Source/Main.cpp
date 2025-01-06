@@ -32,16 +32,16 @@ CloudData g_CloudData[CLOUD_NUM] = { 0 };
 void GameInit()
 {
 	// 空の画像をロードする
-	g_SkyHandle = LoadGraph("Resource/BG/Sky.png");
+	g_SkyHandle = LoadGraph("Data/BG/Sky.png");
 
 	// 太陽の画像をロードする
-	g_SunHandle = LoadGraph("Resource/BG/Sun.png");
+	g_SunHandle = LoadGraph("Data/BG/Sun.png");
 
 	// 全ての雲の初期化
 	for (int i = 0; i < CLOUD_NUM; i++)
 	{
 		// 雲の画像をロードする
-		g_CloudData[i].handle = LoadGraph("Resource/BG/Cloud.png");
+		g_CloudData[i].handle = LoadGraph("Data/BG/Cloud.png");
 
 		// 雲の初期位置を設定する
 		g_CloudData[i].posX = 1920.0f + i * 400.0f;

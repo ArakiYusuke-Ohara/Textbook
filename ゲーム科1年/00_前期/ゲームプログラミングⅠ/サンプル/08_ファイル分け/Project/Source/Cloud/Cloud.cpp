@@ -11,7 +11,7 @@ void InitCloud()
 	for (int i = 0; i < CLOUD_NUM; i++)
 	{
 		// ‰_‚Ì‰æ‘œ‚ðƒ[ƒh‚·‚é
-		g_CloudData[i].handle = LoadGraph("Resource/BG/Cloud.png");
+		g_CloudData[i].handle = LoadGraph("Data/BG/Cloud.png");
 
 		// ‰_‚Ì‰ŠúˆÊ’u‚ðÝ’è‚·‚é
 		g_CloudData[i].posX = 1920.0f + i * 400.0f;

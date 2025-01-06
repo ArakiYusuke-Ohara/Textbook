@@ -11,10 +11,10 @@ int g_SunHandle = 0;
 void GameInit()
 {
 	// 空の画像をロードする
-	g_SkyHandle = LoadGraph("Resource/BG/Sky.png");
+	g_SkyHandle = LoadGraph("Data/BG/Sky.png");
 
 	// 太陽の画像をロードする
-	g_SunHandle = LoadGraph("Resource/BG/Sun.png");
+	g_SunHandle = LoadGraph("Data/BG/Sun.png");
 
 	// 雲を初期化
 	InitCloud();

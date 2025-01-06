@@ -21,10 +21,10 @@ float g_CloudMoveY = 0.0f;	// Y移動量
 void GameInit()
 {
 	// 空の画像をロードする
-	g_SkyHandle = LoadGraph("Resource/BG/Sky.png");
+	g_SkyHandle = LoadGraph("Data/BG/Sky.png");
 
 	// 雲の画像をロードする
-	g_CloudHandle = LoadGraph("Resource/BG/Cloud.png");
+	g_CloudHandle = LoadGraph("Data/BG/Cloud.png");
 
 	// 雲の初期位置を設定する
 	g_CloudPosX = 1920.0f;

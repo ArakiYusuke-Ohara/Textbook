@@ -6,7 +6,7 @@ RedEnemyData g_RedEnemyData = { 0 };
 
 void InitRedEnemy()
 {
-	g_RedEnemyData.handle = LoadGraph("Resource/Enemy/RedEnemy.png");
+	g_RedEnemyData.handle = LoadGraph("Data/Enemy/RedEnemy.png");
 
 	g_RedEnemyData.posX = 1200.0f;
 	g_RedEnemyData.posY = 200.0f;

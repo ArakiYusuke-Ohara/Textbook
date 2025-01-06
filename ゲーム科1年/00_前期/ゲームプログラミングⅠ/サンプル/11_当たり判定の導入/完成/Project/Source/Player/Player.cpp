@@ -6,7 +6,7 @@ PlayerData g_PlayerData;
 
 void InitPlayer()
 {
-	g_PlayerData.handle = LoadGraph("Resource/Player/Player.png");
+	g_PlayerData.handle = LoadGraph("Data/Player/Player.png");
 
 	g_PlayerData.posX = PLAYER_DEFAULT_POS_X;
 	g_PlayerData.posY = PLAYER_DEFAULT_POS_Y;

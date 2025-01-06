@@ -22,7 +22,7 @@ void InitRedEnemy()
 
 	for (int i = 0; i < RED_ENEMY_NUM; i++)
 	{
-		g_RedEnemyData[i].handle = LoadGraph("Resource/Enemy/RedEnemy.png");
+		g_RedEnemyData[i].handle = LoadGraph("Data/Enemy/RedEnemy.png");
 
 		g_RedEnemyData[i].posX = DEFAULT_POS_X[i];
 		g_RedEnemyData[i].posY = DEFAULT_POS_Y[i];

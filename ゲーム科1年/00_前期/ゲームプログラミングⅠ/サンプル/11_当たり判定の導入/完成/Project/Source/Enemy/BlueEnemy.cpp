@@ -6,7 +6,7 @@ BlueEnemyData g_BlueEnemyData = { 0 };
 
 void InitBlueEnemy()
 {
-	g_BlueEnemyData.handle = LoadGraph("Resource/Enemy/BlueEnemy.png");
+	g_BlueEnemyData.handle = LoadGraph("Data/Enemy/BlueEnemy.png");
 
 	g_BlueEnemyData.posX = 400.0f;
 	g_BlueEnemyData.posY = 800.0f;

@@ -41,7 +41,7 @@ void CheckCollision()
 	GetMousePoint(&mouseX, &mouseY);
 
 	// 矩形と点の当たり判定
-	if (CheckSquarePoint(player->posX, player->posY, PLAYER_WIDTH, PLAYER_HEIGHT, mouseX, mouseY))
+	if (CheckSquarePoint(player->posX, player->posY, PLAYER_WIDTH, PLAYER_HEIGHT, (float)mouseX, (float)mouseY))
 	{
 		// 当たった
 		player->hitFlag = true;
@@ -51,7 +51,7 @@ void CheckCollision()
 
 	// 青エネミー取得
 	BlueEnemyData* blueEnemy = GetBlueEnemy();
-	if (CheckSquarePoint(blueEnemy->posX, blueEnemy->posY, BLUE_ENEMY_WIDTH, BLUE_ENEMY_HEIGHT, mouseX, mouseY))
+	if (CheckSquarePoint(blueEnemy->posX, blueEnemy->posY, BLUE_ENEMY_WIDTH, BLUE_ENEMY_HEIGHT, (float)mouseX, (float)mouseY))
 	{
 		blueEnemy->hitFlag = true;
 	}
