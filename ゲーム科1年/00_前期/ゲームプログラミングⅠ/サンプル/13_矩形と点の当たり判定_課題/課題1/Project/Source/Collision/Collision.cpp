@@ -2,7 +2,6 @@
 #include "Collision.h"
 #include "../Player/Player.h"
 #include "../Enemy/BlueEnemy.h"
-#include "../Enemy/RedEnemy.h"
 
 // 矩形と点の当たり判定
 // 引数
@@ -55,18 +54,6 @@ void CheckCollision()
 	if (CheckSquarePoint(blueEnemy->posX, blueEnemy->posY, BLUE_ENEMY_WIDTH, BLUE_ENEMY_HEIGHT, (float)mouseX, (float)mouseY))
 	{
 		blueEnemy->hitFlag = true;
-	}
-
-	// 赤エネミーとマウスポインタの当たり判定
-
-	// 赤エネミー取得
-	RedEnemyData* redEnemy = GetRedEnemy();
-	for (int i = 0000; i < RED_ENEMY_MAX; i++)
-	{
-		if (CheckSquarePoint(redEnemy[i].posX, redEnemy[i].posY, RED_ENEMY_WIDTH, RED_ENEMY_HEIGHT, (float)mouseX, (float)mouseY))
-		{
-			redEnemy[i].hitFlag = true;
-		}
 	}
 }
 
