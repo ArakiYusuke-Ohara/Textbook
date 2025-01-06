@@ -44,14 +44,14 @@ void InitTitleScene()
 void LoadTitleScene()
 {
 	// 背景は背景システムを使う
-	LoadBackGround("Resource/Title/TitleBG.png", BACK_GROUND_LAYER_1);
+	LoadBackGround("Data/Title/TitleBG.png", BACK_GROUND_LAYER_1);
 	// 背景を下にスクロールさせる
 	SetBackGroundMove(BACK_GROUND_SPEED, 0.0f, BACK_GROUND_LAYER_1);
 
 	// 各画像をロード
-	g_BGHandle = LoadGraph("Resource/Title/TitleBG.png");
-	g_TitleHandle = LoadGraph("Resource/Title/TitleText.png");
-	g_PressZKeyHandle = LoadGraph("Resource/Title/TitlePressZKey.png");
+	g_BGHandle = LoadGraph("Data/Title/TitleBG.png");
+	g_TitleHandle = LoadGraph("Data/Title/TitleText.png");
+	g_PressZKeyHandle = LoadGraph("Data/Title/TitlePressZKey.png");
 }
 
 void StartTitleScene()

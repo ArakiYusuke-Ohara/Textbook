@@ -59,7 +59,7 @@ void InitPlayer()
 
 void LoadPlayer()
 {
-	g_PlayerData.handle = LoadGraph("Resource/Player/Player.png");
+	g_PlayerData.handle = LoadGraph("Data/Player/Player.png");
 }
 
 void StartPlayer()

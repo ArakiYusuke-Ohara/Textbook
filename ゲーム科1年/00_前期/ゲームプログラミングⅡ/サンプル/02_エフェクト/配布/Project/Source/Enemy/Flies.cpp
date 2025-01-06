@@ -44,7 +44,7 @@ void InitFlies()
 
 void LoadFlies()
 {
-	g_EnemyFliesHandle = LoadGraph("Resource/Enemy/Flies.png");
+	g_EnemyFliesHandle = LoadGraph("Data/Enemy/Flies.png");
 }
 
 void StepFlies()

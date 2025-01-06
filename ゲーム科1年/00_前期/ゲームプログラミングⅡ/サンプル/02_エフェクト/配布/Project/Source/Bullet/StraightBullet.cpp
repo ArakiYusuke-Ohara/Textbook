@@ -44,7 +44,7 @@ void LoadStraightBullet()
 	
 	// 各バレットの画像をロード
 	// プレイヤー通常弾
-	handle = LoadGraph("Resource/Bullet/PlayerNormalBullet.png");
+	handle = LoadGraph("Data/Bullet/PlayerNormalBullet.png");
 	g_BulletHandle[STRAIGHT_BULLET_TYPE_PLAYER_NORMAL] = handle;
 
 	// 画像からサイズを取得 画像は正方形が前提
@@ -52,7 +52,7 @@ void LoadStraightBullet()
 	g_BulletRadius[STRAIGHT_BULLET_TYPE_PLAYER_NORMAL] = (float)width / 2.0f;
 
 	// カプの撃つ弾
-	handle = LoadGraph("Resource/Bullet/KapuBullet.png");
+	handle = LoadGraph("Data/Bullet/KapuBullet.png");
 	g_BulletHandle[STRAIGHT_BULLET_TYPE_KAPU] = handle;
 
 	// 画像からサイズを取得 画像は正方形が前提

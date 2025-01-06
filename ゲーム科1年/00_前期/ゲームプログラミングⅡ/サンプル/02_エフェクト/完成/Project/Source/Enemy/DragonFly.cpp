@@ -52,7 +52,7 @@ void InitDragonFly()
 
 void LoadDragonFly()
 {
-	g_EnemyDragonFlyHandle = LoadGraph("Resource/Enemy/DragonFly.png");
+	g_EnemyDragonFlyHandle = LoadGraph("Data/Enemy/DragonFly.png");
 }
 
 void StepDragonFly()

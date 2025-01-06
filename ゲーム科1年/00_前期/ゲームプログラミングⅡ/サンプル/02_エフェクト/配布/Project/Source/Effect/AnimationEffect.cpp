@@ -29,10 +29,10 @@ void InitAnimationEffect()
 // エフェクトロード
 void LoadAnimationEffect()
 {
-	g_AnimationEffectHandle[PLAYER_NORMAL_SHOT_HIT] = LoadGraph("Resource/Effect/PlayerNormalBulletHit.png");
-	g_AnimationEffectHandle[PLAYER_DEAD] = LoadGraph("Resource/Effect/PlayerDead.png");
-	g_AnimationEffectHandle[ENEMY_DEAD] = LoadGraph("Resource/Effect/EnemyDead.png");
-	g_AnimationEffectHandle[ENEMY_BULLET_HIT] = LoadGraph("Resource/Effect/KapuBulletHit.png");
+	g_AnimationEffectHandle[PLAYER_NORMAL_SHOT_HIT] = LoadGraph("Data/Effect/PlayerNormalBulletHit.png");
+	g_AnimationEffectHandle[PLAYER_DEAD] = LoadGraph("Data/Effect/PlayerDead.png");
+	g_AnimationEffectHandle[ENEMY_DEAD] = LoadGraph("Data/Effect/EnemyDead.png");
+	g_AnimationEffectHandle[ENEMY_BULLET_HIT] = LoadGraph("Data/Effect/KapuBulletHit.png");
 }
 
 // エフェクトステップ

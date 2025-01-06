@@ -7,10 +7,10 @@ int g_SEHandle[SE_TYPE_MAX] = { 0 };
 // BGMロード
 void LoadBGM()
 {
-	g_BGMHandle[BGM_TITLE] = LoadSoundMem("Resource/Sound/BGM/Title.ogg");
-	g_BGMHandle[BGM_PLAY] = LoadSoundMem("Resource/Sound/BGM/Play.ogg");
-	g_BGMHandle[BGM_GAME_OVER] = LoadSoundMem("Resource/Sound/BGM/GameOver.ogg");
-	g_BGMHandle[BGM_GAME_CLEAR] = LoadSoundMem("Resource/Sound/BGM/GameClear.ogg");
+	g_BGMHandle[BGM_TITLE] = LoadSoundMem("Data/Sound/BGM/Title.ogg");
+	g_BGMHandle[BGM_PLAY] = LoadSoundMem("Data/Sound/BGM/Play.ogg");
+	g_BGMHandle[BGM_GAME_OVER] = LoadSoundMem("Data/Sound/BGM/GameOver.ogg");
+	g_BGMHandle[BGM_GAME_CLEAR] = LoadSoundMem("Data/Sound/BGM/GameClear.ogg");
 }
 
 // BGM再生
@@ -38,10 +38,10 @@ void FinBGM()
 // SEロード
 void LoadSE()
 {
-	g_SEHandle[SE_PLAYRE_SHOT] = LoadSoundMem("Resource/Sound/SE/PlayerShot.ogg");
-	g_SEHandle[SE_PLAYRE_SHOT_HIT] = LoadSoundMem("Resource/Sound/SE/PlayerShotHit.ogg");
-	g_SEHandle[SE_PLAYER_DEAD] = LoadSoundMem("Resource/Sound/SE/PlayerDead.ogg");
-	g_SEHandle[SE_ENEMY_DEAD] = LoadSoundMem("Resource/Sound/SE/EnemyDead.ogg");
+	g_SEHandle[SE_PLAYRE_SHOT] = LoadSoundMem("Data/Sound/SE/PlayerShot.ogg");
+	g_SEHandle[SE_PLAYRE_SHOT_HIT] = LoadSoundMem("Data/Sound/SE/PlayerShotHit.ogg");
+	g_SEHandle[SE_PLAYER_DEAD] = LoadSoundMem("Data/Sound/SE/PlayerDead.ogg");
+	g_SEHandle[SE_ENEMY_DEAD] = LoadSoundMem("Data/Sound/SE/EnemyDead.ogg");
 }
 
 // SE再生

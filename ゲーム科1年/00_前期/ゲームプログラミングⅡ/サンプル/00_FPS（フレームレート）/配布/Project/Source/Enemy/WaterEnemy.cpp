@@ -22,7 +22,7 @@ void InitWaterEnemy()
 
 	for (int i = 0; i < WATER_ENEMY_NUM; i++)
 	{
-		g_WaterEnemyData[i].handle = LoadGraph("Resource/Enemy/WaterEnemy.png");
+		g_WaterEnemyData[i].handle = LoadGraph("Data/Enemy/WaterEnemy.png");
 
 		g_WaterEnemyData[i].posX = DEFAULT_POS_X[i];
 		g_WaterEnemyData[i].posY = DEFAULT_POS_Y[i];

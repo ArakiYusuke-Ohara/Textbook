@@ -38,7 +38,7 @@ void InitPlayScene()
 void LoadPlayScene()
 {
 	// îwåiÉçÅ[Éh
-	LoadBackGround("Resource/Title/TitleBG.png", BACK_GROUND_LAYER_1);
+	LoadBackGround("Data/Title/TitleBG.png", BACK_GROUND_LAYER_1);
 	// îwåiÉXÉNÉçÅ[Éã
 	SetBackGroundMove(BACK_GROUND_SPEED, 0.0f, BACK_GROUND_LAYER_1);
 

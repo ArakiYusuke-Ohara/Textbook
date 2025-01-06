@@ -68,7 +68,7 @@ void InitKapu()
 
 void LoadKapu()
 {
-	g_EnemyKapuHandle = LoadGraph("Resource/Enemy/Kapu.png");
+	g_EnemyKapuHandle = LoadGraph("Data/Enemy/Kapu.png");
 }
 
 void StepKapu()

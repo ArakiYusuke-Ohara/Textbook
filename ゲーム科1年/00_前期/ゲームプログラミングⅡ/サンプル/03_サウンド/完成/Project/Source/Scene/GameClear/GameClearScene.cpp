@@ -26,12 +26,12 @@ void InitGameClearScene()
 void LoadGameClearScene()
 {
 	// 背景ロード
-	LoadBackGround("Resource/Title/TitleBG.png", BACK_GROUND_LAYER_1);
+	LoadBackGround("Data/Title/TitleBG.png", BACK_GROUND_LAYER_1);
 	// 背景スクロール
 	SetBackGroundMove(BACK_GROUND_SPEED, 0.0f, BACK_GROUND_LAYER_1);
 
 	// GameClear文字画像
-	g_GameClearHandle = LoadGraph("Resource/GameClear/GameClear.png");
+	g_GameClearHandle = LoadGraph("Data/GameClear/GameClear.png");
 }
 
 void StartGameClearScene()

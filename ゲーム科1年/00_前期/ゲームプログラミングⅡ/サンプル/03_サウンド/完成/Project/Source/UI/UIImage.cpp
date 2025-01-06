@@ -24,9 +24,9 @@ void InitUIImage()
 void LoadUIImage()
 {
 	// プレイシーン
-	g_UIImageHandle[UI_IMAGE_PLAY_FOOTER_FRAME] = LoadGraph("Resource/UI/PlayFooterFrame.png");
-	g_UIImageHandle[UI_IMAGE_HEART] = LoadGraph("Resource/UI/Life.png");
-	g_UIImageHandle[UI_IMAGE_TARGET_KAPU] = LoadGraph("Resource/Enemy/Kapu.png");
+	g_UIImageHandle[UI_IMAGE_PLAY_FOOTER_FRAME] = LoadGraph("Data/UI/PlayFooterFrame.png");
+	g_UIImageHandle[UI_IMAGE_HEART] = LoadGraph("Data/UI/Life.png");
+	g_UIImageHandle[UI_IMAGE_TARGET_KAPU] = LoadGraph("Data/Enemy/Kapu.png");
 }
 
 void StepUIImage()

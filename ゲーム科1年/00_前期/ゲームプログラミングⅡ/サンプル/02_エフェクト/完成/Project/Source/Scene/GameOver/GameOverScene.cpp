@@ -28,12 +28,12 @@ void InitGameOverScene()
 void LoadGameOverScene()
 {
 	// 背景ロード
-	LoadBackGround("Resource/Title/TitleBG.png", BACK_GROUND_LAYER_1);
+	LoadBackGround("Data/Title/TitleBG.png", BACK_GROUND_LAYER_1);
 	// 背景スクロール
 	SetBackGroundMove(BACK_GROUND_SPEED, 0.0f, BACK_GROUND_LAYER_1);
 
 	// GameOver文字画像
-	g_GameOverHandle = LoadGraph("Resource/GameOver/GameOver.png");
+	g_GameOverHandle = LoadGraph("Data/GameOver/GameOver.png");
 }
 
 void StartGameOverScene()
