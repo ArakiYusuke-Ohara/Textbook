@@ -13,7 +13,7 @@
 #define SIGHT_MACHINE_ROTATION_SPEED	(0.03f)
 
 #define SIGHT_MACHINE_VIEWING_ANGLE		(2.5f)
-#define SIGHT_MACHINE_FOV				(200.0f)
+#define SIGHT_MACHINE_FOV_RANGE				(200.0f)
 
 SightMachineData g_SightMachineData = { 0 };
 
@@ -119,10 +119,10 @@ void DrawSightMachine()
 
 	// 視野範囲を１ドットずつ半透明で描画
 	// （めちゃくちゃ重いので確認用のみで使うこと）
-	int left = (int)(g_SightMachineData.pos.x - SIGHT_MACHINE_FOV);
-	int right = (int)(g_SightMachineData.pos.x + SIGHT_MACHINE_FOV);
-	int top = (int)(g_SightMachineData.pos.y - SIGHT_MACHINE_FOV);
-	int bottom = (int)(g_SightMachineData.pos.y + SIGHT_MACHINE_FOV);
+	int left = (int)(g_SightMachineData.pos.x - SIGHT_MACHINE_FOV_RANGE);
+	int right = (int)(g_SightMachineData.pos.x + SIGHT_MACHINE_FOV_RANGE);
+	int top = (int)(g_SightMachineData.pos.y - SIGHT_MACHINE_FOV_RANGE);
+	int bottom = (int)(g_SightMachineData.pos.y + SIGHT_MACHINE_FOV_RANGE);
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 100);
 	for (int i = left; i < right; i++)
 	{
@@ -151,7 +151,7 @@ bool CheckFieldOfView(VECTOR targetPos)
 	float targetDistance = VecLong(targetVec);
 
 	// ③ ターゲットまでの距離が視野範囲よりも近いか判定
-	if (targetDistance <= SIGHT_MACHINE_FOV)
+	if (targetDistance <= SIGHT_MACHINE_FOV_RANGE)
 	{
 		// ④ ①のベクトルを正規化する
 		targetVec = VecNormalize(targetVec);

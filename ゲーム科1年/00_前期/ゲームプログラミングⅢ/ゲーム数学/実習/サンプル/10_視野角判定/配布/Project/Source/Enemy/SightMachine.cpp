@@ -13,7 +13,7 @@
 #define SIGHT_MACHINE_ROTATION_SPEED	(0.03f)
 
 #define SIGHT_MACHINE_VIEWING_ANGLE		(2.5f)
-#define SIGHT_MACHINE_FOV				(200.0f)
+#define SIGHT_MACHINE_FOV_RANGE				(200.0f)
 
 SightMachineData g_SightMachineData = { 0 };
 
@@ -119,23 +119,23 @@ void DrawSightMachine()
 
 	// 視野範囲を１ドットずつ半透明で描画
 	// （めちゃくちゃ重いので確認用のみで使うこと）
-	int left = (int)(g_SightMachineData.pos.x - SIGHT_MACHINE_FOV);
-	int right = (int)(g_SightMachineData.pos.x + SIGHT_MACHINE_FOV);
-	int top = (int)(g_SightMachineData.pos.y - SIGHT_MACHINE_FOV);
-	int bottom = (int)(g_SightMachineData.pos.y + SIGHT_MACHINE_FOV);
+	//int left = (int)(g_SightMachineData.pos.x - SIGHT_MACHINE_FOV_RANGE);
+	//int right = (int)(g_SightMachineData.pos.x + SIGHT_MACHINE_FOV_RANGE);
+	//int top = (int)(g_SightMachineData.pos.y - SIGHT_MACHINE_FOV_RANGE);
+	//int bottom = (int)(g_SightMachineData.pos.y + SIGHT_MACHINE_FOV_RANGE);
 
-	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 100);
-	for (int i = left; i < right; i++)
-	{
-		for (int j = top; j < bottom; j++)
-		{
-			if (CheckFieldOfView(VGet((float)i, (float)j, 0.0f)))
-			{
-				DrawPixel((int)(i - camera.pos.x), (int)(j - camera.pos.y), GetColor(255, 0, 0));
-			}
-		}
-	}
-	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+	//SetDrawBlendMode(DX_BLENDMODE_ALPHA, 100);
+	//for (int i = left; i < right; i++)
+	//{
+	//	for (int j = top; j < bottom; j++)
+	//	{
+	//		if (CheckFieldOfView(VGet((float)i, (float)j, 0.0f)))
+	//		{
+	//			DrawPixel((int)(i - camera.pos.x), (int)(j - camera.pos.y), GetColor(255, 0, 0));
+	//		}
+	//	}
+	//}
+	//SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 }
 
 void FinSightMachine()
