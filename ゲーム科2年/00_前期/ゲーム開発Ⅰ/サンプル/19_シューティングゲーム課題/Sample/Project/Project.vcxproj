@@ -158,6 +158,7 @@
     <ClCompile Include="Source\Easing\EasingManager.cpp" />
     <ClCompile Include="Source\Enemy\BlueEnemy.cpp" />
     <ClCompile Include="Source\Enemy\EnemyBase.cpp" />
+    <ClCompile Include="Source\Enemy\EnemyBoss.cpp" />
     <ClCompile Include="Source\Enemy\EnemyDia.cpp" />
     <ClCompile Include="Source\Enemy\EnemyManager.cpp" />
     <ClCompile Include="Source\Enemy\EnemyBee.cpp" />
@@ -213,6 +214,7 @@
     <ClInclude Include="Source\Easing\EasingManager.h" />
     <ClInclude Include="Source\Enemy\BlueEnemy.h" />
     <ClInclude Include="Source\Enemy\EnemyBase.h" />
+    <ClInclude Include="Source\Enemy\EnemyBoss.h" />
     <ClInclude Include="Source\Enemy\EnemyDia.h" />
     <ClInclude Include="Source\Enemy\EnemyManager.h" />
     <ClInclude Include="Source\Enemy\EnemyBee.h" />

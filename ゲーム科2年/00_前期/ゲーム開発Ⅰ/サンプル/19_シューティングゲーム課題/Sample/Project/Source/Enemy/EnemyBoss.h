@@ -1,0 +1,26 @@
+#pragma once
+#include "EnemyBase.h"
+
+class EnemyBoss : public EnemyBase
+{
+public:
+	EnemyBoss();
+	virtual ~EnemyBoss();
+
+public:
+	void Init() override;
+	void Load() override;
+	void Start() override;
+	void Step() override;
+	void Dead() override;
+
+	// ï°êªÅAó éYÇ∑ÇÈÇΩÇﬂÇÃÉNÉçÅ[Éìä÷êî
+	EnemyBase* Clone() override;
+
+private:
+	void RedShot();
+	void GreenShot();
+	void BlueShot();
+	void YellowShot();
+	void MainShot();
+};

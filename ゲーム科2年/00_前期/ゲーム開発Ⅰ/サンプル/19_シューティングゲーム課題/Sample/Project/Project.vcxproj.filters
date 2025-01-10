@@ -228,6 +228,9 @@
     <ClCompile Include="Source\Easing\EasingManager.cpp">
       <Filter>Source\Easing</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Enemy\EnemyBoss.cpp">
+      <Filter>Source\Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Player\Player.h">
@@ -403,6 +406,9 @@
     </ClInclude>
     <ClInclude Include="Source\Easing\EasingManager.h">
       <Filter>Source\Easing</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Enemy\EnemyBoss.h">
+      <Filter>Source\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
