@@ -35,7 +35,7 @@ void Goal::Init()
 void Goal::Load()
 {
 	// 3Dモデルをロードする
-	m_Handle = MV1LoadModel("Resource/Goal/Goal.x");
+	m_Handle = MV1LoadModel("Data/Goal/Goal.x");
 }
 
 // 開始

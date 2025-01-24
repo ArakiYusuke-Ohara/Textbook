@@ -33,7 +33,7 @@ void BlockManager::Load()
 {
 	// 同じモデルを複数使用する場合は、
 	// まず1つだけロードして大元のモデルとする
-	m_Handle = MV1LoadModel("Resource/Block/Block.x");
+	m_Handle = MV1LoadModel("Data/Block/Block.x");
 
 	for (int i = 0; i < BLOCK_MAX; i++)
 	{

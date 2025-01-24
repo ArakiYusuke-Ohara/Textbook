@@ -41,7 +41,7 @@ void Player::Init()
 void Player::Load()
 {
 	// 3Dモデルをロードする
-	m_Handle = MV1LoadModel("Resource/Player/Player.x");
+	m_Handle = MV1LoadModel("Data/Player/Player.x");
 }
 
 // 開始

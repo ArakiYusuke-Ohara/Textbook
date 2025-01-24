@@ -32,7 +32,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance, 
 	VECTOR cameraUpVec = VGet(0.0f, 1.0f, 0.0f);
 
 	// 3Dモデルをロードする
-	int modelHandle = MV1LoadModel("Resource/Player/Player.x");
+	int modelHandle = MV1LoadModel("Data/Player/Player.x");
 
 	// モデルの座標、回転、スケール値を格納する変数
 	VECTOR modelPos = VGet(0.0f, 0.0f, 0.0f);
