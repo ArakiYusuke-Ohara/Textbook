@@ -22,21 +22,6 @@
     <Filter Include="Source\FPS">
       <UniqueIdentifier>{3df301e1-16eb-4692-b16f-7b65cb9138cd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Scene">
-      <UniqueIdentifier>{97ecbd1d-844f-4e26-a5fd-1afb9e51922d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Scene\Title">
-      <UniqueIdentifier>{570e5b5b-ea44-4aff-96ed-a01cbd166ee0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Scene\Play">
-      <UniqueIdentifier>{05d26764-de9b-418c-bdc7-44a9cd443ed1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Scene\GameClear">
-      <UniqueIdentifier>{3c248ca2-b722-4c0a-86ed-64fa9eb45280}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Scene\GameOver">
-      <UniqueIdentifier>{9a5705a8-7792-4af5-977e-36b0001d11fe}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\BackGround">
       <UniqueIdentifier>{5484dd56-323d-4d93-b8fe-f0f22ff4ba06}</UniqueIdentifier>
     </Filter>
@@ -74,21 +59,6 @@
     </ClCompile>
     <ClCompile Include="Source\FPS\FPS.cpp">
       <Filter>Source\FPS</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scene\SceneManager.cpp">
-      <Filter>Source\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scene\Title\TitleScene.cpp">
-      <Filter>Source\Scene\Title</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scene\Play\PlayScene.cpp">
-      <Filter>Source\Scene\Play</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scene\GameOver\GameOverScene.cpp">
-      <Filter>Source\Scene\GameOver</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scene\GameClear\GameClearScene.cpp">
-      <Filter>Source\Scene\GameClear</Filter>
     </ClCompile>
     <ClCompile Include="Source\BackGround\BackGround.cpp">
       <Filter>Source\BackGround</Filter>
@@ -142,21 +112,6 @@
     </ClInclude>
     <ClInclude Include="Source\FPS\FPS.h">
       <Filter>Source\FPS</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scene\SceneManager.h">
-      <Filter>Source\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scene\Title\TitleScene.h">
-      <Filter>Source\Scene\Title</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scene\Play\PlayScene.h">
-      <Filter>Source\Scene\Play</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scene\GameOver\GameOverScene.h">
-      <Filter>Source\Scene\GameOver</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scene\GameClear\GameClearScene.h">
-      <Filter>Source\Scene\GameClear</Filter>
     </ClInclude>
     <ClInclude Include="Source\BackGround\BackGround.h">
       <Filter>Source\BackGround</Filter>
