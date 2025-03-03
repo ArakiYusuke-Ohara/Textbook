@@ -1,0 +1,143 @@
+OBB同士の衝突と反発について
+
+■キーワード
+分離軸定理
+　2つのOBB間を分断する軸のこと
+
+■計算方法
+　１．各OBBの回転に合わせた軸ベクトルを計算する
+　２．1のベクトルとOBBの各頂点から中心までのベクトルで内積(Dot)を計算し投影を作る
+　３．各投影は最大値と最小値を保存しておく
+　４．最大値と最小値から投影同士が重なるか判定。すべて重なれば衝突している
+　５．反発に必要な法線は重なる部分が一番小さいときの軸が法線となる
+
+
+■OBBサンプル（ChatGPTより）
+struct OBB2D {
+    FVector2D Center;
+    FVector2D Extents;
+    float Rotation;
+
+    OBB2D(const FVector2D& center, const FVector2D& extents, float rotation)
+        : Center(center), Extents(extents), Rotation(rotation) {}
+};
+
+// OBBの頂点を計算する関数
+std::vector<FVector2D> GetOBBVertices(const OBB2D& OBB) {
+    std::vector<FVector2D> vertices(4);
+
+    // OBBの中心から4つの頂点を計算
+    FVector2D right = FVector2D(std::cos(OBB.Rotation), std::sin(OBB.Rotation)) * OBB.Extents.x;
+    FVector2D up = FVector2D(-std::sin(OBB.Rotation), std::cos(OBB.Rotation)) * OBB.Extents.y;
+
+    vertices[0] = OBB.Center - right - up; // 左下
+    vertices[1] = OBB.Center + right - up; // 右下
+    vertices[2] = OBB.Center + right + up; // 右上
+    vertices[3] = OBB.Center - right + up; // 左上
+
+    return vertices;
+}
+
+// 2DのOBBが重なっているかを判定する関数
+bool CheckOBBCollision(const OBB2D& A, const OBB2D& B) {
+    // OBB Aの回転行列（ローカル座標系の軸）
+    FVector2D AAxisX(std::cos(A.Rotation), std::sin(A.Rotation));
+    FVector2D AAxisY(-std::sin(A.Rotation), std::cos(A.Rotation));
+
+    // OBB Bの回転行列（ローカル座標系の軸）
+    FVector2D BAxisX(std::cos(B.Rotation), std::sin(B.Rotation));
+    FVector2D BAxisY(-std::sin(B.Rotation), std::cos(B.Rotation));
+
+    // OBB AとOBB Bの軸（Aの軸、Bの軸、交差軸）
+    FVector2D axes[4] = { AAxisX, AAxisY, BAxisX, BAxisY };
+
+    // OBB AとOBB Bの頂点
+    std::vector<FVector2D> AVertices = GetOBBVertices(A);
+    std::vector<FVector2D> BVertices = GetOBBVertices(B);
+
+    // すべての軸で分離軸定理（SAT）を適用
+    for (int i = 0; i < 4; ++i) {
+        FVector2D axis = axes[i];
+
+        // Aの頂点を投影
+        float AProjMin = axis.Dot(AVertices[0]);
+        float AProjMax = AProjMin;
+        for (int j = 1; j < 4; ++j) {
+            float projection = axis.Dot(AVertices[j]);
+            AProjMin = std::min(AProjMin, projection);
+            AProjMax = std::max(AProjMax, projection);
+        }
+
+        // Bの頂点を投影
+        float BProjMin = axis.Dot(BVertices[0]);
+        float BProjMax = BProjMin;
+        for (int j = 1; j < 4; ++j) {
+            float projection = axis.Dot(BVertices[j]);
+            BProjMin = std::min(BProjMin, projection);
+            BProjMax = std::max(BProjMax, projection);
+        }
+
+        // 2つのOBBが投影で重なっていない場合、衝突していない
+        if (AProjMax < BProjMin || BProjMax < AProjMin) {
+            return false;
+        }
+    }
+
+    // すべての軸で投影が重なっていれば衝突している
+    return true;
+}
+
+■衝突後の反発（法線を計算する関数）サンプル（ChatGPTより）
+FVector2D  CalculateCollisionNormal(const OBB2D& A, const OBB2D& B) {
+    // OBB Aの回転行列（ローカル座標系の軸）
+    FVector2D AAxisX(std::cos(A.Rotation), std::sin(A.Rotation));
+    FVector2D AAxisY(-std::sin(A.Rotation), std::cos(A.Rotation));
+
+    // OBB Bの回転行列（ローカル座標系の軸）
+    FVector2D BAxisX(std::cos(B.Rotation), std::sin(B.Rotation));
+    FVector2D BAxisY(-std::sin(B.Rotation), std::cos(B.Rotation));
+
+    // OBB AとOBB Bの軸（Aの軸、Bの軸、交差軸）
+    FVector2D axes[4] = { AAxisX, AAxisY, BAxisX, BAxisY };
+
+    // OBB AとOBB Bの頂点
+    std::vector<FVector2D> AVertices = GetOBBVertices(A);
+    std::vector<FVector2D> BVertices = GetOBBVertices(B);
+
+    // すべての軸で分離軸定理（SAT）を適用
+    for (int i = 0; i < 4; ++i) {
+        FVector2D axis = axes[i];
+
+        // Aの頂点を投影
+        float AProjMin = axis.Dot(AVertices[0]);
+        float AProjMax = AProjMin;
+        for (int j = 1; j < 4; ++j) {
+            float projection = axis.Dot(AVertices[j]);
+            AProjMin = std::min(AProjMin, projection);
+            AProjMax = std::max(AProjMax, projection);
+        }
+
+        // Bの頂点を投影
+        float BProjMin = axis.Dot(BVertices[0]);
+        float BProjMax = BProjMin;
+        for (int j = 1; j < 4; ++j) {
+            float projection = axis.Dot(BVertices[j]);
+            BProjMin = std::min(BProjMin, projection);
+            BProjMax = std::max(BProjMax, projection);
+        }
+
+		// 重なりを計算し、最小の重なりと対応する法線を記録
+        float overlap = std::min(AProjMax, BProjMax) - std::max(AProjMin, BProjMin);
+        if (overlap < minOverlap) {
+            minOverlap = overlap;
+            collisionNormal = axis;  // 法線ベクトルを軸方向として選択
+        }
+    }
+
+    return collisionNormal;
+}
+
+// 反発で使うときはこんな感じ
+FVECTOR2D repulsionA = CalculateCollisionNormal(A, B) * repulsionPower; // 矩形Aの反発ベクトル
+FVECTOR2D repulsionB = CalculateCollisionNormal(B, A) * repulsionPower; // 矩形Bの反発ベクトル
+
