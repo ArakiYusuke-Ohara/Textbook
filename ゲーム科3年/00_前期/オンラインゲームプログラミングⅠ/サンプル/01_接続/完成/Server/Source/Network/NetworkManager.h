@@ -1,7 +1,14 @@
 #pragma once
+#include "DxLib.h"
 #include <vector>
 
 // サーバー側のNetworkManager
+
+struct UserData
+{
+	int handle;
+	IPDATA ip;
+};
 
 class NetworkManager
 {
@@ -21,6 +28,9 @@ public:
 	void Fin();
 
 private:
+	void AddUserData(int handle);
+
+private:
 	static NetworkManager* m_Instance;
-	std::vector<int> m_UserHandles;
+	std::vector<UserData> m_UserData;
 };
