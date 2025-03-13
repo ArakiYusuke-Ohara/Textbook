@@ -38,6 +38,7 @@ public:
 
 	// 管理中のプレイヤーを取得する
 	std::vector<Player*> GetPlayers() { return m_Players; }
+	Player* GetPlayer(int number) { return m_Players[number]; }
 
 private:
 	// 生成されたPlayerManager自身を格納する変数

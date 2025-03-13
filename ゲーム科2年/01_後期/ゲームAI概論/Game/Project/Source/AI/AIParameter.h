@@ -1,8 +1,9 @@
 #pragma once
 
-enum AIStrategyType
+// CPUの行動の種類
+enum CPUStrategy
 {
-	AI_STRATEGY_TYPE_A,
-	AI_STRATEGY_TYPE_B,
-	AI_STRATEGY_TYPE_C,
+	CPU_STRATEGY_NONE, // なし
+	CPU_STRATEGY_CHASE,	// プレイヤー追尾
+	CPU_STRATEGY_AWAY,	// プレイヤーから離れる
 };

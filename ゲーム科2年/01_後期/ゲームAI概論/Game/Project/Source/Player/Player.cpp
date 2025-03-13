@@ -7,13 +7,18 @@
 #include "../Collision/CollisionAABB.h"
 #include "../Bullet/BulletBase.h"
 #include "../Stage/StageParameter.h"
+#include "../AI/AIStrategyBase.h"
+#include "../AI/AIParameter.h"
+#include "../Block/Block.h"
 
 #define PLAYER_WIDTH 40
 #define PLAYER_HEIGHT 40
 #define PLAYER_SPEED 2.0f
 #define PLAYER_ANIM_GRAPH_NUM 4
-#define PLAYER_CHANGE_ANIM_TIMER 3
+#define PLAYER_CHANGE_ANIM_TIME 3
 #define PLAYER_CHANGE_DIR_MOVE_DISTANCE 0.1f
+#define PLYAER_CHANGE_STRATEGY_TIME 180
+#define BLOCK_PUSH_OFFSET 0.1f
 
 enum PlayerDirection
 {
@@ -56,10 +61,15 @@ Player::Player()
 	m_BulletInterval = 0;
 	m_PlayerNumber = 0;
 	m_Direction = 0;
+	m_AnimationIndex = 0;
+	m_AnimationTimer = 0;
+	m_StrategyTimer = 0;
+	m_NowStrategy = 0;
 	m_Pos = VGet(0.0f, 0.0f, 0.0f);
 	m_OldPos = VGet(0.0f, 0.0f, 0.0f);
 	m_Move = VGet(0.0f, 0.0f, 0.0f);
 	m_Collision = nullptr;
+	m_AIStrategy = nullptr;
 }
 
 // デストラクタ
@@ -76,7 +86,6 @@ void Player::Init()
 // ロード
 void Player::Load()
 {
-	// 3Dモデルをロードする
 	m_Handle = LoadGraph(PLAYER_GRAPHIC_PATH[m_PlayerNumber]);
 }
 
@@ -93,7 +102,6 @@ void Player::Start()
 	// 当たり判定
 	CollisionAABB* collision = CollisionManager::GetInstance()->CreateAABB();
 	collision->SetSize(VGet(PLAYER_WIDTH, PLAYER_HEIGHT, 0.0f));
-	collision->SetLocalPos(VGet(20.0f, 20.0f, 0.0f));
 	collision->SetTargetPos(&m_Pos);
 	collision->SetTag(COLLISION_TAG[m_PlayerNumber]);
 	m_Collision = collision;
@@ -113,18 +121,16 @@ void Player::Step()
 {
 	m_OldPos = m_Pos;
 
-	// AIがセットされていたらAIの移動
+	// AIがセットされていたらAIのステップ
 	if (m_AIStrategy)
 	{
-		AIMove();
+		AIStep();
 	}
-	// 入力操作移動
+	// AIが無ければ入力操作
 	else
 	{
-		Move();
+		InputMove();
 	}
-
-	UpdateAnimation();
 }
 
 // 更新
@@ -159,6 +165,8 @@ void Player::Update()
 			m_Direction = PLAYER_DIRECTION_UP;
 		}
 	}
+
+	UpdateAnimation();
 }
 
 // 描画
@@ -200,7 +208,7 @@ void Player::Dead()
 	m_Collision->SetActive(false);
 }
 
-void Player::Move()
+void Player::InputMove()
 {
 	m_Move = VGet(0.0f, 0.0f, 0.0f);
 
@@ -229,8 +237,56 @@ void Player::Move()
 	m_Pos = MyMath::VecAdd(m_Pos, m_Move);
 }
 
-void Player::AIMove()
+void Player::AIStep()
 {
+	// 一定時間ごとに行動を切り替える
+	if (m_StrategyTimer <= 0)
+	{
+		// ターゲットを設定
+		Player* player1 = PlayerManager::GetInstance()->GetPlayer(0);
+		VECTOR player1Pos = player1->GetPos();
+		m_AIStrategy->SetTarget(player1Pos);
+
+		// 行動を決定して取得
+		m_NowStrategy = m_AIStrategy->ThinkStrategy();
+
+		// タイマーリセット
+		m_StrategyTimer = PLYAER_CHANGE_STRATEGY_TIME;
+	}
+
+	switch (m_NowStrategy)
+	{
+		case CPU_STRATEGY_CHASE:	AIChase();	break;
+		case CPU_STRATEGY_AWAY:		AIAway();	break;
+	}
+
+	m_StrategyTimer--;
+}
+
+void Player::AIChase()
+{
+	// 1Pを追いかける
+	Player* player1 = PlayerManager::GetInstance()->GetPlayer(0);
+	VECTOR player1Pos = player1->GetPos();
+	m_Move = MyMath::VecCreate(m_Pos, player1Pos);
+	m_Move = MyMath::VecNormalize(m_Move);
+	m_Move = MyMath::VecScale(m_Move, PLAYER_SPEED);
+
+	// 移動
+	m_Pos = MyMath::VecAdd(m_Pos, m_Move);
+}
+
+void Player::AIAway()
+{
+	// 1Pから離れる
+	Player* player1 = PlayerManager::GetInstance()->GetPlayer(0);
+	VECTOR player1Pos = player1->GetPos();
+	m_Move = MyMath::VecCreate(m_Pos, player1Pos);
+	m_Move = MyMath::VecNormalize(m_Move);
+	m_Move = MyMath::VecScale(m_Move, -PLAYER_SPEED);
+
+	// 移動
+	m_Pos = MyMath::VecAdd(m_Pos, m_Move);
 }
 
 void Player::UpdateAnimation()
@@ -243,7 +299,7 @@ void Player::UpdateAnimation()
 		return;
 	}
 
-	if (m_AnimationTimer >= PLAYER_CHANGE_ANIM_TIMER)
+	if (m_AnimationTimer >= PLAYER_CHANGE_ANIM_TIME)
 	{
 		m_AnimationTimer = 0;
 		m_AnimationIndex++;
@@ -254,4 +310,62 @@ void Player::UpdateAnimation()
 
 	}
 	m_AnimationTimer++;
+}
+
+void Player::HitBlock(Block* block)
+{
+	// 当たり判定情報を構築
+	VECTOR checkPos = m_OldPos;
+	CollisionAABB playerCollision;
+	playerCollision.SetTargetPos(&checkPos);
+	playerCollision.SetSize(m_Collision->GetSize());
+	CollisionAABB* blockCollision = block->GetCollision();
+
+	// X軸移動チェックをする
+	checkPos.x += m_Move.x;
+
+	if (playerCollision.CheckAABB(blockCollision))
+	{
+		VECTOR playerSize = playerCollision.GetSize();
+		VECTOR blockPos = block->GetPos();
+		VECTOR blockSize = blockCollision->GetSize();
+		// 左からあたった
+		if (m_Move.x > 0.0)
+		{
+			// 左に押し出す
+			checkPos.x -= checkPos.x + playerSize.x - blockPos.x;
+		}
+		// 右からあたった
+		else if (m_Move.x < 0.0f)
+		{
+			// 右に押し出す
+			checkPos.x += blockPos.x + blockSize.x - checkPos.x;
+		}
+	}
+
+	// Y軸移動チェックをする
+	checkPos = m_OldPos;
+	checkPos.y += m_Move.y;
+
+	if (playerCollision.CheckAABB(blockCollision))
+	{
+		VECTOR playerSize = playerCollision.GetSize();
+		VECTOR blockPos = block->GetPos();
+		VECTOR blockSize = blockCollision->GetSize();
+		// 上からあたった
+		if (m_Move.y > 0.0)
+		{
+			// 上に押し出す
+			checkPos.y -= checkPos.y + playerSize.y - blockPos.y;
+		}
+		// 下からあたった
+		else if (m_Move.y < 0.0f)
+		{
+			// 下に押し出す
+			checkPos.y += blockPos.y + blockSize.y - checkPos.y;
+		}
+	}
+
+	// 押し出し後の座標を設定
+	m_Pos = checkPos;
 }

@@ -12,30 +12,27 @@ AIManager::~AIManager()
 
 void AIManager::Step()
 {
+	for (AIStrategyBase* strategy : m_Strategies)
+	{
+		strategy->ThinkStrategy();
+	}
 }
 
 void AIManager::Draw()
 {
+	for (AIStrategyBase* strategy : m_Strategies)
+	{
+		strategy->Draw();
+	}
 }
 
 void AIManager::Fin()
 {
-}
-
-AIStrategyBase* AIManager::CreateAI(int type)
-{
-	switch (type)
+	for (AIStrategyBase* strategy : m_Strategies)
 	{
-		case AI_STRATEGY_TYPE_A:
-			return new AIStrategyBase;
-			break;
-
-		case AI_STRATEGY_TYPE_B:
-			return new AIStrategyBase;
-			break;
-
-		case AI_STRATEGY_TYPE_C:
-			return new AIStrategyBase;
-			break;
+		delete strategy;
 	}
+
+	m_Strategies.clear();
+	m_Strategies.shrink_to_fit();
 }

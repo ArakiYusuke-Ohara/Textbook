@@ -2,60 +2,66 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Source">
-      <UniqueIdentifier>{063f4ceb-d950-4ab4-aed1-cc4d5f660b8e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Player">
-      <UniqueIdentifier>{31fb3ccb-1f2a-41f3-8dd1-01eec0fa9cc3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Block">
-      <UniqueIdentifier>{2487204a-c27f-4a63-906f-25f75bd7f4e7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\MyMath">
-      <UniqueIdentifier>{03717581-4a9c-44fe-afa9-c43d12e0a265}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Input">
-      <UniqueIdentifier>{a65e06a1-30d7-4bf9-a2a4-98ce8e368d9a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\FPS">
-      <UniqueIdentifier>{c26759df-799e-4bc6-aac7-a521f592765c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Collision">
-      <UniqueIdentifier>{2941d3ea-568d-4d8d-8707-720da747d00b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Scene">
-      <UniqueIdentifier>{490f0a56-afdb-4188-b47b-311bcc0dc03a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\MyEffekseer">
-      <UniqueIdentifier>{db191d9d-8263-48b3-9685-bfcd34409453}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Bullet">
-      <UniqueIdentifier>{bf53d72d-5305-4f0f-a3f4-313f8235056a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Singleton">
-      <UniqueIdentifier>{3c9a9bf7-02f3-413d-8e11-f85a86d7627a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\MyRandom">
-      <UniqueIdentifier>{5d9f8e1f-f9e9-46ed-8c20-4f089764108e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Easing">
-      <UniqueIdentifier>{5a6ada5a-76fc-4a27-92b6-f0ef827f07d1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Stage">
-      <UniqueIdentifier>{68fb1927-2a19-452d-b496-243ef857802b}</UniqueIdentifier>
+      <UniqueIdentifier>{1cc0d9c5-0591-47b5-b0be-ca66d241b2ce}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\AI">
-      <UniqueIdentifier>{09ad9a7b-805d-4263-bdbb-93652bafc8d3}</UniqueIdentifier>
+      <UniqueIdentifier>{3784a19b-76db-40f1-88ad-cff04b4e8aed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Block">
+      <UniqueIdentifier>{8802d615-9924-4357-a9f0-596ef373ed04}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Bullet">
+      <UniqueIdentifier>{ba38b5fc-a02a-4b08-b90f-ca634bb42d01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Collision">
+      <UniqueIdentifier>{a4d70de0-6633-411e-8e78-11d047c39625}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Easing">
+      <UniqueIdentifier>{2b970519-efcd-438b-8c9a-40f50b999b46}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\FPS">
+      <UniqueIdentifier>{69adef65-3195-45a1-a374-2fefd37a1e6e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Input">
+      <UniqueIdentifier>{6c7d0822-c04b-40c8-9d05-ba272e1969a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\MyEffekseer">
+      <UniqueIdentifier>{02e66376-2d6f-4954-b32a-da068c8da066}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\MyMath">
+      <UniqueIdentifier>{cc1fe31d-c01b-4b00-8d71-5a32e2ac37bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\MyRandom">
+      <UniqueIdentifier>{73bf9eb2-f52d-47bd-981c-8a2f1ac623a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Player">
+      <UniqueIdentifier>{9bd5bf9e-fdd8-41e2-a379-a4bcc85af9ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Scene">
+      <UniqueIdentifier>{dae350b5-2a55-4bbc-88cb-c703011f12ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Singleton">
+      <UniqueIdentifier>{2381cd79-8c3e-4c24-8694-a4945636c3f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Stage">
+      <UniqueIdentifier>{9c0b95d1-6bfc-418c-bf6a-326925e2d1bd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Player\Player.cpp">
-      <Filter>Source\Player</Filter>
+    <ClCompile Include="Source\AI\AIManager.cpp">
+      <Filter>Source\AI</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Player\PlayerManager.cpp">
-      <Filter>Source\Player</Filter>
+    <ClCompile Include="Source\AI\AIPlayCPU.cpp">
+      <Filter>Source\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\AI\AIRandomCPU.cpp">
+      <Filter>Source\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\AI\AIStrategyBase.cpp">
+      <Filter>Source\AI</Filter>
     </ClCompile>
     <ClCompile Include="Source\Block\Block.cpp">
       <Filter>Source\Block</Filter>
@@ -63,16 +69,19 @@
     <ClCompile Include="Source\Block\BlockManager.cpp">
       <Filter>Source\Block</Filter>
     </ClCompile>
-    <ClCompile Include="Source\MyMath\MyMath.cpp">
-      <Filter>Source\MyMath</Filter>
+    <ClCompile Include="Source\Bullet\BulletBase.cpp">
+      <Filter>Source\Bullet</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Input\Input.cpp">
-      <Filter>Source\Input</Filter>
+    <ClCompile Include="Source\Bullet\BulletManager.cpp">
+      <Filter>Source\Bullet</Filter>
     </ClCompile>
-    <ClCompile Include="Source\FPS\FPS.cpp">
-      <Filter>Source\FPS</Filter>
+    <ClCompile Include="Source\Bullet\StraightBullet.cpp">
+      <Filter>Source\Bullet</Filter>
     </ClCompile>
     <ClCompile Include="Source\Collision\CollisionAABB.cpp">
+      <Filter>Source\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Collision\CollisionBase.cpp">
       <Filter>Source\Collision</Filter>
     </ClCompile>
     <ClCompile Include="Source\Collision\CollisionManager.cpp">
@@ -80,6 +89,45 @@
     </ClCompile>
     <ClCompile Include="Source\Collision\CollisionSphere.cpp">
       <Filter>Source\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Easing\Easing.cpp">
+      <Filter>Source\Easing</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Easing\EasingManager.cpp">
+      <Filter>Source\Easing</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\FPS\FPS.cpp">
+      <Filter>Source\FPS</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Input\Input.cpp">
+      <Filter>Source\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\MyEffekseer\EffekseerEffect2D.cpp">
+      <Filter>Source\MyEffekseer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\MyEffekseer\EffekseerEffect3D.cpp">
+      <Filter>Source\MyEffekseer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\MyEffekseer\EffekseerEffectBase.cpp">
+      <Filter>Source\MyEffekseer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\MyEffekseer\EffekseerManager.cpp">
+      <Filter>Source\MyEffekseer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\MyMath\MyMath.cpp">
+      <Filter>Source\MyMath</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\MyRandom\MyRandom.cpp">
+      <Filter>Source\MyRandom</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Stage\Stage.cpp">
+      <Filter>Source\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Stage\StageManager.cpp">
+      <Filter>Source\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene\PlayScene.cpp">
+      <Filter>Source\Scene</Filter>
     </ClCompile>
     <ClCompile Include="Source\Scene\SceneBase.cpp">
       <Filter>Source\Scene</Filter>
@@ -90,61 +138,28 @@
     <ClCompile Include="Source\Scene\TitleScene.cpp">
       <Filter>Source\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Scene\PlayScene.cpp">
-      <Filter>Source\Scene</Filter>
+    <ClCompile Include="Source\Player\Player.cpp">
+      <Filter>Source\Player</Filter>
     </ClCompile>
-    <ClCompile Include="Source\MyEffekseer\EffekseerManager.cpp">
-      <Filter>Source\MyEffekseer</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\MyEffekseer\EffekseerEffectBase.cpp">
-      <Filter>Source\MyEffekseer</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Bullet\BulletManager.cpp">
-      <Filter>Source\Bullet</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Bullet\StraightBullet.cpp">
-      <Filter>Source\Bullet</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Bullet\BulletBase.cpp">
-      <Filter>Source\Bullet</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Collision\CollisionBase.cpp">
-      <Filter>Source\Collision</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\MyRandom\MyRandom.cpp">
-      <Filter>Source\MyRandom</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\MyEffekseer\EffekseerEffect3D.cpp">
-      <Filter>Source\MyEffekseer</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\MyEffekseer\EffekseerEffect2D.cpp">
-      <Filter>Source\MyEffekseer</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Easing\Easing.cpp">
-      <Filter>Source\Easing</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Easing\EasingManager.cpp">
-      <Filter>Source\Easing</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Stage\Stage.cpp">
-      <Filter>Source\Stage</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Stage\StageManager.cpp">
-      <Filter>Source\Stage</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\AI\AIManager.cpp">
-      <Filter>Source\AI</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\AI\AIStrategyBase.cpp">
-      <Filter>Source\AI</Filter>
+    <ClCompile Include="Source\Player\PlayerManager.cpp">
+      <Filter>Source\Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Source\Player\Player.h">
-      <Filter>Source\Player</Filter>
+    <ClInclude Include="Source\AI\AIManager.h">
+      <Filter>Source\AI</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Player\PlayerManager.h">
-      <Filter>Source\Player</Filter>
+    <ClInclude Include="Source\AI\AIParameter.h">
+      <Filter>Source\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\AI\AIPlayCPU.h">
+      <Filter>Source\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\AI\AIRandomCPU.h">
+      <Filter>Source\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\AI\AIStrategyBase.h">
+      <Filter>Source\AI</Filter>
     </ClInclude>
     <ClInclude Include="Source\Block\Block.h">
       <Filter>Source\Block</Filter>
@@ -152,47 +167,8 @@
     <ClInclude Include="Source\Block\BlockManager.h">
       <Filter>Source\Block</Filter>
     </ClInclude>
-    <ClInclude Include="Source\MyMath\MyMath.h">
-      <Filter>Source\MyMath</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Input\Input.h">
-      <Filter>Source\Input</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\FPS\FPS.h">
-      <Filter>Source\FPS</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Collision\CollisionAABB.h">
-      <Filter>Source\Collision</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Collision\CollisionManager.h">
-      <Filter>Source\Collision</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Collision\CollisionSphere.h">
-      <Filter>Source\Collision</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scene\SceneBase.h">
-      <Filter>Source\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scene\SceneManager.h">
-      <Filter>Source\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scene\TitleScene.h">
-      <Filter>Source\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scene\SceneParameter.h">
-      <Filter>Source\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scene\PlayScene.h">
-      <Filter>Source\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\MyEffekseer\EffekseerManager.h">
-      <Filter>Source\MyEffekseer</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\MyEffekseer\EffekseerEffectBase.h">
-      <Filter>Source\MyEffekseer</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\MyEffekseer\EffekseerParameter.h">
-      <Filter>Source\MyEffekseer</Filter>
+    <ClInclude Include="Source\Bullet\BulletBase.h">
+      <Filter>Source\Bullet</Filter>
     </ClInclude>
     <ClInclude Include="Source\Bullet\BulletManager.h">
       <Filter>Source\Bullet</Filter>
@@ -203,32 +179,53 @@
     <ClInclude Include="Source\Bullet\StraightBullet.h">
       <Filter>Source\Bullet</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Bullet\BulletBase.h">
-      <Filter>Source\Bullet</Filter>
+    <ClInclude Include="Source\Collision\CollisionAABB.h">
+      <Filter>Source\Collision</Filter>
     </ClInclude>
     <ClInclude Include="Source\Collision\CollisionBase.h">
+      <Filter>Source\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Collision\CollisionManager.h">
       <Filter>Source\Collision</Filter>
     </ClInclude>
     <ClInclude Include="Source\Collision\CollisionParameter.h">
       <Filter>Source\Collision</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Singleton\Singleton.h">
-      <Filter>Source\Singleton</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\MyRandom\MyRandom.h">
-      <Filter>Source\MyRandom</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\MyEffekseer\EffekseerEffect3D.h">
-      <Filter>Source\MyEffekseer</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\MyEffekseer\EffekseerEffect2D.h">
-      <Filter>Source\MyEffekseer</Filter>
+    <ClInclude Include="Source\Collision\CollisionSphere.h">
+      <Filter>Source\Collision</Filter>
     </ClInclude>
     <ClInclude Include="Source\Easing\Easing.h">
       <Filter>Source\Easing</Filter>
     </ClInclude>
     <ClInclude Include="Source\Easing\EasingManager.h">
       <Filter>Source\Easing</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\FPS\FPS.h">
+      <Filter>Source\FPS</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Input\Input.h">
+      <Filter>Source\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\MyEffekseer\EffekseerEffect2D.h">
+      <Filter>Source\MyEffekseer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\MyEffekseer\EffekseerEffect3D.h">
+      <Filter>Source\MyEffekseer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\MyEffekseer\EffekseerEffectBase.h">
+      <Filter>Source\MyEffekseer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\MyEffekseer\EffekseerManager.h">
+      <Filter>Source\MyEffekseer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\MyEffekseer\EffekseerParameter.h">
+      <Filter>Source\MyEffekseer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\MyMath\MyMath.h">
+      <Filter>Source\MyMath</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\MyRandom\MyRandom.h">
+      <Filter>Source\MyRandom</Filter>
     </ClInclude>
     <ClInclude Include="Source\Stage\Stage.h">
       <Filter>Source\Stage</Filter>
@@ -239,14 +236,29 @@
     <ClInclude Include="Source\Stage\StageParameter.h">
       <Filter>Source\Stage</Filter>
     </ClInclude>
-    <ClInclude Include="Source\AI\AIManager.h">
-      <Filter>Source\AI</Filter>
+    <ClInclude Include="Source\Singleton\Singleton.h">
+      <Filter>Source\Singleton</Filter>
     </ClInclude>
-    <ClInclude Include="Source\AI\AIStrategyBase.h">
-      <Filter>Source\AI</Filter>
+    <ClInclude Include="Source\Scene\PlayScene.h">
+      <Filter>Source\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="Source\AI\AIParameter.h">
-      <Filter>Source\AI</Filter>
+    <ClInclude Include="Source\Scene\SceneBase.h">
+      <Filter>Source\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene\SceneManager.h">
+      <Filter>Source\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene\SceneParameter.h">
+      <Filter>Source\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene\TitleScene.h">
+      <Filter>Source\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Player\Player.h">
+      <Filter>Source\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Player\PlayerManager.h">
+      <Filter>Source\Player</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

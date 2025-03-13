@@ -6,6 +6,7 @@ class CollisionAABB;
 class BulletBase;
 class EnemyBase;
 class AIStrategyBase;
+class Block;
 
 // プレイヤークラス
 class Player 
@@ -36,9 +37,15 @@ public:
 
 	void Dead();
 
-	void Move();
-	void AIMove();
+	void InputMove();
 	void UpdateAnimation();
+
+	void HitBlock(Block* block);
+
+	void AIStep();
+	void AIChase();
+	void AIAway();
+
 
 private:
 	bool m_Active;
@@ -50,6 +57,8 @@ private:
 	int m_Direction;
 	int m_AnimationIndex;
 	int m_AnimationTimer;
+	int m_StrategyTimer;
+	int m_NowStrategy;
 	VECTOR m_Pos;	
 	VECTOR m_OldPos;
 	VECTOR m_Move;	

@@ -4,7 +4,8 @@
 #include "../Player/PlayerManager.h"
 #include "../Player/Player.h"
 
-#define END_POS_Z -10.0f
+#define BLOCK_WIDTH 40
+#define BLOCK_HEIGHT 40
 
 // コンストラクタ
 Block::Block()
@@ -12,7 +13,7 @@ Block::Block()
 	m_Active = false;
 	m_Handle = 0;
 	m_Pos = VGet(0.0f, 0.0f, 0.0f);
-	m_AABB = nullptr;
+	m_Collision = nullptr;
 }
 
 // デストラクタ
@@ -31,10 +32,9 @@ void Block::Start()
 	m_Active = true;
 
 	// 当たり判定を設定
-	m_AABB = CollisionManager::GetInstance()->CreateAABB();
-	m_AABB->SetTargetPos(&m_Pos);
-	m_AABB->SetLocalPos(VGet(0.0f, 0.0f, 0.0f));
-	m_AABB->SetSize(VGet(40.0f, 40.0f, 0.0f));
+	m_Collision = CollisionManager::GetInstance()->CreateAABB();
+	m_Collision->SetTargetPos(&m_Pos);
+	m_Collision->SetSize(VGet(BLOCK_WIDTH, BLOCK_HEIGHT, 0.0f));
 }
 
 void Block::Draw()

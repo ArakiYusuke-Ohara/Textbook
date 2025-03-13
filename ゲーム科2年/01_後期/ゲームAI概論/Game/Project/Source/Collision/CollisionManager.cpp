@@ -91,4 +91,19 @@ CollisionBase* CollisionManager::CreateCollision(int id)
 
 void CollisionManager::CheckCollision()
 {
+	auto players = PlayerManager::GetInstance()->GetPlayers();
+	auto blocks = BlockManager::GetInstance()->GetBlocks();
+
+	for (Player* player : players)
+	{
+		CollisionAABB* playerCollision = player->GetCollision();
+		for (Block* block : blocks)
+		{
+			CollisionAABB* blockCollision = block->GetCollision();
+			if (blockCollision->CheckAABB(playerCollision))
+			{
+				player->HitBlock(block);
+			}
+		}
+	}
 }

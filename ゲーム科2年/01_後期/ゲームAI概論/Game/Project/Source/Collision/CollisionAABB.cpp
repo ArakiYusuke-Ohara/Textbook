@@ -21,30 +21,25 @@ void CollisionAABB::Draw()
 
 bool CollisionAABB::CheckAABB(CollisionAABB* other)
 {
-	VECTOR centerPos = MyMath::VecAdd(*m_TargetPos, m_LocalPos);
-	VECTOR otherCenterPos = MyMath::VecAdd(other->GetTargetPos(), other->GetLocalPos());
+	VECTOR pos = MyMath::VecAdd(*m_TargetPos, m_LocalPos);
+	VECTOR otherPos = MyMath::VecAdd(other->GetTargetPos(), other->GetLocalPos());
 	VECTOR otherSize = other->GetSize();
 
 	// 自身のボックスの各面の値
-	float left		= centerPos.x - m_Size.x * 0.5f;	// 左
-	float right		= centerPos.x + m_Size.x * 0.5f;	// 右
-	float top		= centerPos.y + m_Size.y * 0.5f;	// 上
-	float bottom	= centerPos.y - m_Size.y * 0.5f;	// 下
-	float front		= centerPos.z - m_Size.z * 0.5f;	// 手前
-	float back		= centerPos.z + m_Size.z * 0.5f;	// 奥
+	float left		= pos.x;	// 左
+	float right		= pos.x + m_Size.x;	// 右
+	float top		= pos.y;	// 上
+	float bottom	= pos.y + m_Size.y;	// 下
 
 	// 対象のボックスの各面の値
-	float otherLeft		= otherCenterPos.x - otherSize.x * 0.5f;	// 左
-	float otherRight	= otherCenterPos.x + otherSize.x * 0.5f;	// 右
-	float otherTop		= otherCenterPos.y + otherSize.y * 0.5f;	// 上
-	float otherBottom	= otherCenterPos.y - otherSize.y * 0.5f;	// 下
-	float otherFront	= otherCenterPos.z - otherSize.z * 0.5f;	// 手前
-	float otherBack		= otherCenterPos.z + otherSize.z * 0.5f;	// 奥
+	float otherLeft		= otherPos.x;	// 左
+	float otherRight	= otherPos.x + otherSize.x;	// 右
+	float otherTop		= otherPos.y;	// 上
+	float otherBottom	= otherPos.y + otherSize.y;	// 下
 
-	// 各面が交差していれば当たっている
-	if (left <= otherRight && right >= otherLeft &&
-		bottom <= otherTop && top >= otherBottom &&
-		front <= otherBack && back >= otherFront)
+	// 交差していれば当たっている
+	if (left < otherRight && right > otherLeft &&
+		bottom > otherTop && top < otherBottom)
 	{
 		return true;
 	}

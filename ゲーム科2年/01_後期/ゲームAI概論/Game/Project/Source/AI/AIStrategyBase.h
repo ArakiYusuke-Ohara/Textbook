@@ -1,13 +1,22 @@
 #pragma once
+#include "DxLib.h"
+
+class Player;
 
 class AIStrategyBase
 {
 public:
-	AIStrategyBase() {}
-	~AIStrategyBase() {}
+	AIStrategyBase();
+	virtual ~AIStrategyBase() {}
 
 public:
-	virtual void Step();
+	virtual int ThinkStrategy() = 0;
 	virtual void Draw();
-	virtual void Fin();
+
+	void SetOwner(Player* owner) { m_Owner = owner; }
+	void SetTarget(VECTOR target) { m_Target = target; }
+
+protected:
+	Player* m_Owner;
+	VECTOR m_Target;
 };

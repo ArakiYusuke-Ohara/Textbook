@@ -9,7 +9,8 @@
 #include "../Block/BlockManager.h"
 #include "../Collision/CollisionManager.h"
 #include "../AI/AIManager.h"
-#include "../AI/AIParameter.h"
+#include "../AI/AIPlayCPU.h"
+#include "../AI/AIRandomCPU.h"
 
 PlayScene::PlayScene() : SceneBase()
 {
@@ -31,13 +32,15 @@ void PlayScene::Init()
 	playerManager->Init();
 	// 操作プレイヤーを1Pとして生成
 	playerManager->CreatePlayer(0);
+
 	// CPUを2Pとして生成
 	Player* cpuPlayer = playerManager->CreatePlayer(1);
 	// AIマネージャーを生成
 	AIManager::CreateInstance();
 	AIManager* aiManager = AIManager::GetInstance();
-	// CPU用のAIを生成
-	AIStrategyBase* ai = aiManager->CreateAI(AI_STRATEGY_TYPE_A);
+	// CPU用のAIを生成と設定
+	AIRandomCPU* ai = aiManager->CreateAI<AIRandomCPU>();
+	ai->SetOwner(cpuPlayer);
 	// CPUのAIにセット
 	cpuPlayer->SetAIStrategy(ai);
 

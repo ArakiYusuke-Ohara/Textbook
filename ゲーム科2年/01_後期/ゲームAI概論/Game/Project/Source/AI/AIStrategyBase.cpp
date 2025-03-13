@@ -1,14 +1,12 @@
 #include "AIStrategyBase.h"
 
-void AIStrategyBase::Step()
+AIStrategyBase::AIStrategyBase()
 {
+	m_Owner = nullptr;
 }
+
 
 void AIStrategyBase::Draw()
-{
-}
-
-void AIStrategyBase::Fin()
 {
 }
 
