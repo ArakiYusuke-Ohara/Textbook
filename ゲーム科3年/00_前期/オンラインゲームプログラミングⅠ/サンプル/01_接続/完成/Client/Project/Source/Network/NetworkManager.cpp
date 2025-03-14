@@ -37,8 +37,7 @@ void NetworkManager::Update()
 
 void NetworkManager::Draw()
 {
-	DrawFormatString(0, 20, GetColor(255, 255, 255), 
-		"接続先IPアドレス：%d.%d.%d.%d", m_IPAddress.d1, m_IPAddress.d2, m_IPAddress.d3, m_IPAddress.d4);
+	DrawFormatString(0, 20, GetColor(255, 255, 255), "接続先IPアドレス：%d.%d.%d.%d", m_IPAddress.d1, m_IPAddress.d2, m_IPAddress.d3, m_IPAddress.d4);
 }
 
 void NetworkManager::Fin()

@@ -1,7 +1,7 @@
-ï»¿#include "DxLib.h"
+#include "DxLib.h"
 #include "Network/NetworkManager.h"
 
-// é–¢æ•°ã®ãƒ—ãƒ­ãƒˆã‚¿ã‚¤ãƒ—å®£è¨€
+// ŠÖ”‚Ìƒvƒƒgƒ^ƒCƒvéŒ¾
 void Update();
 void Draw();
 void UpdateOffline();
@@ -9,74 +9,73 @@ void UpdateOnline();
 void DrawOffline();
 void DrawOnline();
 
-// ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯ WinMain ã‹ã‚‰å§‹ã¾ã‚Šã¾ã™
+// ƒvƒƒOƒ‰ƒ€‚Í WinMain ‚©‚çŽn‚Ü‚è‚Ü‚·
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nShowCmd)
 {
-	// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒ¢ãƒ¼ãƒ‰ON
+	// ƒEƒBƒ“ƒhƒEƒ‚[ƒhON
 	ChangeWindowMode(TRUE);
 
-	// ç”»é¢è§£åƒåº¦ã®è¨­å®š
+	// ‰æ–Ê‰ð‘œ“x‚ÌÝ’è
 	SetGraphMode(1600, 900, 32);
 
-	if (DxLib_Init() == -1)		// ï¼¤ï¼¸ãƒ©ã‚¤ãƒ–ãƒ©ãƒªåˆæœŸåŒ–å‡¦ç†
+	if (DxLib_Init() == -1)		// ‚c‚wƒ‰ƒCƒuƒ‰ƒŠ‰Šú‰»ˆ—
 	{
-		return -1;			// ã‚¨ãƒ©ãƒ¼ãŒèµ·ããŸã‚‰ç›´ã¡ã«çµ‚äº†
+		return -1;			// ƒGƒ‰[‚ª‹N‚«‚½‚ç’¼‚¿‚ÉI—¹
 	}
 
-	// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚µã‚¤ã‚ºè¨­å®š
+	// ƒEƒBƒ“ƒhƒEƒTƒCƒYÝ’è
 	SetWindowSize(1600, 900);
 
-	// æç”»å…ˆã‚’è£ç”»é¢ã«ã™ã‚‹
+	// •`‰ææ‚ð— ‰æ–Ê‚É‚·‚é
 	SetDrawScreen(DX_SCREEN_BACK);
 
-	// ãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯ãƒžãƒãƒ¼ã‚¸ãƒ£ãƒ¼ç”Ÿæˆ
+	// ƒlƒbƒgƒ[ƒNƒ}ƒl[ƒWƒƒ[¶¬
 	NetworkManager::CreateInstance();
 
-	// IPã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’è¨­å®š
+	// IPƒAƒhƒŒƒX‚ðÝ’è
 	IPDATA ipData;
 	ipData.d1 = 113;
 	ipData.d2 = 42;
 	ipData.d3 = 77;
 	ipData.d4 = 130;
 
-	// IPã‚¢ãƒ‰ãƒ¬ã‚¹è¨­å®š
+	// IPƒAƒhƒŒƒXÝ’è
 	NetworkManager::GetInstance()->SetIPAddress(ipData);
 
-	// ã‚²ãƒ¼ãƒ ã®ãƒ¡ã‚¤ãƒ³ãƒ«ãƒ¼ãƒ—
+	// ƒQ[ƒ€‚ÌƒƒCƒ“ƒ‹[ƒv
 	while (ProcessMessage() >= 0)
 	{
-		// ç”»é¢ã‚’ã‚¯ãƒªã‚¢
+		// ‰æ–Ê‚ðƒNƒŠƒA
 		ClearDrawScreen();
 
-		// æ›´æ–°
+		// XV
 		Update();
 
-		// æç”»
+		// •`‰æ
 		Draw();
 
-		// ã‚¨ã‚¹ã‚±ãƒ¼ãƒ—ã‚­ãƒ¼ã§çµ‚äº†
+		// ƒGƒXƒP[ƒvƒL[‚ÅI—¹
 		if (CheckHitKey(KEY_INPUT_ESCAPE)) break;
 
-		// ç”»é¢ãƒ•ãƒªãƒƒãƒ—
+		// ‰æ–ÊƒtƒŠƒbƒv
 		ScreenFlip();
 	}
 
-	DxLib_End();				// ï¼¤ï¼¸ãƒ©ã‚¤ãƒ–ãƒ©ãƒªä½¿ç”¨ã®çµ‚äº†å‡¦ç†
+	DxLib_End();				// ‚c‚wƒ‰ƒCƒuƒ‰ƒŠŽg—p‚ÌI—¹ˆ—
 
-	return 0;				// ã‚½ãƒ•ãƒˆã®çµ‚äº† 
+	return 0;				// ƒ\ƒtƒg‚ÌI—¹ 
 }
 
 void Update()
 {
-	// ã‚²ãƒ¼ãƒ ã®çŠ¶æ…‹ã«ã‚ˆã£ã¦æ›´æ–°å‡¦ç†ã‚’åˆ†ã‘ã‚‹
 	NetworkGameState state = NetworkManager::GetInstance()->GetNetworkGameState();
 	switch (state)
 	{
-		case GAME_STATE_OFFLINE: UpdateOffline(); break;
-		case GAME_STATE_ONLINE: UpdateOnline(); break;
+	case GAME_STATE_OFFLINE: UpdateOffline(); break;
+	case GAME_STATE_ONLINE: UpdateOnline(); break;
 	}
 
-	// ãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯ãƒžãƒãƒ¼ã‚¸ãƒ£ãƒ¼æ›´æ–°
+	// ƒlƒbƒgƒ[ƒNƒ}ƒl[ƒWƒƒ[XV
 	NetworkManager::GetInstance()->Update();
 
 }
@@ -85,13 +84,13 @@ void UpdateOffline()
 {
 	NetworkState state = NetworkManager::GetInstance()->GetNetworkState();
 
-	// åˆ‡æ–­ä¸­
+	// Ø’f’†
 	if (state == NW_STATE_DISCONNECT)
 	{
-		// Enterã§æŽ¥ç¶š
+		// Enter‚ÅÚ‘±
 		if (CheckHitKey(KEY_INPUT_RETURN))
 		{
-			// æŽ¥ç¶š
+			// Ú‘±
 			NetworkManager::GetInstance()->Connect();
 		}
 	}
@@ -99,10 +98,10 @@ void UpdateOffline()
 
 void UpdateOnline()
 {
-	// Ctrl + Q ã§åˆ‡æ–­
+	// Ctrl + Q ‚ÅØ’f
 	if ((CheckHitKey(KEY_INPUT_LCONTROL) || CheckHitKey(KEY_INPUT_RCONTROL)) && CheckHitKey(KEY_INPUT_Q))
 	{
-		// åˆ‡æ–­
+		// Ø’f
 		NetworkManager::GetInstance()->Disconnect();
 	}
 
@@ -110,22 +109,21 @@ void UpdateOnline()
 
 void Draw()
 {
-	// ã‚²ãƒ¼ãƒ ã®çŠ¶æ…‹ã«ã‚ˆã£ã¦æç”»å‡¦ç†ã‚’åˆ†ã‘ã‚‹
 	NetworkGameState state = NetworkManager::GetInstance()->GetNetworkGameState();
 	switch (state)
 	{
-		case GAME_STATE_OFFLINE: DrawOffline(); break;
-		case GAME_STATE_ONLINE: DrawOnline(); break;
+	case GAME_STATE_OFFLINE: DrawOffline(); break;
+	case GAME_STATE_ONLINE: DrawOnline(); break;
 	}
 }
 
 void DrawOffline()
 {
-	DrawFormatString(0, 0, GetColor(255, 255, 255), "Enterã§æŽ¥ç¶š");
+	DrawFormatString(0, 0, GetColor(255, 255, 255), "Enter‚ÅÚ‘±");
 }
 
 void DrawOnline()
 {
-	DrawFormatString(0, 0, GetColor(255, 255, 255), "Ctrl + Qã§åˆ‡æ–­");
+	DrawFormatString(0, 0, GetColor(255, 255, 255), "Ctrl + Q‚ÅØ’f");
 	NetworkManager::GetInstance()->Draw();
 }

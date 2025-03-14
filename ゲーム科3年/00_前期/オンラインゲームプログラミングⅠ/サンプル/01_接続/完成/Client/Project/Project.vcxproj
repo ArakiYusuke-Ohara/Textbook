@@ -143,6 +143,7 @@
     <ClCompile Include="Source\Network\NetworkManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Network\NetworkCommonParam.h" />
     <ClInclude Include="Source\Network\NetworkManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
