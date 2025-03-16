@@ -34,13 +34,11 @@ public:
 public:
 	void SetIPAddress(IPDATA address) { m_IPAddress = address; }
 
-	bool IsConnect() const { return m_IsConnect; }
 	NetworkGameState GetNetworkGameState() const { return m_NWGameState; }
 	NetworkState GetNetworkState() const { return m_NWState; }
 
 
 private:
-	bool m_IsConnect;
 	int m_NWHandle;
 	NetworkGameState m_NWGameState;
 	NetworkState m_NWState;

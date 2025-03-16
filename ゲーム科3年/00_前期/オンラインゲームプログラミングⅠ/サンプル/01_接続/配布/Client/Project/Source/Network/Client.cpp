@@ -21,17 +21,6 @@ void Client::Init()
 
 void Client::Update()
 {
-	// 接続待ち中
-	if (m_NWState == NW_STATE_WAITING_CONNECTION)
-	{
-		// 接続できたかチェック
-		if (GetNetWorkAcceptState(m_NWHandle))
-		{
-			// 接続完了
-			m_NWGameState = GAME_STATE_ONLINE;
-			m_NWState = NW_STATE_CONNECT;
-		}
-	}
 
 }
 
@@ -54,11 +43,7 @@ void Client::Fin()
 /// </summary>
 void Client::Connect()
 {
-	// 指定したIPアドレスの端末に接続
-	m_NWHandle = ConnectNetWork(m_IPAddress, PORT_NUMBER);
 
-	// 接続待ちへ
-	m_NWState = NW_STATE_WAITING_CONNECTION;
 }
 
 /// <summary>
@@ -66,10 +51,5 @@ void Client::Connect()
 /// </summary>
 void Client::Disconnect()
 {
-	// 切断
-	CloseNetWork(m_NWHandle);
-	m_NWHandle = 0;
-	m_NWGameState = GAME_STATE_OFFLINE;
-	m_NWState = NW_STATE_DISCONNECT;
 
 }
