@@ -1,13 +1,16 @@
 #include "DxLib.h"
-#include "Network/NetworkManager.h"
+#include "Network/Client.h"
+
+// クライアント用グローバル変数
+Client* g_Client = nullptr;
 
 // 関数のプロトタイプ宣言
-void Update();
-void Draw();
-void UpdateOffline();
-void UpdateOnline();
-void DrawOffline();
-void DrawOnline();
+void Update();			// 更新
+void Draw();			// 描画
+void UpdateOffline();	// オフライン中の更新
+void UpdateOnline();	// オンライン中の更新
+void DrawOffline();		// オフライン中の描画
+void DrawOnline();		// オンライン中の描画
 
 // プログラムは WinMain から始まります
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nShowCmd)
@@ -17,6 +20,12 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance, 
 
 	// 画面解像度の設定
 	SetGraphMode(1600, 900, 32);
+
+	// 多重起動を許可する
+	SetDoubleStartValidFlag(TRUE);
+
+	// バックグラウンドでも動作し続ける
+	SetAlwaysRunFlag(TRUE);
 
 	if (DxLib_Init() == -1)		// ＤＸライブラリ初期化処理
 	{
@@ -29,18 +38,16 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance, 
 	// 描画先を裏画面にする
 	SetDrawScreen(DX_SCREEN_BACK);
 
-	// ネットワークマネージャー生成
-	NetworkManager::CreateInstance();
+	// クライアント生成
+	g_Client = new Client();
 
 	// IPアドレスを設定
 	IPDATA ipData;
-	ipData.d1 = 113;
-	ipData.d2 = 42;
-	ipData.d3 = 77;
-	ipData.d4 = 130;
-
-	// IPアドレス設定
-	NetworkManager::GetInstance()->SetIPAddress(ipData);
+	ipData.d1 = 192;
+	ipData.d2 = 168;
+	ipData.d3 = 132;
+	ipData.d4 = 107;
+	g_Client->SetIPAddress(ipData);
 
 	// ゲームのメインループ
 	while (ProcessMessage() >= 0)
@@ -68,7 +75,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance, 
 
 void Update()
 {
-	NetworkGameState state = NetworkManager::GetInstance()->GetNetworkGameState();
+	NetworkGameState state = g_Client->GetNetworkGameState();
 	switch (state)
 	{
 	case GAME_STATE_OFFLINE: UpdateOffline(); break;
@@ -76,13 +83,13 @@ void Update()
 	}
 
 	// ネットワークマネージャー更新
-	NetworkManager::GetInstance()->Update();
+	g_Client->Update();
 
 }
 
 void UpdateOffline()
 {
-	NetworkState state = NetworkManager::GetInstance()->GetNetworkState();
+	NetworkState state = g_Client->GetNetworkState();
 
 	// 切断中
 	if (state == NW_STATE_DISCONNECT)
@@ -91,7 +98,7 @@ void UpdateOffline()
 		if (CheckHitKey(KEY_INPUT_RETURN))
 		{
 			// 接続
-			NetworkManager::GetInstance()->Connect();
+			g_Client->Connect();
 		}
 	}
 }
@@ -102,19 +109,21 @@ void UpdateOnline()
 	if ((CheckHitKey(KEY_INPUT_LCONTROL) || CheckHitKey(KEY_INPUT_RCONTROL)) && CheckHitKey(KEY_INPUT_Q))
 	{
 		// 切断
-		NetworkManager::GetInstance()->Disconnect();
+		g_Client->Disconnect();
 	}
 
 }
 
 void Draw()
 {
-	NetworkGameState state = NetworkManager::GetInstance()->GetNetworkGameState();
+	NetworkGameState state = g_Client->GetNetworkGameState();
 	switch (state)
 	{
 	case GAME_STATE_OFFLINE: DrawOffline(); break;
 	case GAME_STATE_ONLINE: DrawOnline(); break;
 	}
+
+	DrawString(0, 880, "クライアント側", GetColor(255, 255, 255));
 }
 
 void DrawOffline()
@@ -125,5 +134,5 @@ void DrawOffline()
 void DrawOnline()
 {
 	DrawFormatString(0, 0, GetColor(255, 255, 255), "Ctrl + Qで切断");
-	NetworkManager::GetInstance()->Draw();
+	g_Client->Draw();
 }

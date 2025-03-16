@@ -12,15 +12,15 @@
     <ClCompile Include="Source\Main.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Network\NetworkManager.cpp">
+    <ClCompile Include="Source\Network\Client.cpp">
       <Filter>Source\Network</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Source\Network\NetworkManager.h">
+    <ClInclude Include="Source\Network\NetworkCommonParam.h">
       <Filter>Source\Network</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Network\NetworkCommonParam.h">
+    <ClInclude Include="Source\Network\Client.h">
       <Filter>Source\Network</Filter>
     </ClInclude>
   </ItemGroup>

@@ -16,36 +16,34 @@ enum NetworkState
 	NW_STATE_CONNECT,				// ê⁄ë±ÇµÇƒÇ¢ÇÈ
 };
 
-class NetworkManager
+class Client
 {
 public:
-	NetworkManager();
-	~NetworkManager();
+	Client();
+	~Client();
 
 public:
-	static void CreateInstance() { if (!m_Instance) m_Instance = new NetworkManager; }
-	static NetworkManager* GetInstance() { return m_Instance; }
-	static void DeleteInstance() { if (m_Instance) delete m_Instance; m_Instance = nullptr; }
-
-public:
+	void Init();
 	void Update();
 	void Draw();
 	void Fin();
 
+	void Connect();
+	void Disconnect();
+
 public:
 	void SetIPAddress(IPDATA address) { m_IPAddress = address; }
 
+	bool IsConnect() const { return m_IsConnect; }
 	NetworkGameState GetNetworkGameState() const { return m_NWGameState; }
 	NetworkState GetNetworkState() const { return m_NWState; }
 
-public:
-	void Connect();		// ê⁄ë±
-	void Disconnect();	// êÿíf
 
 private:
-	static NetworkManager* m_Instance;
+	bool m_IsConnect;
 	int m_NWHandle;
 	NetworkGameState m_NWGameState;
 	NetworkState m_NWState;
 	IPDATA m_IPAddress;
 };
+

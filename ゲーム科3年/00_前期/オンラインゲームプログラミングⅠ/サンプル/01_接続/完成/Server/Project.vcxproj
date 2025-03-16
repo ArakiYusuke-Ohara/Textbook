@@ -140,11 +140,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp" />
-    <ClCompile Include="Source\Network\NetworkManager.cpp" />
+    <ClCompile Include="Source\Network\Server.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Network\NetworkCommonParam.h" />
-    <ClInclude Include="Source\Network\NetworkManager.h" />
+    <ClInclude Include="Source\Network\Server.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
