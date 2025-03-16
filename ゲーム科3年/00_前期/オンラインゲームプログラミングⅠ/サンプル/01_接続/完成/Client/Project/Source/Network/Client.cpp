@@ -57,8 +57,12 @@ void Client::Connect()
 	// 指定したIPアドレスの端末に接続
 	m_NWHandle = ConnectNetWork(m_IPAddress, PORT_NUMBER);
 
-	// 接続待ちへ
-	m_NWState = NW_STATE_WAITING_CONNECTION;
+	// ハンドルが-1なら接続できてない
+	if (m_NWHandle != -1)
+	{
+		// 接続待ちへ
+		m_NWState = NW_STATE_WAITING_CONNECTION;
+	}
 }
 
 /// <summary>
