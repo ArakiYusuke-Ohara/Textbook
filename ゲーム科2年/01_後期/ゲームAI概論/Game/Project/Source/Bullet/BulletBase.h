@@ -15,11 +15,12 @@ public:
 	virtual void Init(int id);
 	virtual void Load();
 	virtual void Step();
-	virtual void Update() = 0;
 	virtual void Draw() = 0;
 	virtual void Fin();
 	virtual BulletBase* Clone() = 0;
 	virtual void Fire(VECTOR pos, VECTOR vec);
+
+	void Dead();
 
 public:
 	bool IsActive() const { return m_Active; }
@@ -29,7 +30,6 @@ public:
 	CollisionSphere* GetCollision() const { return m_Collision; }
 
 	void HitPlayer();
-	void HitEnemy();
 
 protected:
 	bool m_Active;

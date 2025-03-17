@@ -93,16 +93,41 @@ void CollisionManager::CheckCollision()
 {
 	auto players = PlayerManager::GetInstance()->GetPlayers();
 	auto blocks = BlockManager::GetInstance()->GetBlocks();
+	auto bullets = BulletManager::GetInstance()->GetBullets();
 
+	// プレイヤーとブロックの当たり判定
 	for (Player* player : players)
 	{
-		CollisionAABB* playerCollision = player->GetCollision();
+		if (!player->IsActive()) continue;
+
+		CollisionAABB* playerCollision = player->GetCollisionAABB();
 		for (Block* block : blocks)
 		{
+			if (!block->IsActive()) continue;
+
 			CollisionAABB* blockCollision = block->GetCollision();
 			if (blockCollision->CheckAABB(playerCollision))
 			{
 				player->HitBlock(block);
+			}
+		}
+	}
+
+	// プレイヤーとバレットの当たり判定
+	for (Player* player : players)
+	{
+		if (!player->IsActive()) continue;
+
+		CollisionSphere* playerCollision = player->GetCollisionSphere();
+		for (BulletBase* bullet : bullets)
+		{
+			if (!bullet->IsActive()) continue;
+
+			CollisionSphere* bulletCollision = bullet->GetCollision();
+			if (bulletCollision->CheckSphere(playerCollision))
+			{
+				player->HitBullet();
+				bullet->HitPlayer();
 			}
 		}
 	}

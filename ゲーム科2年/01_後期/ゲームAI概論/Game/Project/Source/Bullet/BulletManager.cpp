@@ -6,9 +6,8 @@
 // データ群はエクセルにしたい
 const BulletParameter BULLET_MASTER_DATA[]
 {
-	{"Data/Bullet/PlayerNormalBullet.x", BULLET_CATEGORY_STRAIGHT, 120, 1, COLLISION_TAG_PLAYER1, EFFEKSEER_PLAYER_NORMAL_SHOT_HIT, 0.9f, 0.1f},
-	{"Data/Bullet/BeeBullet.x", BULLET_CATEGORY_STRAIGHT, 180, 1, COLLISION_TAG_PLAYER1, EFFEKSEER_PLAYER_NORMAL_SHOT_HIT, 0.3f, 0.2f},
-	{"Data/Bullet/DiaBullet.x", BULLET_CATEGORY_STRAIGHT, 180, 1, COLLISION_TAG_PLAYER1, EFFEKSEER_PLAYER_NORMAL_SHOT_HIT, 0.6f, 0.2f},
+	{"Data/Play/Bullet/Bullet1.png", BULLET_CATEGORY_STRAIGHT, 180, 1, COLLISION_TAG_PLAYER1, EFFEKSEER_PLAYER_NORMAL_SHOT_HIT, 3.0f, 20.0f},
+	{"Data/Play/Bullet/Bullet2.png", BULLET_CATEGORY_STRAIGHT, 180, 1, COLLISION_TAG_PLAYER2, EFFEKSEER_PLAYER_NORMAL_SHOT_HIT, 3.0f, 20.0f},
 };
 
 BulletManager* BulletManager::m_Instance = nullptr;
@@ -18,10 +17,6 @@ BulletManager::BulletManager()
 }
 
 BulletManager::~BulletManager()
-{
-}
-
-void BulletManager::Init()
 {
 }
 
@@ -41,17 +36,6 @@ void BulletManager::Step()
 		if (bullet->IsActive())
 		{
 			bullet->Step();
-		}
-	}
-}
-
-void BulletManager::Update()
-{
-	for (BulletBase* bullet : m_Bullets)
-	{
-		if (bullet->IsActive())
-		{
-			bullet->Update();
 		}
 	}
 }

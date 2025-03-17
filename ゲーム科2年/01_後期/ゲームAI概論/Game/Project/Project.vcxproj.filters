@@ -144,6 +144,12 @@
     <ClCompile Include="Source\Player\PlayerManager.cpp">
       <Filter>Source\Player</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Player\AIPlayer.cpp">
+      <Filter>Source\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Player\PlayerBase.cpp">
+      <Filter>Source\Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\AI\AIManager.h">
@@ -258,6 +264,15 @@
       <Filter>Source\Player</Filter>
     </ClInclude>
     <ClInclude Include="Source\Player\PlayerManager.h">
+      <Filter>Source\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Player\AIPlayer.h">
+      <Filter>Source\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Player\PlayerParameter.h">
+      <Filter>Source\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Player\PlayerBase.h">
       <Filter>Source\Player</Filter>
     </ClInclude>
   </ItemGroup>

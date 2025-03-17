@@ -4,6 +4,7 @@
 #include <vector>
 
 class Player;
+class AIPlayer;
 
 // プレイヤーオブジェクト管理クラス
 class PlayerManager
@@ -35,6 +36,8 @@ public:
 public:
 	// プレイヤーを生成する
 	Player* CreatePlayer(int number);
+	AIPlayer* CreateAIPlayer(int number);
+	
 
 	// 管理中のプレイヤーを取得する
 	std::vector<Player*> GetPlayers() { return m_Players; }

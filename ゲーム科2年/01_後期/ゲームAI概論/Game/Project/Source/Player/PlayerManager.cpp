@@ -1,5 +1,6 @@
 #include "PlayerManager.h"
 #include "Player.h"
+#include "AIPlayer.h"
 
 // Ã“I•Ï”‚Ì‰Šú‰»
 PlayerManager* PlayerManager::m_Instance = nullptr;
@@ -77,6 +78,17 @@ Player* PlayerManager::CreatePlayer(int number)
 {
 	Player* player = new Player;
 	player->SetPlayerNumber(number);
+	player->Init();
+	m_Players.push_back(player);
+
+	return player;
+}
+
+AIPlayer* PlayerManager::CreateAIPlayer(int number)
+{
+	AIPlayer* player = new AIPlayer;
+	player->SetPlayerNumber(number);
+	player->Init();
 	m_Players.push_back(player);
 
 	return player;

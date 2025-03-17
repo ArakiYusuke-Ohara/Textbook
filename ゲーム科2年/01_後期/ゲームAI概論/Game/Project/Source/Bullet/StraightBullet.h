@@ -10,7 +10,6 @@ public:
 
 public:
 	void Step() override;
-	void Update() override;
 	void Draw() override;
 	BulletBase* Clone() override;
 };

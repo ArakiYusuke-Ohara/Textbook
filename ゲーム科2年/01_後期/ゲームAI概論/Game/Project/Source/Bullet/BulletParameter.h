@@ -2,6 +2,15 @@
 
 #define STRAIGHT_BULLET_MAX (1024)
 
+// 弾丸の種別ID
+enum BulletID
+{
+	BULLET_ID_PLAYER1,
+	BULLET_ID_PLAYER2,
+	BULLET_ID_PLAYER3,
+	BULLET_ID_PLAYER4,
+};
+
 // 発射する弾丸のカテゴリ
 enum BulletCategory
 {
@@ -11,8 +20,8 @@ enum BulletCategory
 // 直線弾の種類
 enum StraightBulletType
 {
-	STRAIGHT_BULLET_TYPE_PLAYER_NORMAL,	// プレイヤーの通常弾
-	STRAIGHT_BULLET_TYPE_KAPU,			// カプが撃つ弾
+	STRAIGHT_BULLET_TYPE_PLAYER_1,	// プレイヤー1の弾
+	STRAIGHT_BULLET_TYPE_PLAYER_2,	// プレイヤー2の弾
 	STRAIGHT_BULLET_TYPE_MAX
 };
 

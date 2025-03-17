@@ -33,7 +33,7 @@ void BulletBase::Init(int id)
 void BulletBase::Load()
 {
 	// パラメータを元にロード
-	m_Handle = MV1LoadModel(m_Param->path);
+	m_Handle = LoadGraph(m_Param->path);
 }
 
 void BulletBase::Step()
@@ -51,7 +51,7 @@ void BulletBase::Step()
 
 void BulletBase::Fin()
 {
-	MV1DeleteModel(m_Handle);
+	DeleteGraph(m_Handle);
 }
 
 void BulletBase::Fire(VECTOR pos, VECTOR vec)
@@ -69,16 +69,13 @@ void BulletBase::Fire(VECTOR pos, VECTOR vec)
 	m_Collision = collision;
 }
 
-void BulletBase::HitPlayer()
+void BulletBase::Dead()
 {
 	m_Active = false;
 	m_Collision->SetActive(false);
 }
 
-void BulletBase::HitEnemy()
+void BulletBase::HitPlayer()
 {
-	m_Active = false;
-	m_Collision->SetActive(false);
-
-	EffekseerManager::GetInstance()->PlayEffect3D(m_Param->hitEffect, m_Pos);
+	Dead();
 }

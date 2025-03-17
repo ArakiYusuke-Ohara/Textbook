@@ -1,5 +1,8 @@
 #pragma once
 
+// シングルトンにしたいクラスに継承させれば
+// 定型的な部分を省略できるクラス
+
 #include <memory>
 
 template <typename T>

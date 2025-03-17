@@ -1,7 +1,7 @@
 #pragma once
 #include "DxLib.h"
 
-class Player;
+class PlayerBase;
 
 class AIStrategyBase
 {
@@ -13,10 +13,10 @@ public:
 	virtual int ThinkStrategy() = 0;
 	virtual void Draw();
 
-	void SetOwner(Player* owner) { m_Owner = owner; }
+	void SetOwner(PlayerBase* owner) { m_Owner = owner; }
 	void SetTarget(VECTOR target) { m_Target = target; }
 
 protected:
-	Player* m_Owner;
+	const PlayerBase* m_Owner;
 	VECTOR m_Target;
 };

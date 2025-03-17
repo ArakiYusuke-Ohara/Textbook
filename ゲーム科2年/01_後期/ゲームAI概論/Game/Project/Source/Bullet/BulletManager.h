@@ -21,10 +21,8 @@ public:
 	static void DeleteInstance() { if (m_Instance) delete m_Instance; m_Instance = nullptr; }
 
 public:
-	void Init();
 	void Load();
 	void Step();
-	void Update();
 	void Draw();
 	void Fin();
 

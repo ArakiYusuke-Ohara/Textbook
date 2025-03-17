@@ -13,17 +13,14 @@ StraightBullet::~StraightBullet()
 
 void StraightBullet::Step()
 {
-	m_Pos = MyMath::VecAdd(m_Pos, m_Move);
-}
+	BulletBase::Step();
 
-void StraightBullet::Update()
-{
-	MV1SetPosition(m_Handle, m_Pos);
+	m_Pos = MyMath::VecAdd(m_Pos, m_Move);
 }
 
 void StraightBullet::Draw()
 {
-	MV1DrawModel(m_Handle);
+	DrawGraph((int)m_Pos.x, (int)m_Pos.y, m_Handle, TRUE);
 }
 
 BulletBase* StraightBullet::Clone()
@@ -31,6 +28,5 @@ BulletBase* StraightBullet::Clone()
 	StraightBullet* clone = new StraightBullet;
 	*clone = *this;
 
-	clone->m_Handle = MV1DuplicateModel(m_Handle);
 	return clone;
 }
