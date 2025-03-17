@@ -18,22 +18,21 @@ void AIPlayer::Step()
 {
 	PlayerBase::Step();
 
+	// 硬直中は何もしない
+	if (m_Stiffness > 0) return;
+
 	if (m_AIStrategy)
 	{
-		// 一定時間ごとに戦略を考える
-		if (m_StrategyTimer <= 0)
-		{
-			// ターゲットを設定
-			Player* player1 = PlayerManager::GetInstance()->GetPlayer(0);
-			VECTOR player1Pos = player1->GetPos();
-			m_AIStrategy->SetTarget(player1Pos);
+		// ターゲットを設定
+		Player* player1 = PlayerManager::GetInstance()->GetPlayer(0);
+		VECTOR player1Pos = player1->GetPos();
+		m_AIStrategy->SetTarget(player1Pos);
 
-			// 戦略を決定して取得
-			m_NowStrategy = m_AIStrategy->ThinkStrategy();
+		// 戦略を決定して取得
+		m_NowStrategy = m_AIStrategy->ThinkStrategy();
 
-			// タイマーリセット
-			m_StrategyTimer = PLYAER_CHANGE_STRATEGY_TIME;
-		}
+		// タイマーリセット
+		m_StrategyTimer = PLYAER_CHANGE_STRATEGY_TIME;
 
 		// 戦略によって移動処理が変わる
 		switch (m_NowStrategy)

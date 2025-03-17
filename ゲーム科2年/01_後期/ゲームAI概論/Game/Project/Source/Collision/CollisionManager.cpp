@@ -124,6 +124,9 @@ void CollisionManager::CheckCollision()
 			if (!bullet->IsActive()) continue;
 
 			CollisionSphere* bulletCollision = bullet->GetCollision();
+			// ƒ^ƒO‚ª“¯‚¶‚à‚Ì“¯Žm‚Í”»’è‚µ‚È‚¢
+			if (playerCollision->GetTag() == bulletCollision->GetTag()) continue;
+
 			if (bulletCollision->CheckSphere(playerCollision))
 			{
 				player->HitBullet();
