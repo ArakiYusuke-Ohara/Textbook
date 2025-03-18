@@ -11,6 +11,10 @@ public:
 	void Draw();
 	void Fin();
 
+public:
+	float GetPosX();
+	float GetPosY();
+
 private:
 	int m_Handle;
 };

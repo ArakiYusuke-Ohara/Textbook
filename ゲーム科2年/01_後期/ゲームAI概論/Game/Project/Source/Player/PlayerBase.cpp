@@ -10,6 +10,8 @@
 #include "../Collision/CollisionSphere.h"
 #include "../Bullet/BulletBase.h"
 #include "../Stage/StageParameter.h"
+#include "../Stage/StageManager.h"
+#include "../Stage/Stage.h"
 #include "../Block/Block.h"
 
 #define PLAYER_WIDTH 40
@@ -109,8 +111,12 @@ void PlayerBase::Start()
 {
 	m_Active = true;
 
+	Stage* stage = StageManager::GetInstance()->GetStage();
+	float stagePosX = stage->GetPosX();
+	float stagePosY = stage->GetPosY();
+
 	// 初期トランスフォーム
-	m_Pos = MyMath::VecAdd(VGet(STAGE_POS_X, STAGE_POS_Y, 0.0f), DEFAULT_POS[m_PlayerNumber]);
+	m_Pos = MyMath::VecAdd(VGet(stagePosX, stagePosY, 0.0f), DEFAULT_POS[m_PlayerNumber]);
 	// 移動量を初期化
 	m_Move = VGet(0.0, 0.0f, 0.0f);
 

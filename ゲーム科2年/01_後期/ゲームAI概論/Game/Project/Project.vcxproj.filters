@@ -46,6 +46,9 @@
     <Filter Include="Source\Stage">
       <UniqueIdentifier>{9c0b95d1-6bfc-418c-bf6a-326925e2d1bd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\GameSetting">
+      <UniqueIdentifier>{ed1e55bd-d4af-4a25-8511-0b73102f1838}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -274,6 +277,12 @@
     </ClInclude>
     <ClInclude Include="Source\Player\PlayerBase.h">
       <Filter>Source\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Block\BlockParameter.h">
+      <Filter>Source\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game\GameSetting.h">
+      <Filter>Source\GameSetting</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

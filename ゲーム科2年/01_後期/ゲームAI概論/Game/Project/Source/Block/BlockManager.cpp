@@ -1,28 +1,26 @@
 #include "BlockManager.h"
 #include "Block.h"
+#include "BlockParameter.h"
 #include "../Player/PlayerManager.h"
 #include "../Player/Player.h"
+#include "../Stage/StageManager.h"
 #include "../Stage/StageParameter.h"
-
-#define BLOCK_ACTIVE_DISTANCE 100.0f
-#define BLOCK_MAP_ROW 12
-#define BLOCK_MAP_COL 16
-#define BLOCK_WIDTH 40
-#define BLOCK_HEIGHT 40
+#include "../Stage/Stage.h"
 
 const short int BLOCK_MAP[BLOCK_MAP_ROW][BLOCK_MAP_COL] = {
-	{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-	{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-	{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-	{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-	{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-	{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-	{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-	{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-	{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-	{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-	{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-	{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+	{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+	{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+	{1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1},
+	{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+	{1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1},
+	{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+	{1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1},
+	{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+	{1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1},
+	{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+	{1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1},
+	{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+	{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
 };
 
 
@@ -54,6 +52,10 @@ void BlockManager::Load()
 
 void BlockManager::Start()
 {
+	Stage* stage = StageManager::GetInstance()->GetStage();
+	float stagePosX = stage->GetPosX();
+	float stagePosY = stage->GetPosY();
+
 	// ”z’uˆ—
 	for (int i = 0; i < BLOCK_MAP_ROW; i++)
 	{
@@ -62,7 +64,7 @@ void BlockManager::Start()
 			if (BLOCK_MAP[i][j] == 1)
 			{
 				Block* block = CreateBlock();
-				block->SetPos(VGet((float)(STAGE_POS_X + j * BLOCK_WIDTH), (float)(STAGE_POS_Y + i * BLOCK_HEIGHT), 0.0f));
+				block->SetPos(VGet((float)(stagePosX + j * BLOCK_WIDTH), (float)(stagePosY + i * BLOCK_HEIGHT), 0.0f));
 				block->Start();
 			}
 		}

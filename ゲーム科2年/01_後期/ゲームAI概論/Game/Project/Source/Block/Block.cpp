@@ -3,9 +3,7 @@
 #include "../Collision/CollisionAABB.h"
 #include "../Player/PlayerManager.h"
 #include "../Player/Player.h"
-
-#define BLOCK_WIDTH 40
-#define BLOCK_HEIGHT 40
+#include "BlockParameter.h"
 
 // コンストラクタ
 Block::Block()

@@ -9,9 +9,7 @@
 #include "MyMath/MyMath.h"
 #include "MyRandom/MyRandom.h"
 #include "Easing/EasingManager.h"
-
-#define SCREEN_WIDTH 1600
-#define SCREEN_HEIGHT 900
+#include "Game/GameSetting.h"
 
 // ƒvƒƒOƒ‰ƒ€‚Í WinMain ‚©‚çn‚Ü‚è‚Ü‚·
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nShowCmd)

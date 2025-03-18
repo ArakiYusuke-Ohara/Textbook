@@ -62,6 +62,7 @@
     <ClInclude Include="Source\AI\AIStrategyBase.h" />
     <ClInclude Include="Source\Block\Block.h" />
     <ClInclude Include="Source\Block\BlockManager.h" />
+    <ClInclude Include="Source\Block\BlockParameter.h" />
     <ClInclude Include="Source\Bullet\BulletBase.h" />
     <ClInclude Include="Source\Bullet\BulletManager.h" />
     <ClInclude Include="Source\Bullet\BulletParameter.h" />
@@ -74,6 +75,7 @@
     <ClInclude Include="Source\Easing\Easing.h" />
     <ClInclude Include="Source\Easing\EasingManager.h" />
     <ClInclude Include="Source\FPS\FPS.h" />
+    <ClInclude Include="Source\Game\GameSetting.h" />
     <ClInclude Include="Source\Input\Input.h" />
     <ClInclude Include="Source\MyEffekseer\EffekseerEffect2D.h" />
     <ClInclude Include="Source\MyEffekseer\EffekseerEffect3D.h" />
