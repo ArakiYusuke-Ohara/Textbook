@@ -61,8 +61,8 @@ VECTOR MyMath::VecCross3D(VECTOR vecA, VECTOR vecB)
 	VECTOR result;
 
 	result.x = vecA.y * vecB.z - vecA.z * vecB.y;
-	result.y = vecA.x * vecB.z - vecA.z * vecB.x;
-	result.z = vecA.y * vecB.x - vecA.x * vecB.y;
+	result.y = vecA.z * vecB.x - vecA.x * vecB.z;
+	result.z = vecA.x * vecB.y - vecA.y * vecB.x;
 
 	return result;
 }
@@ -220,40 +220,40 @@ MATRIX MyMath::MatScale(VECTOR scale)
 }
 
 // ピッチ行列を取得
-MATRIX MyMath::MatRotationPitch(float pitch)
+MATRIX MyMath::MatRotationPitch(float rot)
 {
 	MATRIX result = MatCreate();
 
-	result.m[1][1] = cosf(pitch);
-	result.m[1][2] = -sinf(pitch);
-	result.m[2][1] = sinf(pitch);
-	result.m[2][2] = cosf(pitch);
+	result.m[1][1] = cosf(rot);
+	result.m[1][2] = -sinf(rot);
+	result.m[2][1] = sinf(rot);
+	result.m[2][2] = cosf(rot);
 
 	return result;
 }
 
 // ヨー行列を取得
-MATRIX MyMath::MatRotationYaw(float pitch)
+MATRIX MyMath::MatRotationYaw(float rot)
 {
 	MATRIX result = MatCreate();
 
-	result.m[0][0] = cosf(pitch);
-	result.m[0][2] = sinf(pitch);
-	result.m[2][0] = -sinf(pitch);
-	result.m[2][2] = cosf(pitch);
+	result.m[0][0] = cosf(rot);
+	result.m[0][2] = sinf(rot);
+	result.m[2][0] = -sinf(rot);
+	result.m[2][2] = cosf(rot);
 
 	return result;
 }
 
 // ロール行列を取得
-MATRIX MyMath::MatRotationRoll(float pitch)
+MATRIX MyMath::MatRotationRoll(float rot)
 {
 	MATRIX result = MatCreate();
 
-	result.m[0][0] = cosf(pitch);
-	result.m[0][1] = -sinf(pitch);
-	result.m[1][0] = sinf(pitch);
-	result.m[1][1] = cosf(pitch);
+	result.m[0][0] = cosf(rot);
+	result.m[0][1] = -sinf(rot);
+	result.m[1][0] = sinf(rot);
+	result.m[1][1] = cosf(rot);
 
 	return result;
 }

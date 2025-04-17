@@ -23,7 +23,7 @@ void Floor::Init()
 
 void Floor::Load()
 {
-	m_Handle = MV1LoadModel("Resource/Floor/Floor.x");
+	m_Handle = MV1LoadModel("Data/Floor/Floor.x");
 }
 
 void Floor::Start()
