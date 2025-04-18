@@ -26,5 +26,5 @@ private:
 	VECTOR m_Rot;
 	VECTOR m_Target;
 	VECTOR m_UpVec;
-	float m_Move;
+	VECTOR m_Move;
 };

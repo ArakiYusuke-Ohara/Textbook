@@ -9,7 +9,7 @@
 #define ROTATION_SPEED 0.025f
 
 #define X_ROTATION_MAX (DX_PI_F * 0.49f)
-#define MOVE_SPEED (0.2f)
+#define MOVE_SPEED (0.05f)
 
 DebugCamera::DebugCamera()
 {
@@ -17,7 +17,7 @@ DebugCamera::DebugCamera()
 	m_Rot = VGet(0.0f, 0.0f, 0.0f);
 	m_Target = VGet(0.0f, 0.0f, 0.0f);
 	m_UpVec = VGet(0.0f, 0.0f, 0.0f);
-	m_Move = 0.0f;
+	m_Move = VGet(0.0f, 0.0f, 0.0f);
 }
 
 DebugCamera::~DebugCamera()
@@ -45,7 +45,7 @@ void DebugCamera::Start()
 void DebugCamera::Step()
 {
 	// 移動量をリセット
-	m_Move = 0.0f;
+	m_Move = VGet(0.0f, 0.0f, 0.0f);
 
 	// キー入力処理
 	if (Input::IsInputKey(KEY_RIGHT))
@@ -69,11 +69,37 @@ void DebugCamera::Step()
 		m_Rot.x -= ROTATION_SPEED;
 	}
 
+	// 右
+	if (Input::IsInputKey(KEY_D))
+	{
+		m_Move.x = MOVE_SPEED;
+	}
+	// 左
+	if (Input::IsInputKey(KEY_A))
+	{
+		m_Move.x = -MOVE_SPEED;
+	}
+	// 上
+	if (Input::IsInputKey(KEY_W))
+	{
+		m_Move.y = MOVE_SPEED;
+	}
+	// 下
+	if (Input::IsInputKey(KEY_S))
+	{
+		m_Move.y = -MOVE_SPEED;
+	}
 	// 前進
 	if (Input::IsInputKey(KEY_Z))
 	{
-		m_Move = MOVE_SPEED;
+		m_Move.z = MOVE_SPEED;
 	}
+	// 後退
+	if (Input::IsInputKey(KEY_X))
+	{
+		m_Move.z = -MOVE_SPEED;
+	}
+
 
 	// X軸回転は頭上や足元を超えようとするとカメラ向きがひっくり返るため
 	// 超えないように止める
@@ -113,10 +139,22 @@ void DebugCamera::Update()
 	// ⑦ プレイヤーの位置から行列変換を計算したものがカメラの座標となる
 	m_Pos = MyMath::MatTransform(cameraMat, m_Target);
 
-	// 始点と注視点を前進移動させる
-	VECTOR moveVec = MyMath::VecCreate(m_Pos, m_Target);
-	moveVec = MyMath::VecNormalize(moveVec);
-	moveVec = MyMath::VecScale(moveVec, m_Move);
+	// 前方ベクトル
+	VECTOR forwardVec = MyMath::VecCreate(m_Pos, m_Target);
+	forwardVec = MyMath::VecNormalize(forwardVec);
+	// 前方に対して右のベクトル
+	VECTOR rightVec = MyMath::VecCross3D(VGet(0.0f, 1.0f, 0.0f), forwardVec);
+	// 前方に対して上のベクトル
+	VECTOR upVec = MyMath::VecCross3D(forwardVec, rightVec);
+	// スライド移動量を計算
+	VECTOR moveVec = { 0 };
+	VECTOR xMove = MyMath::VecScale(rightVec, m_Move.x);
+	moveVec = MyMath::VecAdd(moveVec, xMove);
+	VECTOR yMove = MyMath::VecScale(upVec, m_Move.y);
+	moveVec = MyMath::VecAdd(moveVec, yMove);
+	VECTOR zMove = MyMath::VecScale(forwardVec, m_Move.z);
+	moveVec = MyMath::VecAdd(moveVec, zMove);
+
 	m_Pos = MyMath::VecAdd(m_Pos, moveVec);
 	m_Target = MyMath::VecAdd(m_Target, moveVec);
 

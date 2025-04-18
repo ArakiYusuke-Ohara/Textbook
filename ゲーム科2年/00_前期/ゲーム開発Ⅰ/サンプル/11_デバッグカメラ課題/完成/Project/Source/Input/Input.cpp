@@ -59,6 +59,10 @@ void Input::Update()
 	{
 		m_InputState |= KEY_1;
 	}
+	if (CheckHitKey(KEY_INPUT_X))
+	{
+		m_InputState |= KEY_X;
+	}
 
 }
 

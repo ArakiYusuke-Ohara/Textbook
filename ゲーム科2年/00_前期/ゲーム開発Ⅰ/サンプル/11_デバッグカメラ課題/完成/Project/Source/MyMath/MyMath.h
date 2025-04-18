@@ -24,8 +24,8 @@ public:
 	static MATRIX MatTransposition(MATRIX mat);
 	static MATRIX MatTranslation(VECTOR trans);
 	static MATRIX MatScale(VECTOR scale);
-	static MATRIX MatRotationPitch(float pitch);
-	static MATRIX MatRotationYaw(float pitch);
-	static MATRIX MatRotationRoll(float pitch);
+	static MATRIX MatRotationPitch(float rot);
+	static MATRIX MatRotationYaw(float rot);
+	static MATRIX MatRotationRoll(float rot);
 	static VECTOR MatTransform(MATRIX transMat, VECTOR pos);
 };
