@@ -1,6 +1,7 @@
 #pragma once
 
 #include "DxLib.h"
+#include <vector>
 
 class EffekseerEffect;
 
@@ -50,7 +51,7 @@ public:
 private:
 	static EffekseerManager* m_Instance;	// シングルトン用インスタンス
 
-	int* m_EffectHandles;		// リソースハンドル配列
-	EffekseerEffect* m_Effects;	// エフェクト配列
+	std::vector<int> m_EffectHandles;		// リソースハンドル配列
+	std::vector<EffekseerEffect*> m_Effects;	// エフェクト配列
 };
 
