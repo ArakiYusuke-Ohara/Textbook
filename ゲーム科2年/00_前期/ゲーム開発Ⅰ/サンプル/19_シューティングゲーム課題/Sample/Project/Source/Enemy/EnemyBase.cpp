@@ -51,8 +51,8 @@ void EnemyBase::Update()
 		}
 	}
 
-	// Z座標はMoverを無視する
-	m_Pos.z = z;
+	// Z座標はMoverを無視して移動量だけ
+	m_Pos.z = z + m_Move.z;
 
 	// プレイヤーのZ座標分だけ手前に描画する
 	VECTOR playerPos = PlayerManager::GetInstance()->GetPlayer()->GetPos();

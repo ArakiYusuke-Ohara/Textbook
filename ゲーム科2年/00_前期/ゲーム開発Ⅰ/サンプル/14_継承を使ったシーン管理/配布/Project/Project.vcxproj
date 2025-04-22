@@ -148,6 +148,10 @@
     <ClCompile Include="Source\Collision\CollisionAABB.cpp" />
     <ClCompile Include="Source\Collision\CollisionManager.cpp" />
     <ClCompile Include="Source\Collision\CollisionSphere.cpp" />
+    <ClCompile Include="Source\Enemy\BlueEnemy.cpp" />
+    <ClCompile Include="Source\Enemy\EnemyBase.cpp" />
+    <ClCompile Include="Source\Enemy\EnemyManager.cpp" />
+    <ClCompile Include="Source\Enemy\RedEnemy.cpp" />
     <ClCompile Include="Source\Floor\Floor.cpp" />
     <ClCompile Include="Source\FPS\FPS.cpp" />
     <ClCompile Include="Source\Goal\Goal.cpp" />
@@ -168,6 +172,10 @@
     <ClInclude Include="Source\Collision\CollisionAABB.h" />
     <ClInclude Include="Source\Collision\CollisionManager.h" />
     <ClInclude Include="Source\Collision\CollisionSphere.h" />
+    <ClInclude Include="Source\Enemy\BlueEnemy.h" />
+    <ClInclude Include="Source\Enemy\EnemyBase.h" />
+    <ClInclude Include="Source\Enemy\EnemyManager.h" />
+    <ClInclude Include="Source\Enemy\RedEnemy.h" />
     <ClInclude Include="Source\Floor\Floor.h" />
     <ClInclude Include="Source\FPS\FPS.h" />
     <ClInclude Include="Source\Goal\Goal.h" />

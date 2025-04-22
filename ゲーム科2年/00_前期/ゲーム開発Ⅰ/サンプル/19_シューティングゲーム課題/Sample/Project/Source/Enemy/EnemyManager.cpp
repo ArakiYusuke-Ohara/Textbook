@@ -18,8 +18,16 @@ const EnemyParameter ENEMY_MASTER_PARAM[] = {
 };
 
 const EnemyLocate ENEMY_LOCATE_DATA[] = {
-	{ ENEMY_DIA, 100.0f, {6.0f, 30.0f, 100.0f}, {0.0f, DX_PI_F, 0.0f}, -1, 0 },
-	{ ENEMY_DIA, 100.0f, {-6.0f, 30.0f, 100.0f}, {0.0f, DX_PI_F, 0.0f}, -1, 0 },
+	{ ENEMY_BEE, 20.0f, {6.0f, 30.0f, 70.0f}, {0.0f, DX_PI_F, 0.0f}, OBJECT_MOVER_EASE_IN_OUT, 0 },
+	{ ENEMY_BEE, 20.0f, {-6.0f,30.0f, 100.0f}, {0.0f, DX_PI_F, 0.0f}, OBJECT_MOVER_EASE_IN_OUT, 1 },
+	{ ENEMY_BEE, 20.0f, {6.0f, 10.0f, 120.0f}, {0.0f, DX_PI_F, 0.0f}, OBJECT_MOVER_EASE_IN_OUT, 1 },
+	{ ENEMY_BEE, 20.0f, {-6.0f,10.0f, 160.0f}, {0.0f, DX_PI_F, 0.0f}, OBJECT_MOVER_EASE_IN_OUT, 1 },
+	{ ENEMY_BEE, 20.0f, {6.0f, 30.0f, 160.0f}, {0.0f, DX_PI_F, 0.0f}, OBJECT_MOVER_EASE_IN_OUT, 1 },
+	{ ENEMY_BEE, 20.0f, {-6.0f,30.0f, 250.0f}, {0.0f, DX_PI_F, 0.0f}, OBJECT_MOVER_EASE_IN_OUT, 1 },
+	{ ENEMY_BEE, 20.0f, {6.0f, 10.0f, 260.0f}, {0.0f, DX_PI_F, 0.0f}, OBJECT_MOVER_EASE_IN_OUT, 1 },
+	{ ENEMY_BEE, 20.0f, {-6.0f,10.0f, 270.0f}, {0.0f, DX_PI_F, 0.0f}, OBJECT_MOVER_EASE_IN_OUT, 1 },
+	{ ENEMY_BEE, 20.0f, {6.0f, 30.0f, 280.0f}, {0.0f, DX_PI_F, 0.0f}, OBJECT_MOVER_EASE_IN_OUT, 1 },
+	{ ENEMY_BEE, 20.0f, {-6.0f,30.0f, 290.0f}, {0.0f, DX_PI_F, 0.0f}, OBJECT_MOVER_EASE_IN_OUT, 1 },
 };
 
 EnemyManager::EnemyManager()

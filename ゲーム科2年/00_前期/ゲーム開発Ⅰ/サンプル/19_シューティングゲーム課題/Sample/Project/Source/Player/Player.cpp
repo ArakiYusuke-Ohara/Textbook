@@ -15,9 +15,10 @@
 #define POS_MIN_Y		15.0f
 #define POS_MAX_X		7.0f
 #define POS_MAX_Y		35.0f
-#define MOVE_MAX_X		0.08f
-#define MOVE_MAX_Y		0.08f
-#define MOVE_MAX_Z		0.05f
+#define MOVE_MAX_X		0.16f
+#define MOVE_MAX_Y		0.16f
+#define MOVE_MAX_Z		0.25f
+//#define MOVE_MAX_Z		0.05f
 #define BRAKE_X			0.004f
 #define BRAKE_Y			0.004f
 #define ROTATE_RESILIENCE	0.02f

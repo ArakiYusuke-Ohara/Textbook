@@ -7,7 +7,6 @@
 #include "../Camera/CameraManager.h"
 #include "../Block/BlockManager.h"
 #include "../Goal/GoalManager.h"
-#include "../Collision/CollisionManager.h"
 #include "../Enemy/EnemyManager.h"
 #include "../Floor/Floor.h"
 
@@ -148,7 +147,6 @@ void PlayScene::Step()
 	{
 		// デバッグカメラがONのときはカメラだけStep/Updateする
 		cameraManager->Step();
-		cameraManager->Update();
 	}
 	// デバッグカメラがOFFの時のみそれぞれのオブジェクトを動かす
 	else
@@ -165,6 +163,8 @@ void PlayScene::Step()
 		BlockManager::GetInstance()->Step();
 		// ゴールステップ
 		GoalManager::GetInstance()->Step();
+		// 当たり判定
+		CollisionManager::GetInstance()->CheckCollision();
 	}
 
 }
@@ -183,9 +183,6 @@ void PlayScene::Update()
 	BlockManager::GetInstance()->Update();
 	// ゴール更新
 	GoalManager::GetInstance()->Update();
-
-	// 当たり判定
-	CollisionManager::GetInstance()->CheckCollision();
 }
 
 void PlayScene::Draw()
