@@ -24,7 +24,7 @@ void Stage::Load()
 
 void Stage::Draw()
 {
-	DrawBox(STAGE_POS_X, STAGE_POS_Y, STAGE_POS_X + STAGE_WIDTH, STAGE_POS_Y + STAGE_HEIGHT, GetColor(0, 255, 0), TRUE);
+	DrawBox((int)STAGE_POS_X, (int)STAGE_POS_Y, (int)(STAGE_POS_X + STAGE_WIDTH), (int)(STAGE_POS_Y + STAGE_HEIGHT), GetColor(0, 125, 0), TRUE);
 }
 
 void Stage::Fin()

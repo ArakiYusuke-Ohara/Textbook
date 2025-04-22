@@ -161,36 +161,6 @@ void PlayerBase::Step()
 // 更新
 void PlayerBase::Update()
 {
-	// 移動前の座標から向きを決定
-	VECTOR moveVec = MyMath::VecCreate(m_OldPos, m_Pos);
-
-	// 移動量が少なすぎたら向きを変えない
-	if (MyMath::VecLong(moveVec) < PLAYER_CHANGE_DIR_MOVE_DISTANCE)return;
-
-	// XとY大きい方を優先
-	if (MyMath::Absolute(moveVec.x) > MyMath::Absolute(moveVec.y))
-	{
-		if (moveVec.x > 0.0f)
-		{
-			m_Direction = PLAYER_DIRECTION_RIGHT;
-		}
-		else
-		{
-			m_Direction = PLAYER_DIRECTION_LEFT;
-		}
-	}
-	else
-	{
-		if (moveVec.y > 0.0f)
-		{
-			m_Direction = PLAYER_DIRECTION_DOWN;
-		}
-		else
-		{
-			m_Direction = PLAYER_DIRECTION_UP;
-		}
-	}
-
 	UpdateAnimation();
 }
 
@@ -334,4 +304,37 @@ void PlayerBase::HitBlock(Block* block)
 void PlayerBase::HitBullet()
 {
 	m_InvisibleTimer = DAMAGE_INVISIBLE_TIME;
+}
+
+void PlayerBase::SetDirectionForMove()
+{
+	// 移動前の座標から向きを決定
+	VECTOR moveVec = MyMath::VecCreate(m_OldPos, m_Pos);
+
+	// 移動量が少なすぎたら向きを変えない
+	if (MyMath::VecLong(moveVec) < PLAYER_CHANGE_DIR_MOVE_DISTANCE)return;
+
+	// XとY大きい方を優先
+	if (MyMath::Absolute(moveVec.x) > MyMath::Absolute(moveVec.y))
+	{
+		if (moveVec.x > 0.0f)
+		{
+			m_Direction = PLAYER_DIRECTION_RIGHT;
+		}
+		else
+		{
+			m_Direction = PLAYER_DIRECTION_LEFT;
+		}
+	}
+	else
+	{
+		if (moveVec.y > 0.0f)
+		{
+			m_Direction = PLAYER_DIRECTION_DOWN;
+		}
+		else
+		{
+			m_Direction = PLAYER_DIRECTION_UP;
+		}
+	}
 }

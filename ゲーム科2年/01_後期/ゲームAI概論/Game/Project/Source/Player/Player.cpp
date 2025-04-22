@@ -30,6 +30,10 @@ void Player::Step()
 
 	// ˆÚ“®“ü—Í
 	InputMove();
+
+	// ˆÚ“®—Ê‚©‚çŒü‚«İ’è
+	SetDirectionForMove();
+
 	// ƒoƒŒƒbƒg“ü—Í
 	InputBullet();
 }

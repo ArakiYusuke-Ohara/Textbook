@@ -44,6 +44,8 @@ public:
 	void HitBlock(Block* block);
 	void HitBullet();
 
+	void SetDirectionForMove();
+
 protected:
 	bool m_Active;
 	int m_Handle;

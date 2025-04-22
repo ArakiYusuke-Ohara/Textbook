@@ -49,6 +49,9 @@
     <Filter Include="Source\GameSetting">
       <UniqueIdentifier>{ed1e55bd-d4af-4a25-8511-0b73102f1838}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Item">
+      <UniqueIdentifier>{11fe154f-e482-4c3e-9d6a-2e6ee3598b7c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -152,6 +155,12 @@
     </ClCompile>
     <ClCompile Include="Source\Player\PlayerBase.cpp">
       <Filter>Source\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Item\Item.cpp">
+      <Filter>Source\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Item\ItemManager.cpp">
+      <Filter>Source\Item</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -283,6 +292,15 @@
     </ClInclude>
     <ClInclude Include="Source\Game\GameSetting.h">
       <Filter>Source\GameSetting</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Item\Item.h">
+      <Filter>Source\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Item\ItemManager.h">
+      <Filter>Source\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Item\ItemParameter.h">
+      <Filter>Source\Item</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

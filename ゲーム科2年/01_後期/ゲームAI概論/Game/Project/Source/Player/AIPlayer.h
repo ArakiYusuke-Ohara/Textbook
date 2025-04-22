@@ -14,6 +14,7 @@ public:
 	void Attack();
 
 	void SetAIStrategy(AIStrategyBase* strategy) { m_AIStrategy = strategy; }
+	void SetDirectionForTarget();
 
 protected:
 	int m_StrategyTimer;

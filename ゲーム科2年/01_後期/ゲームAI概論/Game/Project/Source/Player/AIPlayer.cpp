@@ -58,6 +58,8 @@ void AIPlayer::Chase()
 	// 移動
 	m_Pos = MyMath::VecAdd(m_Pos, m_Move);
 
+	// 移動量から向きを設定
+	SetDirectionForMove();
 }
 
 void AIPlayer::Away()
@@ -71,9 +73,50 @@ void AIPlayer::Away()
 
 	// 移動
 	m_Pos = MyMath::VecAdd(m_Pos, m_Move);
+
+	// 移動量から向きを設定
+	SetDirectionForMove();
 }
 
 void AIPlayer::Attack()
 {
+	// 1Pの方を向く
+	SetDirectionForTarget();
+	// 弾発射
 	PlayerBase::FireBullet();
+}
+
+void AIPlayer::SetDirectionForTarget()
+{
+	// 1Pをターゲットとして向きを決定する
+	Player* player1 = PlayerManager::GetInstance()->GetPlayer(0);
+
+	// 1Pまでのベクトル
+	VECTOR targetVec = MyMath::VecCreate(m_Pos, player1->GetPos());
+
+	// X成分の方が長ければ横を向く
+	if (MyMath::Absolute(targetVec.x) >= MyMath::Absolute(targetVec.y))
+	{
+		// プレイヤーが左にいれば左を向く
+		if (targetVec.x < 0.0f)
+		{
+			m_Direction = PLAYER_DIRECTION_LEFT;
+		}
+		else
+		{
+			m_Direction = PLAYER_DIRECTION_RIGHT;
+		}
+	}
+	else
+	{
+		// プレイヤーが上にいれば上を向く
+		if (targetVec.y < 0.0f)
+		{
+			m_Direction = PLAYER_DIRECTION_UP;
+		}
+		else
+		{
+			m_Direction = PLAYER_DIRECTION_DOWN;
+		}
+	}
 }
