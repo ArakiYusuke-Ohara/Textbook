@@ -9,8 +9,8 @@ EffekseerManager* EffekseerManager::m_Instance = nullptr;
 
 EffekseerManager::EffekseerManager()
 {
-	m_EffectHandles = nullptr;
-	m_Effects = nullptr;
+	m_EffectHandles = {};
+	m_Effects = {};
 }
 
 EffekseerManager::~EffekseerManager()
@@ -43,27 +43,33 @@ bool EffekseerManager::Init()
 
 void EffekseerManager::Load()
 {
-	// 各エフェクトデータをロード
-	m_EffectHandles = new int[EFFEKSEER_EFFECT_TYPE_MAX];
-	m_EffectHandles[EFFEKSEER_HIT] = LoadEffekseerEffect("Data/Effect/EffectA.efkefc");
-	m_EffectHandles[EFFEKSEER_FIRE] = LoadEffekseerEffect("Data/Effect/EffectB.efkefc");
-	m_EffectHandles[EFFEKSEER_RING] = LoadEffekseerEffect("Data/Effect/EffectC.efkefc");
+	// ファイルパス群
+	const char* PATH[] =
+	{
+		"Data/Effect/EffectA.efkefc",
+		"Data/Effect/EffectB.efkefc",
+		"Data/Effect/EffectC.efkefc"
+	};
+
+	for (const char* path : PATH)
+	{
+		int handle = LoadEffekseerEffect(path);
+		m_EffectHandles.push_back(handle);
+	}
 }
 
 void EffekseerManager::Start()
 {
-	// 管理用の配列を生成
-	m_Effects = new EffekseerEffect[EFFEKSEER_EFFECT_MAX];
 }
 
 EffekseerEffect* EffekseerManager::PlayEffect(int type, VECTOR pos)
 {
-	EffekseerEffect* effect = m_Effects;
-	for (int i = 0; i < EFFEKSEER_EFFECT_MAX; i++, effect++)
+	// 未使用のものがあれば使いまわす
+	for (EffekseerEffect* effect : m_Effects)
 	{
 		if (!effect->IsActive())
 		{
-			// 未使用のエフェクトから使っていく
+			// アクティブにする
 			effect->SetActive(true);
 
 			// エフェクト再生
@@ -77,14 +83,24 @@ EffekseerEffect* EffekseerManager::PlayEffect(int type, VECTOR pos)
 		}
 	}
 
-	return nullptr;
+	// 未使用のものがなければ新しく作る
+	EffekseerEffect* effect = new EffekseerEffect;
+	// アクティブにする
+	effect->SetActive(true);
+	// エフェクト再生
+	effect->Play(m_EffectHandles[type]);
+	// 位置設定
+	effect->SetPos(pos);
+	// 配列に追加
+	m_Effects.push_back(effect);
+
+	return effect;
 }
 
 void EffekseerManager::Step()
 {
 	// 各エフェクトを更新
-	EffekseerEffect* effect = m_Effects;
-	for (int i = 0; i < EFFEKSEER_EFFECT_MAX; i++, effect++)
+	for (EffekseerEffect* effect : m_Effects)
 	{
 		effect->Step();
 	}
@@ -96,8 +112,7 @@ void EffekseerManager::Update()
 	Effekseer_Sync3DSetting();
 
 	// 各エフェクトを更新
-	EffekseerEffect* effect = m_Effects;
-	for (int i = 0; i < EFFEKSEER_EFFECT_MAX; i++, effect++)
+	for (EffekseerEffect* effect : m_Effects)
 	{
 		effect->Update();
 	}
@@ -114,26 +129,23 @@ void EffekseerManager::Draw()
 
 void EffekseerManager::Fin()
 {
-	// ハンドル配列を削除
-	if (m_EffectHandles)
+	// ロードしたものを削除
+	for (int handle : m_EffectHandles)
 	{
-		// ロードしたものを削除
-		for (int i = 0; i < EFFEKSEER_EFFECT_TYPE_MAX; i++)
-		{
-			DeleteEffekseerEffect(m_EffectHandles[i]);
-		}
-
-		// ハンドル配列も削除
-		delete[] m_EffectHandles;
-		m_EffectHandles = nullptr;
+		DeleteEffekseerEffect(handle);
 	}
+	// 動的配列をクリア
+	m_EffectHandles.clear();
+	m_EffectHandles.shrink_to_fit();
 
 	// 生成されたエフェクトを全て削除
-	if (m_Effects)
+	for (EffekseerEffect* effect : m_Effects)
 	{
-		delete[] m_Effects;
-		m_Effects = nullptr;
+		delete effect;
 	}
+	// 動的配列をクリア
+	m_Effects.clear();
+	m_Effects.shrink_to_fit();
 
 	// Effekseerを終了する。
 	Effkseer_End();

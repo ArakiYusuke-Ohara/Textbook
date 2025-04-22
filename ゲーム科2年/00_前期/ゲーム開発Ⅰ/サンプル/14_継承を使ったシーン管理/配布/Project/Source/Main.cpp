@@ -3,6 +3,7 @@
 #include "Camera/CameraManager.h"
 #include "Block/BlockManager.h"
 #include "Goal/GoalManager.h"
+#include "Enemy/EnemyManager.h"
 #include "Collision/CollisionManager.h"
 #include "Input/Input.h"
 #include "FPS/FPS.h"
@@ -81,6 +82,22 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance, 
 	goalManager->Load();
 	goalManager->Start();
 
+	// エネミーマネージャー生成
+	EnemyManager::CreateInstance();
+	EnemyManager* enemyManager = EnemyManager::GetInstance();
+	// 初期化＆ロード
+	enemyManager->Init();
+	enemyManager->Load();
+	// 赤エネミー生成
+	EnemyBase* enemy = enemyManager->CreateEnemy(RED_ENEMY);
+	enemy->SetPos(VGet(3.0f, 1.0f, 0.0f));
+	// 青エネミー生成
+	enemy = enemyManager->CreateEnemy(BLUE_ENEMY);
+	enemy->SetPos(VGet(-3.0f, 1.0f, 0.0f));
+
+	// 生成したエネミー始動
+	enemyManager->Start();
+
 	// 入力初期化
 	Input::Init();
 
@@ -127,6 +144,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance, 
 		{
 			// プレイヤーステップ
 			playerManager->Step();
+			// エネミーステップ
+			enemyManager->Step();
 			// カメラステップ
 			cameraManager->Step();
 			// 床ステップ
@@ -138,6 +157,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance, 
 
 			// プレイヤー更新
 			playerManager->Update();
+			// エネミー更新
+			enemyManager->Update();
 			// カメラアップデート
 			cameraManager->Update();
 			// 床更新
@@ -153,6 +174,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance, 
 
 		// プレイヤー描画
 		playerManager->Draw();
+		// エネミー描画
+		enemyManager->Draw();
 		// カメラ描画
 		cameraManager->Draw();
 		// 床描画
@@ -197,6 +220,9 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance, 
 
 	// コリジョンマネージャー削除
 	CollisionManager::DeleteInstance();
+
+	// エネミーマネージャー削除
+	EnemyManager::DeleteInstance();
 
 	// 床削除
 	delete floor;

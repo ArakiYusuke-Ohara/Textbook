@@ -9,6 +9,7 @@
 
 #define BEE_BULLET_ID 1
 #define BEE_SHOT_NUM 3
+#define BEE_MOVE_Z 0.25f
 
 EnemyBee::EnemyBee()
 {
@@ -33,6 +34,7 @@ void EnemyBee::Load()
 
 void EnemyBee::Start()
 {
+	m_Move.z = BEE_MOVE_Z;
 	m_Collision->SetActive(true);
 	m_Collision->SetTargetPos(&m_Pos);
 	m_Collision->SetRadius(m_Param->radius);
@@ -74,6 +76,7 @@ void EnemyBee::Step()
 	{
 		m_ShotTimer--;
 	}
+
 }
 
 // 呼ばれたオブジェクトの複製を作る関数
