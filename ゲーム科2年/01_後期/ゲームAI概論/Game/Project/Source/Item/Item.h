@@ -10,6 +10,7 @@ public:
 	~Item();
 
 public:
+	void Init();
 	void Load();
 	void Step();
 	void Update();
@@ -18,9 +19,14 @@ public:
 	Item* Clone();
 
 public:
+	bool IsActive() const { return m_Active; }
+
+	void SetActive(bool active) { m_Active = active; }
+	void SetPos(VECTOR pos) { m_Pos = pos; }
 	void SetParam(const ItemParameter* param) { m_Param = param; }
 
 private:
+	bool m_Active;
 	int m_Handle;
 	VECTOR m_Pos;
 	const ItemParameter* m_Param;

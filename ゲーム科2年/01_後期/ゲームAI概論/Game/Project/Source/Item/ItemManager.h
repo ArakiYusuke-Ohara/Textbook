@@ -1,5 +1,7 @@
 #pragma once
+#include "DxLib.h"
 #include "../Singleton/Singleton.h"
+#include "ItemParameter.h"
 #include <vector>
 
 class Item;
@@ -18,7 +20,15 @@ public:
 	void Draw();
 	void Fin();
 
+	Item* CreateItem(int id);
+	Item* CreateItem(int id, VECTOR pos);
+
+private:
+	void SpawnItem();
+
 private:
 	std::vector<Item*> m_Originals;
 	std::vector<Item*> m_Items;
+
+	int m_SpawnTimer;
 };

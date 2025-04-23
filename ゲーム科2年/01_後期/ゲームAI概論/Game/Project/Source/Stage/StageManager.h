@@ -1,5 +1,6 @@
 #pragma once
 
+#include "DxLib.h"
 #include "../Singleton/Singleton.h"
 #include <vector>
 
@@ -17,6 +18,8 @@ public:
 	void Fin();
 
 	Stage* GetStage() const { return m_Stage; }
+
+	VECTOR ConvertStagePosToWorldPos(VECTOR pos);
 
 public:
 	void CreateStage();

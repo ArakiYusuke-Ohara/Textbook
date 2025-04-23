@@ -12,6 +12,7 @@
 #include "../AI/AIPlayCPU.h"
 #include "../AI/AIRandomCPU.h"
 #include "../Bullet/BulletManager.h"
+#include "../Item/ItemManager.h"
 
 PlayScene::PlayScene() : SceneBase()
 {
@@ -58,6 +59,10 @@ void PlayScene::Init()
 	BlockManager* boxManager = BlockManager::GetInstance();
 	// ブロックマネージャー初期化
 	boxManager->Init();
+
+	// アイテムマネージャー生成と初期化
+	ItemManager::CreateInstance();
+	ItemManager::GetInstance()->Init();
 }
 
 void PlayScene::Load()
@@ -73,6 +78,9 @@ void PlayScene::Load()
 
 	// ブロックをロード
 	BlockManager::GetInstance()->Load();
+
+	// アイテムをロード
+	ItemManager::GetInstance()->Load();
 }
 
 void PlayScene::Start()
@@ -90,6 +98,8 @@ void PlayScene::Step()
 	PlayerManager::GetInstance()->Step();
 	// バレットステップ
 	BulletManager::GetInstance()->Step();
+	// アイテムステップ
+	ItemManager::GetInstance()->Step();
 	// 当たり判定
 	CollisionManager::GetInstance()->CheckCollision();
 }
@@ -98,18 +108,22 @@ void PlayScene::Update()
 {
 	// プレイヤー更新
 	PlayerManager::GetInstance()->Update();
+	// アイテム更新
+	ItemManager::GetInstance()->Update();
 }
 
 void PlayScene::Draw()
 {
 	// ステージを描画
 	StageManager::GetInstance()->Draw();
+	// ブロック描画
+	BlockManager::GetInstance()->Draw();
+	// アイテムを描画
+	ItemManager::GetInstance()->Draw();
 	// プレイヤー描画
 	PlayerManager::GetInstance()->Draw();
 	// バレット描画
 	BulletManager::GetInstance()->Draw();
-	// ボックス描画
-	BlockManager::GetInstance()->Draw();
 	// 当たり判定描画
 	CollisionManager::GetInstance()->Draw();
 }
@@ -133,4 +147,7 @@ void PlayScene::Fin()
 
 	// AIマネージャーを削除
 	AIManager::DeleteInstance();
+
+	// アイテム削除
+	ItemManager::DeleteInstance();
 }
