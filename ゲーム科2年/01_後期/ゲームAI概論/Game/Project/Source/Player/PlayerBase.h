@@ -8,6 +8,7 @@ class BulletBase;
 class EnemyBase;
 class AIStrategyBase;
 class Block;
+class Item;
 
 class PlayerBase
 {
@@ -43,6 +44,7 @@ public:
 
 	void HitBlock(Block* block);
 	void HitBullet();
+	void HitItem(Item* item);
 
 	void SetDirectionForMove();
 
@@ -53,11 +55,13 @@ protected:
 	int m_Hp;
 	int m_InvisibleTimer;
 	int m_BulletInterval;
+	int m_BulletIntervalTime;
 	int m_Direction;
 	int m_AnimationIndex;
 	int m_AnimationTimer;
 	int m_UseBulletID;
 	int m_Stiffness;
+	float m_MoveSpeed;
 	VECTOR m_Pos;
 	VECTOR m_OldPos;
 	VECTOR m_Move;

@@ -36,6 +36,8 @@ struct BulletParameter
 	int hitEffect;
 	float speed;
 	float radius;
+	float sizeX;
+	float sizeY;
 };
 
 // 発射に必要なデータ

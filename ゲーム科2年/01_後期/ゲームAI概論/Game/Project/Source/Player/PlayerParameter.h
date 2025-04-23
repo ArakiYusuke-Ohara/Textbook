@@ -1,8 +1,5 @@
 #pragma once
 
-#define PLAYER_SPEED 2.0f
-#define PLAYER_BULLET_INTERVAL 180
-
 enum PlayerDirection
 {
 	PLAYER_DIRECTION_RIGHT,

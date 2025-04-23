@@ -47,24 +47,24 @@ void Player::InputMove()
 
 	if (Input::IsInputKey(KEY_UP))
 	{
-		m_Move.y = -1.0f;
+		m_Move.y = -m_MoveSpeed;
 	}
 	else if (Input::IsInputKey(KEY_DOWN))
 	{
-		m_Move.y = 1.0f;
+		m_Move.y = m_MoveSpeed;
 	}
 	else if (Input::IsInputKey(KEY_LEFT))
 	{
-		m_Move.x = -1.0f;
+		m_Move.x = -m_MoveSpeed;
 	}
 	else if (Input::IsInputKey(KEY_RIGHT))
 	{
-		m_Move.x = 1.0f;
+		m_Move.x = m_MoveSpeed;
 	}
 
 	// 移動ベクトルを移動速度の大きさにする
 	m_Move = MyMath::VecNormalize(m_Move);
-	m_Move = MyMath::VecScale(m_Move, PLAYER_SPEED);
+	m_Move = MyMath::VecScale(m_Move, m_MoveSpeed);
 
 	// 移動
 	m_Pos = MyMath::VecAdd(m_Pos, m_Move);

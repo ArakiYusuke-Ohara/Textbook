@@ -23,6 +23,9 @@ public:
 	Item* CreateItem(int id);
 	Item* CreateItem(int id, VECTOR pos);
 
+public:
+	std::vector<Item*> GetItems() const { return m_Items; }
+
 private:
 	void SpawnItem();
 

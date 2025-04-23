@@ -15,7 +15,7 @@ void MyRandom::Init()
 	m_Engine = new default_random_engine(rd());
 }
 
-int MyRandom::GetRandom()
+unsigned int MyRandom::GetRandom()
 {
 	return (*m_Mt)();
 }

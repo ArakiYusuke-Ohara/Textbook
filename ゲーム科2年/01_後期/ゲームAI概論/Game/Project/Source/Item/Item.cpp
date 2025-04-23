@@ -1,12 +1,18 @@
 #include "Item.h"
 #include "../Stage/StageManager.h"
+#include "../Collision/CollisionManager.h"
+#include "../Collision/CollisionAABB.h"
+
+#define BLINK_TIME 180
 
 Item::Item()
 {
 	m_Active = false;
+	m_Life = 0;
 	m_Handle = 0;
 	m_Pos = {};
 	m_Param = nullptr;
+	m_CollisionAABB = nullptr;
 }
 
 Item::~Item()
@@ -16,6 +22,7 @@ Item::~Item()
 
 void Item::Init()
 {
+	m_Life = ITEM_LIFE;
 }
 
 void Item::Load()
@@ -28,17 +35,41 @@ void Item::Load()
 
 void Item::Step()
 {
+	if (!m_Active) return;
+
+	// 寿命処理
+	if (m_Life <= 0)
+	{
+		m_Active = false;
+	}
+	else
+	{
+		m_Life--;
+	}
 }
 
 void Item::Update()
 {
+	if (!m_Active) return;
 }
 
 void Item::Draw()
 {
-	// ワールド座標に変換
-	VECTOR pos = StageManager::GetInstance()->ConvertStagePosToWorldPos(m_Pos);
-	DrawBox((int)pos.x, (int)pos.y, (int)(pos.x + ITEM_WIDTH), (int)(pos.y + ITEM_HEIGHT), GetColor(255, 255, 255), TRUE);
+	if (!m_Active) return;
+
+	// 寿命が切れそうなら点滅
+	if (m_Life <= BLINK_TIME)
+	{
+		if (m_Life % 4 == 0)
+		{
+			DrawBox((int)m_Pos.x, (int)m_Pos.y, (int)(m_Pos.x + ITEM_WIDTH), (int)(m_Pos.y + ITEM_HEIGHT), GetColor(255, 255, 255), TRUE);
+		}
+	}
+	// 通常描画
+	else
+	{
+		DrawBox((int)m_Pos.x, (int)m_Pos.y, (int)(m_Pos.x + ITEM_WIDTH), (int)(m_Pos.y + ITEM_HEIGHT), GetColor(255, 255, 255), TRUE);
+	}
 }
 
 void Item::Fin()
@@ -46,10 +77,27 @@ void Item::Fin()
 	DeleteGraph(m_Handle);
 }
 
+void Item::Spawn()
+{
+	m_Active = true;
+	m_Life = ITEM_LIFE;
+}
+
+void Item::HitPlayer()
+{
+	m_Active = false;
+}
+
 Item* Item::Clone()
 {
 	Item* clone = new Item;
 	*clone = *this;
+
+	// 当たり判定設定は必要
+	CollisionAABB* aabb = CollisionManager::GetInstance()->CreateAABB();
+	aabb->SetSize(VGet(ITEM_WIDTH, ITEM_HEIGHT, 0.0f));
+	aabb->SetTargetPos(&clone->m_Pos);
+	clone->m_CollisionAABB = aabb;
 
 	return clone;
 }

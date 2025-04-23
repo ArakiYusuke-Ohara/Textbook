@@ -4,6 +4,7 @@
 #include "BulletParameter.h"
 
 class CollisionSphere;
+class CollisionAABB;
 
 class BulletBase
 {
@@ -27,9 +28,11 @@ public:
 	int GetID() const { return m_Id; }
 	int GetDamage() const { return m_Param->damage; }
 	VECTOR GetPos() const { return m_Pos; }
-	CollisionSphere* GetCollision() const { return m_Collision; }
+	CollisionSphere* GetSphereCollision() const { return m_SphereCollision; }
+	CollisionAABB* GetAABBCollision() const { return m_AABBCollision; }
 
 	void HitPlayer();
+	void HitBlock();
 
 protected:
 	bool m_Active;
@@ -40,5 +43,6 @@ protected:
 	VECTOR m_Move;
 	float m_Radius;
 	const BulletParameter* m_Param;
-	CollisionSphere* m_Collision;
+	CollisionSphere* m_SphereCollision;
+	CollisionAABB* m_AABBCollision;
 };

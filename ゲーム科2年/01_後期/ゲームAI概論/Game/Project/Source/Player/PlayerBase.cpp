@@ -13,6 +13,8 @@
 #include "../Stage/StageManager.h"
 #include "../Stage/Stage.h"
 #include "../Block/Block.h"
+#include "../Item/Item.h"
+#include "../Item/ItemParameter.h"
 
 #define PLAYER_WIDTH 40
 #define PLAYER_HEIGHT 40
@@ -22,6 +24,9 @@
 #define BLOCK_PUSH_OFFSET 0.1f
 #define ATTACK_STIFFNESS 40
 #define DAMAGE_INVISIBLE_TIME 240
+#define DEFAULT_MOVE_SPEED 1.0f
+#define DEFAULT_BULLET_INTERVAL 180
+
 
 
 const VECTOR BULLET_FIRE_DIR[] =
@@ -71,12 +76,14 @@ PlayerBase::PlayerBase()
 	m_Hp = 0;
 	m_InvisibleTimer = 0;
 	m_BulletInterval = 0;
+	m_BulletIntervalTime = 0;
 	m_PlayerNumber = 0;
 	m_Direction = 0;
 	m_AnimationIndex = 0;
 	m_AnimationTimer = 0;
 	m_UseBulletID = 0;
 	m_Stiffness = 0;
+	m_MoveSpeed = 0.0f;
 	m_Pos = VGet(0.0f, 0.0f, 0.0f);
 	m_OldPos = VGet(0.0f, 0.0f, 0.0f);
 	m_Move = VGet(0.0f, 0.0f, 0.0f);
@@ -136,12 +143,16 @@ void PlayerBase::Start()
 
 	// 通常弾のインターバル
 	m_BulletInterval = 0;
+	m_BulletIntervalTime = DEFAULT_BULLET_INTERVAL;
 
 	// HP
 	m_Hp = 3;
 
 	// 向き
 	m_Direction = PLAYER_DIRECTION_DOWN;
+
+	// 移動速度
+	m_MoveSpeed = DEFAULT_MOVE_SPEED;
 }
 
 // ステップ
@@ -209,7 +220,7 @@ void PlayerBase::FireBullet()
 	BulletManager::GetInstance()->FireBullet(m_UseBulletID, pos, move);
 
 	// インターバルと硬直
-	m_BulletInterval = PLAYER_BULLET_INTERVAL;
+	m_BulletInterval = m_BulletIntervalTime;
 	m_Stiffness = ATTACK_STIFFNESS;
 }
 
@@ -304,6 +315,25 @@ void PlayerBase::HitBlock(Block* block)
 void PlayerBase::HitBullet()
 {
 	m_InvisibleTimer = DAMAGE_INVISIBLE_TIME;
+}
+
+void PlayerBase::HitItem(Item* item)
+{
+	const ItemParameter* itemParam = item->GetParam();
+
+	switch (itemParam->id)
+	{
+	case ITEM_ID_PLAYER_SPEED_UP:
+		m_MoveSpeed += itemParam->value;
+		break;
+
+	case ITEM_ID_BULLET_RAPID_UP:
+		m_BulletIntervalTime -= (int)(itemParam->value);
+		break;
+
+	case ITEM_ID_BULLET_SPEED_UP:
+		break;
+	}
 }
 
 void PlayerBase::SetDirectionForMove()

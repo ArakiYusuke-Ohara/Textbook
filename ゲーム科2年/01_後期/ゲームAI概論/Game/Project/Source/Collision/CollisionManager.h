@@ -40,6 +40,10 @@ private:
 public:
 	// 当たり判定のチェック
 	void CheckCollision();
+	void CheckPlayerAndBlock();
+	void CheckPlayerAndBullet();
+	void CheckPlayerAndItem();
+	void CheckBlockAndBullet();
 
 private:
 	// CollisionManagerインスタンス

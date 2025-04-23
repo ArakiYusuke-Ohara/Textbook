@@ -3,6 +3,8 @@
 #include "DxLib.h"
 #include "ItemParameter.h"
 
+class CollisionAABB;
+
 class Item
 {
 public:
@@ -18,8 +20,13 @@ public:
 	void Fin();
 	Item* Clone();
 
+	void Spawn();
+	void HitPlayer();
+
 public:
 	bool IsActive() const { return m_Active; }
+	CollisionAABB* GetAABB() const { return m_CollisionAABB; }
+	const ItemParameter* GetParam() const { return m_Param; }
 
 	void SetActive(bool active) { m_Active = active; }
 	void SetPos(VECTOR pos) { m_Pos = pos; }
@@ -27,7 +34,9 @@ public:
 
 private:
 	bool m_Active;
+	int m_Life;
 	int m_Handle;
 	VECTOR m_Pos;
 	const ItemParameter* m_Param;
+	CollisionAABB* m_CollisionAABB;
 };

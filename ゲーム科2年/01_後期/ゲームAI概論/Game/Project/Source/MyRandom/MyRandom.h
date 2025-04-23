@@ -6,7 +6,7 @@ class MyRandom
 {
 public:
 	static void Init();
-	static int GetRandom();
+	static unsigned int GetRandom();
 	static bool GetBernoulli(float trueProb);
 	static int GetDistribution(int min, int max);
 	static float GetDistributionF(float min, float max);

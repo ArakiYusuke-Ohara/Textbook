@@ -8,6 +8,8 @@
 #include "../Block/BlockManager.h"
 #include "../Player/Player.h"
 #include "../Block/Block.h"
+#include "../Item/ItemManager.h"
+#include "../Item/Item.h"
 
 
 // 静的変数の初期化
@@ -91,9 +93,16 @@ CollisionBase* CollisionManager::CreateCollision(int id)
 
 void CollisionManager::CheckCollision()
 {
+	CheckPlayerAndBlock();
+	CheckPlayerAndBullet();
+	CheckPlayerAndItem();
+	CheckBlockAndBullet();
+}
+
+void CollisionManager::CheckPlayerAndBlock()
+{
 	auto players = PlayerManager::GetInstance()->GetPlayers();
 	auto blocks = BlockManager::GetInstance()->GetBlocks();
-	auto bullets = BulletManager::GetInstance()->GetBullets();
 
 	// プレイヤーとブロックの当たり判定
 	for (Player* player : players)
@@ -112,8 +121,13 @@ void CollisionManager::CheckCollision()
 			}
 		}
 	}
+}
 
-	// プレイヤーとバレットの当たり判定
+void CollisionManager::CheckPlayerAndBullet()
+{
+	auto players = PlayerManager::GetInstance()->GetPlayers();
+	auto bullets = BulletManager::GetInstance()->GetBullets();
+
 	for (Player* player : players)
 	{
 		if (!player->IsActive()) continue;
@@ -123,7 +137,7 @@ void CollisionManager::CheckCollision()
 		{
 			if (!bullet->IsActive()) continue;
 
-			CollisionSphere* bulletCollision = bullet->GetCollision();
+			CollisionSphere* bulletCollision = bullet->GetSphereCollision();
 			// タグが同じもの同士は判定しない
 			if (playerCollision->GetTag() == bulletCollision->GetTag()) continue;
 
@@ -131,6 +145,56 @@ void CollisionManager::CheckCollision()
 			{
 				player->HitBullet();
 				bullet->HitPlayer();
+			}
+		}
+	}
+}
+
+void CollisionManager::CheckPlayerAndItem()
+{
+	auto players = PlayerManager::GetInstance()->GetPlayers();
+
+	for (Player* player : players)
+	{
+		if (!player->IsActive()) continue;
+
+		CollisionAABB* playerCollision = player->GetCollisionAABB();
+
+		auto items = ItemManager::GetInstance()->GetItems();
+		for (Item* item : items)
+		{
+			if (!item->IsActive()) continue;
+
+			CollisionAABB* itemCollision = item->GetAABB();
+
+			if (itemCollision->CheckAABB(playerCollision))
+			{
+				player->HitItem(item);
+				item->HitPlayer();
+			}
+		}
+	}
+}
+
+void CollisionManager::CheckBlockAndBullet()
+{
+	auto blocks = BlockManager::GetInstance()->GetBlocks();
+	auto bullets = BulletManager::GetInstance()->GetBullets();
+
+	for (Block* block : blocks)
+	{
+		if (!block->IsActive()) continue;
+
+		CollisionAABB* blockCollision = block->GetCollision();
+		for (BulletBase* bullet : bullets)
+		{
+			if (!bullet->IsActive()) continue;
+
+			CollisionAABB* bulletCollision = bullet->GetAABBCollision();
+
+			if (bulletCollision->CheckAABB(blockCollision))
+			{
+				bullet->HitBlock();
 			}
 		}
 	}

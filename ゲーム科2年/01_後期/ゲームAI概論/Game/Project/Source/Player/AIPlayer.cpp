@@ -53,7 +53,7 @@ void AIPlayer::Chase()
 	VECTOR player1Pos = player1->GetPos();
 	m_Move = MyMath::VecCreate(m_Pos, player1Pos);
 	m_Move = MyMath::VecNormalize(m_Move);
-	m_Move = MyMath::VecScale(m_Move, PLAYER_SPEED);
+	m_Move = MyMath::VecScale(m_Move, m_MoveSpeed);
 
 	// ˆÚ“®
 	m_Pos = MyMath::VecAdd(m_Pos, m_Move);
@@ -67,9 +67,9 @@ void AIPlayer::Away()
 	// 1P‚©‚ç—£‚ê‚é
 	Player* player1 = PlayerManager::GetInstance()->GetPlayer(0);
 	VECTOR player1Pos = player1->GetPos();
-	m_Move = MyMath::VecCreate(m_Pos, player1Pos);
+	m_Move = MyMath::VecCreate(player1Pos, m_Pos);
 	m_Move = MyMath::VecNormalize(m_Move);
-	m_Move = MyMath::VecScale(m_Move, -PLAYER_SPEED);
+	m_Move = MyMath::VecScale(m_Move, m_MoveSpeed);
 
 	// ˆÚ“®
 	m_Pos = MyMath::VecAdd(m_Pos, m_Move);

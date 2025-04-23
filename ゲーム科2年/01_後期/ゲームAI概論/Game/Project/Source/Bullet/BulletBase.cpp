@@ -4,6 +4,7 @@
 #include "../MyMath/MyMath.h"
 #include "../Collision/CollisionManager.h"
 #include "../Collision/CollisionSphere.h"
+#include "../Collision/CollisionAABB.h"
 #include "../MyEffekseer/EffekseerManager.h"
 
 BulletBase::BulletBase()
@@ -16,7 +17,7 @@ BulletBase::BulletBase()
 	m_Radius = 0.0f;
 	m_Active = false;
 	m_Param = nullptr;
-	m_Collision = nullptr;
+	m_SphereCollision = nullptr;
 }
 
 BulletBase::~BulletBase()
@@ -45,7 +46,7 @@ void BulletBase::Step()
 	{
 		m_Active = false;
 		// 当たり判定も非アクティブにする
-		m_Collision->SetActive(false);
+		m_SphereCollision->SetActive(false);
 	}
 }
 
@@ -62,20 +63,32 @@ void BulletBase::Fire(VECTOR pos, VECTOR vec)
 	m_Move = MyMath::VecScale(m_Move, m_Param->speed);
 	m_Life = m_Param->life;
 	m_Radius = m_Param->radius;
-	CollisionSphere* collision = CollisionManager::GetInstance()->CreateSphere();
-	collision->SetRadius(m_Param->radius);
-	collision->SetTargetPos(&m_Pos);
-	collision->SetTag(m_Param->collisionTag);
-	m_Collision = collision;
+
+	CollisionSphere* sphereCollision = CollisionManager::GetInstance()->CreateSphere();
+	sphereCollision->SetRadius(m_Param->radius);
+	sphereCollision->SetTargetPos(&m_Pos);
+	sphereCollision->SetTag(m_Param->collisionTag);
+	m_SphereCollision = sphereCollision;
+
+	CollisionAABB* aabbCollision = CollisionManager::GetInstance()->CreateAABB();
+	aabbCollision->SetSize(VGet(m_Param->sizeX, m_Param->sizeY, 0.0f));
+	aabbCollision->SetTargetPos(&m_Pos);
+	aabbCollision->SetTag(m_Param->collisionTag);
+	m_AABBCollision = aabbCollision;
 }
 
 void BulletBase::Dead()
 {
 	m_Active = false;
-	m_Collision->SetActive(false);
+	m_SphereCollision->SetActive(false);
 }
 
 void BulletBase::HitPlayer()
+{
+	Dead();
+}
+
+void BulletBase::HitBlock()
 {
 	Dead();
 }

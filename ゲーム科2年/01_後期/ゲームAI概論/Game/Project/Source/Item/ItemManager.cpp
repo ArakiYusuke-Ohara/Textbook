@@ -2,6 +2,7 @@
 #include "Item.h"
 #include "../Block/BlockParameter.h"
 #include "../MyRandom/MyRandom.h"
+#include "../Stage/StageManager.h"
 
 ItemManager::ItemManager()
 {
@@ -90,7 +91,7 @@ Item* ItemManager::CreateItem(int id)
 	{
 		if (!item->IsActive())
 		{
-			item->SetActive(true);
+			item->Spawn();
 			item->SetParam(&ITEM_MASTER_PARAM[id]);
 			return item;
 		}
@@ -98,7 +99,7 @@ Item* ItemManager::CreateItem(int id)
 
 	// 未使用がなかったら新しく作る
 	Item* item = m_Originals[id]->Clone();
-	item->SetActive(true);
+	item->Spawn();
 	item->SetParam(&ITEM_MASTER_PARAM[id]);
 	m_Items.push_back(item);
 
@@ -120,11 +121,15 @@ void ItemManager::SpawnItem()
 	{
 		// どのアイテムかはランダム
 		int id = MyRandom::GetRandom() % ITEM_ID_MAX;
+		id = 0;
 
 		// ブロックのある位置には出現しないように
 		int indexX = MyRandom::GetDistribution(1, BLOCK_MAP_COL - 2);
 		int indexY = MyRandom::GetDistribution(1, BLOCK_MAP_ROW - 2);
 		VECTOR pos = { (float)(ITEM_WIDTH * indexX), (float)(ITEM_HEIGHT * indexY), 0.0f };
+
+		// ステージ座標からワールド座標に変換
+		pos = StageManager::GetInstance()->ConvertStagePosToWorldPos(pos);
 
 		// アイテム生成
 		CreateItem(id, pos);
