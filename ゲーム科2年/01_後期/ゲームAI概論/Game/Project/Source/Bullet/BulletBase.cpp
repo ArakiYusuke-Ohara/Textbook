@@ -92,3 +92,8 @@ void BulletBase::HitBlock()
 {
 	Dead();
 }
+
+void BulletBase::ScaleSpeed(float scale)
+{
+	m_Move = MyMath::VecScale(m_Move, scale);
+}

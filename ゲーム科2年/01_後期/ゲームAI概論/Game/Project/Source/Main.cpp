@@ -73,9 +73,11 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance, 
 
 		// FPS更新
 		FPSSystem::Update();
+
+#ifdef _DEBUG
 		// FPS描画
 		FPSSystem::Draw();
-
+#endif
 		// エスケープキーで終了
 		if (CheckHitKey(KEY_INPUT_ESCAPE)) break;
 

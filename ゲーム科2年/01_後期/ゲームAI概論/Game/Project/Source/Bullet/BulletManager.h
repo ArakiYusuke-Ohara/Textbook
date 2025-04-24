@@ -30,7 +30,7 @@ public:
 	std::vector<BulletBase*> GetBullets() const { return m_Bullets; }
 
 	void SetupBullet(int id);
-	void FireBullet(int id, VECTOR pos, VECTOR vec);
+	BulletBase* FireBullet(int id, VECTOR pos, VECTOR vec);
 	const BulletParameter* GetBulletParameter(int id);
 
 private:

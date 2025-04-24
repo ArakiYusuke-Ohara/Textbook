@@ -53,6 +53,21 @@ void AIPlayer::Chase()
 	VECTOR player1Pos = player1->GetPos();
 	m_Move = MyMath::VecCreate(m_Pos, player1Pos);
 	m_Move = MyMath::VecNormalize(m_Move);
+
+
+	float absMoveX = MyMath::Absolute(m_Move.x);
+	float absMoveY = MyMath::Absolute(m_Move.y);
+	// X, Y‚Å’·‚¢•û‚ðÌ—p
+	if (absMoveX > absMoveY)
+	{
+		m_Move.y = 0.0f;
+	}
+	else
+	{
+		m_Move.x = 0.0f;
+	}
+
+	m_Move = MyMath::VecNormalize(m_Move);
 	m_Move = MyMath::VecScale(m_Move, m_MoveSpeed);
 
 	// ˆÚ“®

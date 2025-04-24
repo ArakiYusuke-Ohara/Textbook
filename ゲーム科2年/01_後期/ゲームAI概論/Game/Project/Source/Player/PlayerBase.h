@@ -62,6 +62,7 @@ protected:
 	int m_UseBulletID;
 	int m_Stiffness;
 	float m_MoveSpeed;
+	float m_BulletSpeed;
 	VECTOR m_Pos;
 	VECTOR m_OldPos;
 	VECTOR m_Move;

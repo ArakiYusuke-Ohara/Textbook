@@ -34,6 +34,8 @@ public:
 	void HitPlayer();
 	void HitBlock();
 
+	void ScaleSpeed(float speed);
+
 protected:
 	bool m_Active;
 	int m_Id;

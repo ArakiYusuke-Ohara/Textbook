@@ -50,8 +50,10 @@ void BulletManager::Draw()
 		}
 	}
 
+#ifdef _DEBUG
 	// m_Bulletsの個数
 	DrawFormatString(0, 100, GetColor(0, 0, 0), "m_Bulletsのサイズ：%d", m_Bullets.size());
+#endif
 }
 
 void BulletManager::Fin()
@@ -84,7 +86,7 @@ void BulletManager::SetupBullet(int id)
 	m_OriginalBullets.push_back(bullet);
 }
 
-void BulletManager::FireBullet(int id, VECTOR pos, VECTOR vec)
+BulletBase* BulletManager::FireBullet(int id, VECTOR pos, VECTOR vec)
 {
 	// 未使用で同じIDのバレットを探す
 	for (BulletBase* bullet : m_Bullets)
@@ -93,7 +95,7 @@ void BulletManager::FireBullet(int id, VECTOR pos, VECTOR vec)
 		{
 			// バレットを再利用する
 			bullet->Fire(pos, vec);
-			return;
+			return bullet;
 		}
 	}
 
@@ -103,6 +105,8 @@ void BulletManager::FireBullet(int id, VECTOR pos, VECTOR vec)
 	
 	// vectorに追加
 	m_Bullets.push_back(bullet);
+
+	return bullet;
 }
 
 const BulletParameter* BulletManager::GetBulletParameter(int id)

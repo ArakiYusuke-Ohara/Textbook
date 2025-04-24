@@ -25,9 +25,11 @@
 #define ATTACK_STIFFNESS 40
 #define DAMAGE_INVISIBLE_TIME 240
 #define DEFAULT_MOVE_SPEED 1.0f
+#define MOVE_SPEED_MAX 3.0
 #define DEFAULT_BULLET_INTERVAL 180
-
-
+#define BULLET_INTERVAL_MIN 60
+#define DEFAULT_BULLET_SPEED 1.0f
+#define BULLET_SPEED_MAX 2.0f
 
 const VECTOR BULLET_FIRE_DIR[] =
 {
@@ -84,6 +86,7 @@ PlayerBase::PlayerBase()
 	m_UseBulletID = 0;
 	m_Stiffness = 0;
 	m_MoveSpeed = 0.0f;
+	m_BulletSpeed = 0.0f;
 	m_Pos = VGet(0.0f, 0.0f, 0.0f);
 	m_OldPos = VGet(0.0f, 0.0f, 0.0f);
 	m_Move = VGet(0.0f, 0.0f, 0.0f);
@@ -153,6 +156,9 @@ void PlayerBase::Start()
 
 	// 移動速度
 	m_MoveSpeed = DEFAULT_MOVE_SPEED;
+
+	// 弾丸の速度
+	m_BulletSpeed = DEFAULT_BULLET_SPEED;
 }
 
 // ステップ
@@ -217,7 +223,12 @@ void PlayerBase::FireBullet()
 	VECTOR move = BULLET_FIRE_DIR[m_Direction];
 	VECTOR offset = MyMath::VecScale(move, 10.0f);
 	VECTOR pos = MyMath::VecAdd(m_Pos, offset);
-	BulletManager::GetInstance()->FireBullet(m_UseBulletID, pos, move);
+	// 発射速度
+	move = BULLET_FIRE_DIR[m_Direction];
+	move = MyMath::VecScale(move, m_BulletSpeed);
+
+	BulletBase* bullet = BulletManager::GetInstance()->FireBullet(m_UseBulletID, pos, move);
+	bullet->ScaleSpeed(m_BulletSpeed);
 
 	// インターバルと硬直
 	m_BulletInterval = m_BulletIntervalTime;
@@ -325,13 +336,17 @@ void PlayerBase::HitItem(Item* item)
 	{
 	case ITEM_ID_PLAYER_SPEED_UP:
 		m_MoveSpeed += itemParam->value;
+		if (m_MoveSpeed > MOVE_SPEED_MAX) m_MoveSpeed = MOVE_SPEED_MAX;
 		break;
 
 	case ITEM_ID_BULLET_RAPID_UP:
 		m_BulletIntervalTime -= (int)(itemParam->value);
+		if (m_BulletIntervalTime < BULLET_INTERVAL_MIN) m_BulletIntervalTime = BULLET_INTERVAL_MIN;
 		break;
 
 	case ITEM_ID_BULLET_SPEED_UP:
+		m_BulletSpeed += itemParam->value;
+		if (m_BulletSpeed > BULLET_SPEED_MAX) m_BulletSpeed = BULLET_SPEED_MAX;
 		break;
 	}
 }

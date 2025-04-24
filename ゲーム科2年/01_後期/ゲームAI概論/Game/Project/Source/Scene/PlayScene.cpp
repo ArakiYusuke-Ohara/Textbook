@@ -16,7 +16,7 @@
 
 PlayScene::PlayScene() : SceneBase()
 {
-
+	m_BGHandle = 0;
 }
 
 PlayScene::~PlayScene()
@@ -81,6 +81,8 @@ void PlayScene::Load()
 
 	// アイテムをロード
 	ItemManager::GetInstance()->Load();
+
+	m_BGHandle = LoadGraph("Data/Play/BG/BG.png");
 }
 
 void PlayScene::Start()
@@ -114,6 +116,9 @@ void PlayScene::Update()
 
 void PlayScene::Draw()
 {
+	// 背景を描画
+	DrawGraph(0, 0, m_BGHandle, TRUE);
+
 	// ステージを描画
 	StageManager::GetInstance()->Draw();
 	// ブロック描画

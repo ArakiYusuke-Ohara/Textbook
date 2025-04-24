@@ -4,6 +4,9 @@
 #include "../MyRandom/MyRandom.h"
 #include "../Stage/StageManager.h"
 
+#define SPAWN_INTERVAL 600
+#define SPAWN_NUM 2
+
 ItemManager::ItemManager()
 {
 	m_Originals = {};
@@ -26,6 +29,8 @@ void ItemManager::Init()
 		item->SetParam(&ITEM_MASTER_PARAM[i]);
 		m_Originals.push_back(item);
 	}
+
+	m_SpawnTimer = SPAWN_INTERVAL;
 }
 
 void ItemManager::Load()
@@ -119,23 +124,26 @@ void ItemManager::SpawnItem()
 	// 一定時間ごとにスポーン
 	if (m_SpawnTimer <= 0)
 	{
-		// どのアイテムかはランダム
-		int id = MyRandom::GetRandom() % ITEM_ID_MAX;
-		id = 0;
+		for (int i = 0; i < SPAWN_NUM; i++)
+		{
+			// どのアイテムかはランダム
+			int id = MyRandom::GetRandom() % ITEM_ID_MAX;
 
-		// ブロックのある位置には出現しないように
-		int indexX = MyRandom::GetDistribution(1, BLOCK_MAP_COL - 2);
-		int indexY = MyRandom::GetDistribution(1, BLOCK_MAP_ROW - 2);
-		VECTOR pos = { (float)(ITEM_WIDTH * indexX), (float)(ITEM_HEIGHT * indexY), 0.0f };
+			// ブロックのある位置には出現しないように
+			int indexX = MyRandom::GetDistribution(1, BLOCK_MAP_COL - 2);
+			int indexY = MyRandom::GetDistribution(1, BLOCK_MAP_ROW - 2);
 
-		// ステージ座標からワールド座標に変換
-		pos = StageManager::GetInstance()->ConvertStagePosToWorldPos(pos);
+			VECTOR pos = { (float)(ITEM_WIDTH * indexX), (float)(ITEM_HEIGHT * indexY), 0.0f };
 
-		// アイテム生成
-		CreateItem(id, pos);
+			// ステージ座標からワールド座標に変換
+			pos = StageManager::GetInstance()->ConvertStagePosToWorldPos(pos);
+
+			// アイテム生成
+			CreateItem(id, pos);
+		}
 
 		// タイマーリセット
-		m_SpawnTimer = ITEM_SPAWN_INTERVAL;
+		m_SpawnTimer = SPAWN_INTERVAL;
 	}
 	else
 	{

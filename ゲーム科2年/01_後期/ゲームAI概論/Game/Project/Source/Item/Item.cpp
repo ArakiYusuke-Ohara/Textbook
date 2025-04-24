@@ -3,6 +3,7 @@
 #include "../Collision/CollisionManager.h"
 #include "../Collision/CollisionAABB.h"
 
+#define ITEM_LIFE 480
 #define BLINK_TIME 180
 
 Item::Item()
@@ -57,19 +58,35 @@ void Item::Draw()
 {
 	if (!m_Active) return;
 
+#ifdef _DEBUG
+	int color = 0;
+	switch (m_Param->id)
+	{
+	case ITEM_ID_PLAYER_SPEED_UP:
+		color = GetColor(0, 0, 255);
+		break;
+	case ITEM_ID_BULLET_RAPID_UP:
+		color = GetColor(0, 255, 0);
+		break;
+	case ITEM_ID_BULLET_SPEED_UP:
+		color = GetColor(255, 0, 0);
+		break;
+	}
+
 	// éıñΩÇ™êÿÇÍÇªÇ§Ç»ÇÁì_ñ≈
 	if (m_Life <= BLINK_TIME)
 	{
 		if (m_Life % 4 == 0)
 		{
-			DrawBox((int)m_Pos.x, (int)m_Pos.y, (int)(m_Pos.x + ITEM_WIDTH), (int)(m_Pos.y + ITEM_HEIGHT), GetColor(255, 255, 255), TRUE);
+			DrawBox((int)m_Pos.x, (int)m_Pos.y, (int)(m_Pos.x + ITEM_WIDTH), (int)(m_Pos.y + ITEM_HEIGHT), color, TRUE);
 		}
 	}
 	// í èÌï`âÊ
 	else
 	{
-		DrawBox((int)m_Pos.x, (int)m_Pos.y, (int)(m_Pos.x + ITEM_WIDTH), (int)(m_Pos.y + ITEM_HEIGHT), GetColor(255, 255, 255), TRUE);
+		DrawBox((int)m_Pos.x, (int)m_Pos.y, (int)(m_Pos.x + ITEM_WIDTH), (int)(m_Pos.y + ITEM_HEIGHT), color, TRUE);
 	}
+#endif
 }
 
 void Item::Fin()
