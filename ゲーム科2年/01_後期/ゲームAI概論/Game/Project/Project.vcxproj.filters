@@ -52,6 +52,9 @@
     <Filter Include="Source\Item">
       <UniqueIdentifier>{11fe154f-e482-4c3e-9d6a-2e6ee3598b7c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\UI">
+      <UniqueIdentifier>{e8f5d69e-4b32-4433-a650-333d55946b4c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -161,6 +164,18 @@
     </ClCompile>
     <ClCompile Include="Source\Item\ItemManager.cpp">
       <Filter>Source\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\UI\UIBase.cpp">
+      <Filter>Source\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\UI\UIGauge.cpp">
+      <Filter>Source\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\UI\UIImage.cpp">
+      <Filter>Source\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\UI\UIManager.cpp">
+      <Filter>Source\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -301,6 +316,21 @@
     </ClInclude>
     <ClInclude Include="Source\Item\ItemParameter.h">
       <Filter>Source\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\UI\UIBase.h">
+      <Filter>Source\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\UI\UIGauge.h">
+      <Filter>Source\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\UI\UIImage.h">
+      <Filter>Source\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\UI\UIManager.h">
+      <Filter>Source\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\UI\UIParameter.h">
+      <Filter>Source\UI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

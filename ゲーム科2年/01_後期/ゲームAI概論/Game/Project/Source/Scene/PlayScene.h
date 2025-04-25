@@ -19,5 +19,8 @@ public:
 	void Fin() override;
 
 private:
+	void LoadUI();
+
+private:
 	int m_BGHandle;
 };

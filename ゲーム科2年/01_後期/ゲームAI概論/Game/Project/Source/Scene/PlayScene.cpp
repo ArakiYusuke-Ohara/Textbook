@@ -13,6 +13,7 @@
 #include "../AI/AIRandomCPU.h"
 #include "../Bullet/BulletManager.h"
 #include "../Item/ItemManager.h"
+#include "../UI/UIManager.h"
 
 PlayScene::PlayScene() : SceneBase()
 {
@@ -155,4 +156,7 @@ void PlayScene::Fin()
 
 	// ƒAƒCƒeƒ€íœ
 	ItemManager::DeleteInstance();
+
+	// UIíœ
+	UIManager::DeleteInstance();
 }

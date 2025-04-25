@@ -55,6 +55,10 @@
     <ClCompile Include="Source\Scene\TitleScene.cpp" />
     <ClCompile Include="Source\Stage\Stage.cpp" />
     <ClCompile Include="Source\Stage\StageManager.cpp" />
+    <ClCompile Include="Source\UI\UIBase.cpp" />
+    <ClCompile Include="Source\UI\UIGauge.cpp" />
+    <ClCompile Include="Source\UI\UIImage.cpp" />
+    <ClCompile Include="Source\UI\UIManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\AI\AIManager.h" />
@@ -103,6 +107,11 @@
     <ClInclude Include="Source\Stage\Stage.h" />
     <ClInclude Include="Source\Stage\StageManager.h" />
     <ClInclude Include="Source\Stage\StageParameter.h" />
+    <ClInclude Include="Source\UI\UIBase.h" />
+    <ClInclude Include="Source\UI\UIGauge.h" />
+    <ClInclude Include="Source\UI\UIImage.h" />
+    <ClInclude Include="Source\UI\UIManager.h" />
+    <ClInclude Include="Source\UI\UIParameter.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
