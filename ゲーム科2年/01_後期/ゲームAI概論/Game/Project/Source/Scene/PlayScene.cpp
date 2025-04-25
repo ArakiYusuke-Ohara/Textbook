@@ -97,6 +97,8 @@ void PlayScene::Start()
 
 void PlayScene::Step()
 {
+	// UIステップ
+	UIManager::GetInstance()->Step();
 	// プレイヤーステップ
 	PlayerManager::GetInstance()->Step();
 	// バレットステップ
@@ -109,6 +111,8 @@ void PlayScene::Step()
 
 void PlayScene::Update()
 {
+	// UI更新
+	UIManager::GetInstance()->Update();
 	// プレイヤー更新
 	PlayerManager::GetInstance()->Update();
 	// アイテム更新
@@ -119,7 +123,8 @@ void PlayScene::Draw()
 {
 	// 背景を描画
 	DrawGraph(0, 0, m_BGHandle, TRUE);
-
+	// UIを描画
+	UIManager::GetInstance()->Draw();
 	// ステージを描画
 	StageManager::GetInstance()->Draw();
 	// ブロック描画
@@ -158,5 +163,5 @@ void PlayScene::Fin()
 	ItemManager::DeleteInstance();
 
 	// UI削除
-	UIManager::DeleteInstance();
+	UIManager::GetInstance()->ClearUI();
 }

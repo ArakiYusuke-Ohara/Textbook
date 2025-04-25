@@ -11,6 +11,7 @@ public:
 	void Load(const char* path);
 	void Draw();
 	void Fin();
+	UIBase* Clone() override;
 
 private:
 	int m_Handle;

@@ -1,8 +1,6 @@
 #include "UIManager.h"
 #include "UIImage.h"
 
-UIManager* UIManager::m_Instance = nullptr;
-
 UIManager::UIManager()
 {
 	m_UIs = {};
@@ -11,18 +9,6 @@ UIManager::UIManager()
 UIManager::~UIManager()
 {
 	Fin();
-}
-
-void UIManager::Init()
-{
-}
-
-void UIManager::Start()
-{
-	for (UIBase* ui : m_UIs)
-	{
-		ui->Start();
-	}
 }
 
 void UIManager::Step()
@@ -51,6 +37,14 @@ void UIManager::Draw()
 
 void UIManager::Fin()
 {
+	ClearUI();
+}
+
+/// <summary>
+/// 生成中のUIをすべて削除する
+/// </summary>
+void UIManager::ClearUI()
+{
 	for (UIBase* ui : m_UIs)
 	{
 		delete ui;
@@ -60,16 +54,22 @@ void UIManager::Fin()
 	m_UIs.shrink_to_fit();
 }
 
-UIBase* UIManager::CreateUI(int id)
+/// <summary>
+/// 引数で渡されたUIのクローンを作る方法で生成
+/// </summary>
+/// <param name="original">クローン元のUI</param>
+/// <returns>生成したUI</returns>
+UIBase* UIManager::CloneUI(UIBase* original)
 {
-	UIBase* ui = nullptr;
-	switch (id)
+	for (UIBase* ui : m_UIs)
 	{
-		case UI_ID_IMAGE: ui = new UIImage;  break;
-		case UI_ID_GAUGE:	break;
+		if (ui == original)
+		{
+			UIBase* clone = original->Clone();
+			m_UIs.push_back(clone);
+			return clone;
+		}
 	}
 
-	m_UIs.push_back(ui);
-
-	return ui;
+	return nullptr;
 }

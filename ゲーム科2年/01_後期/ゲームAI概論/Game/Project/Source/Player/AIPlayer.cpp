@@ -6,11 +6,13 @@
 #include "../MyMath/MyMath.h"
 
 #define PLYAER_CHANGE_STRATEGY_TIME 180
+#define PLAYER_CHASE_INTERVAL 30
 
 AIPlayer::AIPlayer()
 {
 	m_StrategyTimer = 0;
 	m_NowStrategy = 0;
+	m_PlayerChaseInterval = 0;
 	m_AIStrategy = nullptr;
 }
 
@@ -48,27 +50,16 @@ void AIPlayer::Step()
 
 void AIPlayer::Chase()
 {
-	// 1P‚ð’Ç‚¢‚©‚¯‚é
-	Player* player1 = PlayerManager::GetInstance()->GetPlayer(0);
-	VECTOR player1Pos = player1->GetPos();
-	m_Move = MyMath::VecCreate(m_Pos, player1Pos);
-	m_Move = MyMath::VecNormalize(m_Move);
-
-
-	float absMoveX = MyMath::Absolute(m_Move.x);
-	float absMoveY = MyMath::Absolute(m_Move.y);
-	// X, Y‚Å’·‚¢•û‚ðÌ—p
-	if (absMoveX > absMoveY)
+	// ˆê’èŽžŠÔ‚²‚Æ‚É•ûŒü‚ðŒˆ‚ß‚é
+	if (m_PlayerChaseInterval <= 0)
 	{
-		m_Move.y = 0.0f;
+		CalcPlayerChaseVec();
+		m_PlayerChaseInterval = PLAYER_CHASE_INTERVAL;
 	}
 	else
 	{
-		m_Move.x = 0.0f;
+		m_PlayerChaseInterval--;
 	}
-
-	m_Move = MyMath::VecNormalize(m_Move);
-	m_Move = MyMath::VecScale(m_Move, m_MoveSpeed);
 
 	// ˆÚ“®
 	m_Pos = MyMath::VecAdd(m_Pos, m_Move);
@@ -80,11 +71,8 @@ void AIPlayer::Chase()
 void AIPlayer::Away()
 {
 	// 1P‚©‚ç—£‚ê‚é
-	Player* player1 = PlayerManager::GetInstance()->GetPlayer(0);
-	VECTOR player1Pos = player1->GetPos();
-	m_Move = MyMath::VecCreate(player1Pos, m_Pos);
-	m_Move = MyMath::VecNormalize(m_Move);
-	m_Move = MyMath::VecScale(m_Move, m_MoveSpeed);
+	CalcPlayerChaseVec();
+	m_Move = MyMath::VecScale(m_Move, -1.0f);
 
 	// ˆÚ“®
 	m_Pos = MyMath::VecAdd(m_Pos, m_Move);
@@ -134,4 +122,29 @@ void AIPlayer::SetDirectionForTarget()
 			m_Direction = PLAYER_DIRECTION_DOWN;
 		}
 	}
+}
+
+void AIPlayer::CalcPlayerChaseVec()
+{
+	// 1P‚ð’Ç‚¢‚©‚¯‚é
+	Player* player1 = PlayerManager::GetInstance()->GetPlayer(0);
+	VECTOR player1Pos = player1->GetPos();
+	m_Move = MyMath::VecCreate(m_Pos, player1Pos);
+	m_Move = MyMath::VecNormalize(m_Move);
+
+
+	float absMoveX = MyMath::Absolute(m_Move.x);
+	float absMoveY = MyMath::Absolute(m_Move.y);
+	// X, Y‚Å’·‚¢•û‚ðÌ—p
+	if (absMoveX > absMoveY)
+	{
+		m_Move.y = 0.0f;
+	}
+	else
+	{
+		m_Move.x = 0.0f;
+	}
+
+	m_Move = MyMath::VecNormalize(m_Move);
+	m_Move = MyMath::VecScale(m_Move, m_MoveSpeed);
 }

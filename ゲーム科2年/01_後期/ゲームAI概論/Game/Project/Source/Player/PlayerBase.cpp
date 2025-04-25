@@ -15,6 +15,8 @@
 #include "../Block/Block.h"
 #include "../Item/Item.h"
 #include "../Item/ItemParameter.h"
+#include "../UI/UIManager.h"
+#include "../UI/UIImage.h"
 
 #define PLAYER_WIDTH 40
 #define PLAYER_HEIGHT 40
@@ -30,6 +32,7 @@
 #define BULLET_INTERVAL_MIN 60
 #define DEFAULT_BULLET_SPEED 1.0f
 #define BULLET_SPEED_MAX 2.0f
+#define PLAYER_HP 3
 
 const VECTOR BULLET_FIRE_DIR[] =
 {
@@ -108,12 +111,18 @@ void PlayerBase::Init()
 
 	// 弾丸をセットアップ
 	BulletManager::GetInstance()->SetupBullet(m_UseBulletID);
+
+	// UIを生成
+	m_UIHP = new UIImage* [PLAYER_HP];
+	m_UIHP[0] = UIManager::GetInstance()->CreateUI<UIImage>();
 }
 
 // ロード
 void PlayerBase::Load()
 {
 	m_Handle = LoadGraph(PLAYER_GRAPHIC_PATH[m_PlayerNumber]);
+
+	LoadUI();
 }
 
 // 開始
@@ -149,7 +158,7 @@ void PlayerBase::Start()
 	m_BulletIntervalTime = DEFAULT_BULLET_INTERVAL;
 
 	// HP
-	m_Hp = 3;
+	m_Hp = PLAYER_HP;
 
 	// 向き
 	m_Direction = PLAYER_DIRECTION_DOWN;
@@ -159,6 +168,8 @@ void PlayerBase::Start()
 
 	// 弾丸の速度
 	m_BulletSpeed = DEFAULT_BULLET_SPEED;
+
+	LocateUI();
 }
 
 // ステップ
@@ -381,5 +392,30 @@ void PlayerBase::SetDirectionForMove()
 		{
 			m_Direction = PLAYER_DIRECTION_UP;
 		}
+	}
+}
+
+void PlayerBase::LoadUI()
+{
+	m_UIHP[0]->Load("Data/Play/UI/Heart.png");
+}
+
+void PlayerBase::LocateUI()
+{
+	const VECTOR HP_POS[2] = {
+		{20.0f, 90.0f, 0.0f},
+		{1300.0f, 90.0f, 0.0f},
+	};
+
+	// 1個目のハートを配置
+	VECTOR pos = HP_POS[m_PlayerNumber];
+	m_UIHP[0]->SetPos(pos);
+
+	// 2個目以降のハートを配置
+	for (int i = 1; i < PLAYER_HP; i++)
+	{
+		m_UIHP[i] = static_cast<UIImage*>(UIManager::GetInstance()->CloneUI(m_UIHP[0]));
+		pos.x += m_UIHP[0]->GetWidth();
+		m_UIHP[i]->SetPos(pos);
 	}
 }

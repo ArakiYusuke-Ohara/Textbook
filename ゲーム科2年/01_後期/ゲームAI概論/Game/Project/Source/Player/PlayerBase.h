@@ -9,6 +9,7 @@ class EnemyBase;
 class AIStrategyBase;
 class Block;
 class Item;
+class UIImage;
 
 class PlayerBase
 {
@@ -46,7 +47,12 @@ public:
 	void HitBullet();
 	void HitItem(Item* item);
 
+protected:
 	void SetDirectionForMove();
+
+private:
+	void LoadUI();
+	void LocateUI();
 
 protected:
 	bool m_Active;
@@ -68,5 +74,5 @@ protected:
 	VECTOR m_Move;
 	CollisionAABB* m_CollisionAABB;
 	CollisionSphere* m_CollisionSphere;
-
+	UIImage** m_UIHP;
 };

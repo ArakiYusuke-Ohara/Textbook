@@ -14,6 +14,7 @@ UIImage::~UIImage()
 void UIImage::Load(const char* path)
 {
 	m_Handle = LoadGraph(path);
+	GetGraphSize(m_Handle, &m_Width, &m_Height);
 }
 
 void UIImage::Draw()
@@ -26,3 +27,10 @@ void UIImage::Fin()
 	DeleteGraph(m_Handle);
 }
 
+UIBase* UIImage::Clone()
+{
+	UIImage* clone = new UIImage;
+	*clone = *this;
+
+	return clone;
+}

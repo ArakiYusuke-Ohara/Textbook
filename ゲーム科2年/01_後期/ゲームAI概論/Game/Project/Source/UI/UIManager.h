@@ -14,14 +14,20 @@ public:
 	~UIManager();
 
 public:
-	void Init();
-	void Start();
 	void Step();
 	void Update();
 	void Draw();
 	void Fin();
+	void ClearUI();
 
-	UIBase* CreateUI(int id);
+	template <typename T>
+	T* CreateUI() {
+		T* ui = new T;
+		m_UIs.push_back(ui);
+		return ui;
+	}
+
+	UIBase* CloneUI(UIBase* original);
 
 private:
 	std::vector<UIBase*> m_UIs;
