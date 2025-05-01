@@ -31,7 +31,7 @@ public:
 	bool IsActive() const { return m_Active; }
 	bool IsInvisible() const { return m_InvisibleTimer > 0; }
 	bool IsBulletInterval() const { return m_BulletInterval > 0; }
-	int GetHP() const { return m_Hp; }
+	int GetHP() const { return m_HP; }
 	VECTOR GetPos() const { return m_Pos; }
 	CollisionAABB* GetCollisionAABB() const { return m_CollisionAABB; }
 	CollisionSphere* GetCollisionSphere() const { return m_CollisionSphere; }
@@ -54,12 +54,13 @@ protected:
 private:
 	void LoadUI();
 	void LocateUI();
+	void Damage(int damage);
 
 protected:
 	bool m_Active;
 	int m_Handle;
 	int m_PlayerNumber;
-	int m_Hp;
+	int m_HP;
 	int m_InvisibleTimer;
 	int m_Direction;
 	int m_AnimationIndex;

@@ -80,7 +80,7 @@ PlayerBase::PlayerBase()
 {
 	m_Active = false;
 	m_Handle = 0;
-	m_Hp = 0;
+	m_HP = 0;
 	m_InvisibleTimer = 0;
 	m_PlayerNumber = 0;
 	m_Direction = 0;
@@ -166,7 +166,7 @@ void PlayerBase::Start()
 	m_BulletChargeSpeed = DEFAULT_BULLET_CHARGE_SPEED;
 
 	// HP
-	m_Hp = PLAYER_HP;
+	m_HP = PLAYER_HP;
 
 	// 向き
 	m_Direction = PLAYER_DIRECTION_DOWN;
@@ -347,6 +347,13 @@ void PlayerBase::HitBlock(Block* block)
 
 void PlayerBase::HitBullet()
 {
+	// 無敵中であれば何もしない
+	if (IsInvisible()) return;
+
+	// ダメージ
+	Damage(1);
+
+	// 無敵時間
 	m_InvisibleTimer = DAMAGE_INVISIBLE_TIME;
 }
 
@@ -414,9 +421,10 @@ void PlayerBase::LoadUI()
 
 void PlayerBase::LocateUI()
 {
+	// １個目のハートの座標
 	const VECTOR HP_POS[2] = {
 		{20.0f, 90.0f, 0.0f},
-		{1300.0f, 90.0f, 0.0f},
+		{1480.0f, 90.0f, 0.0f},
 	};
 
 	// 1個目のハートを配置
@@ -424,10 +432,12 @@ void PlayerBase::LocateUI()
 	m_UIHP[0]->SetPos(pos);
 
 	// 2個目以降のハートを配置
+	// プレイヤー番号が偶数か奇数かで並ぶ向きを変える
+	int offset = (m_PlayerNumber % 2) == 0 ? m_UIHP[0]->GetWidth() : -m_UIHP[0]->GetWidth();
 	for (int i = 1; i < PLAYER_HP; i++)
 	{
 		m_UIHP[i] = static_cast<UIImage*>(UIManager::GetInstance()->CloneUI(m_UIHP[0]));
-		pos.x += m_UIHP[0]->GetWidth();
+		pos.x += offset;
 		m_UIHP[i]->SetPos(pos);
 	}
 
@@ -440,4 +450,17 @@ void PlayerBase::LocateUI()
 	m_BulletChargeGauge->SetPos(pos);
 	m_BulletChargeGauge->SetGaugePos(VGet(3.0f, 3.0f, 0.0f));
 	m_BulletChargeGauge->SetMaxValue(m_BulletIntervalTime);
+}
+
+void PlayerBase::Damage(int damage)
+{
+	// ダメージ前HP
+	int prevHP = m_HP;
+	// HP減少
+	m_HP -= damage;
+	// ダメージを受けた分のハートを消す
+	for (int i = (prevHP - 1); i >= m_HP; i--)
+	{
+		m_UIHP[i]->SetHide(true);
+	}
 }

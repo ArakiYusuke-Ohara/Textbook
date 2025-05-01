@@ -31,6 +31,8 @@ void UIManager::Draw()
 {
 	for (UIBase* ui : m_UIs)
 	{
+		if (ui->IsHide()) continue;
+
 		ui->Draw();
 	}
 }

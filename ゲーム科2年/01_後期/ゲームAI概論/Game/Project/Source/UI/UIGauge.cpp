@@ -5,6 +5,10 @@ UIGauge::UIGauge()
 {
 	m_FrameHandle = 0;
 	m_GaugeHandle = 0;
+	m_GaugeWidth = 0;
+	m_GaugeHeight = 0;
+	m_Value = 0.0f;
+	m_MaxValue = 0.0f;
 	m_GaugePos = {};
 }
 

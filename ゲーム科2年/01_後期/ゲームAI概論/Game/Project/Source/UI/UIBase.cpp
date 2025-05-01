@@ -2,6 +2,7 @@
 
 UIBase::UIBase()
 {
+	m_Hide = false;
 	m_Pos = {};
 	m_Width = 0;
 	m_Height = 0;
