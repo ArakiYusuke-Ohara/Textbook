@@ -15,10 +15,6 @@ void UIBase::Init()
 {
 }
 
-void UIBase::Load()
-{
-}
-
 void UIBase::Step()
 {
 }

@@ -9,8 +9,8 @@ public:
 
 public:
 	void Load(const char* path);
-	void Draw();
-	void Fin();
+	void Draw() override;
+	void Fin() override;
 	UIBase* Clone() override;
 
 private:

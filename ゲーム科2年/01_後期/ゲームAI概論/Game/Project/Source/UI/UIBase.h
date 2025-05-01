@@ -10,7 +10,6 @@ public:
 
 public:
 	virtual void Init();
-	virtual void Load();
 	virtual void Step();
 	virtual void Update();
 	virtual void Draw();

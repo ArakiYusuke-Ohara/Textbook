@@ -10,6 +10,7 @@ class AIStrategyBase;
 class Block;
 class Item;
 class UIImage;
+class UIGauge;
 
 class PlayerBase
 {
@@ -60,13 +61,14 @@ protected:
 	int m_PlayerNumber;
 	int m_Hp;
 	int m_InvisibleTimer;
-	int m_BulletInterval;
-	int m_BulletIntervalTime;
 	int m_Direction;
 	int m_AnimationIndex;
 	int m_AnimationTimer;
 	int m_UseBulletID;
 	int m_Stiffness;
+	float m_BulletInterval;
+	float m_BulletIntervalTime;
+	float m_BulletChargeSpeed;
 	float m_MoveSpeed;
 	float m_BulletSpeed;
 	VECTOR m_Pos;
@@ -75,4 +77,5 @@ protected:
 	CollisionAABB* m_CollisionAABB;
 	CollisionSphere* m_CollisionSphere;
 	UIImage** m_UIHP;
+	UIGauge* m_BulletChargeGauge;
 };

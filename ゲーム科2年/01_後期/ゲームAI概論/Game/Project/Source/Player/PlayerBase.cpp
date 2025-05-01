@@ -17,6 +17,7 @@
 #include "../Item/ItemParameter.h"
 #include "../UI/UIManager.h"
 #include "../UI/UIImage.h"
+#include "../UI/UIGauge.h"
 
 #define PLAYER_WIDTH 40
 #define PLAYER_HEIGHT 40
@@ -28,8 +29,9 @@
 #define DAMAGE_INVISIBLE_TIME 240
 #define DEFAULT_MOVE_SPEED 1.0f
 #define MOVE_SPEED_MAX 3.0
-#define DEFAULT_BULLET_INTERVAL 180
-#define BULLET_INTERVAL_MIN 60
+#define BULLET_INTERVAL 180.0f
+#define DEFAULT_BULLET_CHARGE_SPEED 1.0f
+#define BULLET_CHARGE_SPEED_MAX 3.0f
 #define DEFAULT_BULLET_SPEED 1.0f
 #define BULLET_SPEED_MAX 2.0f
 #define PLAYER_HP 3
@@ -80,21 +82,25 @@ PlayerBase::PlayerBase()
 	m_Handle = 0;
 	m_Hp = 0;
 	m_InvisibleTimer = 0;
-	m_BulletInterval = 0;
-	m_BulletIntervalTime = 0;
 	m_PlayerNumber = 0;
 	m_Direction = 0;
 	m_AnimationIndex = 0;
 	m_AnimationTimer = 0;
 	m_UseBulletID = 0;
 	m_Stiffness = 0;
+	m_BulletInterval = 0.0f;
+	m_BulletIntervalTime = 0.0f;
 	m_MoveSpeed = 0.0f;
 	m_BulletSpeed = 0.0f;
+	m_BulletChargeSpeed = 0.0f;
 	m_Pos = VGet(0.0f, 0.0f, 0.0f);
 	m_OldPos = VGet(0.0f, 0.0f, 0.0f);
 	m_Move = VGet(0.0f, 0.0f, 0.0f);
 	m_CollisionAABB = nullptr;
 	m_CollisionSphere = nullptr;
+	m_BulletChargeGauge = nullptr;
+	m_UIHP = nullptr;
+	m_BulletChargeGauge = nullptr;
 }
 
 // デストラクタ
@@ -115,6 +121,7 @@ void PlayerBase::Init()
 	// UIを生成
 	m_UIHP = new UIImage* [PLAYER_HP];
 	m_UIHP[0] = UIManager::GetInstance()->CreateUI<UIImage>();
+	m_BulletChargeGauge = UIManager::GetInstance()->CreateUI<UIGauge>();	
 }
 
 // ロード
@@ -154,8 +161,9 @@ void PlayerBase::Start()
 	m_CollisionSphere = sphere;
 
 	// 通常弾のインターバル
-	m_BulletInterval = 0;
-	m_BulletIntervalTime = DEFAULT_BULLET_INTERVAL;
+	m_BulletInterval = 0.0f;
+	m_BulletIntervalTime = BULLET_INTERVAL;
+	m_BulletChargeSpeed = DEFAULT_BULLET_CHARGE_SPEED;
 
 	// HP
 	m_Hp = PLAYER_HP;
@@ -178,12 +186,15 @@ void PlayerBase::Step()
 	m_OldPos = m_Pos;
 
 	// バレットインターバール
-	if (m_BulletInterval > 0) m_BulletInterval--;
+	if (m_BulletInterval > 0.0f) m_BulletInterval -= m_BulletChargeSpeed;
+	if (m_BulletInterval < 0.0f) m_BulletInterval = 0.0f;
 	// 硬直
 	if (m_Stiffness > 0)m_Stiffness--;
 	// 無敵時間
 	if (m_InvisibleTimer > 0)m_InvisibleTimer--;
 
+	// ゲージ更新
+	m_BulletChargeGauge->SetValue(m_BulletIntervalTime - m_BulletInterval);
 }
 
 // 更新
@@ -351,8 +362,8 @@ void PlayerBase::HitItem(Item* item)
 		break;
 
 	case ITEM_ID_BULLET_RAPID_UP:
-		m_BulletIntervalTime -= (int)(itemParam->value);
-		if (m_BulletIntervalTime < BULLET_INTERVAL_MIN) m_BulletIntervalTime = BULLET_INTERVAL_MIN;
+		m_BulletChargeSpeed += itemParam->value;
+		if (m_BulletChargeSpeed > BULLET_CHARGE_SPEED_MAX) m_BulletChargeSpeed = BULLET_CHARGE_SPEED_MAX;
 		break;
 
 	case ITEM_ID_BULLET_SPEED_UP:
@@ -398,6 +409,7 @@ void PlayerBase::SetDirectionForMove()
 void PlayerBase::LoadUI()
 {
 	m_UIHP[0]->Load("Data/Play/UI/Heart.png");
+	m_BulletChargeGauge->Load("Data/Play/UI/BulletGaugeFrame.png", "Data/Play/UI/BulletGauge.png");
 }
 
 void PlayerBase::LocateUI()
@@ -418,4 +430,14 @@ void PlayerBase::LocateUI()
 		pos.x += m_UIHP[0]->GetWidth();
 		m_UIHP[i]->SetPos(pos);
 	}
+
+	const VECTOR BULLET_CHARGE_GAUGE_POS[2] = {
+		{20.0f, 200.0f, 0.0f},
+		{1300.0f, 200.0f, 0.0f},
+	};
+
+	pos = BULLET_CHARGE_GAUGE_POS[m_PlayerNumber];
+	m_BulletChargeGauge->SetPos(pos);
+	m_BulletChargeGauge->SetGaugePos(VGet(3.0f, 3.0f, 0.0f));
+	m_BulletChargeGauge->SetMaxValue(m_BulletIntervalTime);
 }
