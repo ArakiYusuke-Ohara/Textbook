@@ -1,6 +1,7 @@
 #pragma once
 #include "SceneBase.h"
 #include "SceneParameter.h"
+#include <vector>
 
 
 class SceneManager
@@ -20,6 +21,7 @@ public:
 	void Fin();
 
 	void ChangeScene(SceneType type);
+	void AddScene(SceneType type);
 
 
 // ˆÈ‰º‚ÌŠÖ”‚ÍŠO•”‚©‚çŒÄ‚Ô‚±‚Æ‚Í‚È‚¢‚Ì‚Åprivate
@@ -30,13 +32,14 @@ private:
 	void LoopScene();
 	void FinScene();
 
-	void CreateScene(SceneType type);
+	SceneBase* CreateScene(SceneType type);
+	void ClearScene();
 
 private:
 	static SceneManager* m_Instance;
 
 	// Œ»İ“®‚¢‚Ä‚¢‚éƒV[ƒ“
-	SceneBase* m_NowScene;
+	std::vector<SceneBase*> m_Scenes;
 
 	// Œ»İ‚Ìó‘Ô
 	SceneState m_State;

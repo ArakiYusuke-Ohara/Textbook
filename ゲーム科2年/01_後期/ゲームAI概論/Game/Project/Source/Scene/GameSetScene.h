@@ -3,11 +3,11 @@
 
 class UIImage;
 
-class PlayScene : public SceneBase
+class GameSetScene : public SceneBase
 {
 public:
-	PlayScene();
-	~PlayScene();
+	GameSetScene();
+	~GameSetScene();
 
 public:
 	void Init() override;
@@ -17,10 +17,4 @@ public:
 	void Update() override;
 	void Draw() override;
 	void Fin() override;
-
-private:
-	bool IsGameSet();
-
-private:
-	UIImage* m_UIBG;
 };

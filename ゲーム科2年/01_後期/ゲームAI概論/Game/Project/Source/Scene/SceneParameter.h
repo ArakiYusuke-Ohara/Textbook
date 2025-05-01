@@ -15,6 +15,7 @@ enum SceneType
 {
 	TITLE,
 	PLAY,
+	GAME_SET,
 	SCENE_TYPE_NONE = -1
 };
 

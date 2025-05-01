@@ -34,7 +34,7 @@
 #define BULLET_CHARGE_SPEED_MAX 3.0f
 #define DEFAULT_BULLET_SPEED 1.0f
 #define BULLET_SPEED_MAX 2.0f
-#define PLAYER_HP 3
+#define PLAYER_HP 1
 
 const VECTOR BULLET_FIRE_DIR[] =
 {
@@ -462,5 +462,11 @@ void PlayerBase::Damage(int damage)
 	for (int i = (prevHP - 1); i >= m_HP; i--)
 	{
 		m_UIHP[i]->SetHide(true);
+	}
+
+	// Ž€–S”»’è
+	if (m_HP <= 0)
+	{
+		m_Active = false;
 	}
 }

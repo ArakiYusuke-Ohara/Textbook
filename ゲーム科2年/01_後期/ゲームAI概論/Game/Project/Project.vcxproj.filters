@@ -177,6 +177,9 @@
     <ClCompile Include="Source\UI\UIManager.cpp">
       <Filter>Source\UI</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Scene\GameSetScene.cpp">
+      <Filter>Source\Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\AI\AIManager.h">
@@ -331,6 +334,9 @@
     </ClInclude>
     <ClInclude Include="Source\UI\UIParameter.h">
       <Filter>Source\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene\GameSetScene.h">
+      <Filter>Source\Scene</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -14,10 +14,11 @@
 #include "../Bullet/BulletManager.h"
 #include "../Item/ItemManager.h"
 #include "../UI/UIManager.h"
+#include "../UI/UIImage.h"
 
 PlayScene::PlayScene() : SceneBase()
 {
-	m_BGHandle = 0;
+	m_UIBG = nullptr;
 }
 
 PlayScene::~PlayScene()
@@ -26,6 +27,9 @@ PlayScene::~PlayScene()
 
 void PlayScene::Init()
 {
+	// 背景画像生成
+	m_UIBG = UIManager::GetInstance()->CreateUI<UIImage>();
+
 	// コリジョンマネージャー生成
 	CollisionManager::CreateInstance();
 
@@ -83,7 +87,8 @@ void PlayScene::Load()
 	// アイテムをロード
 	ItemManager::GetInstance()->Load();
 
-	m_BGHandle = LoadGraph("Data/Play/BG/BG.png");
+	// 背景をロード
+	m_UIBG->Load("Data/Play/BG/BG.png");
 }
 
 void PlayScene::Start()
@@ -97,16 +102,26 @@ void PlayScene::Start()
 
 void PlayScene::Step()
 {
-	// UIステップ
-	UIManager::GetInstance()->Step();
-	// プレイヤーステップ
-	PlayerManager::GetInstance()->Step();
-	// バレットステップ
-	BulletManager::GetInstance()->Step();
-	// アイテムステップ
-	ItemManager::GetInstance()->Step();
-	// 当たり判定
-	CollisionManager::GetInstance()->CheckCollision();
+	// 決着がついてない
+	if (!IsGameSet())
+	{
+		// UIステップ
+		UIManager::GetInstance()->Step();
+		// プレイヤーステップ
+		PlayerManager::GetInstance()->Step();
+		// バレットステップ
+		BulletManager::GetInstance()->Step();
+		// アイテムステップ
+		ItemManager::GetInstance()->Step();
+		// 当たり判定
+		CollisionManager::GetInstance()->CheckCollision();
+		// 決着がついたか
+		if (IsGameSet())
+		{
+			// 決着シーンを上に乗せる
+			SceneManager::GetInstance()->AddScene(GAME_SET);
+		}
+	}
 }
 
 void PlayScene::Update()
@@ -121,8 +136,6 @@ void PlayScene::Update()
 
 void PlayScene::Draw()
 {
-	// 背景を描画
-	DrawGraph(0, 0, m_BGHandle, TRUE);
 	// UIを描画
 	UIManager::GetInstance()->Draw();
 	// ステージを描画
@@ -164,4 +177,25 @@ void PlayScene::Fin()
 
 	// UI削除
 	UIManager::GetInstance()->ClearUI();
+}
+
+bool PlayScene::IsGameSet()
+{
+	int activeCount = 0;
+	auto players = PlayerManager::GetInstance()->GetPlayers();
+	for (Player* player : players)
+	{
+		if (player->IsActive())
+		{
+			activeCount++;
+		}
+
+		// ２体以上生きていれば決着はついてない
+		if (activeCount >= 2)
+		{
+			return false;
+		}
+	}
+
+	return true;
 }

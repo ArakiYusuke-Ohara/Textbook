@@ -49,6 +49,7 @@
     <ClCompile Include="Source\Player\Player.cpp" />
     <ClCompile Include="Source\Player\PlayerBase.cpp" />
     <ClCompile Include="Source\Player\PlayerManager.cpp" />
+    <ClCompile Include="Source\Scene\GameSetScene.cpp" />
     <ClCompile Include="Source\Scene\PlayScene.cpp" />
     <ClCompile Include="Source\Scene\SceneBase.cpp" />
     <ClCompile Include="Source\Scene\SceneManager.cpp" />
@@ -98,6 +99,7 @@
     <ClInclude Include="Source\Player\PlayerBase.h" />
     <ClInclude Include="Source\Player\PlayerManager.h" />
     <ClInclude Include="Source\Player\PlayerParameter.h" />
+    <ClInclude Include="Source\Scene\GameSetScene.h" />
     <ClInclude Include="Source\Scene\PlayScene.h" />
     <ClInclude Include="Source\Scene\SceneBase.h" />
     <ClInclude Include="Source\Scene\SceneManager.h" />
