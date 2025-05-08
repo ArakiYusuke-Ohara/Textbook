@@ -55,6 +55,9 @@
     <Filter Include="Source\UI">
       <UniqueIdentifier>{e8f5d69e-4b32-4433-a650-333d55946b4c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Effect">
+      <UniqueIdentifier>{98dbd87c-4ea0-42bc-aff4-f1482e248832}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -179,6 +182,12 @@
     </ClCompile>
     <ClCompile Include="Source\Scene\GameSetScene.cpp">
       <Filter>Source\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Effect\SpriteAnimation.cpp">
+      <Filter>Source\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Effect\SpriteAnimationManager.cpp">
+      <Filter>Source\Effect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -337,6 +346,15 @@
     </ClInclude>
     <ClInclude Include="Source\Scene\GameSetScene.h">
       <Filter>Source\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Effect\SpriteAnimation.h">
+      <Filter>Source\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Effect\SpriteAnimationManager.h">
+      <Filter>Source\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Effect\EffectParameter.h">
+      <Filter>Source\Effect</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

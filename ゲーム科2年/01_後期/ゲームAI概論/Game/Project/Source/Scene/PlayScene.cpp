@@ -102,7 +102,7 @@ void PlayScene::Start()
 
 void PlayScene::Step()
 {
-	// 決着がついてない
+	// まだ決着がついてない
 	if (!IsGameSet())
 	{
 		// UIステップ
