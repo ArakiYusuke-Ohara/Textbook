@@ -15,11 +15,11 @@ struct ItemParameter
 {
 	int id;
 	float value;
-	const char* path;
+	int animID;
 };
 
 const ItemParameter ITEM_MASTER_PARAM[ITEM_ID_MAX] = {
-	{ITEM_ID_PLAYER_SPEED_UP,	1.0f,	"Data/Item/SpeedUp.png"},
-	{ITEM_ID_BULLET_RAPID_UP,	0.5f,	"Data/Item/BulletRapidUp.png"},
-	{ITEM_ID_BULLET_SPEED_UP,	0.5f,	"Data/Item/BulletSpeedUp.png"},
+	{ITEM_ID_PLAYER_SPEED_UP,	1.0f,	0},
+	{ITEM_ID_BULLET_RAPID_UP,	0.5f,	1},
+	{ITEM_ID_BULLET_SPEED_UP,	0.5f,	2},
 };

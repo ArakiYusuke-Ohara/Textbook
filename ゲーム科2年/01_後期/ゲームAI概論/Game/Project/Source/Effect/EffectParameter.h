@@ -3,7 +3,9 @@
 enum class SpriteAnimationType
 {
 	NONE = -1,
-	BULLET_HIT,
+	ITEM_SPEED_UP,
+	ITEM_RAPID_UP,
+	ITEM_BULLET_SPEED_UP,
 	MAX
 };
 
@@ -17,5 +19,7 @@ struct SpriteAnimationParam
 
 const SpriteAnimationParam SPRITE_ANIM_MASTER_PARAM[] =
 {
-	{ "Data/", 6, 40, 40 },
+	{ "Data/Play/Item/SpeedUp.png", 4, 40, 40 },
+	{ "Data/Play/Item/BulletRapidUp.png", 4, 40, 40 },
+	{ "Data/Play/Item/BulletSpeedUp.png", 4, 40, 40 },
 };

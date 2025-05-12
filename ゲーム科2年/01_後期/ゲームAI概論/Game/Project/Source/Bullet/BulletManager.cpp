@@ -14,10 +14,13 @@ BulletManager* BulletManager::m_Instance = nullptr;
 
 BulletManager::BulletManager()
 {
+	m_OriginalBullets = {};
+	m_Bullets = {};
 }
 
 BulletManager::~BulletManager()
 {
+	Fin();
 }
 
 void BulletManager::Load()
