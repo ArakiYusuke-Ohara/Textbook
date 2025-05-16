@@ -15,6 +15,7 @@
 #include "../Item/ItemManager.h"
 #include "../UI/UIManager.h"
 #include "../UI/UIImage.h"
+#include "../Effect/SpriteAnimationManager.h"
 
 PlayScene::PlayScene() : SceneBase()
 {
@@ -68,6 +69,9 @@ void PlayScene::Init()
 	// アイテムマネージャー生成と初期化
 	ItemManager::CreateInstance();
 	ItemManager::GetInstance()->Init();
+
+	// スプライトアニメーション管理生成
+	SpriteAnimationManager::CreateInstance();
 }
 
 void PlayScene::Load()
@@ -86,6 +90,9 @@ void PlayScene::Load()
 
 	// アイテムをロード
 	ItemManager::GetInstance()->Load();
+
+	// スプライトアニメーションをロード
+	SpriteAnimationManager::GetInstance()->Load();
 
 	// 背景をロード
 	m_UIBG->Load("Data/Play/BG/BG.png");
@@ -122,6 +129,9 @@ void PlayScene::Step()
 			SceneManager::GetInstance()->AddScene(GAME_SET);
 		}
 	}
+
+	// スプライトアニメーションは決着後も動いていい
+	SpriteAnimationManager::GetInstance()->Step();
 }
 
 void PlayScene::Update()
@@ -144,6 +154,8 @@ void PlayScene::Draw()
 	BlockManager::GetInstance()->Draw();
 	// アイテムを描画
 	ItemManager::GetInstance()->Draw();
+	// スプライトアニメーション描画
+	SpriteAnimationManager::GetInstance()->Draw();
 	// プレイヤー描画
 	PlayerManager::GetInstance()->Draw();
 	// バレット描画
@@ -174,6 +186,9 @@ void PlayScene::Fin()
 
 	// アイテム削除
 	ItemManager::DeleteInstance();
+
+	// スプライトアニメーション削除
+	SpriteAnimationManager::DeleteInstance();
 
 	// UI削除
 	UIManager::GetInstance()->ClearUI();

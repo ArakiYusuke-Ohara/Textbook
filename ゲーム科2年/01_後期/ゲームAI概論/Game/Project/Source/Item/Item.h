@@ -4,6 +4,7 @@
 #include "ItemParameter.h"
 
 class CollisionAABB;
+class SpriteAnimation;
 
 class Item
 {
@@ -33,10 +34,13 @@ public:
 	void SetParam(const ItemParameter* param) { m_Param = param; }
 
 private:
+	void Destroy();
+
+private:
 	bool m_Active;
 	int m_Life;
-	int m_Handle;
 	VECTOR m_Pos;
 	const ItemParameter* m_Param;
 	CollisionAABB* m_CollisionAABB;
+	SpriteAnimation* m_SpriteAnim;
 };

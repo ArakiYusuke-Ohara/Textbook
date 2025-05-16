@@ -2,6 +2,8 @@
 #include "../Stage/StageManager.h"
 #include "../Collision/CollisionManager.h"
 #include "../Collision/CollisionAABB.h"
+#include "../Effect/SpriteAnimationManager.h"
+#include "../Effect/SpriteAnimation.h"
 
 #define ITEM_LIFE 480
 #define BLINK_TIME 180
@@ -10,10 +12,10 @@ Item::Item()
 {
 	m_Active = false;
 	m_Life = 0;
-	m_Handle = 0;
 	m_Pos = {};
 	m_Param = nullptr;
 	m_CollisionAABB = nullptr;
+	m_SpriteAnim = nullptr;
 }
 
 Item::~Item()
@@ -28,10 +30,6 @@ void Item::Init()
 
 void Item::Load()
 {
-	if (m_Param)
-	{
-		m_Handle = LoadGraph(m_Param->path);
-	}
 }
 
 void Item::Step()
@@ -41,12 +39,15 @@ void Item::Step()
 	// õ–½ˆ—
 	if (m_Life <= 0)
 	{
-		m_Active = false;
+		Destroy();
 	}
 	else
 	{
 		m_Life--;
 	}
+
+	// ˆÊ’u’Ç]
+	m_SpriteAnim->SetPos(m_Pos);
 }
 
 void Item::Update()
@@ -58,7 +59,13 @@ void Item::Draw()
 {
 	if (!m_Active) return;
 
-#ifdef _DEBUG
+	// õ–½‚ªØ‚ê‚»‚¤‚È‚ç“_–Å
+	if (m_Life <= BLINK_TIME && m_Life % 4 == 0)
+	{
+		m_SpriteAnim->SetHide(!m_SpriteAnim->IsHide());
+	}
+
+#if 0
 	int color = 0;
 	switch (m_Param->id)
 	{
@@ -91,18 +98,19 @@ void Item::Draw()
 
 void Item::Fin()
 {
-	DeleteGraph(m_Handle);
+
 }
 
 void Item::Spawn()
 {
 	m_Active = true;
 	m_Life = ITEM_LIFE;
+	m_SpriteAnim = SpriteAnimationManager::GetInstance()->Play(m_Param->animID, m_Pos, 5, true);
 }
 
 void Item::HitPlayer()
 {
-	m_Active = false;
+	Destroy();
 }
 
 Item* Item::Clone()
@@ -117,4 +125,10 @@ Item* Item::Clone()
 	clone->m_CollisionAABB = aabb;
 
 	return clone;
+}
+
+void Item::Destroy()
+{
+	m_Active = false;
+	m_SpriteAnim->SetActive(false);
 }

@@ -14,6 +14,7 @@ SpriteAnimationManager::~SpriteAnimationManager()
 
 void SpriteAnimationManager::Load()
 {
+	// シーンごとに使う分だけロードとかしたいなぁ
 	const int MAX = static_cast<int>(SpriteAnimationType::MAX);
 	int* nowPtr = m_Handles = new int[MAX];
 	const SpriteAnimationParam* param = SPRITE_ANIM_MASTER_PARAM;
@@ -58,24 +59,21 @@ void SpriteAnimationManager::Fin()
 	m_Animations.shrink_to_fit();
 }
 
-SpriteAnimation* SpriteAnimationManager::Play(SpriteAnimationType type, VECTOR pos, int interval)
+SpriteAnimation* SpriteAnimationManager::Play(int id, VECTOR pos, int interval, bool loop)
 {
 	// 未使用があれば使いまわす
 	for (SpriteAnimation* anim : m_Animations)
 	{
 		if (!anim->IsActive())
 		{
-			static int index = static_cast<int>(type);
-			anim->Setup(m_Handles[index], &SPRITE_ANIM_MASTER_PARAM[index], pos, interval);
-
+			anim->Setup(m_Handles[id], &SPRITE_ANIM_MASTER_PARAM[id], pos, interval, loop);
 			return anim;
 		}
 	}
 
 	// 未使用がなければ新しく作る
 	SpriteAnimation* anim = new SpriteAnimation;
-	static int index = static_cast<int>(type);
-	anim->Setup(m_Handles[index], &SPRITE_ANIM_MASTER_PARAM[index], pos, interval);
+	anim->Setup(m_Handles[id], &SPRITE_ANIM_MASTER_PARAM[id], pos, interval, loop);
 
 	m_Animations.push_back(anim);
 

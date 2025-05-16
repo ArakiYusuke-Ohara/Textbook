@@ -19,7 +19,7 @@ public:
 	void Fin();
 
 public:
-	SpriteAnimation* Play(SpriteAnimationType type, VECTOR pos, int interval);
+	SpriteAnimation* Play(int id, VECTOR pos, int interval, bool loop = false);
 
 private:
 	std::vector<SpriteAnimation*> m_Animations;

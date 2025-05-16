@@ -44,13 +44,13 @@ void ItemManager::Load()
 
 void ItemManager::Step()
 {
+	// アイテムスポーン処理
+	SpawnItem();
+
 	for (Item* item : m_Items)
 	{
 		item->Step();
 	}
-
-	// アイテムスポーン処理
-	SpawnItem();
 }
 
 void ItemManager::Update()
@@ -96,16 +96,16 @@ Item* ItemManager::CreateItem(int id)
 	{
 		if (!item->IsActive())
 		{
-			item->Spawn();
 			item->SetParam(&ITEM_MASTER_PARAM[id]);
+			item->Spawn();
 			return item;
 		}
 	}
 
 	// 未使用がなかったら新しく作る
 	Item* item = m_Originals[id]->Clone();
-	item->Spawn();
 	item->SetParam(&ITEM_MASTER_PARAM[id]);
+	item->Spawn();
 	m_Items.push_back(item);
 
 	return item;

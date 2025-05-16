@@ -3,6 +3,8 @@
 SpriteAnimation::SpriteAnimation()
 {
 	m_Active = false;
+	m_Hide = false;
+	m_Loop = false;
 	m_Handle = 0;
 	m_NowFrame = 0;
 	m_Timer = 0;
@@ -30,10 +32,17 @@ void SpriteAnimation::Step()
 		// 全コマ表示し終わったら非アクティブ
 		if (m_NowFrame >= m_Param->frameNum)
 		{
-			m_Active = false;
-
-			// これ以上処理する必要なし
-			return;
+			// ループするかどうか
+			if (m_Loop)
+			{
+				m_NowFrame = 0;
+			}
+			else
+			{
+				m_Active = false;
+				// これ以上処理する必要なし
+				return;
+			}
 		}
 	}
 
@@ -43,6 +52,7 @@ void SpriteAnimation::Step()
 void SpriteAnimation::Draw()
 {
 	if (!m_Active)return;
+	if (m_Hide) return;
 
 	// コマの切り取り位置計算（横１行の画像の想定）
 	int frameX = m_Param->frameWidth * m_NowFrame;
@@ -52,9 +62,10 @@ void SpriteAnimation::Draw()
 
 }
 
-void SpriteAnimation::Setup(int handle, const SpriteAnimationParam* param, VECTOR pos, int interval)
+void SpriteAnimation::Setup(int handle, const SpriteAnimationParam* param, VECTOR pos, int interval, bool loop)
 {
 	m_Active = true;
+	m_Loop = loop;
 	m_Handle = handle;
 	m_NowFrame = 0;
 	m_Param = param;
