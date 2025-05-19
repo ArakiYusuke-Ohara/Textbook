@@ -22,7 +22,7 @@
 #define PLAYER_WIDTH 40
 #define PLAYER_HEIGHT 40
 #define PLAYER_ANIM_GRAPH_NUM 4
-#define PLAYER_CHANGE_ANIM_TIME 3
+#define PLAYER_CHANGE_ANIM_TIME 5
 #define PLAYER_CHANGE_DIR_MOVE_DISTANCE 0.1f
 #define BLOCK_PUSH_OFFSET 0.1f
 #define ATTACK_STIFFNESS 40
@@ -57,6 +57,8 @@ const VECTOR DEFAULT_POS[] =
 {
 	{40.0f, 40.0f, 0.0f},
 	{560.0f, 40.0f, 0.0f},
+	{40.0f, 320.0f, 0.0f},
+	{560.0f, 320.0f, 0.0f},
 };
 
 const CollisionTag COLLISION_TAG[] =
@@ -422,9 +424,11 @@ void PlayerBase::LoadUI()
 void PlayerBase::LocateUI()
 {
 	// １個目のハートの座標
-	const VECTOR HP_POS[2] = {
+	const VECTOR HP_POS[] = {
 		{20.0f, 90.0f, 0.0f},
 		{1480.0f, 90.0f, 0.0f},
+		{20.0f, 720.0f, 0.0f},
+		{1480.0f, 720.0f, 0.0f},
 	};
 
 	// 1個目のハートを配置
@@ -441,9 +445,11 @@ void PlayerBase::LocateUI()
 		m_UIHP[i]->SetPos(pos);
 	}
 
-	const VECTOR BULLET_CHARGE_GAUGE_POS[2] = {
-		{20.0f, 200.0f, 0.0f},
-		{1300.0f, 200.0f, 0.0f},
+	const VECTOR BULLET_CHARGE_GAUGE_POS[] = {
+		{20.0f, 190.0f, 0.0f},
+		{1300.0f, 190.0f, 0.0f},
+		{20.0f, 680, 0.0f},
+		{1300.0f, 680, 0.0f},
 	};
 
 	pos = BULLET_CHARGE_GAUGE_POS[m_PlayerNumber];

@@ -44,17 +44,21 @@ void PlayScene::Init()
 	// 操作プレイヤーを1Pとして生成
 	playerManager->CreatePlayer(0);
 
-	// CPUを2Pとして生成
-	AIPlayer* cpuPlayer = playerManager->CreateAIPlayer(1);
 	// AIマネージャーを生成
 	AIManager::CreateInstance();
 	AIManager* aiManager = AIManager::GetInstance();
-	// CPU用のAIを生成と設定
-	AIPlayCPU* ai = aiManager->CreateAI<AIPlayCPU>();
-	ai->SetAwayDistance(200.0f);
-	ai->SetOwner(cpuPlayer);
-	// CPUのAIにセット
-	cpuPlayer->SetAIStrategy(ai);
+
+	// CPUを2P～4Pとして生成
+	for (int i = 1; i <= 3; i++)
+	{
+		AIPlayer* cpuPlayer = playerManager->CreateAIPlayer(i);
+		// CPU用のAIを生成と設定
+		AIPlayCPU* ai = aiManager->CreateAI<AIPlayCPU>();
+		ai->SetAwayDistance(200.0f);
+		ai->SetOwner(cpuPlayer);
+		// CPUのAIにセット
+		cpuPlayer->SetAIStrategy(ai);
+	}
 
 	// ステージマネージャーを生成
 	StageManager::CreateInstance();

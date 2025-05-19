@@ -64,36 +64,6 @@ void Item::Draw()
 	{
 		m_SpriteAnim->SetHide(!m_SpriteAnim->IsHide());
 	}
-
-#if 0
-	int color = 0;
-	switch (m_Param->id)
-	{
-	case ITEM_ID_PLAYER_SPEED_UP:
-		color = GetColor(0, 0, 255);
-		break;
-	case ITEM_ID_BULLET_RAPID_UP:
-		color = GetColor(0, 255, 0);
-		break;
-	case ITEM_ID_BULLET_SPEED_UP:
-		color = GetColor(255, 0, 0);
-		break;
-	}
-
-	// éıñΩÇ™êÿÇÍÇªÇ§Ç»ÇÁì_ñ≈
-	if (m_Life <= BLINK_TIME)
-	{
-		if (m_Life % 4 == 0)
-		{
-			DrawBox((int)m_Pos.x, (int)m_Pos.y, (int)(m_Pos.x + ITEM_WIDTH), (int)(m_Pos.y + ITEM_HEIGHT), color, TRUE);
-		}
-	}
-	// í èÌï`âÊ
-	else
-	{
-		DrawBox((int)m_Pos.x, (int)m_Pos.y, (int)(m_Pos.x + ITEM_WIDTH), (int)(m_Pos.y + ITEM_HEIGHT), color, TRUE);
-	}
-#endif
 }
 
 void Item::Fin()
