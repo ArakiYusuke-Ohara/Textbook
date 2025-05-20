@@ -26,6 +26,8 @@ Player::~Player()
 // ステップ
 void Player::Step()
 {
+	if (!m_Active) return;
+
 	PlayerBase::Step();
 
 	// 移動入力

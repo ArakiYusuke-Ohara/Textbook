@@ -18,6 +18,8 @@ AIPlayer::AIPlayer()
 
 void AIPlayer::Step()
 {
+	if (!m_Active) return;
+
 	PlayerBase::Step();
 
 	// çdíºíÜÇÕâΩÇ‡ÇµÇ»Ç¢

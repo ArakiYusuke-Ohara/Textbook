@@ -55,6 +55,7 @@ private:
 	void LoadUI();
 	void LocateUI();
 	void Damage(int damage);
+	void StepDead();
 
 protected:
 	bool m_Active;

@@ -18,6 +18,8 @@
 #include "../UI/UIManager.h"
 #include "../UI/UIImage.h"
 #include "../UI/UIGauge.h"
+#include "../Effect/SpriteAnimationManager.h"
+#include "../Effect/EffectParameter.h"
 
 #define PLAYER_WIDTH 40
 #define PLAYER_HEIGHT 40
@@ -185,6 +187,8 @@ void PlayerBase::Start()
 // ステップ
 void PlayerBase::Step()
 {
+	if (!m_Active) return;
+
 	m_OldPos = m_Pos;
 
 	// バレットインターバール
@@ -202,12 +206,16 @@ void PlayerBase::Step()
 // 更新
 void PlayerBase::Update()
 {
+	if (!m_Active) return;
+
 	UpdateAnimation();
 }
 
 // 描画
 void PlayerBase::Draw()
 {
+	if (!m_Active) return;
+
 	// 無敵中は点滅
 	if (IsInvisible())
 	{
@@ -474,5 +482,8 @@ void PlayerBase::Damage(int damage)
 	if (m_HP <= 0)
 	{
 		m_Active = false;
+		// 死亡アニメーション
+		const int ANIM_ID[] = { PLAYER1_DEAD,PLAYER2_DEAD,PLAYER3_DEAD,PLAYER4_DEAD };
+		SpriteAnimationManager::GetInstance()->Play(ANIM_ID[m_PlayerNumber], m_Pos, 20);
 	}
 }
