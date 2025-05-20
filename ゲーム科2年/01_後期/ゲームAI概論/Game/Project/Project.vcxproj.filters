@@ -58,6 +58,9 @@
     <Filter Include="Source\Effect">
       <UniqueIdentifier>{98dbd87c-4ea0-42bc-aff4-f1482e248832}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Fade">
+      <UniqueIdentifier>{a0db8aaf-bbb3-499a-9cb8-93433b3c0a19}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -188,6 +191,9 @@
     </ClCompile>
     <ClCompile Include="Source\Effect\SpriteAnimationManager.cpp">
       <Filter>Source\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Fade\ScreenFade.cpp">
+      <Filter>Source\Fade</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -355,6 +361,9 @@
     </ClInclude>
     <ClInclude Include="Source\Effect\EffectParameter.h">
       <Filter>Source\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Fade\ScreenFade.h">
+      <Filter>Source\Fade</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

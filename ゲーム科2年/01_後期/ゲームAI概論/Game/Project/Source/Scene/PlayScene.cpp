@@ -16,6 +16,7 @@
 #include "../UI/UIManager.h"
 #include "../UI/UIImage.h"
 #include "../Effect/SpriteAnimationManager.h"
+#include "../Fade/ScreenFade.h"
 
 PlayScene::PlayScene() : SceneBase()
 {
@@ -109,6 +110,9 @@ void PlayScene::Start()
 
 	// ブロック開始
 	BlockManager::GetInstance()->Start();
+
+	// フェードイン
+	ScreenFade::FadeIn(8.0f);
 }
 
 void PlayScene::Step()

@@ -2,6 +2,7 @@
 #include "TitleScene.h"
 #include "PlayScene.h"
 #include "GameSetScene.h"
+#include "../Fade/ScreenFade.h"
 
 SceneManager* SceneManager::m_Instance = nullptr;
 
@@ -112,6 +113,10 @@ void SceneManager::LoopScene()
 		scene->Step();
 		scene->Update();
 		scene->Draw();
+
+		// 画面フェードは一番手前
+		ScreenFade::Step();
+		ScreenFade::Draw();
 	}
 }
 
