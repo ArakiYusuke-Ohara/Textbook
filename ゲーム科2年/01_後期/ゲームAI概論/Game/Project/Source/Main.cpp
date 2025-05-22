@@ -34,6 +34,9 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance, 
 	// 描画先を裏画面にする
 	SetDrawScreen(DX_SCREEN_BACK);
 
+	// UIマネージャー生成
+	UIManager::CreateInstance();
+
 	// シーンマネージャー生成
 	SceneManager::CreateInstance();
 	// シーン初期化
@@ -51,9 +54,6 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance, 
 
 	// 乱数システム初期化
 	MyRandom::Init();
-
-	// UIマネージャー生成
-	UIManager::CreateInstance();
 
 	// ゲームのメインループ
 	while (ProcessMessage() >= 0)

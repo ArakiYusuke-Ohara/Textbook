@@ -2,6 +2,7 @@
 #include "GameSetScene.h"
 #include "../Scene/SceneManager.h"
 #include "../Input/Input.h"
+#include "../Fade/ScreenFade.h"
 
 GameSetScene::GameSetScene() : SceneBase()
 {
@@ -25,10 +26,10 @@ void GameSetScene::Start()
 
 void GameSetScene::Step()
 {
-	// Zキーでプレイシーンへ
+	// Zキーで次のシーンへ
 	if (Input::IsTriggerKey(KEY_Z))
 	{
-		SceneManager::GetInstance()->ChangeScene(PLAY);
+		SceneManager::GetInstance()->ChangeScene(PLAY, 8.0f);
 	}
 }
 

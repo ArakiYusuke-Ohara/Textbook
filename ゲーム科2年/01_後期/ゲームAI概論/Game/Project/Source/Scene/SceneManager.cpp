@@ -11,6 +11,7 @@ SceneManager::SceneManager()
 	m_Scenes = {};
 	m_State = SCENE_STATE_NONE;
 	m_NextScene = SCENE_TYPE_NONE;
+	m_FadeOutSpeed = 0.0f;
 
 	for (int i = 0; i < SCENE_STATE_MAX; i++)
 	{
@@ -31,10 +32,10 @@ void SceneManager::Init()
 	m_StateFunc[START] = &SceneManager::StartScene;
 	m_StateFunc[LOOP] = &SceneManager::LoopScene;
 	m_StateFunc[FIN] = &SceneManager::FinScene;
+	m_StateFunc[FADE_WAIT] = &SceneManager::FadeWait;
 
 	// 最初のシーンを作成して初期化から開始
-	AddScene(PLAY);
-	m_State = INIT;
+	ChangeScene(PLAY);
 }
 
 void SceneManager::Update()
@@ -52,11 +53,26 @@ void SceneManager::Fin()
 /// 開いているシーンをすべて閉じて次のシーンへ遷移する
 /// </summary>
 /// <param name="type">遷移先のシーン</param>
-void SceneManager::ChangeScene(SceneType type)
+void SceneManager::ChangeScene(SceneType type, float fadeOutSpeed)
 {
-	// 次のシーンを設定して終了状態へ
+	// フェード中は切り替えられない
+	if (ScreenFade::IsFade()) return;
+
+	// 次のシーンを設定
 	m_NextScene = type;
-	m_State = FIN;
+
+	// フェードアウトがあるか
+	m_FadeOutSpeed = fadeOutSpeed;
+	if (m_FadeOutSpeed > 0.0f)
+	{
+		// フェードアウトして待ちへ
+		ScreenFade::FadeOut(m_FadeOutSpeed);
+		m_State = FADE_WAIT;
+	}
+	else
+	{
+		m_State = FIN;
+	}
 }
 
 /// <summary>
@@ -70,6 +86,11 @@ void SceneManager::AddScene(SceneType type)
 
 	// シーンを生成して追加
 	SceneBase* scene = CreateScene(type);
+
+	scene->Init();
+	scene->Load();
+	scene->Start();
+
 	m_Scenes.push_back(scene);
 }
 
@@ -122,6 +143,7 @@ void SceneManager::LoopScene()
 
 void SceneManager::FinScene()
 {
+	// シーンを全削除
 	ClearScene();
 
 	// 次のシーンを生成して配列に追加
@@ -130,6 +152,19 @@ void SceneManager::FinScene()
 
 	// 初期化状態に戻す
 	m_State = INIT;
+}
+
+void SceneManager::FadeWait()
+{
+	// フェード待ち中もループはする
+	LoopScene();
+
+	// フェードが終わったか
+	if (!ScreenFade::IsFade())
+	{
+		// 初期化状態に戻す
+		m_State = FIN;
+	}
 }
 
 SceneBase* SceneManager::CreateScene(SceneType type)

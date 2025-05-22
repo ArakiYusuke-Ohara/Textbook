@@ -17,14 +17,4 @@ public:
 	void Update() override;
 	void Draw() override;
 	void Fin() override;
-
-private:
-	enum State
-	{
-		WAIT,
-		DISPLAY_WIN,
-	};
-
-private:
-	int m_WaitTimer;
 };

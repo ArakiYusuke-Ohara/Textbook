@@ -7,6 +7,7 @@ enum SceneState
 	START,
 	LOOP,
 	FIN,
+	FADE_WAIT,
 	SCENE_STATE_MAX,
 	SCENE_STATE_NONE = -1
 };
