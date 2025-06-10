@@ -5,7 +5,7 @@
 #include "../Collision/CollisionManager.h"
 #include "../Collision/CollisionSphere.h"
 #include "../Collision/CollisionAABB.h"
-#include "../MyEffekseer/EffekseerManager.h"
+#include "../Effect/SpriteAnimationManager.h"
 
 BulletBase::BulletBase()
 {
@@ -81,6 +81,9 @@ void BulletBase::Dead()
 {
 	m_Active = false;
 	m_SphereCollision->SetActive(false);
+
+	// ヒットエフェクト（とりあえDeadでOK）
+	SpriteAnimationManager::GetInstance()->Play(m_Param->hitEffect, m_Pos, 1);
 }
 
 void BulletBase::HitPlayer()
