@@ -293,8 +293,8 @@ void PlayerHitSlopeBlockY(MapChipData mapChipData)
 	// プレイヤーが坂道上にいなければ何もしない
 	if (playerFootX < startX || playerFootX > endX) return;
 
-	// ① 傾きの値は「Xの増加量 / Yの増加量」
-	float a = (endX - startX) / (endY - startY);
+	// ① 傾きの値は「Yの増加量 / Xの増加量」
+	float a = (endY - startY) / (endX - startX);
 
 	// ② 始点の値と傾きの値を使って切片を計算する
 	float b = startY - a * startX;

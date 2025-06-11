@@ -50,7 +50,7 @@ void PlayScene::Init()
 	AIManager* aiManager = AIManager::GetInstance();
 
 	// CPU‚ğ2P`4P‚Æ‚µ‚Ä¶¬
-	for (int i = 1; i <= 1; i++)
+	for (int i = 1; i <= 3; i++)
 	{
 		AIPlayer* cpuPlayer = playerManager->CreateAIPlayer(i);
 		// CPU—p‚ÌAI‚ğ¶¬‚Æİ’è

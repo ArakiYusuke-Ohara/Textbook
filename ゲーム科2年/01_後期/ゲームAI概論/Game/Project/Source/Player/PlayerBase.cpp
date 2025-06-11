@@ -36,7 +36,7 @@
 #define BULLET_CHARGE_SPEED_MAX 3.0f
 #define DEFAULT_BULLET_SPEED 1.0f
 #define BULLET_SPEED_MAX 2.0f
-#define PLAYER_HP 1
+#define PLAYER_HP 3
 
 const VECTOR BULLET_FIRE_DIR[] =
 {
