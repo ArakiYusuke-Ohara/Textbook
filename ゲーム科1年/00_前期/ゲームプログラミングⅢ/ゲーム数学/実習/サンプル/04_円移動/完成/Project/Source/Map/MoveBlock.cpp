@@ -154,7 +154,7 @@ void UpdateCircleBlock()
 	// ‡B ŽOŠpŠÖ”‚É“n‚·Šp“x‚ð‰ÁŽZ
 	g_MoveBlockData.circleAngle += MOVE_BLOCK_CIRCLE_SPEED;
 
-	// ‡B Šp“x‚Í0`2ƒÎ‚Ì”ÍˆÍ‚ÉŽû‚ß‚é
+	// ‡C Šp“x‚Í0`2ƒÎ‚Ì”ÍˆÍ‚ÉŽû‚ß‚é
 	if (g_MoveBlockData.circleAngle > DX_TWO_PI_F)
 	{
 		g_MoveBlockData.circleAngle -= DX_TWO_PI_F;
