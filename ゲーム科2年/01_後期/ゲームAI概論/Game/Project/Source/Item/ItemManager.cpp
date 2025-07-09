@@ -1,8 +1,9 @@
-#include "ItemManager.h"
+ï»¿#include "ItemManager.h"
 #include "Item.h"
 #include "../Block/BlockParameter.h"
 #include "../MyRandom/MyRandom.h"
 #include "../Stage/StageManager.h"
+#include "../MyMath/MyMath.h"
 
 #define SPAWN_INTERVAL 600
 #define SPAWN_NUM 2
@@ -21,7 +22,7 @@ ItemManager::~ItemManager()
 
 void ItemManager::Init()
 {
-	// ƒIƒŠƒWƒiƒ‹‚ğ¶¬
+	// ã‚ªãƒªã‚¸ãƒŠãƒ«ã‚’ç”Ÿæˆ
 	for (int i = 0; i < ITEM_ID_MAX; i++)
 	{
 		Item* item = new Item;
@@ -35,7 +36,7 @@ void ItemManager::Init()
 
 void ItemManager::Load()
 {
-	// ƒIƒŠƒWƒiƒ‹‚ğƒ[ƒh
+	// ã‚ªãƒªã‚¸ãƒŠãƒ«ã‚’ãƒ­ãƒ¼ãƒ‰
 	for (Item* item : m_Originals)
 	{
 		item->Load();
@@ -44,7 +45,7 @@ void ItemManager::Load()
 
 void ItemManager::Step()
 {
-	// ƒAƒCƒeƒ€ƒXƒ|[ƒ“ˆ—
+	// ã‚¢ã‚¤ãƒ†ãƒ ã‚¹ãƒãƒ¼ãƒ³å‡¦ç†
 	SpawnItem();
 
 	for (Item* item : m_Items)
@@ -71,7 +72,7 @@ void ItemManager::Draw()
 
 void ItemManager::Fin()
 {
-	// ƒIƒŠƒWƒiƒ‹‚ğíœ
+	// ã‚ªãƒªã‚¸ãƒŠãƒ«ã‚’å‰Šé™¤
 	for (Item* item : m_Originals)
 	{
 		delete item;
@@ -79,7 +80,7 @@ void ItemManager::Fin()
 	m_Originals.clear();
 	m_Originals.shrink_to_fit();
 
-	// ¶¬‚µ‚½ƒAƒCƒeƒ€‚ğíœ
+	// ç”Ÿæˆã—ãŸã‚¢ã‚¤ãƒ†ãƒ ã‚’å‰Šé™¤
 	for (Item* item : m_Items)
 	{
 		delete item;
@@ -91,7 +92,7 @@ void ItemManager::Fin()
 
 Item* ItemManager::CreateItem(int id)
 {
-	// –¢g—p‚ÌƒAƒCƒeƒ€‚ª‚ ‚Á‚½‚çg‚¢‚Ü‚í‚·
+	// æœªä½¿ç”¨ã®ã‚¢ã‚¤ãƒ†ãƒ ãŒã‚ã£ãŸã‚‰ä½¿ã„ã¾ã‚ã™
 	for (Item* item : m_Items)
 	{
 		if (!item->IsActive())
@@ -102,7 +103,7 @@ Item* ItemManager::CreateItem(int id)
 		}
 	}
 
-	// –¢g—p‚ª‚È‚©‚Á‚½‚çV‚µ‚­ì‚é
+	// æœªä½¿ç”¨ãŒãªã‹ã£ãŸã‚‰æ–°ã—ãä½œã‚‹
 	Item* item = m_Originals[id]->Clone();
 	item->SetParam(&ITEM_MASTER_PARAM[id]);
 	item->Spawn();
@@ -121,33 +122,33 @@ Item* ItemManager::CreateItem(int id, VECTOR pos)
 
 void ItemManager::SpawnItem()
 {
-	// ˆê’èŠÔ‚²‚Æ‚ÉƒXƒ|[ƒ“
+	// ä¸€å®šæ™‚é–“ã”ã¨ã«ã‚¹ãƒãƒ¼ãƒ³
 	if (m_SpawnTimer <= 0)
 	{
 		for (int i = 0; i < SPAWN_NUM; i++)
 		{
-			// ‚Ç‚ÌƒAƒCƒeƒ€‚©‚Íƒ‰ƒ“ƒ_ƒ€
+			// ã©ã®ã‚¢ã‚¤ãƒ†ãƒ ã‹ã¯ãƒ©ãƒ³ãƒ€ãƒ 
 			int id = MyRandom::GetRandom() % ITEM_ID_MAX;
 
-			// ƒuƒƒbƒN‚Ì‚ ‚éˆÊ’u‚É‚ÍoŒ»‚µ‚È‚¢‚æ‚¤‚É
+			// ãƒ–ãƒ­ãƒƒã‚¯ã®ã‚ã‚‹ä½ç½®ã«ã¯å‡ºç¾ã—ãªã„ã‚ˆã†ã«
 			int indexX = MyRandom::GetDistribution(1, BLOCK_MAP_COL - 2);
 			int indexY = MyRandom::GetDistribution(1, BLOCK_MAP_ROW - 2);
 
 			VECTOR pos = { (float)(ITEM_WIDTH * indexX), (float)(ITEM_HEIGHT * indexY), 0.0f };
 
-			// ƒXƒe[ƒWÀ•W‚©‚çƒ[ƒ‹ƒhÀ•W‚É•ÏŠ·
+			// ã‚¹ãƒ†ãƒ¼ã‚¸åº§æ¨™ã‹ã‚‰ãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™ã«å¤‰æ›
 			pos = StageManager::GetInstance()->ConvertStagePosToWorldPos(pos);
 
-			// ƒAƒCƒeƒ€¶¬
+			// ã‚¢ã‚¤ãƒ†ãƒ ç”Ÿæˆ
 			CreateItem(id, pos);
 		}
 
-		// ƒ^ƒCƒ}[ƒŠƒZƒbƒg
+		// ã‚¿ã‚¤ãƒãƒ¼ãƒªã‚»ãƒƒãƒˆ
 		m_SpawnTimer = SPAWN_INTERVAL;
 	}
 	else
 	{
-		// ƒ^ƒCƒ}[ƒJƒEƒ“ƒg
+		// ã‚¿ã‚¤ãƒãƒ¼ã‚«ã‚¦ãƒ³ãƒˆ
 		m_SpawnTimer--;
 	}
 }

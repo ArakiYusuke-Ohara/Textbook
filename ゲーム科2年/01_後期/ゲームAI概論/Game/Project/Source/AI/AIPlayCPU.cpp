@@ -1,39 +1,78 @@
-#include "AIPlayCPU.h"
+ï»¿#include "AIPlayCPU.h"
 #include "AIParameter.h"
 #include "../Player/Player.h"
+#include "../Player/PlayerManager.h"
 #include "../MyMath/MyMath.h"
+#include "../Item/Item.h"
+#include "../Item/ItemManager.h"
 
 AIPlayCPU::AIPlayCPU()
 {
 	m_AwayDistance = 0.0f;
 }
 
-// ‚±‚ÌŠÖ”‚ÉCPU‚Ì‚Æ‚és“®‚ğŒˆ’è‚·‚éˆ—‚ğ‘‚­
+// ã“ã®é–¢æ•°ã«CPUã®ã¨ã‚‹è¡Œå‹•ã‚’æ±ºå®šã™ã‚‹å‡¦ç†ã‚’æ›¸ã
 int AIPlayCPU::ThinkStrategy()
 {
-	// ƒI[ƒi[‚ª–³‚¢ê‡‚ÍŒˆ’è‚Å‚«‚È‚¢
+	// ã‚ªãƒ¼ãƒŠãƒ¼ãŒç„¡ã„å ´åˆã¯æ±ºå®šã§ããªã„
 	if (!m_Owner) return CPU_STRATEGY_NONE;
 
-	// ƒoƒŒƒbƒgƒCƒ“ƒ^[ƒoƒ‹’†‚Í—£‚ê‚é
+	// ãƒãƒ¬ãƒƒãƒˆã‚¤ãƒ³ã‚¿ãƒ¼ãƒãƒ«ä¸­ã¯é›¢ã‚Œã‚‹
 	if (m_Owner->IsBulletInterval())
 	{
 		return CPU_STRATEGY_AWAY;
 	}
 
-	// ƒ^[ƒQƒbƒg‚Ü‚Å‚Ì‹——£‚ğŒvZ
+	// ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã¾ã§ã®è·é›¢ã‚’è¨ˆç®—
 	VECTOR ownerPos = m_Owner->GetPos();
 	VECTOR targetVec = MyMath::VecCreate(ownerPos, m_Target);
 	float dist = MyMath::VecLong(targetVec);
-	// ˆê’è‹——£‹ß‚Ã‚¢‚½‚çUŒ‚
+	// ä¸€å®šè·é›¢è¿‘ã¥ã„ãŸã‚‰æ”»æ’ƒ
 	if (dist <= m_AwayDistance)
 	{
 		return CPU_STRATEGY_ATTACK;
 	}
 
-	// ‰½‚à‚·‚é‚±‚Æ‚ª‚È‚¯‚ê‚Î’ÇÕ
-	return CPU_STRATEGY_CHASE;
+	// ã“ã“ã¾ã§ã§ä½•ã‚‚ã™ã‚‹ã“ã¨ãŒãªã‘ã‚Œã°
+	// æœ€ã‚‚è¿‘ã„ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚’ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã¨ã—ã¦è¿½è·¡
+	PlayerBase* player = FindNearestPlayer();
+	if (player)
+	{
+		m_Target = player->GetPos();
+	}
+
+	return CPU_STRATEGY_CHASE_TARGET;
 }
 
 void AIPlayCPU::Draw()
 {
+}
+
+/// <summary>
+/// æœ€ã‚‚è¿‘ã„ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚’æ¢ã—ã¦è¿”ã™
+/// </summary>
+/// <returns>æœ€ã‚‚è¿‘ã„ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼</returns>
+PlayerBase* AIPlayCPU::FindNearestPlayer()
+{
+	Player* result = nullptr;
+	float min = FLT_MAX;
+	auto players = PlayerManager::GetInstance()->GetPlayers();
+
+	for (Player* player : players)
+	{
+		// è‡ªåˆ†è‡ªèº«ã¯ç„¡è¦–
+		if (player == m_Owner) continue;
+		// æ­»ã‚“ã§ã‚‹ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã¯ç„¡è¦–
+		if (!player->IsActive()) continue;
+
+		float dist = MyMath::GetDistance(m_Owner->GetPos(), player->GetPos());
+		if (dist < min)
+		{
+			result = player;
+			min = dist;
+		}
+	}
+
+	return result;
+
 }

@@ -1,4 +1,4 @@
-#include "DxLib.h"
+ï»¿#include "DxLib.h"
 #include "PlayScene.h"
 #include "../Scene/SceneManager.h"
 #include "../Input/Input.h"
@@ -29,176 +29,176 @@ PlayScene::~PlayScene()
 
 void PlayScene::Init()
 {
-	// ”wŒi‰æ‘œ¶¬
+	// èƒŒæ™¯ç”»åƒç”Ÿæˆ
 	m_UIBG = UIManager::GetInstance()->CreateUI<UIImage>();
 
-	// ƒRƒŠƒWƒ‡ƒ“ƒ}ƒl[ƒWƒƒ[¶¬
+	// ã‚³ãƒªã‚¸ãƒ§ãƒ³ãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼ç”Ÿæˆ
 	CollisionManager::CreateInstance();
 
-	// ƒoƒŒƒbƒgƒ}ƒl[ƒWƒƒ[¶¬
+	// ãƒãƒ¬ãƒƒãƒˆãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼ç”Ÿæˆ
 	BulletManager::CreateInstance();
 
-	// ƒvƒŒƒCƒ„[ƒ}ƒl[ƒWƒƒ[‚ğ¶¬
+	// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼ã‚’ç”Ÿæˆ
 	PlayerManager::CreateInstance();
 	PlayerManager* playerManager = PlayerManager::GetInstance();
 	playerManager->Init();
-	// ‘€ìƒvƒŒƒCƒ„[‚ğ1P‚Æ‚µ‚Ä¶¬
+	// æ“ä½œãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚’1Pã¨ã—ã¦ç”Ÿæˆ
 	playerManager->CreatePlayer(0);
 
-	// AIƒ}ƒl[ƒWƒƒ[‚ğ¶¬
+	// AIãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼ã‚’ç”Ÿæˆ
 	AIManager::CreateInstance();
 	AIManager* aiManager = AIManager::GetInstance();
 
-	// CPU‚ğ2P`4P‚Æ‚µ‚Ä¶¬
+	// CPUã‚’2Pï½4Pã¨ã—ã¦ç”Ÿæˆ
 	for (int i = 1; i <= 3; i++)
 	{
 		AIPlayer* cpuPlayer = playerManager->CreateAIPlayer(i);
-		// CPU—p‚ÌAI‚ğ¶¬‚Æİ’è
+		// CPUç”¨ã®AIã‚’ç”Ÿæˆã¨è¨­å®š
 		AIPlayCPU* ai = aiManager->CreateAI<AIPlayCPU>();
 		ai->SetAwayDistance(200.0f);
 		ai->SetOwner(cpuPlayer);
-		// CPU‚ÌAI‚ÉƒZƒbƒg
+		// CPUã®AIã«ã‚»ãƒƒãƒˆ
 		cpuPlayer->SetAIStrategy(ai);
 	}
 
-	// ƒXƒe[ƒWƒ}ƒl[ƒWƒƒ[‚ğ¶¬
+	// ã‚¹ãƒ†ãƒ¼ã‚¸ãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼ã‚’ç”Ÿæˆ
 	StageManager::CreateInstance();
 	StageManager::GetInstance()->CreateStage();
 
-	// ƒuƒƒbƒNƒ}ƒl[ƒWƒƒ[‚ğ¶¬
+	// ãƒ–ãƒ­ãƒƒã‚¯ãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼ã‚’ç”Ÿæˆ
 	BlockManager::CreateInstance();
 	BlockManager* boxManager = BlockManager::GetInstance();
-	// ƒuƒƒbƒNƒ}ƒl[ƒWƒƒ[‰Šú‰»
+	// ãƒ–ãƒ­ãƒƒã‚¯ãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼åˆæœŸåŒ–
 	boxManager->Init();
 
-	// ƒAƒCƒeƒ€ƒ}ƒl[ƒWƒƒ[¶¬‚Æ‰Šú‰»
+	// ã‚¢ã‚¤ãƒ†ãƒ ãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼ç”Ÿæˆã¨åˆæœŸåŒ–
 	ItemManager::CreateInstance();
 	ItemManager::GetInstance()->Init();
 
-	// ƒXƒvƒ‰ƒCƒgƒAƒjƒ[ƒVƒ‡ƒ“ŠÇ—¶¬
+	// ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ç®¡ç†ç”Ÿæˆ
 	SpriteAnimationManager::CreateInstance();
 }
 
 void PlayScene::Load()
 {
-	// ƒXƒe[ƒW‚ğƒ[ƒh
+	// ã‚¹ãƒ†ãƒ¼ã‚¸ã‚’ãƒ­ãƒ¼ãƒ‰
 	StageManager::GetInstance()->Load();
 
-	// ƒoƒŒƒbƒg‚ğƒ[ƒh
+	// ãƒãƒ¬ãƒƒãƒˆã‚’ãƒ­ãƒ¼ãƒ‰
 	BulletManager::GetInstance()->Load();
 
-	// ƒvƒŒƒCƒ„[‚ğƒ[ƒh
+	// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚’ãƒ­ãƒ¼ãƒ‰
 	PlayerManager::GetInstance()->Load();
 
-	// ƒuƒƒbƒN‚ğƒ[ƒh
+	// ãƒ–ãƒ­ãƒƒã‚¯ã‚’ãƒ­ãƒ¼ãƒ‰
 	BlockManager::GetInstance()->Load();
 
-	// ƒAƒCƒeƒ€‚ğƒ[ƒh
+	// ã‚¢ã‚¤ãƒ†ãƒ ã‚’ãƒ­ãƒ¼ãƒ‰
 	ItemManager::GetInstance()->Load();
 
-	// ƒXƒvƒ‰ƒCƒgƒAƒjƒ[ƒVƒ‡ƒ“‚ğƒ[ƒh
+	// ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’ãƒ­ãƒ¼ãƒ‰
 	SpriteAnimationManager::GetInstance()->Load();
 
-	// ”wŒi‚ğƒ[ƒh
+	// èƒŒæ™¯ã‚’ãƒ­ãƒ¼ãƒ‰
 	m_UIBG->Load("Data/Play/BG/BG.png");
 }
 
 void PlayScene::Start()
 {
-	// ƒvƒŒƒCƒ„[ŠJn
+	// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼é–‹å§‹
 	PlayerManager::GetInstance()->Start();
 
-	// ƒuƒƒbƒNŠJn
+	// ãƒ–ãƒ­ãƒƒã‚¯é–‹å§‹
 	BlockManager::GetInstance()->Start();
 
-	// ƒtƒF[ƒhƒCƒ“
+	// ãƒ•ã‚§ãƒ¼ãƒ‰ã‚¤ãƒ³
 	ScreenFade::FadeIn(8.0f);
 }
 
 void PlayScene::Step()
 {
-	// ‚Ü‚¾Œˆ’…‚ª‚Â‚¢‚Ä‚È‚¢
+	// ã¾ã æ±ºç€ãŒã¤ã„ã¦ãªã„
 	if (!IsGameSet())
 	{
-		// UIƒXƒeƒbƒv
+		// UIã‚¹ãƒ†ãƒƒãƒ—
 		UIManager::GetInstance()->Step();
-		// ƒvƒŒƒCƒ„[ƒXƒeƒbƒv
+		// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚¹ãƒ†ãƒƒãƒ—
 		PlayerManager::GetInstance()->Step();
-		// ƒoƒŒƒbƒgƒXƒeƒbƒv
+		// ãƒãƒ¬ãƒƒãƒˆã‚¹ãƒ†ãƒƒãƒ—
 		BulletManager::GetInstance()->Step();
-		// ƒAƒCƒeƒ€ƒXƒeƒbƒv
+		// ã‚¢ã‚¤ãƒ†ãƒ ã‚¹ãƒ†ãƒƒãƒ—
 		ItemManager::GetInstance()->Step();
-		// “–‚½‚è”»’è
+		// å½“ãŸã‚Šåˆ¤å®š
 		CollisionManager::GetInstance()->CheckCollision();
-		// Œˆ’…‚ª‚Â‚¢‚½‚©
+		// æ±ºç€ãŒã¤ã„ãŸã‹
 		if (IsGameSet())
 		{
-			// Œˆ’…ƒV[ƒ“‚ğã‚Éæ‚¹‚é
+			// æ±ºç€ã‚·ãƒ¼ãƒ³ã‚’ä¸Šã«ä¹—ã›ã‚‹
 			SceneManager::GetInstance()->AddScene(GAME_SET);
 		}
 	}
 
-	// ƒXƒvƒ‰ƒCƒgƒAƒjƒ[ƒVƒ‡ƒ“‚ÍŒˆ’…Œã‚à“®‚¢‚Ä‚¢‚¢
+	// ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã¯æ±ºç€å¾Œã‚‚å‹•ã„ã¦ã„ã„
 	SpriteAnimationManager::GetInstance()->Step();
 }
 
 void PlayScene::Update()
 {
-	// UIXV
+	// UIæ›´æ–°
 	UIManager::GetInstance()->Update();
-	// ƒvƒŒƒCƒ„[XV
+	// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼æ›´æ–°
 	PlayerManager::GetInstance()->Update();
-	// ƒAƒCƒeƒ€XV
+	// ã‚¢ã‚¤ãƒ†ãƒ æ›´æ–°
 	ItemManager::GetInstance()->Update();
 }
 
 void PlayScene::Draw()
 {
-	// UI‚ğ•`‰æ
+	// UIã‚’æç”»
 	UIManager::GetInstance()->Draw();
-	// ƒXƒe[ƒW‚ğ•`‰æ
+	// ã‚¹ãƒ†ãƒ¼ã‚¸ã‚’æç”»
 	StageManager::GetInstance()->Draw();
-	// ƒuƒƒbƒN•`‰æ
+	// ãƒ–ãƒ­ãƒƒã‚¯æç”»
 	BlockManager::GetInstance()->Draw();
-	// ƒAƒCƒeƒ€‚ğ•`‰æ
+	// ã‚¢ã‚¤ãƒ†ãƒ ã‚’æç”»
 	ItemManager::GetInstance()->Draw();
-	// ƒXƒvƒ‰ƒCƒgƒAƒjƒ[ƒVƒ‡ƒ“•`‰æ
+	// ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³æç”»
 	SpriteAnimationManager::GetInstance()->Draw();
-	// ƒvƒŒƒCƒ„[•`‰æ
+	// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼æç”»
 	PlayerManager::GetInstance()->Draw();
-	// ƒoƒŒƒbƒg•`‰æ
+	// ãƒãƒ¬ãƒƒãƒˆæç”»
 	BulletManager::GetInstance()->Draw();
-	// “–‚½‚è”»’è•`‰æ
+	// å½“ãŸã‚Šåˆ¤å®šæç”»
 	CollisionManager::GetInstance()->Draw();
 }
 
 void PlayScene::Fin()
 {
-	// ƒXƒe[ƒWƒ}ƒl[ƒWƒƒ[íœ
+	// ã‚¹ãƒ†ãƒ¼ã‚¸ãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼å‰Šé™¤
 	StageManager::DeleteInstance();
 
-	// ƒoƒŒƒbƒgƒ}ƒl[ƒWƒƒ[íœ
+	// ãƒãƒ¬ãƒƒãƒˆãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼å‰Šé™¤
 	BulletManager::DeleteInstance();
 
-	// ƒvƒŒƒCƒ„[ƒ}ƒl[ƒWƒƒ[íœ
+	// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼å‰Šé™¤
 	PlayerManager::DeleteInstance();
 
-	// ƒ{ƒbƒNƒXƒ}ƒl[ƒWƒƒ[íœ
+	// ãƒœãƒƒã‚¯ã‚¹ãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼å‰Šé™¤
 	BlockManager::DeleteInstance();
 
-	// ƒRƒŠƒWƒ‡ƒ“ƒ}ƒl[ƒWƒƒ[íœ
+	// ã‚³ãƒªã‚¸ãƒ§ãƒ³ãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼å‰Šé™¤
 	CollisionManager::DeleteInstance();
 
-	// AIƒ}ƒl[ƒWƒƒ[‚ğíœ
+	// AIãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼ã‚’å‰Šé™¤
 	AIManager::DeleteInstance();
 
-	// ƒAƒCƒeƒ€íœ
+	// ã‚¢ã‚¤ãƒ†ãƒ å‰Šé™¤
 	ItemManager::DeleteInstance();
 
-	// ƒXƒvƒ‰ƒCƒgƒAƒjƒ[ƒVƒ‡ƒ“íœ
+	// ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³å‰Šé™¤
 	SpriteAnimationManager::DeleteInstance();
 
-	// UIíœ
+	// UIå‰Šé™¤
 	UIManager::GetInstance()->ClearUI();
 }
 
@@ -213,7 +213,7 @@ bool PlayScene::IsGameSet()
 			activeCount++;
 		}
 
-		// ‚Q‘ÌˆÈã¶‚«‚Ä‚¢‚ê‚ÎŒˆ’…‚Í‚Â‚¢‚Ä‚È‚¢
+		// ï¼’ä½“ä»¥ä¸Šç”Ÿãã¦ã„ã‚Œã°æ±ºç€ã¯ã¤ã„ã¦ãªã„
 		if (activeCount >= 2)
 		{
 			return false;

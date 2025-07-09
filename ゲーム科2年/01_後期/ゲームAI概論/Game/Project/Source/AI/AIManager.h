@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include "../Singleton/Singleton.h"
 #include <vector>
@@ -12,7 +12,7 @@ public:
 	~AIManager();
 
 public:
-	// ƒeƒ“ƒvƒŒ[ƒg‚ğg‚¦‚Î¶¬ŠÖ”‚ÍŠÈ’P‚Éì‚ê‚é
+	// ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã‚’ä½¿ãˆã°ç”Ÿæˆé–¢æ•°ã¯ç°¡å˜ã«ä½œã‚Œã‚‹
 	template <typename T>
 	T* CreateAI() {
 		T* strategy = new T;
@@ -20,7 +20,6 @@ public:
 		return strategy;
 	}
 
-	void Step();
 	void Draw();
 	void Fin();
 

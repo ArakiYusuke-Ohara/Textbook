@@ -1,19 +1,20 @@
-#include "PlayerManager.h"
+ï»¿#include "PlayerManager.h"
 #include "Player.h"
 #include "AIPlayer.h"
+#include "../MyMath/MyMath.h"
 
-// Ã“I•Ï”‚Ì‰Šú‰»
+// é™çš„å¤‰æ•°ã®åˆæœŸåŒ–
 PlayerManager* PlayerManager::m_Instance = nullptr;
 
-// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 PlayerManager::PlayerManager()
 {
 }
 
-// ƒfƒXƒgƒ‰ƒNƒ^
+// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 PlayerManager::~PlayerManager()
 {
-	// íœ‚ÌŒãn–––Y‚ê‚ğ–h~‚·‚é
+	// å‰Šé™¤æ™‚ã®å¾Œå§‹æœ«å¿˜ã‚Œã‚’é˜²æ­¢ã™ã‚‹
 	Fin();
 }
 
@@ -93,3 +94,4 @@ AIPlayer* PlayerManager::CreateAIPlayer(int number)
 
 	return player;
 }
+

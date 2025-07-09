@@ -1,4 +1,4 @@
-#include "AIManager.h"
+﻿#include "AIManager.h"
 #include "AIStrategyBase.h"
 #include "AIParameter.h"
 
@@ -8,14 +8,6 @@ AIManager::AIManager()
 
 AIManager::~AIManager()
 {
-}
-
-void AIManager::Step()
-{
-	for (AIStrategyBase* strategy : m_Strategies)
-	{
-		strategy->ThinkStrategy();
-	}
 }
 
 void AIManager::Draw()

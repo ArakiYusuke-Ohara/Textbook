@@ -1,7 +1,7 @@
-#pragma once
+ï»¿#pragma once
 #include "DxLib.h"
 
-// ƒwƒbƒ_[‚ÉƒCƒ“ƒNƒ‹[ƒh‚ğ‘‚«‚½‚­‚È‚¢‚Ì‚Å‘O•û’è‹`
+// ãƒ˜ãƒƒãƒ€ãƒ¼ã«ã‚¤ãƒ³ã‚¯ãƒ«ãƒ¼ãƒ‰ã‚’æ›¸ããŸããªã„ã®ã§å‰æ–¹å®šç¾©
 class CollisionAABB;
 class CollisionSphere;
 class BulletBase;
@@ -19,13 +19,13 @@ protected:
 	virtual ~PlayerBase();
 
 public:
-	void Init();	// ‰Šú‰»
-	void Load();	// ƒ[ƒh
-	void Start();	// ŠJn
-	virtual void Step();	// ƒXƒeƒbƒv
-	void Update();	// XV
-	void Draw();	// •`‰æ
-	void Fin();		// I—¹
+	void Init();	// åˆæœŸåŒ–
+	void Load();	// ãƒ­ãƒ¼ãƒ‰
+	void Start();	// é–‹å§‹
+	virtual void Step();	// ã‚¹ãƒ†ãƒƒãƒ—
+	void Update();	// æ›´æ–°
+	void Draw();	// æç”»
+	void Fin();		// çµ‚äº†
 
 public:
 	bool IsActive() const { return m_Active; }
@@ -35,6 +35,9 @@ public:
 	VECTOR GetPos() const { return m_Pos; }
 	CollisionAABB* GetCollisionAABB() const { return m_CollisionAABB; }
 	CollisionSphere* GetCollisionSphere() const { return m_CollisionSphere; }
+	float GetMoveSpeed() const { return m_MoveSpeed; }
+	float GetBulletChargeSpeed() const { m_BulletChargeSpeed; }
+	float GetBulletSpeed() const { m_BulletSpeed; }
 
 	void SetActive(bool active) { m_Active = active; }
 	void SetPlayerNumber(int number) { m_PlayerNumber = number; }
@@ -55,7 +58,6 @@ private:
 	void LoadUI();
 	void LocateUI();
 	void Damage(int damage);
-	void StepDead();
 
 protected:
 	bool m_Active;

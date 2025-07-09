@@ -1,11 +1,11 @@
-#pragma once
+ï»¿#pragma once
 
 #include "DxLib.h"
 
 class MyMath
 {
 public:
-	// ƒxƒNƒgƒ‹ŠÖ˜A‚ÌŒvZŠÖ”
+	// ãƒ™ã‚¯ãƒˆãƒ«é–¢é€£ã®è¨ˆç®—é–¢æ•°
 	static VECTOR VecCreate(VECTOR startPos, VECTOR endPos);
 	static VECTOR VecAdd(VECTOR vecA, VECTOR vecB);
 	static VECTOR VecScale(VECTOR vecA, float scale);
@@ -15,7 +15,7 @@ public:
 	static float VecLong(VECTOR vec);
 	static VECTOR VecNormalize(VECTOR vec);
 	static VECTOR VecForwardZX(float rotY);
-	// s—ñŠÖ˜A‚ÌŒvZŠÖ”
+	// è¡Œåˆ—é–¢é€£ã®è¨ˆç®—é–¢æ•°
 	static MATRIX MatCreate();
 	static MATRIX MatAdd(MATRIX matA, MATRIX matB);
 	static MATRIX MatSubt(MATRIX matA, MATRIX matB);
@@ -28,11 +28,11 @@ public:
 	static MATRIX MatRotationYaw(float pitch);
 	static MATRIX MatRotationRoll(float pitch);
 	static VECTOR MatTransform(MATRIX transMat, VECTOR pos);
-	// ‚»‚Ì‚Ù‚©”ŠwŒn‚Ì•Ö—˜ŠÖ”
+	// ãã®ã»ã‹æ•°å­¦ç³»ã®ä¾¿åˆ©é–¢æ•°
 	static float MinF(float valueA, float valueB);
 	static float MaxF(float valueA, float valueB);
 	static float ClampF(float value, float min, float max);
-	static VECTOR VecCreate(VECTOR startPos, VECTOR endPos, float length);
 	static float RadianNormalize(float rad);
 	static float Absolute(float value);
+	static float GetDistance(VECTOR posA, VECTOR posB);
 };

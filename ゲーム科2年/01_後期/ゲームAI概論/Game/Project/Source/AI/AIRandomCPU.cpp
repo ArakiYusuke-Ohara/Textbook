@@ -1,4 +1,4 @@
-#include "AIRandomCPU.h"
+ï»¿#include "AIRandomCPU.h"
 #include "AIParameter.h"
 #include "../MyRandom/MyRandom.h"
 
@@ -8,13 +8,13 @@ AIRandomCPU::AIRandomCPU()
 {
 }
 
-// ‚±‚ÌŠÖ”‚ÉCPU‚Ì‚Æ‚és“®‚ğŒˆ’è‚·‚éˆ—‚ğ‘‚­
+// ã“ã®é–¢æ•°ã«CPUã®ã¨ã‚‹è¡Œå‹•ã‚’æ±ºå®šã™ã‚‹å‡¦ç†ã‚’æ›¸ã
 int AIRandomCPU::ThinkStrategy()
 {
-	// ƒ‰ƒ“ƒ_ƒ€‚Å’Ç‚¢‚©‚¯‚é‚©—£‚ê‚é‚©
+	// ãƒ©ãƒ³ãƒ€ãƒ ã§è¿½ã„ã‹ã‘ã‚‹ã‹é›¢ã‚Œã‚‹ã‹
 	if (MyRandom::GetRandom() % 2 == 0)
 	{
-		return CPU_STRATEGY_CHASE;
+		return CPU_STRATEGY_CHASE_TARGET;
 	}
 
 	return CPU_STRATEGY_AWAY;

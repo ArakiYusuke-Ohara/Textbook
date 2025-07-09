@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "Player.h"
 
 class AIPlayer : public Player
@@ -9,7 +9,7 @@ public:
 public:
 	void Step() override;
 
-	void Chase();
+	void ChaseTarget();
 	void Away();
 	void Attack();
 
@@ -17,7 +17,7 @@ public:
 	void SetDirectionForTarget();
 
 private:
-	void CalcPlayerChaseVec();
+	VECTOR GetTargetChaseVec(VECTOR targetPos);
 
 protected:
 	int m_StrategyTimer;

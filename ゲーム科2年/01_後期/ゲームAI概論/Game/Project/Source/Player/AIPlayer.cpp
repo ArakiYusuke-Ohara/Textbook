@@ -1,4 +1,4 @@
-#include "AIPlayer.h"
+ï»¿#include "AIPlayer.h"
 #include "PlayerManager.h"
 #include "PlayerParameter.h"
 #include "../AI/AIStrategyBase.h"
@@ -22,26 +22,21 @@ void AIPlayer::Step()
 
 	PlayerBase::Step();
 
-	// d’¼’†‚Í‰½‚à‚µ‚È‚¢
+	// ç¡¬ç›´ä¸­ã¯ä½•ã‚‚ã—ãªã„
 	if (m_Stiffness > 0) return;
 
 	if (m_AIStrategy)
 	{
-		// ƒ^[ƒQƒbƒg‚ğİ’è
-		Player* player1 = PlayerManager::GetInstance()->GetPlayer(0);
-		VECTOR player1Pos = player1->GetPos();
-		m_AIStrategy->SetTarget(player1Pos);
-
-		// í—ª‚ğŒˆ’è‚µ‚Äæ“¾
+		// æˆ¦ç•¥ã‚’æ±ºå®šã—ã¦å–å¾—
 		m_NowStrategy = m_AIStrategy->ThinkStrategy();
 
-		// ƒ^ƒCƒ}[ƒŠƒZƒbƒg
+		// ã‚¿ã‚¤ãƒãƒ¼ãƒªã‚»ãƒƒãƒˆ
 		m_StrategyTimer = PLYAER_CHANGE_STRATEGY_TIME;
 
-		// í—ª‚É‚æ‚Á‚ÄˆÚ“®ˆ—‚ª•Ï‚í‚é
+		// æˆ¦ç•¥ã«ã‚ˆã£ã¦ç§»å‹•å‡¦ç†ãŒå¤‰ã‚ã‚‹
 		switch (m_NowStrategy)
 		{
-			case CPU_STRATEGY_CHASE:	Chase();	break;
+			case CPU_STRATEGY_CHASE_TARGET:	ChaseTarget();	break;
 			case CPU_STRATEGY_AWAY:		Away();		break;
 			case CPU_STRATEGY_ATTACK:	Attack();		break;
 		}
@@ -50,12 +45,19 @@ void AIPlayer::Step()
 	}
 }
 
-void AIPlayer::Chase()
+/// <summary>
+/// è‡ªåˆ†ã«æœ€ã‚‚è¿‘ã„ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚’è¿½ã„ã‹ã‘ã‚‹
+/// </summary>
+void AIPlayer::ChaseTarget()
 {
-	// ˆê’èŠÔ‚²‚Æ‚É•ûŒü‚ğŒˆ‚ß‚é
+	// ä¸€å®šæ™‚é–“ã”ã¨ã«æ–¹å‘ã‚’æ±ºã‚ã‚‹
 	if (m_PlayerChaseInterval <= 0)
 	{
-		CalcPlayerChaseVec();
+		// ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã«å‘ã‹ã£ã¦ç§»å‹•ã™ã‚‹
+		VECTOR targetPos = m_AIStrategy->GetTarget();
+		m_Move = GetTargetChaseVec(targetPos);
+
+		// ã‚¤ãƒ³ã‚¿ãƒ¼ãƒãƒ«è¨­å®š
 		m_PlayerChaseInterval = PLAYER_CHASE_INTERVAL;
 	}
 	else
@@ -63,46 +65,49 @@ void AIPlayer::Chase()
 		m_PlayerChaseInterval--;
 	}
 
-	// ˆÚ“®
+	// ç§»å‹•
 	m_Pos = MyMath::VecAdd(m_Pos, m_Move);
 
-	// ˆÚ“®—Ê‚©‚çŒü‚«‚ğİ’è
+	// ç§»å‹•é‡ã‹ã‚‰å‘ãã‚’è¨­å®š
 	SetDirectionForMove();
 }
 
 void AIPlayer::Away()
 {
-	// 1P‚©‚ç—£‚ê‚é
-	CalcPlayerChaseVec();
+	// ã‚¿ãƒ¼ã‚²ãƒƒãƒˆåº§æ¨™ã‚’å–å¾—
+	VECTOR target = m_AIStrategy->GetTarget();
+	m_Move = GetTargetChaseVec(target);
+
+	// é›¢ã‚Œã‚‹å ´åˆã¯å‘ãã‚’åè»¢ã™ã‚‹ã ã‘
 	m_Move = MyMath::VecScale(m_Move, -1.0f);
 
-	// ˆÚ“®
+	// ç§»å‹•
 	m_Pos = MyMath::VecAdd(m_Pos, m_Move);
 
-	// ˆÚ“®—Ê‚©‚çŒü‚«‚ğİ’è
+	// ç§»å‹•é‡ã‹ã‚‰å‘ãã‚’è¨­å®š
 	SetDirectionForMove();
 }
 
 void AIPlayer::Attack()
 {
-	// 1P‚Ì•û‚ğŒü‚­
+	// 1Pã®æ–¹ã‚’å‘ã
 	SetDirectionForTarget();
-	// ’e”­Ë
+	// å¼¾ç™ºå°„
 	PlayerBase::FireBullet();
 }
 
 void AIPlayer::SetDirectionForTarget()
 {
-	// 1P‚ğƒ^[ƒQƒbƒg‚Æ‚µ‚ÄŒü‚«‚ğŒˆ’è‚·‚é
-	Player* player1 = PlayerManager::GetInstance()->GetPlayer(0);
+	// ã‚¿ãƒ¼ã‚²ãƒƒãƒˆåº§æ¨™ã‚’å–å¾—
+	VECTOR target = m_AIStrategy->GetTarget();
 
-	// 1P‚Ü‚Å‚ÌƒxƒNƒgƒ‹
-	VECTOR targetVec = MyMath::VecCreate(m_Pos, player1->GetPos());
+	// ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã¾ã§ã®ãƒ™ã‚¯ãƒˆãƒ«
+	VECTOR targetVec = MyMath::VecCreate(m_Pos, target);
 
-	// X¬•ª‚Ì•û‚ª’·‚¯‚ê‚Î‰¡‚ğŒü‚­
+	// Xæˆåˆ†ã®æ–¹ãŒé•·ã‘ã‚Œã°æ¨ªã‚’å‘ã
 	if (MyMath::Absolute(targetVec.x) >= MyMath::Absolute(targetVec.y))
 	{
-		// ƒvƒŒƒCƒ„[‚ª¶‚É‚¢‚ê‚Î¶‚ğŒü‚­
+		// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒå·¦ã«ã„ã‚Œã°å·¦ã‚’å‘ã
 		if (targetVec.x < 0.0f)
 		{
 			m_Direction = PLAYER_DIRECTION_LEFT;
@@ -114,7 +119,7 @@ void AIPlayer::SetDirectionForTarget()
 	}
 	else
 	{
-		// ƒvƒŒƒCƒ„[‚ªã‚É‚¢‚ê‚Îã‚ğŒü‚­
+		// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒä¸Šã«ã„ã‚Œã°ä¸Šã‚’å‘ã
 		if (targetVec.y < 0.0f)
 		{
 			m_Direction = PLAYER_DIRECTION_UP;
@@ -126,27 +131,33 @@ void AIPlayer::SetDirectionForTarget()
 	}
 }
 
-void AIPlayer::CalcPlayerChaseVec()
+/// <summary>
+/// ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã«å‘ã‹ã†ç§»å‹•ãƒ™ã‚¯ãƒˆãƒ«ã‚’å–å¾—ã™ã‚‹
+/// ã‚²ãƒ¼ãƒ ã®ä»•æ§˜ä¸Šã€ç¸¦æ¨ªæ–¹å‘ã«ã—ã‹ç§»å‹•ã§ããªã„ã‚ˆã†ã«ã™ã‚‹ãŸã‚
+/// </summary>
+/// <param name="targetPos">ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã®åº§æ¨™</param>
+/// <returns>ç¸¦æ¨ªç§»å‹•ãƒ™ã‚¯ãƒˆãƒ«</returns>
+VECTOR AIPlayer::GetTargetChaseVec(VECTOR targetPos)
 {
-	// 1P‚ğ’Ç‚¢‚©‚¯‚é
-	Player* player1 = PlayerManager::GetInstance()->GetPlayer(0);
-	VECTOR player1Pos = player1->GetPos();
-	m_Move = MyMath::VecCreate(m_Pos, player1Pos);
-	m_Move = MyMath::VecNormalize(m_Move);
+	VECTOR result = {};
+	result = MyMath::VecCreate(m_Pos, targetPos);
+	result = MyMath::VecNormalize(result);
 
 
-	float absMoveX = MyMath::Absolute(m_Move.x);
-	float absMoveY = MyMath::Absolute(m_Move.y);
-	// X, Y‚Å’·‚¢•û‚ğÌ—p
+	float absMoveX = MyMath::Absolute(result.x);
+	float absMoveY = MyMath::Absolute(result.y);
+	// X, Yã§é•·ã„æ–¹ã‚’æ¡ç”¨
 	if (absMoveX > absMoveY)
 	{
-		m_Move.y = 0.0f;
+		result.y = 0.0f;
 	}
 	else
 	{
-		m_Move.x = 0.0f;
+		result.x = 0.0f;
 	}
 
-	m_Move = MyMath::VecNormalize(m_Move);
-	m_Move = MyMath::VecScale(m_Move, m_MoveSpeed);
+	result = MyMath::VecNormalize(result);
+	result = MyMath::VecScale(result, m_MoveSpeed);
+
+	return result;
 }

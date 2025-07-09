@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "DxLib.h"
 
 class PlayerBase;
@@ -14,7 +14,8 @@ public:
 	virtual void Draw();
 
 	void SetOwner(PlayerBase* owner) { m_Owner = owner; }
-	void SetTarget(VECTOR target) { m_Target = target; }
+
+	VECTOR GetTarget() const { return m_Target; }
 
 protected:
 	const PlayerBase* m_Owner;

@@ -1,9 +1,9 @@
-#include "MyMath.h"
+ï»¿#include "MyMath.h"
 #include <math.h>
 
-// ƒxƒNƒgƒ‹‚ğì‚é
-// startPos	ì‚éƒxƒNƒgƒ‹‚Ìn“_
-// endPos	ì‚éƒxƒNƒgƒ‹‚ÌI“_
+// ãƒ™ã‚¯ãƒˆãƒ«ã‚’ä½œã‚‹
+// startPos	ä½œã‚‹ãƒ™ã‚¯ãƒˆãƒ«ã®å§‹ç‚¹
+// endPos	ä½œã‚‹ãƒ™ã‚¯ãƒˆãƒ«ã®çµ‚ç‚¹
 VECTOR MyMath::VecCreate(VECTOR startPos, VECTOR endPos)
 {
 	VECTOR result;
@@ -15,8 +15,8 @@ VECTOR MyMath::VecCreate(VECTOR startPos, VECTOR endPos)
 	return result;
 }
 
-// ƒxƒNƒgƒ‹‚Ì‘«‚µZ
-// vecA { vecB
+// ãƒ™ã‚¯ãƒˆãƒ«ã®è¶³ã—ç®—
+// vecA ï¼‹ vecB
 VECTOR MyMath::VecAdd(VECTOR vecA, VECTOR vecB)
 {
 	VECTOR result;
@@ -28,7 +28,7 @@ VECTOR MyMath::VecAdd(VECTOR vecA, VECTOR vecB)
 	return result;
 }
 
-// ƒxƒNƒgƒ‹‚ÌƒXƒJƒ‰[”{
+// ãƒ™ã‚¯ãƒˆãƒ«ã®ã‚¹ã‚«ãƒ©ãƒ¼å€
 // vecA * scale
 VECTOR MyMath::VecScale(VECTOR vecA, float scale)
 {
@@ -41,21 +41,21 @@ VECTOR MyMath::VecScale(VECTOR vecA, float scale)
 	return result;
 }
 
-// ƒxƒNƒgƒ‹‚Ì“àÏ
-// vecA E vecB
+// ãƒ™ã‚¯ãƒˆãƒ«ã®å†…ç©
+// vecA ãƒ» vecB
 float MyMath::VecDot(VECTOR vecA, VECTOR vecB)
 {
 	return vecA.x * vecB.x + vecA.y * vecB.y + vecA.z * vecB.z;
 }
 
-// ƒxƒNƒgƒ‹‚ÌŠOÏ(2D)
-// vecA ~ vecB
+// ãƒ™ã‚¯ãƒˆãƒ«ã®å¤–ç©(2D)
+// vecA Ã— vecB
 float MyMath::VecCross2D(VECTOR vecA, VECTOR vecB)
 {
 	return vecA.x * vecB.y - vecA.y * vecB.x;
 }
 
-// ƒxƒNƒgƒ‹‚ÌŠOÏ(3D)
+// ãƒ™ã‚¯ãƒˆãƒ«ã®å¤–ç©(3D)
 VECTOR MyMath::VecCross3D(VECTOR vecA, VECTOR vecB)
 {
 	VECTOR result;
@@ -67,39 +67,39 @@ VECTOR MyMath::VecCross3D(VECTOR vecA, VECTOR vecB)
 	return result;
 }
 
-// ƒxƒNƒgƒ‹‚Ì’·‚³‚ğŒvZ‚·‚é
+// ãƒ™ã‚¯ãƒˆãƒ«ã®é•·ã•ã‚’è¨ˆç®—ã™ã‚‹
 float MyMath::VecLong(VECTOR vec)
 {
 	return sqrtf(vec.x * vec.x + vec.y * vec.y + vec.z * vec.z);
 }
 
-// ƒxƒNƒgƒ‹‚ğ³‹K‰»‚·‚é
+// ãƒ™ã‚¯ãƒˆãƒ«ã‚’æ­£è¦åŒ–ã™ã‚‹
 VECTOR MyMath::VecNormalize(VECTOR vec)
 {
 	float vecLong = VecLong(vec);
 
-	// ’·‚³0‚Ìê‡‚Í0ƒxƒNƒgƒ‹‚ğ•Ô‚·
+	// é•·ã•0ã®å ´åˆã¯0ãƒ™ã‚¯ãƒˆãƒ«ã‚’è¿”ã™
 	if (vecLong == 0.0f) return VGet(0.0f, 0.0f, 0.0f);
 
 	return VecScale(vec, 1.0f / vecLong);
 }
 
-// ZX•½–Êã‚Ì‘O•ûƒxƒNƒgƒ‹(’·‚³‚P)‚ğæ“¾‚·‚é
+// ZXå¹³é¢ä¸Šã®å‰æ–¹ãƒ™ã‚¯ãƒˆãƒ«(é•·ã•ï¼‘)ã‚’å–å¾—ã™ã‚‹
 VECTOR MyMath::VecForwardZX(float rotY)
 {
 	VECTOR result;
 
-	// X¬•ª‚Ísin(ƒ¦)
+	// Xæˆåˆ†ã¯sin(Î˜)
 	result.x = sinf(rotY);
-	// ZX•½–Ê‚È‚Ì‚ÅY‚Í–³‹
+	// ZXå¹³é¢ãªã®ã§Yã¯ç„¡è¦–
 	result.y = 0.0f;
-	// Z¬•ª‚Ícos(ƒ¦)
+	// Zæˆåˆ†ã¯cos(Î˜)
 	result.z = cosf(rotY);
 
 	return result;
 }
 
-// ’PˆÊs—ñ‚ğ¶¬‚·‚é
+// å˜ä½è¡Œåˆ—ã‚’ç”Ÿæˆã™ã‚‹
 MATRIX MyMath::MatCreate()
 {
 	MATRIX result = { 0 };
@@ -112,7 +112,7 @@ MATRIX MyMath::MatCreate()
 	return result;
 }
 
-// s—ñ“¯m‚Ì‘«‚µZ
+// è¡Œåˆ—åŒå£«ã®è¶³ã—ç®—
 MATRIX MyMath::MatAdd(MATRIX matA, MATRIX matB)
 {
 	MATRIX result = { 0 };
@@ -128,7 +128,7 @@ MATRIX MyMath::MatAdd(MATRIX matA, MATRIX matB)
 	return result;
 }
 
-// s—ñ“¯m‚Ìˆø‚«Z
+// è¡Œåˆ—åŒå£«ã®å¼•ãç®—
 MATRIX MyMath::MatSubt(MATRIX matA, MATRIX matB)
 {
 	MATRIX result = { 0 };
@@ -144,7 +144,7 @@ MATRIX MyMath::MatSubt(MATRIX matA, MATRIX matB)
 	return result;
 }
 
-// s—ñ‚ÌƒXƒJƒ‰[”{
+// è¡Œåˆ—ã®ã‚¹ã‚«ãƒ©ãƒ¼å€
 MATRIX MyMath::MatScale(MATRIX mat, float scale)
 {
 	MATRIX result = { 0 };
@@ -160,7 +160,7 @@ MATRIX MyMath::MatScale(MATRIX mat, float scale)
 	return result;
 }
 
-// s—ñ“¯m‚ÌŠ|‚¯Z
+// è¡Œåˆ—åŒå£«ã®æ›ã‘ç®—
 MATRIX MyMath::MatMult(MATRIX matA, MATRIX matB)
 {
 	MATRIX result = { 0 };
@@ -179,7 +179,7 @@ MATRIX MyMath::MatMult(MATRIX matA, MATRIX matB)
 	return result;
 }
 
-// s—ñ‚Ì“]’u
+// è¡Œåˆ—ã®è»¢ç½®
 MATRIX MyMath::MatTransposition(MATRIX mat)
 {
 	MATRIX result = { 0 };
@@ -195,7 +195,7 @@ MATRIX MyMath::MatTransposition(MATRIX mat)
 	return result;
 }
 
-// •½sˆÚ“®s—ñ‚ğæ“¾
+// å¹³è¡Œç§»å‹•è¡Œåˆ—ã‚’å–å¾—
 MATRIX MyMath::MatTranslation(VECTOR trans)
 {
 	MATRIX result = MatCreate();
@@ -207,7 +207,7 @@ MATRIX MyMath::MatTranslation(VECTOR trans)
 	return result;
 }
 
-// Šgks—ñ‚ğæ“¾
+// æ‹¡ç¸®è¡Œåˆ—ã‚’å–å¾—
 MATRIX MyMath::MatScale(VECTOR scale)
 {
 	MATRIX result = MatCreate();
@@ -219,7 +219,7 @@ MATRIX MyMath::MatScale(VECTOR scale)
 	return result;
 }
 
-// ƒsƒbƒ`s—ñ‚ğæ“¾
+// ãƒ”ãƒƒãƒè¡Œåˆ—ã‚’å–å¾—
 MATRIX MyMath::MatRotationPitch(float pitch)
 {
 	MATRIX result = MatCreate();
@@ -232,7 +232,7 @@ MATRIX MyMath::MatRotationPitch(float pitch)
 	return result;
 }
 
-// ƒˆ[s—ñ‚ğæ“¾
+// ãƒ¨ãƒ¼è¡Œåˆ—ã‚’å–å¾—
 MATRIX MyMath::MatRotationYaw(float pitch)
 {
 	MATRIX result = MatCreate();
@@ -245,7 +245,7 @@ MATRIX MyMath::MatRotationYaw(float pitch)
 	return result;
 }
 
-// ƒ[ƒ‹s—ñ‚ğæ“¾
+// ãƒ­ãƒ¼ãƒ«è¡Œåˆ—ã‚’å–å¾—
 MATRIX MyMath::MatRotationRoll(float pitch)
 {
 	MATRIX result = MatCreate();
@@ -258,18 +258,18 @@ MATRIX MyMath::MatRotationRoll(float pitch)
 	return result;
 }
 
-// À•W‚É•ÏŠ·s—ñ‚ğŠ|‚¯‚Ä•ÏŠ·Œã‚ÌÀ•W‚ğŒvZ‚·‚é
+// åº§æ¨™ã«å¤‰æ›è¡Œåˆ—ã‚’æ›ã‘ã¦å¤‰æ›å¾Œã®åº§æ¨™ã‚’è¨ˆç®—ã™ã‚‹
 VECTOR MyMath::MatTransform(MATRIX transMat, VECTOR pos)
 {
 	VECTOR result = { 0 };
 
 
-	// ŒvZ‚ğfor•¶‚Å‰ñ‚µ‚½‚¢‚½‚ßA‚¢‚Á‚½‚ñ”z—ñ‚ÉŠi”[‚·‚é
+	// è¨ˆç®—ã‚’foræ–‡ã§å›ã—ãŸã„ãŸã‚ã€ã„ã£ãŸã‚“é…åˆ—ã«æ ¼ç´ã™ã‚‹
 	float posBuffer[4] = {pos.x, pos.y, pos.z, 1.0f};
-	// ŒvZŒ‹‰Ê‚à‚¢‚Á‚½‚ñ”z—ñ‚ÉŠi”[‚·‚é
+	// è¨ˆç®—çµæœã‚‚ã„ã£ãŸã‚“é…åˆ—ã«æ ¼ç´ã™ã‚‹
 	float resultBuffer[4] = { 0 };
 
-	// s—ñ•ÏŠ·‚ÌŒvZ
+	// è¡Œåˆ—å¤‰æ›ã®è¨ˆç®—
 	for (int i = 0; i < 4; i++)
 	{
 		for (int j = 0; j < 4; j++)
@@ -278,7 +278,7 @@ VECTOR MyMath::MatTransform(MATRIX transMat, VECTOR pos)
 		}
 	}
 
-	// ŒvZŒ‹‰Ê‚ğƒxƒNƒgƒ‹‚ÉŠi”[
+	// è¨ˆç®—çµæœã‚’ãƒ™ã‚¯ãƒˆãƒ«ã«æ ¼ç´
 	result.x = resultBuffer[0];
 	result.y = resultBuffer[1];
 	result.z = resultBuffer[2];
@@ -322,15 +322,6 @@ float MyMath::ClampF(float value, float min, float max)
 	return result;
 }
 
-VECTOR MyMath::VecCreate(VECTOR startPos, VECTOR endPos, float length)
-{
-	VECTOR result = VecCreate(startPos, endPos);
-	result = VecNormalize(result);
-	result = VecScale(result, length);
-
-	return result;
-}
-
 float MyMath::RadianNormalize(float rad)
 {
 	if (rad > DX_TWO_PI_F)
@@ -349,4 +340,10 @@ float MyMath::Absolute(float value)
 {
 	if (value < 0.0f) value = -value;
 	return value;
+}
+
+float MyMath::GetDistance(VECTOR posA, VECTOR posB)
+{
+	VECTOR vec = VecCreate(posA, posB);
+	return VecLong(vec);
 }

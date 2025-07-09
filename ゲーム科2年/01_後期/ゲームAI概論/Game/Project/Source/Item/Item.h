@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "DxLib.h"
 #include "ItemParameter.h"
@@ -28,6 +28,7 @@ public:
 	bool IsActive() const { return m_Active; }
 	CollisionAABB* GetAABB() const { return m_CollisionAABB; }
 	const ItemParameter* GetParam() const { return m_Param; }
+	VECTOR GetPos() const { return m_Pos; }
 
 	void SetActive(bool active) { m_Active = active; }
 	void SetPos(VECTOR pos) { m_Pos = pos; }

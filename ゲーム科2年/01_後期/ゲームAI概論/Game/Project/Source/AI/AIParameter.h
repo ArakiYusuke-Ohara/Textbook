@@ -1,10 +1,10 @@
-#pragma once
+ï»¿#pragma once
 
-// CPU‚Ìs“®‚ÌŽí—Þ
+// CPUã®è¡Œå‹•ã®ç¨®é¡ž
 enum CPUStrategy
 {
-	CPU_STRATEGY_NONE, // ‚È‚µ
-	CPU_STRATEGY_CHASE,	// ƒvƒŒƒCƒ„[’Ç”ö
-	CPU_STRATEGY_AWAY,	// ƒvƒŒƒCƒ„[‚©‚ç—£‚ê‚é
-	CPU_STRATEGY_ATTACK,	// UŒ‚
+	CPU_STRATEGY_NONE, // ãªã—
+	CPU_STRATEGY_CHASE_TARGET,	// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼è¿½å°¾
+	CPU_STRATEGY_AWAY,	// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‹ã‚‰é›¢ã‚Œã‚‹
+	CPU_STRATEGY_ATTACK,	// æ”»æ’ƒ
 };

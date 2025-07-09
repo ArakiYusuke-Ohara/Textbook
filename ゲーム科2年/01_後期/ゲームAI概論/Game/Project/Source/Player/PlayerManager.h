@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include "DxLib.h"
 #include <vector>
@@ -6,47 +6,47 @@
 class Player;
 class AIPlayer;
 
-// ƒvƒŒƒCƒ„[ƒIƒuƒWƒFƒNƒgŠÇ—ƒNƒ‰ƒX
+// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆç®¡ç†ã‚¯ãƒ©ã‚¹
 class PlayerManager
 {
 public:
-	PlayerManager();	// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
-	~PlayerManager();	// ƒfƒXƒgƒ‰ƒNƒ^
+	PlayerManager();	// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+	~PlayerManager();	// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 
 public:
-	// ƒvƒŒƒCƒ„[ƒ}ƒl[ƒWƒƒ[‚ğ¶¬‚·‚é
-	// PlayerManager‚ÍƒQ[ƒ€ã‚É‚P‚Â‚Ì‚İ‚Æ‚·‚é‚Ì‚Å
-	// ‚Q‰ñ–ÚˆÈ~‚Ínew‚ª’Ê‚ç‚È‚¢‚æ‚¤‚É‚È‚Á‚Ä‚¢‚é
-	// iƒfƒUƒCƒ“ƒpƒ^[ƒ“FƒVƒ“ƒOƒ‹ƒgƒ“j
+	// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼ã‚’ç”Ÿæˆã™ã‚‹
+	// PlayerManagerã¯ã‚²ãƒ¼ãƒ ä¸Šã«ï¼‘ã¤ã®ã¿ã¨ã™ã‚‹ã®ã§
+	// ï¼’å›ç›®ä»¥é™ã¯newãŒé€šã‚‰ãªã„ã‚ˆã†ã«ãªã£ã¦ã„ã‚‹
+	// ï¼ˆãƒ‡ã‚¶ã‚¤ãƒ³ãƒ‘ã‚¿ãƒ¼ãƒ³ï¼šã‚·ãƒ³ã‚°ãƒ«ãƒˆãƒ³ï¼‰
 	static void CreateInstance() { if (!m_Instance) m_Instance = new PlayerManager; }
-	// ƒ}ƒl[ƒWƒƒ[‚ÌŠÖ”‚ªŒÄ‚Ñ‚½‚¢‚Æ‚«‚Ég—p‚·‚éAƒ}ƒl[ƒWƒƒ[æ“¾ŠÖ”
+	// ãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼ã®é–¢æ•°ãŒå‘¼ã³ãŸã„ã¨ãã«ä½¿ç”¨ã™ã‚‹ã€ãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼å–å¾—é–¢æ•°
 	static PlayerManager* GetInstance() { return m_Instance; }
-	// g‚í‚È‚­‚È‚Á‚½‚çíœ‚·‚éÛ‚ÌíœŠÖ”
+	// ä½¿ã‚ãªããªã£ãŸã‚‰å‰Šé™¤ã™ã‚‹éš›ã®å‰Šé™¤é–¢æ•°
 	static void DeleteInstance() { if (m_Instance) delete m_Instance; m_Instance = nullptr; }
 
 public:
-	void Init();	// ‰Šú‰»
-	void Load();	// ƒ[ƒh
-	void Start();	// ŠJn
-	void Step();	// ƒXƒeƒbƒv
-	void Update();	// XV
-	void Draw();	// •`‰æ
-	void Fin();		// I—¹
+	void Init();	// åˆæœŸåŒ–
+	void Load();	// ãƒ­ãƒ¼ãƒ‰
+	void Start();	// é–‹å§‹
+	void Step();	// ã‚¹ãƒ†ãƒƒãƒ—
+	void Update();	// æ›´æ–°
+	void Draw();	// æç”»
+	void Fin();		// çµ‚äº†
 
 public:
-	// ƒvƒŒƒCƒ„[‚ğ¶¬‚·‚é
+	// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚’ç”Ÿæˆã™ã‚‹
 	Player* CreatePlayer(int number);
 	AIPlayer* CreateAIPlayer(int number);
 	
 
-	// ŠÇ—’†‚ÌƒvƒŒƒCƒ„[‚ğæ“¾‚·‚é
-	std::vector<Player*> GetPlayers() { return m_Players; }
-	Player* GetPlayer(int number) { return m_Players[number]; }
+	// ç®¡ç†ä¸­ã®ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚’å–å¾—ã™ã‚‹
+	std::vector<Player*> GetPlayers() const { return m_Players; }
+	Player* GetPlayer(int number) const { return m_Players[number]; }
 
 private:
-	// ¶¬‚³‚ê‚½PlayerManager©g‚ğŠi”[‚·‚é•Ï”
-	// PlayerManager‚ÍƒQ[ƒ€ã‚É‚P‚Â‚Ì‚İ‚È‚Ì‚Åstatic‚É‚µ‚Ä‚¢‚é
+	// ç”Ÿæˆã•ã‚ŒãŸPlayerManagerè‡ªèº«ã‚’æ ¼ç´ã™ã‚‹å¤‰æ•°
+	// PlayerManagerã¯ã‚²ãƒ¼ãƒ ä¸Šã«ï¼‘ã¤ã®ã¿ãªã®ã§staticã«ã—ã¦ã„ã‚‹
 	static PlayerManager* m_Instance;
-	// ¶¬‚³‚ê‚½ƒvƒŒƒCƒ„[‚ÌQÆ
+	// ç”Ÿæˆã•ã‚ŒãŸãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®å‚ç…§
 	std::vector<Player*> m_Players;
 };
