@@ -15,8 +15,8 @@ DebugCamera g_DebugCamera = {};
 void GameInit()
 {
 	// シェーダーをロード
-	g_VSHandle = LoadVertexShader("Data/Shader/NormalMesh_DirLight_VS.vso");
-	g_PSHandle = LoadPixelShader("Data/Shader/NormalMesh_DirLight_PS.pso");
+	g_VSHandle = LoadVertexShader("Data/Shader/NormalMesh_NoLight_VS.vso");
+	g_PSHandle = LoadPixelShader("Data/Shader/NormalMesh_NoLight_PS.pso");
 	// 画像をロード
 	g_SphereHandle = MV1LoadModel("Data/Model/Sphere.x");
 	g_CubeHandle = MV1LoadModel("Data/Model/Cube.x");
