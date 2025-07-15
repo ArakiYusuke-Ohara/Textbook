@@ -95,7 +95,11 @@ VS_OUTPUT main( VS_INPUT VSInput )
 
 	VSOutput.texCoords0 = VSInput.texCoords0 ;
 	VSOutput.dif = VSInput.dif ;
-
+    //VSOutput.dif.r = 1.0f;
+    //VSOutput.dif.g = 1.0f;
+    //VSOutput.dif.b = 1.0f;
+    //VSOutput.dif.a = 1.0f;
+	
 	// 出力パラメータセット ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++( 終了 )
 
 

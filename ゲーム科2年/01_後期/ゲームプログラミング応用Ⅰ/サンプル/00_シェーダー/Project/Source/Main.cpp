@@ -1,12 +1,14 @@
 #include "DxLib.h"
+#include "Input/Input.h"
+#include "Camera/DebugCamera.h"
 
 // グローバル変数
 int g_VSHandle = 0;
 int g_PSHandle = 0;
 int g_SphereHandle = 0;
 int g_CubeHandle = 0;
-VECTOR g_CameraPos = {};
-VECTOR g_CameraTarget = {};
+DebugCamera g_DebugCamera = {};
+
 
 // 初期化関数
 // 始まる前に1回しか呼ばれない
@@ -20,31 +22,47 @@ void GameInit()
 	g_CubeHandle = MV1LoadModel("Data/Model/Cube.x");
 
 	// カメラ設定
-	SetCameraNearFar(0.1f, 1000.0f);
-	g_CameraPos = VGet(0.0f, 0.0f, -10.0f);
-	g_CameraTarget = VGet(0.0f, 0.0f, 0.0f);
+	g_DebugCamera.Init();
 
 	// シェーダーを有効にする
 	int isValidShader = GetValidShaderVersion();
 	MV1SetUseOrigShader(TRUE);
 	SetUseVertexShader(g_VSHandle);
 	SetUsePixelShader(g_PSHandle);
+
+	Input::Init();
+}
+
+// ステップ関数
+void GameStep()
+{
+	// カメラステップ
+	g_DebugCamera.Step();
 }
 
 // 更新関数
 // ゲームが動いている間ずっと呼ばれる
 void GameUpdate()
 {
-	MV1SetPosition(g_SphereHandle, VGet(0.0f, 0.0f, 0.0f));
-	MV1SetPosition(g_CubeHandle, VGet(0.0f, 0.0f, 0.0f));
-	SetCameraPositionAndTargetAndUpVec(g_CameraPos, g_CameraTarget, VGet(0.0f, 1.0f, 0.0f));
+	Input::Update();
+
+	// カメラ更新
+	g_DebugCamera.Update();
+
+	MV1SetPosition(g_SphereHandle, VGet(2.0f, 0.0f, 0.0f));
+	MV1SetPosition(g_CubeHandle, VGet(-2.0f, 0.0f, 0.0f));
 }
 
 // 描画関数
 // 画面に描画する
 void GameDraw()
 {
+	// モデル描画
 	MV1DrawModel(g_SphereHandle);
+	MV1DrawModel(g_CubeHandle);
+
+	// カメラ描画
+	g_DebugCamera.Draw();
 }
 
 // 終了関数
@@ -87,6 +105,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance, 
 		ClearDrawScreen();
 
 		// 更新処理
+		GameStep();
 		GameUpdate();
 
 		// 描画処理
