@@ -1,0 +1,26 @@
+==== コンパイル開始: 2025/07/16 17:00:42.69 ==== 
+ 
+処理中: NormalMesh_DirLight_PS.hlsl 
+コンパイルコマンド: ShaderCompiler.exe /T ps_2_0 "NormalMesh_DirLight_PS.hlsl" 
+簡易シェーダーコンパイルソフト
+成功　出力ファイル名 NormalMesh_DirLight_PS.pso
+出力ファイル移動: NormalMesh_DirLight_PS.pso 
+ 
+処理中: NormalMesh_DirLight_VS.hlsl 
+コンパイルコマンド: ShaderCompiler.exe /T vs_2_0 "NormalMesh_DirLight_VS.hlsl" 
+簡易シェーダーコンパイルソフト
+成功　出力ファイル名 NormalMesh_DirLight_VS.vso
+出力ファイル移動: NormalMesh_DirLight_VS.vso 
+ 
+処理中: NormalMesh_NoLight_PS.hlsl 
+コンパイルコマンド: ShaderCompiler.exe /T ps_2_0 "NormalMesh_NoLight_PS.hlsl" 
+簡易シェーダーコンパイルソフト
+成功　出力ファイル名 NormalMesh_NoLight_PS.pso
+出力ファイル移動: NormalMesh_NoLight_PS.pso 
+ 
+処理中: NormalMesh_NoLight_VS.hlsl 
+コンパイルコマンド: ShaderCompiler.exe /T vs_2_0 "NormalMesh_NoLight_VS.hlsl" 
+簡易シェーダーコンパイルソフト
+成功　出力ファイル名 NormalMesh_NoLight_VS.vso
+出力ファイル移動: NormalMesh_NoLight_VS.vso 
+==== コンパイル完了: 2025/07/16 17:00:42.95 ==== 
