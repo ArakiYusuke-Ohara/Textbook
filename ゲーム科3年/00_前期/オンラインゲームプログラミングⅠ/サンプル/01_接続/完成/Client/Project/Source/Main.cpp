@@ -43,10 +43,10 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance, 
 
 	// IPアドレスを設定
 	IPDATA ipData;
-	ipData.d1 = 192;
-	ipData.d2 = 168;
-	ipData.d3 = 132;
-	ipData.d4 = 107;
+	ipData.d1 = 10;
+	ipData.d2 = 50;
+	ipData.d3 = 164;
+	ipData.d4 = 100;
 	g_Client->SetIPAddress(ipData);
 
 	// ゲームのメインループ
