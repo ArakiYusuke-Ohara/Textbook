@@ -82,7 +82,7 @@ void Server::RemoveUserData(int handle)
 		if ((*itr).handle == handle)
 		{
 			// Œ©‚Â‚©‚Á‚½‚çíœ‚µ‚ÄI—¹
-			itr = m_UserData.erase(itr);
+			m_UserData.erase(itr);
 			return;
 		}
 	}
