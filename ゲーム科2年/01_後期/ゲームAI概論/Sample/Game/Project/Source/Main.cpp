@@ -31,6 +31,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance, 
 		return -1;			// エラーが起きたら直ちに終了
 	}
 
+	int test = (int)0.0f;
+
 	// 描画先を裏画面にする
 	SetDrawScreen(DX_SCREEN_BACK);
 
