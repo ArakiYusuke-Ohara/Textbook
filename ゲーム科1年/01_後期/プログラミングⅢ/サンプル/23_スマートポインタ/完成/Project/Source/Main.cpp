@@ -9,7 +9,6 @@ void PracticeWeakPointer();
 
 // プログラムが終了するまで消えないグローバル変数
 std::shared_ptr<Player> g_SharedPlayer;
-std::weak_ptr<Player> g_WeakPlayer;
 
 int main()
 {
@@ -78,19 +77,22 @@ void CreateSharedPlayer()
 /// </summary>
 void PracticeWeakPointer()
 {
+	// Shared参照用のWeakポインター
+	std::weak_ptr<Player> weakPlayer;
+
 	// sharedが存在するブロック
 	{
 		// 共有ポインターで生成
 		std::shared_ptr<Player> sharedPlayer = std::make_shared<Player>();
 
 		// Weakポインターは共有ポインターをコピーできる
-		g_WeakPlayer = sharedPlayer;
+		weakPlayer = sharedPlayer;
 
 		// Weakポインターからはメンバーにアクセスできない
-		// g_WeakPlayer->Move();
+		// weakPlayer->Move();
 
 		// アクセスするにはlock関数を呼び、共有ポインターを取得する
-		std::shared_ptr<Player> player = g_WeakPlayer.lock();
+		std::shared_ptr<Player> player = weakPlayer.lock();
 		if (player)
 		{
 			player->Move();
@@ -100,8 +102,8 @@ void PracticeWeakPointer()
 		// Weakポインターには所有権がないのでPlayerはdeleteされる
 	}
 
-	// Weakポインターのlock関数はdeleteされた後はnullptrを返す
-	std::shared_ptr<Player> player = g_WeakPlayer.lock();
+	// Weakポインターのlock関数はdeleteされた後はemptyを返す
+	std::shared_ptr<Player> player = weakPlayer.lock();
 	if (player)
 	{
 		// ここにはこない
