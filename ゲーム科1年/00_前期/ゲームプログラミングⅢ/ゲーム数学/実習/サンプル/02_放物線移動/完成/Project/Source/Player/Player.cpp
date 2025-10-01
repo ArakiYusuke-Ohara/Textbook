@@ -167,10 +167,6 @@ void UpdatePlayer()
 		SetState(PLAYER_FALL);
 	}
 
-	// ˆÚ“®ˆ—
-	g_PlayerData.posX += g_PlayerData.moveX;
-	g_PlayerData.posY += g_PlayerData.moveY;
-
 	UpdatePlayerAnimation();
 }
 
@@ -206,6 +202,18 @@ void FinPlayer()
 PlayerData GetPlayer()
 {
 	return g_PlayerData;
+}
+
+void PlayerMoveX()
+{
+	// ˆÚ“®ˆ—
+	g_PlayerData.posX += g_PlayerData.moveX;
+}
+
+void PlayerMoveY()
+{
+	// ˆÚ“®ˆ—
+	g_PlayerData.posY += g_PlayerData.moveY;
 }
 
 void SetState(PlayerState state)

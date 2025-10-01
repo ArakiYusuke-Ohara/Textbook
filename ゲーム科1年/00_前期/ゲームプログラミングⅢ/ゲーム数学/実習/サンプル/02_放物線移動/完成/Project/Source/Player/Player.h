@@ -55,6 +55,10 @@ void FinPlayer();
 // æ“¾ŠÖ”
 PlayerData GetPlayer();
 
+// ˆÚ“®ŠÖ”
+void PlayerMoveX();
+void PlayerMoveY();
+
 // “–‚½‚è”»’è
 // ’ÊíƒuƒƒbƒN‚Æ‚Ì“–‚½‚è”»’è
 void PlayerHitNormalBlockX(MapChipData mapChipData, bool checkRight = true, bool checkLeft = true);
