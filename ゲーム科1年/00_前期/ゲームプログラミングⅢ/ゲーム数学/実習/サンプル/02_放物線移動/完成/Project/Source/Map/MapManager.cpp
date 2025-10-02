@@ -85,15 +85,17 @@ void ChceckMapPlayerCollision()
 	int right = playerX + CHECK_ROUND_NUM;
 	int bottom = playerY + CHECK_ROUND_NUM;
 
-
-	CheckSlopeY(left, top, right, bottom);
-	CheckNormalY(left, top, right, bottom);
-	CheckAutoDoorY();
-	CheckArchBlockY();
+	PlayerMoveX();
 	CheckSlopeX(left, top, right, bottom);
 	CheckNormalX(left, top, right, bottom);
 	CheckAutoDoorX();
 	CheckArchBlockX();
+
+	PlayerMoveY();
+	CheckSlopeY(left, top, right, bottom);
+	CheckNormalY(left, top, right, bottom);
+	CheckAutoDoorY();
+	CheckArchBlockY();
 }
 
 void CheckNormalX(int left, int top, int right, int bottom)
