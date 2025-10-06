@@ -31,7 +31,6 @@ private:
 	void UpdateDisconnect();
 	void UpdateWaitingConnection();
 	void UpdateConnect();
-	void SendChatData();
 
 public:
 	void SetIPAddress(IPDATA address) { m_IPAddress = address; }
