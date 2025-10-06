@@ -103,21 +103,11 @@ void Server::ReceiveData()
 		// データが送られてきたかチェック
 		if (dataLength > 0)
 		{
-			// 受信データ格納用変数
-			int nameLen, messageLen;
-
 			// 受信前にデータクリア
 			m_ChatData = {};
 
-			// 送信される順番に合わせて受信する
-			// 名前の長さ
-//			NetWorkRecv(client.handle, &nameLen, sizeof(nameLen));
-			// 名前（終端文字含む）
-//			NetWorkRecv(client.handle, m_ChatData.name, nameLen + 1);
-			// メッセージの長さ
-			NetWorkRecv(client.handle, &messageLen, sizeof(messageLen));
-			// メッセージ（終端文字含む）
-			NetWorkRecv(client.handle, m_ChatData.message, messageLen + 1);
+			// 受信
+			NetWorkRecv(client.handle, &m_ChatData, sizeof(m_ChatData));
 		}
 	}
 }

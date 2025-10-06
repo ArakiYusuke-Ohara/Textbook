@@ -31,6 +31,7 @@ private:
 	void UpdateDisconnect();
 	void UpdateWaitingConnection();
 	void UpdateConnect();
+	void SendChatData();
 
 public:
 	void SetIPAddress(IPDATA address) { m_IPAddress = address; }
@@ -43,6 +44,6 @@ private:
 	IPDATA m_IPAddress;
 	InputString* m_UserNameInput;
 	InputString* m_MessageInput;
-	ClientChatData m_ChatData;
+	// 送信するチャットデータ
 };
 

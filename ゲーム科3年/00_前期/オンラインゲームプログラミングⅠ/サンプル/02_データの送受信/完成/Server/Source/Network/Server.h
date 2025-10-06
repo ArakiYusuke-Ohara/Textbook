@@ -28,5 +28,6 @@ private:
 
 private:
 	std::list<ClientData> m_ClientData;
+	// 受信するチャットデータ
 	ChatData m_ChatData;
 };

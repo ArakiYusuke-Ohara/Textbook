@@ -5,7 +5,7 @@
 Server::Server()
 {
 	m_ClientData = {};
-	m_ClientChatData = {};
+
 }
 
 Server::~Server()
@@ -36,16 +36,18 @@ void Server::Update()
 	{
 		RemoveUserData(lostHandle);
 	}
+
+	// データ受信処理
+	ReceiveData();
 }
 
 void Server::Draw()
 {
 	// まだなにも送られてなければ描画しない
-	if (strlen(m_ClientChatData.userName) <= 0) return;
+
 
 	// 最後に送られたメッセージ内容を描画
-	DrawFormatString(0, 0, GetColor(0, 255, 0), "%s", m_ClientChatData.userName);
-	DrawFormatString(0, 20, GetColor(255, 255, 255), "%s", m_ClientChatData.message);
+
 
 }
 
@@ -85,6 +87,26 @@ void Server::RemoveUserData(int handle)
 			// 見つかったら削除して終了
 			m_ClientData.erase(itr);
 			return;
+		}
+	}
+}
+
+void Server::ReceiveData()
+{
+	// 接続しているクライアント全員分処理する
+	for (ClientData client : m_ClientData)
+	{
+		// クライアントから送られたデータのサイズを取得
+		int dataLength = GetNetWorkDataLength(client.handle);
+
+		// データが送られてきたかチェック
+		if (dataLength > 0)
+		{
+			// 受信前にデータクリア
+
+
+			// 受信
+
 		}
 	}
 }

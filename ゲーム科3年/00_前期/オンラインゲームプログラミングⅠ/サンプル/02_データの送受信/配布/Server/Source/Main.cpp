@@ -37,6 +37,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance, 
 	// ゲームのメインループ
 	while (ProcessMessage() >= 0)
 	{
+		Sleep(1);
+
 		// 画面をクリア
 		ClearDrawScreen();
 

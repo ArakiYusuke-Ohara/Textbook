@@ -44,8 +44,7 @@ private:
 	IPDATA m_IPAddress;
 	InputString* m_UserNameInput;
 	InputString* m_MessageInput;
+	// 送信するチャットデータ
 	ChatData m_ChatData;
-	size_t m_NameLen;
-	size_t m_MessageLen;
 };
 

@@ -7,8 +7,6 @@
 Client::Client()
 {
 	m_ServerHandle = 0;
-	m_NameLen = 0;
-	m_MessageLen = 0;
 	m_NWState = NW_STATE_DISCONNECT;
 	m_IPAddress = {};
 	m_ChatData = {};
@@ -128,13 +126,15 @@ void Client::UpdateDisconnect()
 		const char* name = m_UserNameInput->GetInputString();
 
 		// 文字数チェック
-		m_NameLen = strlen(name);
-		if (m_NameLen > 0)
+		int nameLen = (int)strlen(name);
+		if (nameLen > 0)
 		{
 			// ユーザー名をチャットデータに記録
 			strcpy_s(m_ChatData.name, NETWORK_USER_NAME_BUFFER_MAX, name);
+
 			// ユーザー名入力終了
 			m_UserNameInput->Fin();
+
 			// 接続
 			Connect();
 		}
@@ -172,21 +172,14 @@ void Client::UpdateConnect()
 		const char* message = m_MessageInput->GetInputString();
 
 		// 文字数チェック
-		m_MessageLen = strlen(message);
-		if (m_MessageLen > 0)
+		int messageLen = (int)strlen(message);
+		if (messageLen > 0)
 		{
 			// メッセージをチャットデータに設定
 			strcpy_s(m_ChatData.message, NETWORK_MESSAGE_BUFFER_MAX, message);
 
 			// サーバーにチャットデータを送信
-			// 名前の長さ
-//			NetWorkSend(m_ServerHandle, &m_NameLen, sizeof(m_NameLen));
-			// 名前（終端文字含む）
-//			NetWorkSend(m_ServerHandle, m_ChatData.name, (int)m_NameLen + 1);
-			// メッセージの長さ
-			NetWorkSend(m_ServerHandle, &m_MessageLen, sizeof(m_MessageLen));
-			// メッセージ（終端文字含む）
-			NetWorkSend(m_ServerHandle, m_ChatData.message, (int)m_MessageLen + 1);
+			NetWorkSend(m_ServerHandle, &m_ChatData, sizeof(m_ChatData));
 
 			// メッセージをクリア
 			m_MessageInput->Clear();
