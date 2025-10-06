@@ -193,8 +193,3 @@ void Client::UpdateConnect()
 		Disconnect();
 	}
 }
-
-void Client::SendChatData()
-{
-	
-}
