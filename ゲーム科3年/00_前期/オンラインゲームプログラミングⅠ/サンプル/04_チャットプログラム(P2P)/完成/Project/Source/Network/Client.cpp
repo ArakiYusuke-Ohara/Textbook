@@ -8,7 +8,7 @@ Client::Client()
 {
 	m_HostHandle = 0;
 	m_Mode = MODE_NONE;
-	m_NWState = NW_STATE_SELECT_HOST;
+	m_NWState = NW_STATE_NONE;
 	m_MatchingClientData = {};
 	m_IPAddress = {};
 	m_SendChatData = {};
@@ -32,17 +32,15 @@ void Client::Init()
 	m_UserNameInput->SetPos(VGet(0.0f, 20.0f, 0.0f));
 	m_MessageInput->SetPos(VGet(0.0f, 20.0f, 0.0f));
 
-	// 最初はホストかどうか選択
-	m_NWState = NW_STATE_SELECT_HOST;
+	// 最初はユーザー名入力
+	m_NWState = NW_STATE_INPUT_USER_NAME;
 }
 
 void Client::Update()
 {
 	switch (m_NWState)
 	{
-		case NW_STATE_SELECT_HOST:			UpdateSelectHost(); break;
 		case NW_STATE_INPUT_USER_NAME:		UpdateDisconnect(); break;
-		case NW_STATE_WAITING_MATCHING:		UpdateWaitingMatching(); break;
 		case NW_STATE_WAITING_CONNECTION:	UpdateWaitingConnection(); break;
 		case NW_STATE_CONNECT:				UpdateConnect(); break;
 	}
@@ -50,17 +48,9 @@ void Client::Update()
 
 void Client::Draw()
 {
-	if (m_NWState == NW_STATE_SELECT_HOST)
-	{
-		DrawString(0, 0, "Sキー: ホストとして待機 / Cキー: クライアントとして接続", GetColor(255, 255, 255));
-	}
-	else if (m_NWState == NW_STATE_INPUT_USER_NAME)
+	if (m_NWState == NW_STATE_INPUT_USER_NAME)
 	{
 		DrawFormatString(0, 0, GetColor(255, 255, 255), "ユーザー名を入力");
-	}
-	else if (m_NWState == NW_STATE_WAITING_MATCHING)
-	{
-		DrawFormatString(0, 0, GetColor(255, 255, 255), "マッチング中。。。");
 	}
 	else if (m_NWState == NW_STATE_CONNECT)
 	{
@@ -127,26 +117,6 @@ void Client::Disconnect()
 	m_UserNameInput->Start();
 }
 
-void Client::SetUserData(int handle)
-{
-	m_MatchingClientData.handle = handle;
-	// 接続してきたマシンのＩＰアドレスを得る
-	GetNetWorkIP(handle, &m_MatchingClientData.ip);
-}
-
-void Client::UpdateSelectHost()
-{
-	if (Input::IsTriggerKey(KEY_S)) m_Mode = MODE_HOST;
-	if (Input::IsTriggerKey(KEY_C)) m_Mode = MODE_CLIENT;
-
-	if (m_Mode != MODE_NONE)
-	{
-		// ユーザー名入力開始
-		m_UserNameInput->Start();
-		m_NWState = NW_STATE_INPUT_USER_NAME;
-	}
-}
-
 /// <summary>
 /// 切断中の更新処理
 /// </summary>
@@ -171,14 +141,12 @@ void Client::UpdateDisconnect()
 			// ユーザー名入力終了
 			m_UserNameInput->Fin();
 
-			// ホストならマッチング相手待ち
-			if (m_Mode == MODE_HOST)
-			{
-				int success = PreparationListenNetWork(PORT_NUMBER);
-				m_NWState = NW_STATE_WAITING_MATCHING;
-			}
+			// 通信開始
+			StartNetwork();
+			m_NWState = NW_STATE_WAITING;
+
 			// クライアントならホストに接続
-			else if (m_Mode == MODE_CLIENT)
+			if (m_Mode == MODE_CLIENT)
 			{
 				Connect();
 				m_NWState = NW_STATE_WAITING_CONNECTION;
@@ -188,20 +156,12 @@ void Client::UpdateDisconnect()
 }
 
 /// <summary>
-/// ホスト専用の接続相手待ち
+/// 接続待ち
 /// </summary>
-void Client::UpdateWaitingMatching()
+void Client::UpdateWaiting()
 {
-	if (m_Mode != MODE_HOST) return;
-
-	// 新しい接続があったらそのネットワークハンドルを得る
-	int acceptHandle = GetNewAcceptNetWork();
-	// 新しい接続があった
-	if (acceptHandle != -1)
+	if (WaitingConnection())
 	{
-		// マッチングしたユーザーデータを設定
-		SetUserData(acceptHandle);
-
 		// メッセージ入力開始
 		m_MessageInput->Start();
 
@@ -282,8 +242,9 @@ void Client::ReceiveData()
 	{
 		// 受信
 		ChatData receivedData = {};
-
 		NetWorkRecv(nwHandle, &receivedData, sizeof(receivedData));
+
+		// 受信したデータをチャットに追加
 		m_ChatData.push_back(receivedData);
 	}
 }

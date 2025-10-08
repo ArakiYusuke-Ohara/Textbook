@@ -1,13 +1,23 @@
 #include "DxLib.h"
 #include "Input/Input.h"
-#include "Network/Client.h"
+#include "Network/Host.h"
+
+enum MainState
+{
+	MAIN_STATE_NONE,
+	MAIN_STATE_SELECT_MODE,
+	MAIN_STATE_CHAT
+};
 
 // クライアント用グローバル変数
 Client* g_Client = nullptr;
+MainState g_State = MAIN_STATE_SELECT_MODE;
 
 // 関数のプロトタイプ宣言
 void Update();			// 更新
 void Draw();			// 描画
+void UpdateSelectMode();// モード選択
+
 
 // プログラムは WinMain から始まります
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nShowCmd)
@@ -37,10 +47,6 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance, 
 
 	// 入力初期化
 	Input::Init();
-
-	// クライアント生成
-	g_Client = new Client();
-	g_Client->Init();
 
 	// IPアドレスを設定
 	IPDATA ipData;
@@ -84,12 +90,46 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance, 
 
 void Update()
 {
-	// ネットワークマネージャー更新
-	g_Client->Update();
+	switch (g_State)
+	{
+		case MAIN_STATE_SELECT_MODE:
+			break;
 
+		case MAIN_STATE_CHAT:
+			g_Client->Update();
+			break;
+
+	}
 }
 
 void Draw()
 {
-	g_Client->Draw();
+	switch (g_State)
+	{
+	case MAIN_STATE_SELECT_MODE:
+		DrawString(0, 0, "Sキー: ホストとして待機 / Cキー: クライアントとして接続", GetColor(255, 255, 255));
+		break;
+
+	case MAIN_STATE_CHAT:
+		g_Client->Draw();
+		break;
+
+	}
+
+}
+
+void UpdateSelectMode()
+{
+	if (Input::IsTriggerKey(KEY_H))
+	{
+		// ホストを生成
+		g_Client = new Host();
+		g_Client->Init();
+
+	}
+	if (Input::IsTriggerKey(KEY_C))
+	{
+		// クライアントを生成
+	}
+
 }

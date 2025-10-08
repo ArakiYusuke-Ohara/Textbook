@@ -24,6 +24,9 @@
     <ClCompile Include="Source\Input\Input.cpp">
       <Filter>Source\Input</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Network\Host.cpp">
+      <Filter>Source\Network</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Network\NetworkCommonParam.h">
@@ -37,6 +40,9 @@
     </ClInclude>
     <ClInclude Include="Source\Input\Input.h">
       <Filter>Source\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Network\Host.h">
+      <Filter>Source\Network</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

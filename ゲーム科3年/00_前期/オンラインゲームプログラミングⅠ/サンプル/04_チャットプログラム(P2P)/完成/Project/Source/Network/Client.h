@@ -14,9 +14,9 @@ struct ClientData
 // 通信の状態
 enum NetworkState
 {
-	NW_STATE_SELECT_HOST,			// ホストかどうか選択中
-	NW_STATE_INPUT_USER_NAME,			// 切断している
-	NW_STATE_WAITING_MATCHING,		// マッチング中
+	NW_STATE_NONE,
+	NW_STATE_INPUT_USER_NAME,		// ユーザー名入力中
+	NW_STATE_WAITING,				// マッチング中
 	NW_STATE_WAITING_CONNECTION,	// 接続中
 	NW_STATE_CONNECT,				// 接続している
 };
@@ -26,7 +26,7 @@ class Client
 {
 public:
 	Client();
-	~Client();
+	virtual ~Client();
 
 public:
 	void Init();
@@ -38,14 +38,16 @@ public:
 	void Disconnect();
 
 private:
-	void SetUserData(int handle);
-	void UpdateSelectHost();
 	void UpdateDisconnect();
-	void UpdateWaitingMatching();
+	void UpdateWaiting();
 	void UpdateWaitingConnection();
 	void UpdateConnect();
 	void ReceiveData();
 	void DrawChat();
+
+private:
+	virtual void StartNetwork() = 0;
+	virtual bool WaitingConnection() = 0;
 
 public:
 	void SetIPAddress(IPDATA address) { m_IPAddress = address; }
