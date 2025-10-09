@@ -9,7 +9,6 @@ Client::Client()
 	m_PartnerHandle = 0;
 	m_NWState = NW_STATE_NONE;
 	m_IPAddress = {};
-	m_SendChatData = {};
 	m_NameInput = nullptr;
 	m_MessageInput = nullptr;
 	m_SendChatData = {};
