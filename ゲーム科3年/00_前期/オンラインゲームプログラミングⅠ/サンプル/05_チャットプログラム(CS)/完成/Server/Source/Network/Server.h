@@ -30,5 +30,5 @@ private:
 
 private:
 	std::list<ClientData> m_ClientData;
-	std::list<ChatData> m_ChatData;
+	std::list<ChatData> m_ChatData;		// 全チャットデータ
 };

@@ -5,7 +5,7 @@
 Server::Server()
 {
 	m_ClientData = {};
-
+	m_ChatData = {};
 }
 
 Server::~Server()
@@ -43,12 +43,7 @@ void Server::Update()
 
 void Server::Draw()
 {
-	// まだなにも送られてなければ描画しない
-
-
-	// 最後に送られたメッセージ内容を描画
-
-
+	DrawFormatString(0, 0, GetColor(255, 255, 255), "接続数：%d 人", m_ClientData.size());
 }
 
 void Server::Fin()
@@ -70,6 +65,9 @@ void Server::AddUserData(int handle)
 
 	// ユーザー配列に追加
 	m_ClientData.push_back(client);
+
+	// 現状を送信しておく
+	SendData();
 }
 
 /// <summary>
@@ -93,6 +91,8 @@ void Server::RemoveUserData(int handle)
 
 void Server::ReceiveData()
 {
+	bool isUpdate = false;
+
 	// 接続しているクライアント全員分処理する
 	for (ClientData client : m_ClientData)
 	{
@@ -102,11 +102,36 @@ void Server::ReceiveData()
 		// データが送られてきたかチェック
 		if (dataLength > 0)
 		{
-			// 受信前にデータクリア
-
+			ChatData receiveData = {};
 
 			// 受信
+			NetWorkRecv(client.handle, &receiveData, sizeof(receiveData));
 
+			// チャットデータに追加
+			m_ChatData.push_back(receiveData);
+
+			// 最大数を超えたら最も古いログを削除
+			if (m_ChatData.size() > CHAT_LOG_MAX)
+			{
+				m_ChatData.pop_front();
+			}
+
+			// チャットデータが更新された
+			isUpdate = true;
 		}
 	}
+
+	// 更新されたら全クライアントに送信して共有
+	if (isUpdate)
+	{
+		SendData();
+	}
+}
+
+/// <summary>
+/// 全クライアントにデータを送信する
+/// </summary>
+void Server::SendData()
+{
+
 }

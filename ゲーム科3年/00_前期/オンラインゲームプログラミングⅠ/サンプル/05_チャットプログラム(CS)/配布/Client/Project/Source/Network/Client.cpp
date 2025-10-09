@@ -7,8 +7,9 @@
 Client::Client()
 {
 	m_ServerHandle = 0;
-	m_NWState = NW_STATE_DISCONNECT;
+	m_NWState = NW_STATE_NANE_INPUT;
 	m_IPAddress = {};
+	m_SendChatData = {};
 	m_UserNameInput = nullptr;
 	m_MessageInput = nullptr;
 }
@@ -35,23 +36,24 @@ void Client::Update()
 {
 	switch (m_NWState)
 	{
-		case NW_STATE_DISCONNECT:			UpdateDisconnect(); break;
+		case NW_STATE_NANE_INPUT:			UpdateNameInput(); break;
 		case NW_STATE_WAITING_CONNECTION:	UpdateWaitingConnection(); break;
-		case NW_STATE_CONNECT:				UpdateConnect(); break;
+		case NW_STATE_MESSAGE_INPUT:		UpdateMessageInput(); break;
 	}
 }
 
 void Client::Draw()
 {
-	if (m_NWState == NW_STATE_DISCONNECT)
+	if (m_NWState == NW_STATE_NANE_INPUT)
 	{
 		DrawFormatString(0, 0, GetColor(255, 255, 255), "ユーザー名を入力");
 	}
-	else if (m_NWState == NW_STATE_CONNECT)
+	else if (m_NWState == NW_STATE_MESSAGE_INPUT)
 	{
 		DrawFormatString(0, 0, GetColor(255, 255, 255), "メッセージを入力");
 		DrawFormatString(0, 840, GetColor(255, 255, 255), "Ctrl + Qで切断");
 		DrawFormatString(0, 860, GetColor(255, 255, 255), "接続先IPアドレス：%d.%d.%d.%d", m_IPAddress.d1, m_IPAddress.d2, m_IPAddress.d3, m_IPAddress.d4);
+		DrawChat();
 	}
 
 	DrawString(0, 880, "クライアント側", GetColor(255, 255, 255));
@@ -102,7 +104,7 @@ void Client::Disconnect()
 	// 切断
 	CloseNetWork(m_ServerHandle);
 	m_ServerHandle = 0;
-	m_NWState = NW_STATE_DISCONNECT;
+	m_NWState = NW_STATE_NANE_INPUT;
 
 	// メッセージ入力終了
 	m_MessageInput->Fin();
@@ -113,7 +115,7 @@ void Client::Disconnect()
 /// <summary>
 /// 切断中の更新処理
 /// </summary>
-void Client::UpdateDisconnect()
+void Client::UpdateNameInput()
 {
 	// ユーザー名入力更新
 	m_UserNameInput->Update();
@@ -129,7 +131,7 @@ void Client::UpdateDisconnect()
 		if (nameLen > 0)
 		{
 			// ユーザー名をチャットデータに記録
-
+			strcpy_s(m_SendChatData.name, NETWORK_USER_NAME_BUFFER_MAX, name);
 
 			// ユーザー名入力終了
 			m_UserNameInput->Fin();
@@ -149,7 +151,7 @@ void Client::UpdateWaitingConnection()
 	if (GetNetWorkAcceptState(m_ServerHandle))
 	{
 		// 接続完了
-		m_NWState = NW_STATE_CONNECT;
+		m_NWState = NW_STATE_MESSAGE_INPUT;
 
 		// メッセージ入力開始
 		m_MessageInput->Start();
@@ -159,7 +161,7 @@ void Client::UpdateWaitingConnection()
 /// <summary>
 /// 接続中の更新処理
 /// </summary>
-void Client::UpdateConnect()
+void Client::UpdateMessageInput()
 {
 	// メッセージ入力更新
 	m_MessageInput->Update();
@@ -175,20 +177,41 @@ void Client::UpdateConnect()
 		if (messageLen > 0)
 		{
 			// メッセージをチャットデータに設定
-
+			strcpy_s(m_SendChatData.message, NETWORK_MESSAGE_BUFFER_MAX, message);
 
 			// サーバーにチャットデータを送信
-
+			NetWorkSend(m_ServerHandle, &m_SendChatData, sizeof(m_SendChatData));
 
 			// メッセージをクリア
 			m_MessageInput->Clear();
 		}
 	}
 
+	// 受信処理
+	ReceiveData();
+
 	// Ctrl + Q で切断
 	if ((Input::IsInputKey(KEY_CTRL_L) || Input::IsInputKey(KEY_CTRL_R)) && Input::IsTriggerKey(KEY_Q))
 	{
 		// 切断
 		Disconnect();
+	}
+}
+
+/// <summary>
+/// サーバーから送られるデータを受信する
+/// </summary>
+void Client::ReceiveData()
+{
+
+}
+
+void Client::DrawChat()
+{
+	int raw = 0;
+	for (ChatData data : m_ServerChatData)
+	{
+		DrawFormatString(0, 40 + raw * 20, GetColor(255, 255, 255), "%s: %s", data.name, data.message);
+		raw++;
 	}
 }

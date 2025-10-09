@@ -43,12 +43,7 @@ void Server::Update()
 
 void Server::Draw()
 {
-	int raw = 0;
-	for (ChatData data : m_ChatData)
-	{
-		DrawFormatString(0, 40 + raw * 20, GetColor(255, 255, 255), "%s: %s", data.name, data.message);
-		raw++;
-	}
+	DrawFormatString(0, 0, GetColor(255, 255, 255), "ê⁄ë±êîÅF%d êl", m_ClientData.size());
 }
 
 void Server::Fin()
@@ -139,7 +134,7 @@ void Server::SendData()
 	ChatData serialize[CHAT_LOG_MAX] = {};
 	int i = 0;
 
-	for (ChatData data : m_ChatData)
+	for (const ChatData& data : m_ChatData)
 	{
 		serialize[i] = data;
 		i++;
