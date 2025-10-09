@@ -6,13 +6,11 @@
 
 Client::Client()
 {
-	m_HostHandle = 0;
-	m_Mode = MODE_NONE;
+	m_PartnerHandle = 0;
 	m_NWState = NW_STATE_NONE;
-	m_MatchingClientData = {};
 	m_IPAddress = {};
 	m_SendChatData = {};
-	m_UserNameInput = nullptr;
+	m_NameInput = nullptr;
 	m_MessageInput = nullptr;
 	m_SendChatData = {};
 	m_ChatData = {};
@@ -26,33 +24,38 @@ Client::~Client()
 void Client::Init()
 {
 	// キー文字列入力システム設定
-	m_UserNameInput = new InputString;
-	m_MessageInput = new InputString;
+	m_NameInput = MakeUnique<InputString>();
+	m_MessageInput = MakeUnique<InputString>();
 
-	m_UserNameInput->SetPos(VGet(0.0f, 20.0f, 0.0f));
+	m_NameInput->SetPos(VGet(0.0f, 20.0f, 0.0f));
 	m_MessageInput->SetPos(VGet(0.0f, 20.0f, 0.0f));
 
-	// 最初はユーザー名入力
-	m_NWState = NW_STATE_INPUT_USER_NAME;
+	// 最初は名前入力
+	m_NameInput->Start();
+	m_NWState = NW_STATE_INPUT_NAME;
 }
 
 void Client::Update()
 {
 	switch (m_NWState)
 	{
-		case NW_STATE_INPUT_USER_NAME:		UpdateDisconnect(); break;
-		case NW_STATE_WAITING_CONNECTION:	UpdateWaitingConnection(); break;
-		case NW_STATE_CONNECT:				UpdateConnect(); break;
+		case NW_STATE_INPUT_NAME:			UpdateInputName(); break;
+		case NW_STATE_WAITING:				UpdateWaiting(); break;
+		case NW_STATE_INPUT_MESSAGE:		UpdateInputMessage(); break;
 	}
 }
 
 void Client::Draw()
 {
-	if (m_NWState == NW_STATE_INPUT_USER_NAME)
+	if (m_NWState == NW_STATE_INPUT_NAME)
 	{
 		DrawFormatString(0, 0, GetColor(255, 255, 255), "ユーザー名を入力");
 	}
-	else if (m_NWState == NW_STATE_CONNECT)
+	else if (m_NWState == NW_STATE_WAITING)
+	{
+		DrawWaiting();
+	}
+	else if (m_NWState == NW_STATE_INPUT_MESSAGE)
 	{
 		DrawFormatString(0, 0, GetColor(255, 255, 255), "メッセージを入力");
 		DrawFormatString(0, 840, GetColor(255, 255, 255), "Ctrl + Qで切断");
@@ -61,7 +64,7 @@ void Client::Draw()
 
 	DrawString(0, 880, "クライアント側", GetColor(255, 255, 255));
 
-	m_UserNameInput->Draw();
+	m_NameInput->Draw();
 	m_MessageInput->Draw();
 
 	DrawChat();
@@ -70,14 +73,10 @@ void Client::Draw()
 void Client::Fin()
 {
 	// 状態が接続中以降であれば切断
-	if (m_NWState >= NW_STATE_WAITING_CONNECTION)
+	if (m_NWState >= NW_STATE_WAITING)
 	{
 		Disconnect();
 	}
-
-	// 入力システム削除
-	delete m_UserNameInput;
-	delete m_MessageInput;
 }
 
 /// <summary>
@@ -86,18 +85,18 @@ void Client::Fin()
 void Client::Connect()
 {
 	// 指定したIPアドレスの端末に接続
-	m_HostHandle = ConnectNetWork(m_IPAddress, PORT_NUMBER);
+	m_PartnerHandle = ConnectNetWork(m_IPAddress, PORT_NUMBER);
 
 	// ハンドルが-1なら接続できてない
-	if (m_HostHandle == -1)
+	if (m_PartnerHandle == -1)
 	{
 		// 名前入力に戻る
-		m_UserNameInput->Start();
+		m_NameInput->Start();
 	}
 	else
 	{
 		// 接続待ちへ
-		m_NWState = NW_STATE_WAITING_CONNECTION;
+		m_NWState = NW_STATE_WAITING;
 	}
 }
 
@@ -107,52 +106,58 @@ void Client::Connect()
 void Client::Disconnect()
 {
 	// 切断
-	CloseNetWork(m_HostHandle);
-	m_HostHandle = 0;
-	m_NWState = NW_STATE_INPUT_USER_NAME;
+	CloseNetWork(m_PartnerHandle);
+	m_PartnerHandle = 0;
+	m_NWState = NW_STATE_INPUT_NAME;
 
 	// メッセージ入力終了
 	m_MessageInput->Fin();
 	// ユーザー名入力開始
-	m_UserNameInput->Start();
+	m_NameInput->Start();
 }
 
 /// <summary>
 /// 切断中の更新処理
 /// </summary>
-void Client::UpdateDisconnect()
+void Client::UpdateInputName()
 {
 	// ユーザー名入力更新
-	m_UserNameInput->Update();
+	m_NameInput->Update();
 
 	// Enterで接続
 	if (Input::IsTriggerKey(KEY_ENTER))
 	{
 		// 入力した名前を取得
-		const char* name = m_UserNameInput->GetInputString();
+		const char* name = m_NameInput->GetInputString();
 
 		// 文字数チェック
 		int nameLen = (int)strlen(name);
 		if (nameLen > 0)
 		{
-			// ユーザー名をチャットデータに記録
-			strcpy_s(m_SendChatData.name, NETWORK_USER_NAME_BUFFER_MAX, name);
-
-			// ユーザー名入力終了
-			m_UserNameInput->Fin();
-
-			// 通信開始
-			StartNetwork();
-			m_NWState = NW_STATE_WAITING;
-
-			// クライアントならホストに接続
-			if (m_Mode == MODE_CLIENT)
+			if (nameLen <= NETWORK_USER_NAME_MAX)
 			{
-				Connect();
-				m_NWState = NW_STATE_WAITING_CONNECTION;
+				// ユーザー名をチャットデータに記録
+				strcpy_s(m_SendChatData.name, NETWORK_USER_NAME_BUFFER_MAX, name);
+
+				// ユーザー名入力終了
+				m_NameInput->Fin();
+
+				// 通信開始
+				StartNetwork();
+			}
+			else
+			{
+				// 長すぎたら再入力
+				m_NameInput->Clear();
 			}
 		}
 	}
+}
+
+void Client::StartNetwork()
+{
+	// 接続
+	Connect();
 }
 
 /// <summary>
@@ -160,38 +165,26 @@ void Client::UpdateDisconnect()
 /// </summary>
 void Client::UpdateWaiting()
 {
-	if (WaitingConnection())
+	// 接続できたかチェック
+	if (GetNetWorkAcceptState(m_PartnerHandle))
 	{
+		// 接続完了
+		m_NWState = NW_STATE_INPUT_MESSAGE;
+
 		// メッセージ入力開始
 		m_MessageInput->Start();
-
-		// 接続完了
-		m_NWState = NW_STATE_CONNECT;
 	}
 }
 
-/// <summary>
-/// クライアント専用接続待機中の更新処理
-/// </summary>
-void Client::UpdateWaitingConnection()
+void Client::DrawWaiting()
 {
-	if (m_Mode != MODE_CLIENT) return;
-
-	// 接続できたかチェック
-	if (GetNetWorkAcceptState(m_HostHandle))
-	{
-		// 接続完了
-		m_NWState = NW_STATE_CONNECT;
-
-		// メッセージ入力開始
-		m_MessageInput->Start();
-	}
+	DrawFormatString(0, 0, GetColor(255, 255, 255), "接続中...");
 }
 
 /// <summary>
 /// 接続中の更新処理
 /// </summary>
-void Client::UpdateConnect()
+void Client::UpdateInputMessage()
 {
 	// メッセージ入力更新
 	m_MessageInput->Update();
@@ -206,17 +199,24 @@ void Client::UpdateConnect()
 		int messageLen = (int)strlen(message);
 		if (messageLen > 0)
 		{
-			// メッセージをチャットデータに設定
-			strcpy_s(m_SendChatData.message, NETWORK_MESSAGE_BUFFER_MAX, message);
-			// 自分のメッセージは自分で追加
-			m_ChatData.push_back(m_SendChatData);
+			if (messageLen <= NETWORK_MESSAGE_MAX)
+			{
+				// メッセージをチャットデータに設定
+				strcpy_s(m_SendChatData.message, NETWORK_MESSAGE_BUFFER_MAX, message);
+				// 自分のメッセージは自分で追加
+				m_ChatData.push_back(m_SendChatData);
 
-			// 相手側に送信
-			int nwHandle = m_Mode == MODE_HOST ? m_MatchingClientData.handle : m_HostHandle;
-			NetWorkSend(nwHandle, &m_SendChatData, sizeof(m_SendChatData));
+				// 相手側に送信
+				NetWorkSend(m_PartnerHandle, &m_SendChatData, sizeof(m_SendChatData));
 
-			// メッセージをクリア
-			m_MessageInput->Clear();
+				// メッセージをクリア
+				m_MessageInput->Clear();
+			}
+			else
+			{
+				// 長すぎたら再入力
+				m_MessageInput->Clear();
+			}
 		}
 	}
 
@@ -233,16 +233,15 @@ void Client::UpdateConnect()
 
 void Client::ReceiveData()
 {
-	int nwHandle = m_Mode == MODE_HOST ? m_MatchingClientData.handle : m_HostHandle;
 	// クライアントから送られたデータのサイズを取得
-	int dataLength = GetNetWorkDataLength(nwHandle);
+	int dataLength = GetNetWorkDataLength(m_PartnerHandle);
 
 	// データが送られてきたかチェック
 	if (dataLength > 0)
 	{
 		// 受信
 		ChatData receivedData = {};
-		NetWorkRecv(nwHandle, &receivedData, sizeof(receivedData));
+		NetWorkRecv(m_PartnerHandle, &receivedData, sizeof(receivedData));
 
 		// 受信したデータをチャットに追加
 		m_ChatData.push_back(receivedData);
@@ -261,4 +260,3 @@ void Client::DrawChat()
 		raw++;
 	}
 }
-

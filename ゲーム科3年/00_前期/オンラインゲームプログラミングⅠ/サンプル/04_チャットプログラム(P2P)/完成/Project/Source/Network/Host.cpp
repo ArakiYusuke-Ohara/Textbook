@@ -1,26 +1,25 @@
 #include "Host.h"
+#include "../Input/InputString.h"
 
 Host::Host()
 {
+	m_ClientIP = {};
 }
 
 Host::~Host()
 {
 }
 
-void Host::SetUserData(int handle)
-{
-	m_MatchingClientData.handle = handle;
-	// 接続してきたマシンのＩＰアドレスを得る
-	GetNetWorkIP(handle, &m_MatchingClientData.ip);
-}
-
 void Host::StartNetwork()
 {
+	// マッチング開始
 	int success = PreparationListenNetWork(PORT_NUMBER);
+
+	// マッチング待ち状態へ
+	m_NWState = NW_STATE_WAITING;
 }
 
-bool Host::WaitingConnection()
+void Host::UpdateWaiting()
 {
 	// 新しい接続があったらそのネットワークハンドルを得る
 	int acceptHandle = GetNewAcceptNetWork();
@@ -28,10 +27,19 @@ bool Host::WaitingConnection()
 	if (acceptHandle != -1)
 	{
 		// マッチングしたユーザーデータを設定
-		SetUserData(acceptHandle);
+		m_PartnerHandle = acceptHandle;
+		// 接続してきたマシンのＩＰアドレスを得る
+		GetNetWorkIP(m_PartnerHandle, &m_ClientIP);
 
-		return true;
+		// メッセージ入力開始
+		m_MessageInput->Start();
+
+		// 接続完了
+		m_NWState = NW_STATE_INPUT_MESSAGE;
 	}
+}
 
-	return false;
+void Host::DrawWaiting()
+{
+	DrawFormatString(0, 0, GetColor(255, 255, 255), "マッチング中...");
 }

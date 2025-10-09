@@ -148,6 +148,7 @@
   <ItemGroup>
     <ClInclude Include="Source\Input\Input.h" />
     <ClInclude Include="Source\Input\InputString.h" />
+    <ClInclude Include="Source\Memory\Memory.h" />
     <ClInclude Include="Source\Network\Client.h" />
     <ClInclude Include="Source\Network\Host.h" />
     <ClInclude Include="Source\Network\NetworkCommonParam.h" />

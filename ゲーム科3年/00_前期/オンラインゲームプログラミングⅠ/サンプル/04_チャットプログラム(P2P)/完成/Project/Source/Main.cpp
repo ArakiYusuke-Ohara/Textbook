@@ -6,6 +6,7 @@ enum MainState
 {
 	MAIN_STATE_NONE,
 	MAIN_STATE_SELECT_MODE,
+	MAIN_STATE_SET_IP,
 	MAIN_STATE_CHAT
 };
 
@@ -17,6 +18,7 @@ MainState g_State = MAIN_STATE_SELECT_MODE;
 void Update();			// 更新
 void Draw();			// 描画
 void UpdateSelectMode();// モード選択
+void SetIP();			// IPアドレス設定
 
 
 // プログラムは WinMain から始まります
@@ -47,14 +49,6 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance, 
 
 	// 入力初期化
 	Input::Init();
-
-	// IPアドレスを設定
-	IPDATA ipData;
-	ipData.d1 = 10;
-	ipData.d2 = 50;
-	ipData.d3 = 164;
-	ipData.d4 = 100;
-	g_Client->SetIPAddress(ipData);
 
 	// ゲームのメインループ
 	while (ProcessMessage() >= 0)
@@ -93,6 +87,11 @@ void Update()
 	switch (g_State)
 	{
 		case MAIN_STATE_SELECT_MODE:
+			UpdateSelectMode();
+			break;
+
+		case MAIN_STATE_SET_IP:
+			SetIP();
 			break;
 
 		case MAIN_STATE_CHAT:
@@ -107,7 +106,7 @@ void Draw()
 	switch (g_State)
 	{
 	case MAIN_STATE_SELECT_MODE:
-		DrawString(0, 0, "Sキー: ホストとして待機 / Cキー: クライアントとして接続", GetColor(255, 255, 255));
+		DrawString(0, 0, "Hキー: ホスト / Cキー: クライアント", GetColor(255, 255, 255));
 		break;
 
 	case MAIN_STATE_CHAT:
@@ -120,16 +119,43 @@ void Draw()
 
 void UpdateSelectMode()
 {
+	bool isInput = false;
+
+	// Hキーでホストを生成
 	if (Input::IsTriggerKey(KEY_H))
 	{
-		// ホストを生成
 		g_Client = new Host();
 		g_Client->Init();
-
+		isInput = true;
 	}
+	// Cキーでホストを生成
 	if (Input::IsTriggerKey(KEY_C))
 	{
 		// クライアントを生成
+		g_Client = new Client();
+		g_Client->Init();
+		isInput = true;
 	}
 
+	if (isInput)
+	{
+		// IPアドレス設定へ
+		g_State = MAIN_STATE_SET_IP;
+	}
+}
+
+void SetIP()
+{
+	if (!g_Client) return;
+
+	// IPアドレスを設定
+	IPDATA ipData;
+	ipData.d1 = 10;
+	ipData.d2 = 50;
+	ipData.d3 = 164;
+	ipData.d4 = 100;
+	g_Client->SetIPAddress(ipData);
+
+	// チャットへ
+	g_State = MAIN_STATE_CHAT;
 }

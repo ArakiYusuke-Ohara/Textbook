@@ -1,26 +1,19 @@
 #pragma once
 #include "DxLib.h"
 #include "NetworkCommonParam.h"
+#include "../Memory/Memory.h"
 #include <vector>
 
 class InputString;
-
-struct ClientData
-{
-	int handle;
-	IPDATA ip;
-};
 
 // 通信の状態
 enum NetworkState
 {
 	NW_STATE_NONE,
-	NW_STATE_INPUT_USER_NAME,		// ユーザー名入力中
-	NW_STATE_WAITING,				// マッチング中
-	NW_STATE_WAITING_CONNECTION,	// 接続中
-	NW_STATE_CONNECT,				// 接続している
+	NW_STATE_INPUT_NAME,			// ユーザー名入力中
+	NW_STATE_WAITING,				// 接続待ち
+	NW_STATE_INPUT_MESSAGE,			// メッセージ入力中
 };
-
 
 class Client
 {
@@ -34,43 +27,34 @@ public:
 	void Draw();
 	void Fin();
 
+private:
+	// ホスト/クライアント共通処理
+	void UpdateInputName();
+	void UpdateInputMessage();
+	void ReceiveData();
+	void DrawChat();
 	void Connect();
 	void Disconnect();
 
 private:
-	void UpdateDisconnect();
-	void UpdateWaiting();
-	void UpdateWaitingConnection();
-	void UpdateConnect();
-	void ReceiveData();
-	void DrawChat();
-
-private:
-	virtual void StartNetwork() = 0;
-	virtual bool WaitingConnection() = 0;
+	// ホスト/クライアントで別々の処理
+	virtual void StartNetwork();
+	virtual void UpdateWaiting();
+	virtual void DrawWaiting();
 
 public:
 	void SetIPAddress(IPDATA address) { m_IPAddress = address; }
 
 	NetworkState GetNetworkState() const { return m_NWState; }
 
-private:
-	// ホストかクライアントか
-	enum Mode
-	{
-		MODE_NONE,
-		MODE_HOST,
-		MODE_CLIENT,
-	};
+protected:
+	int m_PartnerHandle;	// （Host:Clientのハンドル / Cilent:Hostのハンドル）
+	ChatData m_SendChatData;
+	UniquePtr<InputString> m_MessageInput;
+	NetworkState m_NWState;
 
 private:
-	int m_HostHandle;
-	Mode m_Mode;
-	ClientData m_MatchingClientData;
-	NetworkState m_NWState;
 	IPDATA m_IPAddress;
-	InputString* m_UserNameInput;
-	InputString* m_MessageInput;
-	ChatData m_SendChatData;
+	UniquePtr<InputString> m_NameInput;
 	std::vector<ChatData> m_ChatData;
 };

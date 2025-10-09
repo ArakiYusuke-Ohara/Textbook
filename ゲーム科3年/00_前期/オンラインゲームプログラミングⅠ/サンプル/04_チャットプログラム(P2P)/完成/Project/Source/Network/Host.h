@@ -9,12 +9,10 @@ public:
 	virtual ~Host();
 
 private:
-	void SetUserData(int handle);
-
-private:
 	void StartNetwork() override;
-	bool WaitingConnection() override;
+	void UpdateWaiting() override;
+	void DrawWaiting() override;
 
 private:
-	ClientData m_MatchingClientData;
+	IPDATA m_ClientIP;
 };
