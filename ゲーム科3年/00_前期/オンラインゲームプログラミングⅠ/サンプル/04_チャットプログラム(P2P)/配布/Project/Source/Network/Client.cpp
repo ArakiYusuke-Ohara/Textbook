@@ -7,7 +7,7 @@
 Client::Client()
 {
 	m_PartnerHandle = 0;
-	m_NWState = NW_STATE_NONE;
+	m_State = NONE;
 	m_IPAddress = {};
 	m_NameInput = nullptr;
 	m_MessageInput = nullptr;
@@ -31,30 +31,30 @@ void Client::Init()
 
 	// 最初は名前入力
 	m_NameInput->Start();
-	m_NWState = NW_STATE_INPUT_NAME;
+	m_State = INPUT_NAME;
 }
 
 void Client::Update()
 {
-	switch (m_NWState)
+	switch (m_State)
 	{
-		case NW_STATE_INPUT_NAME:			UpdateInputName(); break;
-		case NW_STATE_WAITING:				UpdateWaiting(); break;
-		case NW_STATE_INPUT_MESSAGE:		UpdateInputMessage(); break;
+		case INPUT_NAME:		UpdateInputName(); break;
+		case WAITING:			UpdateWaiting(); break;
+		case INPUT_MESSAGE:		UpdateInputMessage(); break;
 	}
 }
 
 void Client::Draw()
 {
-	if (m_NWState == NW_STATE_INPUT_NAME)
+	if (m_State == INPUT_NAME)
 	{
 		DrawFormatString(0, 0, GetColor(255, 255, 255), "ユーザー名を入力");
 	}
-	else if (m_NWState == NW_STATE_WAITING)
+	else if (m_State == WAITING)
 	{
 		DrawWaiting();
 	}
-	else if (m_NWState == NW_STATE_INPUT_MESSAGE)
+	else if (m_State == INPUT_MESSAGE)
 	{
 		DrawFormatString(0, 0, GetColor(255, 255, 255), "メッセージを入力");
 		DrawFormatString(0, 840, GetColor(255, 255, 255), "Ctrl + Qで切断");
@@ -70,7 +70,7 @@ void Client::Draw()
 void Client::Fin()
 {
 	// 状態が接続中以降であれば切断
-	if (m_NWState >= NW_STATE_WAITING)
+	if (m_State >= WAITING)
 	{
 		Disconnect();
 	}
@@ -81,20 +81,7 @@ void Client::Fin()
 /// </summary>
 void Client::Connect()
 {
-	// 指定したIPアドレスの端末に接続
-	m_PartnerHandle = ConnectNetWork(m_IPAddress, PORT_NUMBER);
 
-	// ハンドルが-1なら接続できてない
-	if (m_PartnerHandle == -1)
-	{
-		// 名前入力に戻る
-		m_NameInput->Start();
-	}
-	else
-	{
-		// 接続待ちへ
-		m_NWState = NW_STATE_WAITING;
-	}
 }
 
 /// <summary>
@@ -105,7 +92,7 @@ void Client::Disconnect()
 	// 切断
 	CloseNetWork(m_PartnerHandle);
 	m_PartnerHandle = 0;
-	m_NWState = NW_STATE_INPUT_NAME;
+	m_State = INPUT_NAME;
 
 	// メッセージ入力終了
 	m_MessageInput->Fin();
@@ -162,15 +149,7 @@ void Client::StartNetwork()
 /// </summary>
 void Client::UpdateWaiting()
 {
-	// 接続できたかチェック
-	if (GetNetWorkAcceptState(m_PartnerHandle))
-	{
-		// 接続完了
-		m_NWState = NW_STATE_INPUT_MESSAGE;
 
-		// メッセージ入力開始
-		m_MessageInput->Start();
-	}
 }
 
 void Client::DrawWaiting()

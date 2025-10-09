@@ -143,11 +143,14 @@
     <ClCompile Include="Source\Input\InputString.cpp" />
     <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="Source\Network\Client.cpp" />
+    <ClCompile Include="Source\Network\Host.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Input\Input.h" />
     <ClInclude Include="Source\Input\InputString.h" />
+    <ClInclude Include="Source\Memory\Memory.h" />
     <ClInclude Include="Source\Network\Client.h" />
+    <ClInclude Include="Source\Network\Host.h" />
     <ClInclude Include="Source\Network\NetworkCommonParam.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

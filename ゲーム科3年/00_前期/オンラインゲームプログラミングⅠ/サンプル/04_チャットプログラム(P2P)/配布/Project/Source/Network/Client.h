@@ -6,15 +6,6 @@
 
 class InputString;
 
-// 通信の状態
-enum NetworkState
-{
-	NW_STATE_NONE,
-	NW_STATE_INPUT_NAME,			// ユーザー名入力中
-	NW_STATE_WAITING,				// 接続待ち
-	NW_STATE_INPUT_MESSAGE,			// メッセージ入力中
-};
-
 class Client
 {
 public:
@@ -44,11 +35,21 @@ private:
 
 
 protected:
+	// 状態
+	enum State
+	{
+		NONE,
+		INPUT_NAME,			// ユーザー名入力中
+		WAITING,				// 接続待ち
+		INPUT_MESSAGE,			// メッセージ入力中
+	};
+
+protected:
 	int m_PartnerHandle;	// （Host:Clientのハンドル / Cilent:Hostのハンドル）
 	ChatData m_SendChatData;
 	UniquePtr<InputString> m_NameInput;
 	UniquePtr<InputString> m_MessageInput;
-	NetworkState m_NWState;
+	State m_State;
 	IPDATA m_IPAddress;
 	std::vector<ChatData> m_ChatData;
 };
