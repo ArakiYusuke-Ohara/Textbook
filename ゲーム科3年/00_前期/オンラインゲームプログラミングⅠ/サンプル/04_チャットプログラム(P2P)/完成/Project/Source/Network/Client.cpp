@@ -80,7 +80,7 @@ void Client::Fin()
 }
 
 /// <summary>
-/// サーバーに接続する
+/// ホストに接続する
 /// </summary>
 void Client::Connect()
 {
@@ -101,7 +101,7 @@ void Client::Connect()
 }
 
 /// <summary>
-/// サーバーから切断する
+/// 切断する
 /// </summary>
 void Client::Disconnect()
 {
@@ -189,7 +189,7 @@ void Client::UpdateInputMessage()
 	// メッセージ入力更新
 	m_MessageInput->Update();
 
-	// Enterキーでユーザー名とメッセージをサーバーに送信
+	// Enterキーでメッセージ送信
 	if (Input::IsTriggerKey(KEY_ENTER))
 	{
 		// 入力メッセージを取得
