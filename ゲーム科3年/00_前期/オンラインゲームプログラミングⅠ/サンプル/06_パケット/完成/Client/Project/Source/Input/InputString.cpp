@@ -13,7 +13,7 @@ void InputString::Start()
 	SetActiveKeyInput(m_Handle);
 }
 
-void InputString::Update()
+void InputString::Step()
 {
 	// DxLibの仕様（バグ？）で0文字確定→再Makeすると
 	// Makeしたのにアクティブにならないことがあるのでその対策

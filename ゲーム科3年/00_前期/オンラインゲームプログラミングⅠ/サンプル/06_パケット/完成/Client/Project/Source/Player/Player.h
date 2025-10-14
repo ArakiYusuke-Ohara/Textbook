@@ -1,4 +1,5 @@
 #pragma once
+#include "DxLib.h"
 #include "../Memory/Memory.h"
 
 class Transform;
@@ -11,14 +12,12 @@ public:
 	Player();
 	~Player();
 
-	void Init();
+	virtual void Init();
 	void Load();
-	void Update();
+	virtual void Step();
 	void Draw();
 
-	void SetMoveSpeed(float speed) { m_MoveSpeed = speed; }
-	void SetScaleSpeed(float speed) { m_ScaleSpeed = speed; }
-	void SetRotSpeed(float speed) { m_RotSpeed = speed; }
+	void SetPos(VECTOR pos);
 
 private:
 	float m_MoveSpeed;

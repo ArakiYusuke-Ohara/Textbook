@@ -2,7 +2,7 @@
 #include "Input/Input.h"
 #include "Player/Player.h"
 #include "Memory/Memory.h"
-
+#include "Scene/SceneManager.h"
 
 // 関数のプロトタイプ宣言
 void GameExec();
@@ -43,6 +43,10 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance, 
 	ipData.d3 = 164;
 	ipData.d4 = 100;
 
+	// シーンマネージャー
+	SceneManager::CreateInstance();
+	SceneManager::GetInstance()->Init();
+
 	// ゲーム実行
 	GameExec();
 
@@ -58,12 +62,6 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance, 
 
 void GameExec()
 {
-	// プレイヤー生成
-	UniquePtr<Player> player = MakeUnique<Player>();
-	player->Init();
-	player->Load();
-	player->SetMoveSpeed(3.0f);
-
 	// ゲームのメインループ
 	while (ProcessMessage() >= 0)
 	{
@@ -73,13 +71,10 @@ void GameExec()
 		ClearDrawScreen();
 
 		// 入力更新
-		Input::Update();
+		Input::Step();
 
-		// 更新
-		player->Update();
-
-		// 描画
-		player->Draw();
+		// シーン更新
+		SceneManager::GetInstance()->Step();
 
 		// エスケープキーで終了
 		if (CheckHitKey(KEY_INPUT_ESCAPE)) break;

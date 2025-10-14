@@ -11,7 +11,7 @@ public:
 
 public:
 	void Start();
-	void Update();
+	void Step();
 	void Draw();
 	void Fin();
 	void Clear() { SetKeyInputString("\0", m_Handle); }

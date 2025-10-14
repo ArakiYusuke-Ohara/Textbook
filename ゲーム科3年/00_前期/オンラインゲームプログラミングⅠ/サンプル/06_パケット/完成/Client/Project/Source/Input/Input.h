@@ -18,6 +18,7 @@ enum InputKey
 	KEY_CTRL_R  = (1 << 12),// 0x0001 0000 0000 0000
 	KEY_Q		= (1 << 13),// 0x0010 0000 0001 0000
 	KEY_E		= (1 << 14),// 0x0100 0000 0001 0000
+	KEY_X		= (1 << 15),// 0x1000 0000 0001 0000
 };
 
 class Input
@@ -25,7 +26,7 @@ class Input
 public:
 	// 関数のプロトタイプ宣言 
 	static void Init();
-	static void Update();
+	static void Step();
 	static void Draw();
 	static void Fin();
 

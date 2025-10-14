@@ -18,14 +18,12 @@ Player::~Player() = default;
 
 void Player::Init()
 {
-	m_MoveSpeed = 1.0f;
+	m_MoveSpeed = 3.0f;
 	m_ScaleSpeed = 0.01f;
 	m_RotSpeed = 0.01f;
 	m_Transform = MakeUnique<Transform>();
 	m_Splite = MakeUnique<Splite>();
 	m_Controller = MakeUnique<Controller2D>();
-
-	m_Transform->SetPos(VGet(100.0f, 100.0f, 0.0f));
 }
 
 void Player::Load()
@@ -33,7 +31,7 @@ void Player::Load()
 	m_Splite->Load("Data/Player/Player.png");
 }
 
-void Player::Update()
+void Player::Step()
 {
 	VECTOR pos = m_Transform->GetPos();
 	VECTOR scale = m_Transform->GetScale();
@@ -60,4 +58,9 @@ void Player::Draw()
 		m_Splite->SetTransform(*m_Transform);
 		m_Splite->Draw();
 	}
+}
+
+void Player::SetPos(VECTOR pos)
+{
+	m_Transform->SetPos(pos);
 }

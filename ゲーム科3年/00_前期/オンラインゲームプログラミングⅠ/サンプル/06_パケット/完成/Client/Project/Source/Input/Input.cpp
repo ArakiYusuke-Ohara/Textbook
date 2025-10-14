@@ -10,7 +10,7 @@ void Input::Init()
 	m_PrevInputState = 0;
 }
 
-void Input::Update()
+void Input::Step()
 {
 	// ‘O‰ñ‚Ì“ü—Í‚ðŠo‚¦‚Ä‚¨‚­
 	m_PrevInputState = m_InputState;
@@ -78,6 +78,10 @@ void Input::Update()
 	if (CheckHitKey(KEY_INPUT_E))
 	{
 		m_InputState |= KEY_E;
+	}
+	if (CheckHitKey(KEY_INPUT_X))
+	{
+		m_InputState |= KEY_X;
 	}
 
 }
