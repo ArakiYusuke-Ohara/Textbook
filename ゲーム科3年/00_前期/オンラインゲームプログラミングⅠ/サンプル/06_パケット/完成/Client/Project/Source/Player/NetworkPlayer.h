@@ -12,9 +12,10 @@ public:
 	void Init() override;
 	void Step() override;
 
-	void UpdateOffline();
-	void UpdateOnline();
+	void StepOffline();
+	void StepOnline();
 
 private:
 	UniquePtr<Client> m_Client;
+	Transform m_ServerTransform;
 };

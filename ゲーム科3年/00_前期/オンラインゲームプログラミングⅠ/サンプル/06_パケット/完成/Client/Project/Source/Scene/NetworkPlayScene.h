@@ -1,11 +1,11 @@
 #pragma once
 #include "PlayScene.h"
 
-class OnlinePlayScene : public PlayScene
+class NetworkPlayScene : public PlayScene
 {
 public:
-	OnlinePlayScene();
-	virtual ~OnlinePlayScene();
+	NetworkPlayScene();
+	virtual ~NetworkPlayScene();
 
 public:
 	void Init()override;

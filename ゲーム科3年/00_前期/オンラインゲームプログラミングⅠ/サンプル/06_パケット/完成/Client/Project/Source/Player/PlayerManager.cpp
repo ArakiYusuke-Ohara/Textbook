@@ -45,3 +45,15 @@ Player& PlayerManager::CreatePlayer()
 	return *(m_Players.back().get());
 }
 
+NetworkPlayer& PlayerManager::CreateNetworkPlayer()
+{
+	// ¶¬‚µ‚Ä‰Šú‰»
+	UniquePtr<NetworkPlayer> player = MakeUnique<NetworkPlayer>();
+	player->Init();
+
+	// ––”ö‚ÉŠi”[
+	m_Players.push_back(std::move(player));
+
+	// À‚ÍQÆ“n‚µ‚Ì•û‚ªˆÀ‘S
+	return *static_cast<NetworkPlayer*>(m_Players.back().get());
+}

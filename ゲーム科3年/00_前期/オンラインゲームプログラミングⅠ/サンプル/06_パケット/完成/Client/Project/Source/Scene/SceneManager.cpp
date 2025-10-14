@@ -1,7 +1,7 @@
 #include "SceneManager.h"
 #include "TitleScene.h"
 #include "PlayScene.h"
-#include "OnlinePlayScene.h"
+#include "NetworkPlayScene.h"
 
 SceneManager::SceneManager()
 {
@@ -112,7 +112,7 @@ void SceneManager::LoopScene()
 		if (!scene->IsActive()) continue;
 
 		scene->Step();
-		scene->Step();
+		scene->Update();
 		scene->Draw();
 	}
 }
@@ -137,7 +137,7 @@ SceneBase* SceneManager::CreateScene(SceneType type)
 	{
 		case TITLE: scene = new TitleScene; break;
 		case PLAY: scene = new PlayScene; break;
-		case ONLINE_PLAY: scene = new OnlinePlayScene; break;
+		case ONLINE_PLAY: scene = new NetworkPlayScene; break;
 	}
 
 	if (scene) scene->SetActive(true);

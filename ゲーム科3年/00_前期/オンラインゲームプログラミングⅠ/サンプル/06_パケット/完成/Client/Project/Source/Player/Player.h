@@ -1,8 +1,8 @@
 #pragma once
 #include "DxLib.h"
 #include "../Memory/Memory.h"
+#include "../Component/Transform.h"
 
-class Transform;
 class Splite;
 class Controller2D;
 
@@ -17,13 +17,13 @@ public:
 	virtual void Step();
 	void Draw();
 
-	void SetPos(VECTOR pos);
+	void SetPos(VECTOR pos) { m_Transform.SetPos(pos); }
 
-private:
+protected:
 	float m_MoveSpeed;
 	float m_ScaleSpeed;
 	float m_RotSpeed;
-	UniquePtr<Transform> m_Transform;
+	Transform m_Transform;
 	UniquePtr<Splite> m_Splite;
 	UniquePtr<Controller2D> m_Controller;
 };

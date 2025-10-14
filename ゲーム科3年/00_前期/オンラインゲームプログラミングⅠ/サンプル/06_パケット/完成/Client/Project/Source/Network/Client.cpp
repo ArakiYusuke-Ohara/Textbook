@@ -21,7 +21,7 @@ void Client::Step()
 	switch (m_State)
 	{
 		case WAIT:			UpdateWaiting(); break;
-		case ONLINE:		UpdateOnline(); break;
+		case ONLINE:		StepOnline(); break;
 
 		default: break;
 	}
@@ -113,7 +113,7 @@ void Client::UpdateWaiting()
 	}
 }
 
-void Client::UpdateOnline()
+void Client::StepOnline()
 {
 	// Ctrl + Q �Őؒf
 	if ((Input::IsInputKey(KEY_CTRL_L) || Input::IsInputKey(KEY_CTRL_R)) && Input::IsTriggerKey(KEY_Q))

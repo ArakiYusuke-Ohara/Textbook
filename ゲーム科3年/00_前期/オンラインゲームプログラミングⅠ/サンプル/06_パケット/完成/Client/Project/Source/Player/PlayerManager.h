@@ -4,6 +4,7 @@
 #include <vector>
 
 class Player;
+class NetworkPlayer;
 
 class PlayerManager : public Singleton<PlayerManager>
 {
@@ -16,7 +17,7 @@ public:
 	void Draw();
 
 	Player& CreatePlayer();
-
+	NetworkPlayer& CreateNetworkPlayer();
 
 
 private:

@@ -34,7 +34,7 @@ public:
 
 private:
 	void UpdateWaiting();
-	void UpdateOnline();
+	void StepOnline();
 
 	int m_ServerHandle;
 	State m_State;

@@ -60,7 +60,7 @@
     <ClCompile Include="Source\Player\Player.cpp">
       <Filter>Source\Player</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Scene\OnlinePlayScene.cpp">
+    <ClCompile Include="Source\Scene\NetworkPlayScene.cpp">
       <Filter>Source\Scene</Filter>
     </ClCompile>
     <ClCompile Include="Source\Scene\PlayScene.cpp">
@@ -116,7 +116,7 @@
     <ClInclude Include="Source\Singleton\Singleton.h">
       <Filter>Source\Singleton</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Scene\OnlinePlayScene.h">
+    <ClInclude Include="Source\Scene\NetworkPlayScene.h">
       <Filter>Source\Scene</Filter>
     </ClInclude>
     <ClInclude Include="Source\Scene\PlayScene.h">
