@@ -5,6 +5,7 @@
 
 class Player;
 class NetworkPlayer;
+class Client;
 
 class PlayerManager : public Singleton<PlayerManager>
 {
@@ -13,11 +14,12 @@ public:
 	virtual ~PlayerManager();
 
 	void Load();
+	void Start();
 	void Step();
 	void Draw();
 
 	Player& CreatePlayer();
-	NetworkPlayer& CreateNetworkPlayer();
+	NetworkPlayer& CreateNetworkPlayer(Client& client);
 
 
 private:

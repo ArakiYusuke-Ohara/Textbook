@@ -1,6 +1,7 @@
 #include "NetworkPlayScene.h"
 #include "../Player/PlayerManager.h"
 #include "../Player/NetworkPlayer.h"
+#include "../Network/Client.h"
 
 NetworkPlayScene::NetworkPlayScene()
 {
@@ -13,33 +14,23 @@ NetworkPlayScene::~NetworkPlayScene()
 
 void NetworkPlayScene::Init()
 {
+	// クライアントクラス生成
+	m_Client = MakeUnique<Client>();
+
 	PlayerManager::CreateInstance();
-	NetworkPlayer& nwPlayer = PlayerManager::GetInstance()->CreateNetworkPlayer();
-	nwPlayer.SetPos(VGet(100.0f, 100.0f, 0.0f));
-}
-
-void NetworkPlayScene::Load()
-{
-	PlayerManager::GetInstance()->Load();
-}
-
-void NetworkPlayScene::Start()
-{
+	NetworkPlayer& nwPlayer = PlayerManager::GetInstance()->CreateNetworkPlayer(*m_Client);
 }
 
 void NetworkPlayScene::Step()
 {
-	PlayerManager::GetInstance()->Step();
-}
+	PlayScene::Step();
 
-void NetworkPlayScene::Update()
-{
-}
 
-void NetworkPlayScene::Draw()
-{
 }
 
 void NetworkPlayScene::Fin()
 {
+	PlayScene::Fin();
+
+
 }

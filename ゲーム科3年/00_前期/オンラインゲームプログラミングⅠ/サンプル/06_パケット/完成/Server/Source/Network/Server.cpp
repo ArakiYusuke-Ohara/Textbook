@@ -1,11 +1,13 @@
 #include "DxLib.h"
 #include "Server.h"
 #include "NetworkCommonParam.h"
+#include <vector>
+
+using namespace Network;
 
 Server::Server()
 {
-	m_ClientData = {};
-	m_ChatData = {};
+	m_NetworkPlayerData = {};
 }
 
 Server::~Server()
@@ -43,12 +45,11 @@ void Server::Update()
 
 void Server::Draw()
 {
-	DrawFormatString(0, 0, GetColor(255, 255, 255), "接続数：%d 人", m_ClientData.size());
 }
 
 void Server::Fin()
 {
-	m_ClientData.clear();
+	m_NetworkPlayerData.clear();
 }
 
 /// <summary>
@@ -57,17 +58,17 @@ void Server::Fin()
 /// <param name="handle">追加するユーザーのハンドル</param>
 void Server::AddUserData(int handle)
 {
-	ClientData client;
+	NetworkPlayerData player;
 
-	client.handle = handle;
+	player.client.handle = handle;
 	// 接続してきたマシンのＩＰアドレスを得る
-	GetNetWorkIP(handle, &client.ip);
+	GetNetWorkIP(handle, &player.client.ip);
 
 	// ユーザー配列に追加
-	m_ClientData.push_back(client);
+	m_NetworkPlayerData.push_back(player);
 
-	// 現状を送信しておく
-	SendData();
+	// ログインデータを送信
+	SendLoginData();
 }
 
 /// <summary>
@@ -77,13 +78,13 @@ void Server::AddUserData(int handle)
 void Server::RemoveUserData(int handle)
 {
 	// イテレータを使って部分削除する
-	for(auto itr = m_ClientData.begin(); itr != m_ClientData.end(); itr++)
+	for(auto itr = m_NetworkPlayerData.begin(); itr != m_NetworkPlayerData.end(); itr++)
 	{
 		// 削除するユーザーをハンドルから検索
-		if ((*itr).handle == handle)
+		if ((*itr).client.handle == handle)
 		{
 			// 見つかったら削除して終了
-			m_ClientData.erase(itr);
+			m_NetworkPlayerData.erase(itr);
 			return;
 		}
 	}
@@ -94,55 +95,42 @@ void Server::ReceiveData()
 	bool isUpdate = false;
 
 	// 接続しているクライアント全員分処理する
-	for (ClientData client : m_ClientData)
+	for (const NetworkPlayerData& player : m_NetworkPlayerData)
 	{
 		// クライアントから送られたデータのサイズを取得
-		int dataLength = GetNetWorkDataLength(client.handle);
+		int dataLength = GetNetWorkDataLength(player.client.handle);
 
 		// データが送られてきたかチェック
 		if (dataLength > 0)
 		{
-			ChatData receiveData = {};
-
-			// 受信
-			NetWorkRecv(client.handle, &receiveData, sizeof(receiveData));
-
-			// チャットデータに追加
-			m_ChatData.push_back(receiveData);
-
-			// 最大数を超えたら最も古いログを削除
-			if (m_ChatData.size() > CHAT_LOG_MAX)
-			{
-				m_ChatData.pop_front();
-			}
-
-			// チャットデータが更新された
-			isUpdate = true;
 		}
-	}
-
-	// 更新されたら全クライアントに送信して共有
-	if (isUpdate)
-	{
-		SendData();
 	}
 }
 
-void Server::SendData()
+void Server::SendLoginData()
 {
-	// listのままでは送信できないのでChatData配列に変換する（シリアライズ）
-	ChatData serialize[CHAT_LOG_MAX] = {};
-	int i = 0;
+	// 通信データサイズ
+	size_t dataSize = sizeof(PacketHeader) + sizeof(LoginData);
 
-	for (const ChatData& data : m_ChatData)
-	{
-		serialize[i] = data;
-		i++;
-	}
+	// パケット ＋ データを格納するバッファー
+	std::vector<uint8_t> buffer(dataSize);
+
+	PacketHeader header = {};
+	header.packet = Packet::LOGIN;
+	header.size = sizeof(LoginData);
+
+	// 入ってきた順番をそのままIDにする
+	LoginData data = {};
+	data.playerID = (int)m_NetworkPlayerData.size();
+
+	// パケットをバッファーに入れる
+	memcpy_s(buffer.data(), buffer.size(), &header, sizeof(PacketHeader));
+	// パケットの後ろにデータを入れる
+	memcpy_s(buffer.data() + sizeof(PacketHeader), buffer.size() - sizeof(PacketHeader), &data, sizeof(LoginData));
 
 	// 全クライアントに送信する
-	for (ClientData client : m_ClientData)
+	for (const NetworkPlayerData& player : m_NetworkPlayerData)
 	{
-		NetWorkSend(client.handle, serialize, sizeof(serialize));
+		NetWorkSend(player.client.handle, reinterpret_cast<char*>(buffer.data()), (int)buffer.size());
 	}
 }

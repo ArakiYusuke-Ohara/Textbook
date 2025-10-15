@@ -18,7 +18,8 @@ public:
 
 	void Connect();
 	void SendData(const void* data, unsigned int size);
-	void ReceveData(void* buffer, unsigned int size);
+	bool CheckReceive();
+	void ReceiveData(void* buffer, unsigned int size);
 	void Disconnect();
 
 	// ’ÊM‚Ìó‘Ô
@@ -30,6 +31,7 @@ public:
 	};
 
 	State GetState() const { return m_State; }
+	int GetServerHandle() const { return m_ServerHandle; }
 	void SetIPAddress(IPDATA address) { m_IPAddress = address; }
 
 private:

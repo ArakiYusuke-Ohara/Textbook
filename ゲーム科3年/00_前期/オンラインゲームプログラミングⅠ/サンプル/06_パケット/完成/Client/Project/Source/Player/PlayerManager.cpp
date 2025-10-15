@@ -1,6 +1,7 @@
 #include "PlayerManager.h"
 #include "Player.h"
 #include "NetworkPlayer.h"
+#include "../Network/Client.h"
 
 PlayerManager::PlayerManager()
 {
@@ -13,6 +14,14 @@ void PlayerManager::Load()
 	for (auto& player : m_Players)
 	{
 		player->Load();
+	}
+}
+
+void PlayerManager::Start()
+{
+	for (auto& player : m_Players)
+	{
+		player->Start();
 	}
 }
 
@@ -45,10 +54,10 @@ Player& PlayerManager::CreatePlayer()
 	return *(m_Players.back().get());
 }
 
-NetworkPlayer& PlayerManager::CreateNetworkPlayer()
+NetworkPlayer& PlayerManager::CreateNetworkPlayer(Client& client)
 {
 	// ¶¬‚µ‚Ä‰Šú‰»
-	UniquePtr<NetworkPlayer> player = MakeUnique<NetworkPlayer>();
+	UniquePtr<NetworkPlayer> player = MakeUnique<NetworkPlayer>(client);
 	player->Init();
 
 	// ––”ö‚ÉŠi”[

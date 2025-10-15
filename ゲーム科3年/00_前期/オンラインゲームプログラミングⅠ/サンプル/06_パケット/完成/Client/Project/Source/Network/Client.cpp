@@ -81,7 +81,12 @@ void Client::SendData(const void* data, unsigned int size)
 	}
 }
 
-void Client::ReceveData(void* buffer, unsigned int size)
+bool Client::CheckReceive()
+{
+	return GetNetWorkDataLength(m_ServerHandle) > 0;
+}
+
+void Client::ReceiveData(void* buffer, unsigned int size)
 {
 	if (m_State == ONLINE)
 	{

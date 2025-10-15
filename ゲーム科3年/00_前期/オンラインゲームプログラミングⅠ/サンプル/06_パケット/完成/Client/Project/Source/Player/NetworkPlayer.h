@@ -6,7 +6,7 @@ class Client;
 class NetworkPlayer : public Player
 {
 public:
-	NetworkPlayer();
+	NetworkPlayer(Client& client);
 	virtual ~NetworkPlayer();
 
 	void Init() override;
@@ -16,6 +16,14 @@ public:
 	void StepOnline();
 
 private:
-	UniquePtr<Client> m_Client;
+	void SendPosData();
+
+	void ReceiveData();
+	void ReceiveLogin();
+	void ReceivePos();
+
+private:
+	int m_ID;
+	Client& m_Client;
 	Transform m_ServerTransform;
 };

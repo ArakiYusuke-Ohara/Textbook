@@ -29,6 +29,11 @@ void Player::Load()
 	m_Splite->Load("Data/Player/Player.png");
 }
 
+void Player::Start()
+{
+	m_Transform.SetPos(100.0f, 100.0f, 0.0f);
+}
+
 void Player::Step()
 {
 	VECTOR pos = m_Transform.GetPos();

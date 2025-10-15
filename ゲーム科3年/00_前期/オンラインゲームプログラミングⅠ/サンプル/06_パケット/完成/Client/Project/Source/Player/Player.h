@@ -14,10 +14,9 @@ public:
 
 	virtual void Init();
 	void Load();
+	void Start();
 	virtual void Step();
 	void Draw();
-
-	void SetPos(VECTOR pos) { m_Transform.SetPos(pos); }
 
 protected:
 	float m_MoveSpeed;

@@ -15,7 +15,6 @@ void PlayScene::Init()
 {
 	PlayerManager::CreateInstance();
 	Player& player = PlayerManager::GetInstance()->CreatePlayer();
-	player.SetPos(VGet(100.0f, 100.0f, 0.0f));
 }
 
 void PlayScene::Load()
@@ -25,6 +24,7 @@ void PlayScene::Load()
 
 void PlayScene::Start()
 {
+	PlayerManager::GetInstance()->Start();
 }
 
 void PlayScene::Step()
