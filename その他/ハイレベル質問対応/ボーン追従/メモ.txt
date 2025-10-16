@@ -1,0 +1,30 @@
+DxLibに親ボーンを考慮したボーントランフォーム取得がないため、
+親ボーンの行列をすべて取得してかけ合わせる必要がある。
+
+あとは配置座標を合成させてMV1SetMatrixでOK。
+
+MATRIX GetBoneWorldMatrix(int modelHandle, int frameIndex)
+{
+	MATRIX local = MV1GetFrameLocalMatrix(modelHandle, frameIndex);
+	int parent = MV1GetFrameParent(modelHandle, frameIndex);
+
+	if (parent == -1)
+	{
+		// 親なし＝ルートボーン
+		return local;
+	}
+	else
+	{
+		MATRIX parentMat = GetBoneWorldMatrix(modelHandle, parent);
+		return MMult(local, parentMat); // 親×自分
+	}
+}
+
+
+MATRIX worldMat = GetBoneWorldMatrix(animHandle, bone003Index);
+MATRIX modelMat = MV1GetMatrix(animHandle);
+MATRIX result = MyMath::MatMult(worldMat, modelMat);
+
+MV1SetMatrix(cubeHandleA, result);
+MV1DrawModel(cubeHandleA);
+
