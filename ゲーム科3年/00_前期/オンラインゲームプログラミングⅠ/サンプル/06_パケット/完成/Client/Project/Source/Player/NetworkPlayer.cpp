@@ -12,7 +12,6 @@ constexpr float ROT_THRESHOLD = 0.01f;
 NetworkPlayer::NetworkPlayer(Client& client) : Player()
 , m_Client(client)
 {
-	m_ID = -1;
 }
 
 NetworkPlayer::~NetworkPlayer() = default;
@@ -35,9 +34,6 @@ void NetworkPlayer::Step()
 		case Client::State::OFFLINE: StepOffline(); break;
 		case Client::State::ONLINE: StepOnline(); break;
 	}
-
-	// サーバーからの受信処理
-	ReceiveData();
 }
 
 void NetworkPlayer::StepOffline()
@@ -85,30 +81,3 @@ void NetworkPlayer::SendPosData()
 
 	NetWorkSend(m_Client.GetServerHandle(), reinterpret_cast<const char*>(buf.data()), (int)buf.size());
 }
-
-void NetworkPlayer::ReceiveData()
-{
-	if (m_Client.CheckReceive())
-	{
-		// ヘッダーのみを受信
-		Network::PacketHeader header = {};
-		m_Client.ReceiveData(reinterpret_cast<char*>(&header), sizeof(header));
-
-		switch (header.packet)
-		{
-			case Network::Packet::LOGIN: ReceiveLogin(); break;
-			case Network::Packet::POS: ReceivePos(); break;
-		}
-	}
-
-}
-
-void NetworkPlayer::ReceiveLogin()
-{
-
-}
-
-void NetworkPlayer::ReceivePos()
-{
-}
-

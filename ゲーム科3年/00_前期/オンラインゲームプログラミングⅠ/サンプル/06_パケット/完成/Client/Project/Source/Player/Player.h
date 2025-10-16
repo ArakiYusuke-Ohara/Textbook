@@ -18,7 +18,10 @@ public:
 	virtual void Step();
 	void Draw();
 
+	int GetID() const { return m_ID; }
+
 protected:
+	int m_ID;
 	float m_MoveSpeed;
 	float m_ScaleSpeed;
 	float m_RotSpeed;

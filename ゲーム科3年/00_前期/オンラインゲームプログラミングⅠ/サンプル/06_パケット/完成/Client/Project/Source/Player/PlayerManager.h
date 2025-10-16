@@ -20,6 +20,7 @@ public:
 
 	Player& CreatePlayer();
 	NetworkPlayer& CreateNetworkPlayer(Client& client);
+	void AddEntryPlayer(int id);
 
 
 private:

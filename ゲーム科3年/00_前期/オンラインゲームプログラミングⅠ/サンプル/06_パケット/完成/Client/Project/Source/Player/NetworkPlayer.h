@@ -18,12 +18,7 @@ public:
 private:
 	void SendPosData();
 
-	void ReceiveData();
-	void ReceiveLogin();
-	void ReceivePos();
-
 private:
-	int m_ID;
 	Client& m_Client;
 	Transform m_ServerTransform;
 };

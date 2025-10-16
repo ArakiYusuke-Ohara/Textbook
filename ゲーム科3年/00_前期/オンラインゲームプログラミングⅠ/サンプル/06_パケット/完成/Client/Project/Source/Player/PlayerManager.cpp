@@ -66,3 +66,22 @@ NetworkPlayer& PlayerManager::CreateNetworkPlayer(Client& client)
 	// 実は参照渡しの方が安全
 	return *static_cast<NetworkPlayer*>(m_Players.back().get());
 }
+
+void PlayerManager::AddEntryPlayer(int id)
+{
+	// 既にエントリー済みかチェック
+	bool isEntry = false;
+	for (auto& player : m_Players)
+	{
+		if (player->GetID() == id)
+		{
+			isEntry = true;
+			break;
+		}
+	}
+
+	// エントリー済みでなければ追加
+	if (!isEntry)
+	{
+	}
+}

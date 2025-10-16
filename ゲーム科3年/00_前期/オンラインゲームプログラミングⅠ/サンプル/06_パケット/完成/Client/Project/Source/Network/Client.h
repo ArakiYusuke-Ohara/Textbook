@@ -12,6 +12,7 @@ public:
 	Client();
 	~Client();
 
+	void Init();
 	void Step();
 	void Draw();
 	void Fin();

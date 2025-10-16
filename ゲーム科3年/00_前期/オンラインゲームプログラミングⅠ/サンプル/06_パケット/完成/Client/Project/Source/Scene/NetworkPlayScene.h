@@ -16,5 +16,10 @@ public:
 	void Fin()override;
 
 private:
+	void ReceiveData();
+	void ReceiveLogin();
+	void ReceivePos();
+
+private:
 	UniquePtr<Client> m_Client;
 };

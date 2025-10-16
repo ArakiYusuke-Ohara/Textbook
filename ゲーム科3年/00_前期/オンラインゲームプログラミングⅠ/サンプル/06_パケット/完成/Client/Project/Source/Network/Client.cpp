@@ -16,6 +16,14 @@ Client::~Client()
 	Fin();
 }
 
+void Client::Init()
+{
+	m_IPAddress.d1 = 192;
+	m_IPAddress.d2 = 168;
+	m_IPAddress.d3 = 132;
+	m_IPAddress.d4 = 103;
+}
+
 void Client::Step()
 {
 	switch (m_State)
