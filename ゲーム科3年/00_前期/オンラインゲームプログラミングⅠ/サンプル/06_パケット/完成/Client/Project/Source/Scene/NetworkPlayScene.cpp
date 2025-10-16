@@ -14,12 +14,13 @@ NetworkPlayScene::~NetworkPlayScene()
 
 void NetworkPlayScene::Init()
 {
-	// クライアントクラス生成
-	m_Client = MakeUnique<Client>();
-	m_Client->Init();
-
 	PlayerManager::CreateInstance();
 	PlayerManager::GetInstance()->CreateNetworkPlayer(*m_Client);
+
+	// クライアントクラス生成
+	m_Client = MakeUnique<Client>();
+	// サーバーに接続
+	m_Client->Connect();
 }
 
 void NetworkPlayScene::Step()
@@ -59,6 +60,8 @@ void NetworkPlayScene::ReceiveLogin()
 	Network::LoginData data = {};
 	m_Client->ReceiveData(reinterpret_cast<char*>(&data), sizeof(data));
 
+	// プレイヤー追加
+	PlayerManager::GetInstance()->JoinNetworkPlayer(*m_Client, data.playerID);
 }
 
 void NetworkPlayScene::ReceivePos()

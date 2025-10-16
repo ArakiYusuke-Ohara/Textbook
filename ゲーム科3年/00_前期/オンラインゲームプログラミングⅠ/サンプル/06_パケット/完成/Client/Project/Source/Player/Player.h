@@ -12,7 +12,7 @@ public:
 	Player();
 	~Player();
 
-	virtual void Init();
+	void Init();
 	void Load();
 	void Start();
 	virtual void Step();

@@ -9,7 +9,6 @@ public:
 	NetworkPlayer(Client& client);
 	virtual ~NetworkPlayer();
 
-	void Init() override;
 	void Step() override;
 
 	void StepOffline();

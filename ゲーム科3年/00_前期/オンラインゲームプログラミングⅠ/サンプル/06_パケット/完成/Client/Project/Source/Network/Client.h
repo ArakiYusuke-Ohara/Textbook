@@ -12,7 +12,6 @@ public:
 	Client();
 	~Client();
 
-	void Init();
 	void Step();
 	void Draw();
 	void Fin();
@@ -33,7 +32,6 @@ public:
 
 	State GetState() const { return m_State; }
 	int GetServerHandle() const { return m_ServerHandle; }
-	void SetIPAddress(IPDATA address) { m_IPAddress = address; }
 
 private:
 	void UpdateWaiting();
@@ -41,6 +39,4 @@ private:
 
 	int m_ServerHandle;
 	State m_State;
-	IPDATA m_IPAddress;
 };
-

@@ -67,7 +67,7 @@ NetworkPlayer& PlayerManager::CreateNetworkPlayer(Client& client)
 	return *static_cast<NetworkPlayer*>(m_Players.back().get());
 }
 
-void PlayerManager::AddEntryPlayer(int id)
+void PlayerManager::JoinNetworkPlayer(Client& client, int id)
 {
 	// 既にエントリー済みかチェック
 	bool isEntry = false;
@@ -83,5 +83,6 @@ void PlayerManager::AddEntryPlayer(int id)
 	// エントリー済みでなければ追加
 	if (!isEntry)
 	{
+		CreateNetworkPlayer(client);
 	}
 }

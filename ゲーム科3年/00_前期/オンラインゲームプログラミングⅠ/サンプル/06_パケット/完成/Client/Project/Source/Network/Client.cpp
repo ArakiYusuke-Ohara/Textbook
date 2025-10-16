@@ -8,7 +8,6 @@ Client::Client()
 {
 	m_State = OFFLINE;
 	m_ServerHandle = 0;
-	m_IPAddress = {};
 }
 
 Client::~Client()
@@ -16,13 +15,6 @@ Client::~Client()
 	Fin();
 }
 
-void Client::Init()
-{
-	m_IPAddress.d1 = 192;
-	m_IPAddress.d2 = 168;
-	m_IPAddress.d3 = 132;
-	m_IPAddress.d4 = 103;
-}
 
 void Client::Step()
 {
@@ -66,8 +58,14 @@ void Client::Fin()
 /// </summary>
 void Client::Connect()
 {
+	IPDATA ip;
+	ip.d1 = 10;
+	ip.d2 = 50;
+	ip.d3 = 164;
+	ip.d4 = 100;
+
 	// 指定したIPアドレスの端末に接続
-	m_ServerHandle = ConnectNetWork(m_IPAddress, PORT_NUMBER);
+	m_ServerHandle = ConnectNetWork(ip, PORT_NUMBER);
 
 	// ハンドルが-1なら接続できてない
 	if (m_ServerHandle == -1)

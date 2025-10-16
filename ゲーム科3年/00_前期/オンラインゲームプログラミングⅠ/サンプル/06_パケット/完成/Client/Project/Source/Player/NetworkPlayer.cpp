@@ -16,13 +16,6 @@ NetworkPlayer::NetworkPlayer(Client& client) : Player()
 
 NetworkPlayer::~NetworkPlayer() = default;
 
-void NetworkPlayer::Init()
-{
-	Player::Init();
-
-	m_Client.Connect();
-}
-
 void NetworkPlayer::Step()
 {
 	m_Client.Step();
