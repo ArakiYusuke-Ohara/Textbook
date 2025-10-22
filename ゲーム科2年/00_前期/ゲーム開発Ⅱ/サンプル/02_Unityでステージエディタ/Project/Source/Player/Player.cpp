@@ -7,6 +7,8 @@
 
 #define ROTATION_SPEED	0.1f
 #define MOVE_SPEED		0.1f
+#define JUMP_POW		0.3f
+#define GRAVITY			0.01f
 
 
 // コンストラクタ
@@ -70,7 +72,9 @@ void Player::Start()
 void Player::Step()
 {
 	// 移動量は毎フレームリセット
-	m_Move = VGet(0.0, 0.0f, 0.0f);
+	m_Move = VGet(0.0, m_Move.y, 0.0f);
+	// 重力
+	m_Move.y -= GRAVITY;
 
 	// 左右で回転
 	if (Input::IsInputKey(KEY_LEFT))
@@ -101,6 +105,12 @@ void Player::Step()
 		VECTOR front = MyMath::VecForwardZX(m_Rot.y);
 		// 前方ベクトルに速度を掛けたものが移動量となる
 		m_Move = MyMath::VecScale(front, MOVE_SPEED);
+	}
+
+	// Zキーでジャンプ
+	if (Input::IsTriggerKey(KEY_Z))
+	{
+		m_Move.y = JUMP_POW;
 	}
 
 	// 移動前の座標を記録
@@ -150,22 +160,21 @@ void Player::Fin()
 
 void Player::HitBlock(const CollisionAABB* other)
 {
-	VECTOR checkPos = m_PrevPos;
-	checkPos.x += m_Move.x;
+	m_Pos = m_PrevPos;
+	m_Pos.x += m_Move.x;
 	if (m_AABB->CheckAABB(other))
 	{
 		m_Pos.x = m_PrevPos.x;
 	}
 
-	checkPos = m_PrevPos;
-	checkPos.y += m_Move.y;
+	m_Pos.y += m_Move.y;
 	if (m_AABB->CheckAABB(other))
 	{
 		m_Pos.y = m_PrevPos.y;
+		m_Move.y = 0.0f;
 	}
 
-	checkPos = m_PrevPos;
-	checkPos.z += m_Move.z;
+	m_Pos.z += m_Move.z;
 	if (m_AABB->CheckAABB(other))
 	{
 		m_Pos.z = m_PrevPos.z;

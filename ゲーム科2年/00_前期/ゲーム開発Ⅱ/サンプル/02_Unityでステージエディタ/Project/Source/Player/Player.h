@@ -34,7 +34,6 @@ public:
 	void HitGoal();
 
 private:
-	int m_ID;
 	int m_Handle;	// ‰æ‘œƒnƒ“ƒhƒ‹
 	VECTOR m_Pos;	// À•W
 	VECTOR m_Rot;	// ‰ñ“]

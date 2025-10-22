@@ -27,7 +27,6 @@ public:
 	void SetPos(VECTOR pos) { m_Pos = pos; }
 
 protected:
-	int m_ID;
 	int m_Handle;
 	VECTOR m_Pos;
 	VECTOR m_Rot;

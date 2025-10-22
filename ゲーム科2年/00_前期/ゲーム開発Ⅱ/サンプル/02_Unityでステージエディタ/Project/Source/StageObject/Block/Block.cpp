@@ -4,7 +4,7 @@
 
 void Block::Start()
 {
-	m_AABB = new CollisionAABB;
+	m_AABB = CollisionManager::GetInstance()->CreateAABB();
 	m_AABB->SetTargetPos(&m_Pos);
 	m_AABB->SetSize(VGet(1.0f, 1.0f, 1.0f));
 }

@@ -10,5 +10,6 @@ public:
 	Floor() = default;
 	virtual ~Floor() = default;
 
+	void Start() override;
 	StageObject* Clone() override;
 };
