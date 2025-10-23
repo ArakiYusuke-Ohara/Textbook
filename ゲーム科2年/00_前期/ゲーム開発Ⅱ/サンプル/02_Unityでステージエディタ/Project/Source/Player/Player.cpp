@@ -180,10 +180,6 @@ void Player::HitBlock(const CollisionAABB* other)
 	{
 		m_Pos.z = m_PrevPos.z;
 	}
-
-	//// ˆÚ“®‘O‚ÌÀ•W‚Éİ’è‚·‚é
-	//m_Pos = m_PrevPos;
-	//MV1SetPosition(m_Handle, m_Pos);
 }
 
 void Player::HitGoal()
