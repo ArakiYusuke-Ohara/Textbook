@@ -7,7 +7,7 @@
 
 #define ROTATION_SPEED	0.1f
 #define MOVE_SPEED		0.1f
-#define JUMP_POW		0.3f
+#define JUMP_POW		0.25f
 #define GRAVITY			0.01f
 
 
@@ -104,7 +104,8 @@ void Player::Step()
 		// 前方ベクトルを取得
 		VECTOR front = MyMath::VecForwardZX(m_Rot.y);
 		// 前方ベクトルに速度を掛けたものが移動量となる
-		m_Move = MyMath::VecScale(front, MOVE_SPEED);
+		VECTOR move = MyMath::VecScale(front, MOVE_SPEED);
+		m_Move = VGet(move.x, m_Move.y, move.z);
 	}
 
 	// Zキーでジャンプ

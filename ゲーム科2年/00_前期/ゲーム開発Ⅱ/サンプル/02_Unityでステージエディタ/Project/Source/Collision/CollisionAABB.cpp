@@ -18,6 +18,7 @@ CollisionAABB::~CollisionAABB()
 
 void CollisionAABB::Draw()
 {
+#ifdef _DEBUG
 	// デバッグ用の当たり判定の可視化
 	VECTOR posA, posB;
 	VECTOR centerPos = MyMath::VecAdd(*m_TargetPos, m_LocalPos);
@@ -30,6 +31,7 @@ void CollisionAABB::Draw()
 	posB.z = centerPos.z + m_Size.z * 0.5f;
 
 	DrawCube3D(posA, posB, GetColor(255, 255, 255), GetColor(255, 255, 255), false);
+#endif
 }
 
 bool CollisionAABB::CheckAABB(const CollisionAABB* other) const
@@ -55,9 +57,9 @@ bool CollisionAABB::CheckAABB(const CollisionAABB* other) const
 	float otherBack		= otherCenterPos.z + otherSize.z * 0.5f;	// 奥
 
 	// 各面が交差していれば当たっている
-	if (left <= otherRight && right >= otherLeft &&
-		bottom <= otherTop && top >= otherBottom &&
-		front <= otherBack && back >= otherFront)
+	if (left < otherRight && right > otherLeft &&
+		bottom < otherTop && top > otherBottom &&
+		front < otherBack && back > otherFront)
 	{
 		return true;
 	}

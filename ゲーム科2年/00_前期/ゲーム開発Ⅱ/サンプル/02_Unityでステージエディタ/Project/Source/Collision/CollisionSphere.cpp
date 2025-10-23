@@ -18,9 +18,11 @@ CollisionSphere::~CollisionSphere()
 
 void CollisionSphere::Draw()
 {
+#ifdef _DEBUG
 	// デバッグ用の当たり判定の可視化
 	VECTOR centerPos = MyMath::VecAdd(*m_TargetPos, m_LocalPos);
 	DrawSphere3D(centerPos, m_Radius, 16, GetColor(255, 255, 255), GetColor(255, 255, 255), false);
+#endif
 }
 
 bool CollisionSphere::CheckSphere(CollisionSphere* other)

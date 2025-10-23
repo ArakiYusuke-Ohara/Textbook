@@ -71,7 +71,7 @@ void StageManager::Start()
             StageObjectManager::GetInstance()->CreateBlock(id, obj.pos, obj.rot, obj.scale);
         }
         // “G
-        else if (obj.id <= ENEMY_00)
+        else if (obj.id <= ENEMY_01)
         {
             // ”z’uID‚ð“GID‚É•ÏŠ·
             int id = obj.id - ENEMY_00;
