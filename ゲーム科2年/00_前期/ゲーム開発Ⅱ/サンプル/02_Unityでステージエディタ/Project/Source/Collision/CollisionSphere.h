@@ -12,7 +12,7 @@ public:
 	void Draw();			// 描画
 
 public:
-	void SetTargetPos(VECTOR* targetPos) { m_TargetPos = targetPos; }
+	void SetTargetPos(const VECTOR* targetPos) { m_TargetPos = targetPos; }
 	void SetLocalPos(VECTOR localPos) { m_LocalPos = localPos; }
 	void SetRadius(float radius) { m_Radius = radius; }
 
@@ -25,7 +25,7 @@ public:
 
 private:
 	// 対象の座標
-	VECTOR* m_TargetPos;
+	const VECTOR* m_TargetPos;
 	// 対象の座標を原点としたローカル座標
 	VECTOR m_LocalPos;
 	// 球の半径
