@@ -4,6 +4,7 @@
 #include "../Collision/CollisionManager.h"
 #include "../Collision/CollisionAABB.h"
 #include "../Collision/CollisionSphere.h"
+#include "../StageObject/StageObject.h"
 
 #define ROTATION_SPEED	0.1f
 #define MOVE_SPEED		0.1f
@@ -159,26 +160,49 @@ void Player::Fin()
 	MV1DeleteModel(m_Handle);
 }
 
-void Player::HitBlock(const CollisionAABB* other)
+void Player::CheckHitStageObjects(const std::vector<StageObject*> objects)
 {
+	// ˆÚ“®‘O‚ÌÀ•W‚É–ß‚·
 	m_Pos = m_PrevPos;
+
+	// XŽ²‚¾‚¯ˆÚ“®‚³‚¹‚Ä“–‚½‚è”»’è
 	m_Pos.x += m_Move.x;
-	if (m_AABB->CheckAABB(other))
+	for (auto obj : objects)
 	{
-		m_Pos.x = m_PrevPos.x;
+		const CollisionAABB* objAABB = obj->GetAABB();
+		if (!objAABB) continue;
+
+		if (m_AABB->CheckAABB(objAABB))
+		{
+			m_Pos.x = m_PrevPos.x;
+		}
 	}
 
+	// YŽ²‚¾‚¯ˆÚ“®‚³‚¹‚Ä“–‚½‚è”»’è
 	m_Pos.y += m_Move.y;
-	if (m_AABB->CheckAABB(other))
+	for (auto obj : objects)
 	{
-		m_Pos.y = m_PrevPos.y;
-		m_Move.y = 0.0f;
+		const CollisionAABB* objAABB = obj->GetAABB();
+		if (!objAABB) continue;
+
+		if (m_AABB->CheckAABB(objAABB))
+		{
+			m_Pos.y = m_PrevPos.y;
+			m_Move.y = 0.0f;// ’…’n
+		}
 	}
 
+	// ZŽ²‚¾‚¯ˆÚ“®‚³‚¹‚Ä“–‚½‚è”»’è
 	m_Pos.z += m_Move.z;
-	if (m_AABB->CheckAABB(other))
+	for (auto obj : objects)
 	{
-		m_Pos.z = m_PrevPos.z;
+		const CollisionAABB* objAABB = obj->GetAABB();
+		if (!objAABB) continue;
+
+		if (m_AABB->CheckAABB(objAABB))
+		{
+			m_Pos.z = m_PrevPos.z;
+		}
 	}
 }
 

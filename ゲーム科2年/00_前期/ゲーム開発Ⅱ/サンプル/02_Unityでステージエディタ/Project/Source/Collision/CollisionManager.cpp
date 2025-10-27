@@ -146,15 +146,5 @@ void CollisionManager::CheckCollision()
 	Player* player = PlayerManager::GetInstance()->GetPlayer();
 	auto objects = StageObjectManager::GetInstance()->GetStageObjects();
 
-	const CollisionAABB* playerAABB = player->GetAABB();
-	for (auto obj : objects)
-	{
-		const CollisionAABB* objAABB = obj->GetAABB();
-		if (!objAABB) continue;
-
-		if (playerAABB->CheckAABB(objAABB))
-		{
-			player->HitBlock(objAABB);
-		}
-	}
+	player->CheckHitStageObjects(objects);
 }

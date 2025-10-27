@@ -1,10 +1,11 @@
 #pragma once
 #include "DxLib.h"
+#include <vector>
 
 // ヘッダーにインクルードを書きたくないので前方定義
 class CollisionAABB;
 class CollisionSphere;
-
+class StageObject;
 
 // プレイヤークラス
 class Player 
@@ -30,7 +31,7 @@ public:
 	void SetTransform(VECTOR pos, VECTOR rot, VECTOR scale) { m_Pos = pos; m_Rot = rot; m_Scale = scale; }
 
 public:
-	void HitBlock(const CollisionAABB* other);
+	void CheckHitStageObjects(const std::vector<StageObject*>objects);
 	void HitGoal();
 
 private:
