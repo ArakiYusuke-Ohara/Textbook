@@ -7,8 +7,10 @@
 
 StageManager* StageManager::m_Instance = nullptr;
 
+// usingして使いやすくする
 using json = nlohmann::json;
 
+// データがまとまっている階層のキー名
 constexpr const char* KEY_ITEMS = "items";
 
 StageManager::StageManager()
