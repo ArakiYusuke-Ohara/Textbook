@@ -27,7 +27,7 @@ void TitleScene::Step()
 {
 	if (Input::IsTriggerKey(KEY_Z))
 	{
-		SceneManager::GetInstance()->ChangeScene(ONLINE_PLAY);
+		SceneManager::GetInstance()->ChangeScene(NETWORK_PLAY);
 	}
 	else if (Input::IsTriggerKey(KEY_X))
 	{

@@ -6,7 +6,6 @@
 
 Player::Player()
 {
-	m_ID = -1;
 	m_MoveSpeed = 0.0f;
 	m_ScaleSpeed = 0.0f;
 	m_RotSpeed = 0.0f;

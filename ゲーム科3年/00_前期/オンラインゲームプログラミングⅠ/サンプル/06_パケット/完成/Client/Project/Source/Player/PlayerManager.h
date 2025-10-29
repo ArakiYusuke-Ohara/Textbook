@@ -1,7 +1,8 @@
 #pragma once
 #include "../Singleton/Singleton.h"
 #include "../Memory/Memory.h"
-#include <vector>
+#include "../Network/NetworkCommonParam.h"
+#include <list>
 
 class Player;
 class NetworkPlayer;
@@ -18,11 +19,16 @@ public:
 	void Step();
 	void Draw();
 
+	// 機能
 	Player& CreatePlayer();
-	NetworkPlayer& CreateNetworkPlayer(Client& client);
-	void JoinNetworkPlayer(Client& client, int id);
 
+	// ネットワーク関係
+	NetworkPlayer& CreateNetworkPlayer(const Client* client, int id, bool isSelf);
+	void Login(const Client* client, Network::LoginData data);
+	void Join(Network::JoinData data);
+	void Logout(Network::LogoutData data);
+	void SyncPos(Network::PosData data);
 
 private:
-	std::vector<UniquePtr<Player>> m_Players;
+	std::list<UniquePtr<Player>> m_Players;
 };

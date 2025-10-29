@@ -16,12 +16,14 @@ public:
 	void Load();
 	void Start();
 	virtual void Step();
-	void Draw();
+	virtual void Draw();
 
-	int GetID() const { return m_ID; }
+	// アクセサ
+	void SetPos(const VECTOR& pos) { m_Transform.SetPos(pos); }
+	void SetRot(const VECTOR& rot) { m_Transform.SetRot(rot); }
+	void SetScale(const VECTOR& scale) { m_Transform.SetScale(scale); }
 
 protected:
-	int m_ID;
 	float m_MoveSpeed;
 	float m_ScaleSpeed;
 	float m_RotSpeed;

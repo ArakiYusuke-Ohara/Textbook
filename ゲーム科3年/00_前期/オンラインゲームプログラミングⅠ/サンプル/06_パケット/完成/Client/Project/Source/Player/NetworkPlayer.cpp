@@ -2,14 +2,16 @@
 #include "../Network/Client.h"
 #include "../MyMath/MyMath.h"
 #include "../Network/NetworkUtility.h"
+#include "../Component/Splite.h"
 
 // これだけ動いたらサーバーに送信する
-constexpr float POS_THRESHOLD = 0.05f;
+constexpr float POS_THRESHOLD = 1.0f;
 constexpr float SCALE_THRESHOLD = 0.01f;
 constexpr float ROT_THRESHOLD = 0.01f;
 
-
-NetworkPlayer::NetworkPlayer(Client& client) : Player()
+NetworkPlayer::NetworkPlayer(const Client* client, int id, bool isSelf) : Player()
+, m_IsSelf(isSelf)
+, m_ID(id)
 , m_Client(client)
 {
 }
@@ -18,14 +20,27 @@ NetworkPlayer::~NetworkPlayer() = default;
 
 void NetworkPlayer::Step()
 {
-	m_Client.Step();
+	// 自分自身しかステップしない
+	if (!m_IsSelf) return;
 
 	// 状態毎の更新
-	Client::State state = m_Client.GetState();
+	Client::State state = m_Client->GetState();
 	switch (state)
 	{
 		case Client::State::OFFLINE: StepOffline(); break;
 		case Client::State::ONLINE: StepOnline(); break;
+	}
+}
+
+/// <summary>
+/// サーバーから受信した座標で描画する
+/// </summary>
+void NetworkPlayer::Draw()
+{
+	if (m_Splite)
+	{
+		m_Splite->SetTransform(m_ServerTransform);
+		m_Splite->Draw();
 	}
 }
 
@@ -34,6 +49,9 @@ void NetworkPlayer::StepOffline()
 	// とくにやることなし
 }
 
+/// <summary>
+/// 接続中のステップ
+/// </summary>
 void NetworkPlayer::StepOnline()
 {
 	Transform oldTransform = m_Transform;
@@ -61,6 +79,9 @@ void NetworkPlayer::StepOnline()
 	}
 }
 
+/// <summary>
+/// 座標をサーバーに送信
+/// </summary>
 void NetworkPlayer::SendPosData()
 {
 	VECTOR pos = m_Transform.GetPos();
@@ -72,5 +93,5 @@ void NetworkPlayer::SendPosData()
 
 	std::vector<uint8_t> buf = Network::NetworkUtility::MakePosData(data);
 
-	NetWorkSend(m_Client.GetServerHandle(), reinterpret_cast<const char*>(buf.data()), (int)buf.size());
+	NetWorkSend(m_Client->GetServerHandle(), reinterpret_cast<const char*>(buf.data()), (int)buf.size());
 }

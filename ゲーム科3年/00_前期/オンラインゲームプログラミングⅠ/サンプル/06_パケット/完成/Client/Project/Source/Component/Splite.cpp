@@ -5,6 +5,10 @@ Splite::Splite()
 {
 	m_Handle = 0;
 	m_Transform = {};
+	m_Width = 0;
+	m_Height = 0;
+	m_CenterX = 0;
+	m_CenterY = 0;
 }
 
 Splite::~Splite()

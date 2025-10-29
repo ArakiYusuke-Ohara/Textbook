@@ -79,7 +79,7 @@ void Client::Connect()
 	}
 }
 
-void Client::SendData(const void* data, unsigned int size)
+void Client::SendData(const void* data, unsigned int size) const
 {
 	if (m_State == ONLINE)
 	{

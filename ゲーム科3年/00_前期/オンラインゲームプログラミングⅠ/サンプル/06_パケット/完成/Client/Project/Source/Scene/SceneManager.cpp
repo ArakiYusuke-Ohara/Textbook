@@ -137,7 +137,7 @@ SceneBase* SceneManager::CreateScene(SceneType type)
 	{
 		case TITLE: scene = new TitleScene; break;
 		case PLAY: scene = new PlayScene; break;
-		case ONLINE_PLAY: scene = new NetworkPlayScene; break;
+		case NETWORK_PLAY: scene = new NetworkPlayScene; break;
 	}
 
 	if (scene) scene->SetActive(true);

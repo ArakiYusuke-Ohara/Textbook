@@ -17,7 +17,7 @@ public:
 	void Fin();
 
 	void Connect();
-	void SendData(const void* data, unsigned int size);
+	void SendData(const void* data, unsigned int size) const;
 	bool CheckReceive();
 	void ReceiveData(void* buffer, unsigned int size);
 	void Disconnect();

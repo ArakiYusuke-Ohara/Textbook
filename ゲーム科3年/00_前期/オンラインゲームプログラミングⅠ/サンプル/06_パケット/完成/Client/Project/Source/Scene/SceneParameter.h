@@ -15,7 +15,7 @@ enum SceneType
 {
 	TITLE,
 	PLAY,
-	ONLINE_PLAY,
+	NETWORK_PLAY,
 	SCENE_TYPE_NONE = -1
 };
 

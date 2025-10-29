@@ -14,19 +14,29 @@ NetworkPlayScene::~NetworkPlayScene()
 
 void NetworkPlayScene::Init()
 {
-	PlayerManager::CreateInstance();
-	PlayerManager::GetInstance()->CreateNetworkPlayer(*m_Client);
-
 	// クライアントクラス生成
 	m_Client = MakeUnique<Client>();
 	// サーバーに接続
 	m_Client->Connect();
+
+	// プレイヤー管理生成
+	PlayerManager::CreateInstance();
+}
+
+void NetworkPlayScene::Load()
+{
+	// どのプレイヤーが参加するかわからないのでロードできない
+	// ロードは参加時に行う
 }
 
 void NetworkPlayScene::Step()
 {
 	PlayScene::Step();
 
+	// クライアントステップ
+	m_Client->Step();
+
+	// 常に受信がないか見張る
 	ReceiveData();
 }
 
@@ -47,8 +57,10 @@ void NetworkPlayScene::ReceiveData()
 
 		switch (header.packet)
 		{
-			case Network::Packet::LOGIN: ReceiveLogin(); break;
-			case Network::Packet::POS: ReceivePos(); break;
+			case Network::Packet::LOGIN:	ReceiveLogin(); break;
+			case Network::Packet::JOIN:		ReceiveJoin(); break;
+			case Network::Packet::LOGOUT:	ReceiveLogout(); break;
+			case Network::Packet::POS:		ReceivePos(); break;
 		}
 	}
 
@@ -60,8 +72,28 @@ void NetworkPlayScene::ReceiveLogin()
 	Network::LoginData data = {};
 	m_Client->ReceiveData(reinterpret_cast<char*>(&data), sizeof(data));
 
-	// プレイヤー追加
-	PlayerManager::GetInstance()->JoinNetworkPlayer(*m_Client, data.playerID);
+	// ログイン処理
+	PlayerManager::GetInstance()->Login(m_Client.get(), data);
+}
+
+void NetworkPlayScene::ReceiveJoin()
+{
+	// 参加データを受信
+	Network::JoinData data = {};
+	m_Client->ReceiveData(reinterpret_cast<char*>(&data), sizeof(data));
+
+	// プレイヤー参加処理
+	PlayerManager::GetInstance()->Join(data);
+}
+
+void NetworkPlayScene::ReceiveLogout()
+{
+	// ログアウトデータを受信
+	Network::LogoutData data = {};
+	m_Client->ReceiveData(reinterpret_cast<char*>(&data), sizeof(data));
+
+	// ログアウト
+	PlayerManager::GetInstance()->Logout(data);
 }
 
 void NetworkPlayScene::ReceivePos()
@@ -70,5 +102,7 @@ void NetworkPlayScene::ReceivePos()
 	Network::PosData data = {};
 	m_Client->ReceiveData(reinterpret_cast<char*>(&data), sizeof(data));
 
+	// 座標同期
+	PlayerManager::GetInstance()->SyncPos(data);
 }
 

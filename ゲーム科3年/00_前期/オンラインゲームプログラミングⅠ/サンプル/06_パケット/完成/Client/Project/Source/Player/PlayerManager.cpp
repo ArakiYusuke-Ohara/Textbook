@@ -54,11 +54,12 @@ Player& PlayerManager::CreatePlayer()
 	return *(m_Players.back().get());
 }
 
-NetworkPlayer& PlayerManager::CreateNetworkPlayer(Client& client)
+NetworkPlayer& PlayerManager::CreateNetworkPlayer(const Client* client, int id, bool isSelf)
 {
-	// 生成して初期化
-	UniquePtr<NetworkPlayer> player = MakeUnique<NetworkPlayer>(client);
+	// 生成して初期化/ロード
+	UniquePtr<NetworkPlayer> player = MakeUnique<NetworkPlayer>(client, id, isSelf);
 	player->Init();
+	player->Load();
 
 	// 末尾に格納
 	m_Players.push_back(std::move(player));
@@ -67,22 +68,65 @@ NetworkPlayer& PlayerManager::CreateNetworkPlayer(Client& client)
 	return *static_cast<NetworkPlayer*>(m_Players.back().get());
 }
 
-void PlayerManager::JoinNetworkPlayer(Client& client, int id)
+/// <summary>
+/// プレイヤーを追加する
+/// </summary>
+/// <param name="client">通信に使われているクライアントクラス</param>
+/// <param name="data">ログインデータ</param>
+void PlayerManager::Login(const Client* client, Network::LoginData data)
 {
-	// 既にエントリー済みかチェック
-	bool isEntry = false;
-	for (auto& player : m_Players)
+	// 既に参加済みのプレイヤーも含め生成
+	for (int i = 0; i < NETWORK_PLAYER_MAX; i++)
 	{
-		if (player->GetID() == id)
+		int id = data.playerID[i];
+		if (id < 0) continue;
+
+		bool isSelf = id == data.selfID;
+		CreateNetworkPlayer(client, id, isSelf);
+	}
+}
+
+void PlayerManager::Join(Network::JoinData data)
+{
+	// 参加プレイヤーを生成
+	CreateNetworkPlayer(nullptr, data.playerID, false);
+}
+
+/// <summary>
+/// ログアウト
+/// </summary>
+/// <param name="data">ログアウトするプレイヤーのID</param>
+void PlayerManager::Logout(Network::LogoutData data)
+{
+	// IDが一致したプレイヤーはログアウトするので削除
+	for (auto itr = m_Players.begin(); itr != m_Players.end(); itr++)
+	{
+		const NetworkPlayer* nwPlayer = static_cast<NetworkPlayer*>((*itr).get());
+
+		if (nwPlayer->GetID() == data.playerID)
 		{
-			isEntry = true;
+			m_Players.erase(itr);
 			break;
 		}
 	}
+}
 
-	// エントリー済みでなければ追加
-	if (!isEntry)
+/// <summary>
+/// 座標を同期する
+/// </summary>
+/// <param name="data">座標データ</param>
+void PlayerManager::SyncPos(Network::PosData data)
+{
+	// IDが一致したプレイヤーの座標を更新して同期
+	for (auto& player : m_Players)
 	{
-		CreateNetworkPlayer(client);
+		const NetworkPlayer* nwPlayer = static_cast<NetworkPlayer*>(player.get());
+		if (nwPlayer->GetID() == data.playerID)
+		{
+			VECTOR pos = { data.x, data.y, data.z };
+			NetworkPlayer* nwPlayer = static_cast<NetworkPlayer*>(player.get());
+			nwPlayer->SetServerPos(pos);
+			break;
+		}
 	}
 }
