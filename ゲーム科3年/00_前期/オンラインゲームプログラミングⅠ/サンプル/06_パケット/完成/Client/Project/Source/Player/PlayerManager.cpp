@@ -56,10 +56,11 @@ Player& PlayerManager::CreatePlayer()
 
 NetworkPlayer& PlayerManager::CreateNetworkPlayer(const Client* client, int id, bool isSelf)
 {
-	// ¶¬‚µ‚Ä‰Šú‰»/ƒ[ƒh
+	// ¶¬‚µ‚Ä‰Šú‰»`ŠJn
 	UniquePtr<NetworkPlayer> player = MakeUnique<NetworkPlayer>(client, id, isSelf);
 	player->Init();
 	player->Load();
+	player->Start();
 
 	// ––”ö‚ÉŠi”[
 	m_Players.push_back(std::move(player));

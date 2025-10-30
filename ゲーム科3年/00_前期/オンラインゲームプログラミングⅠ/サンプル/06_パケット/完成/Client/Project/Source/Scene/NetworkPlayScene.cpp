@@ -40,6 +40,13 @@ void NetworkPlayScene::Step()
 	ReceiveData();
 }
 
+void NetworkPlayScene::Draw()
+{
+	PlayScene::Draw();
+
+	if (m_Client) m_Client->Draw();
+}
+
 void NetworkPlayScene::Fin()
 {
 	PlayScene::Fin();

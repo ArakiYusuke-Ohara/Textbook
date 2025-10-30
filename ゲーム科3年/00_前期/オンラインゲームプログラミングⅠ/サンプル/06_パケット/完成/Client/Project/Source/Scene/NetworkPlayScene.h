@@ -14,6 +14,7 @@ public:
 	void Init()override;
 	void Load()override;
 	void Step()override;
+	void Draw()override;
 	void Fin()override;
 
 private:
