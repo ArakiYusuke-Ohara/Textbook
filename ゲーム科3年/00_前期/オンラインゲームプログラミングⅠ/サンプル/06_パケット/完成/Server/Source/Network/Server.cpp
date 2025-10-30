@@ -71,7 +71,8 @@ void Server::AddUserData(int handle)
 	// 接続してきたマシンのＩＰアドレスを得る
 	GetNetWorkIP(handle, &player.client.ip);
 
-	// スケールは1にしておく
+	// 初期設定
+	player.pos = { 100.0f, 100.0f, 0.0f };
 	player.scale = { 1.0f, 1.0f, 1.0f };
 
 	// ユーザー配列に追加
