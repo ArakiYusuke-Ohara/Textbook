@@ -3,9 +3,6 @@
 #include "NetworkCommonParam.h"
 #include <vector>
 
-// 1フレームに受信する通信数
-constexpr int RECEIVE_MAX = 1;
-
 using namespace Network;
 
 Server::Server()
@@ -43,11 +40,7 @@ void Server::Update()
 	}
 
 	// データ受信処理
-	bool isUpdate = false;
-	for (int i = 0; i < RECEIVE_MAX; i++)
-	{
-		isUpdate = ReceiveData();
-	}
+	bool isUpdate = ReceiveData();
 
 	// データ更新があればクライアントに送信して同期
 	if (isUpdate)
@@ -137,7 +130,9 @@ bool Server::ReceiveData()
 			// パケットごとの処理
 			switch (header.packet)
 			{
-				case Packet::POS: SyncPos(player.client.handle); break;	// 座標を同期
+				case Packet::POS:	SyncPos(player.client.handle); break;	// 座標を同期
+				case Packet::ROT:	SyncRot(player.client.handle); break;	// 回転を同期
+				case Packet::SCALE: SyncScale(player.client.handle); break;	// 拡縮を同期
 			}
 
 			// 更新された
@@ -290,9 +285,41 @@ void Server::SyncPos(int handle)
 		// IDが一致したプレイヤーの座標を更新する
 		if (player.id == data.playerID)
 		{
-			player.pos.x = data.x;
-			player.pos.y = data.y;
-			player.pos.z = data.z;
+			player.pos = data.pos;
+			break;
+		}
+	}
+}
+
+void Server::SyncRot(int handle)
+{
+	// 座標データを受信
+	Network::RotData data = {};
+	NetWorkRecv(handle, &data, sizeof(data));
+
+	for (NetworkPlayerData& player : m_NetworkPlayerData)
+	{
+		// IDが一致したプレイヤーの座標を更新する
+		if (player.id == data.playerID)
+		{
+			player.rot = data.rot;
+			break;
+		}
+	}
+}
+
+void Server::SyncScale(int handle)
+{
+	// 座標データを受信
+	Network::ScaleData data = {};
+	NetWorkRecv(handle, &data, sizeof(data));
+
+	for (NetworkPlayerData& player : m_NetworkPlayerData)
+	{
+		// IDが一致したプレイヤーの座標を更新する
+		if (player.id == data.playerID)
+		{
+			player.scale = data.scale;
 			break;
 		}
 	}

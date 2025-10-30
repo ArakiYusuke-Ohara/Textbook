@@ -23,6 +23,8 @@ public:
 
 private:
 	void SendPosData();
+	void SendRotData();
+	void SendScaleData();
 
 private:
 	bool m_IsSelf;					// ©•ª©g‚ª‘€ì‚·‚é‚©‚Ç‚¤‚©

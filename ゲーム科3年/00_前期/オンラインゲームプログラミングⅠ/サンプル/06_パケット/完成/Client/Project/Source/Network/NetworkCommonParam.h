@@ -31,6 +31,8 @@ namespace Network
 		JOIN,
 		LOGOUT,
 		POS,
+		ROT,
+		SCALE,
 		ALL_TRANSFORM
 	};
 
@@ -64,9 +66,21 @@ namespace Network
 	struct PosData
 	{
 		int playerID;
-		float x;
-		float y;
-		float z;
+		VECTOR pos;
+	};
+
+	// プレイヤーの回転データ
+	struct RotData
+	{
+		int playerID;
+		VECTOR rot;
+	};
+
+	// プレイヤーの拡縮データ
+	struct ScaleData
+	{
+		int playerID;
+		VECTOR scale;
 	};
 
 	// 全プレイヤーのトランスフォームデータ

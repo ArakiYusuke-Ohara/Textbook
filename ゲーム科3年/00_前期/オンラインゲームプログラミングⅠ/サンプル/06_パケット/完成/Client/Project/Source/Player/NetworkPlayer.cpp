@@ -6,8 +6,8 @@
 
 // これだけ動いたらサーバーに送信する
 constexpr float POS_THRESHOLD = 1.0f;
-constexpr float SCALE_THRESHOLD = 0.01f;
-constexpr float ROT_THRESHOLD = 0.01f;
+constexpr float SCALE_THRESHOLD = 0.005f;
+constexpr float ROT_THRESHOLD = 0.005f;
 
 NetworkPlayer::NetworkPlayer(const Client* client, int id, bool isSelf) : Player()
 , m_IsSelf(isSelf)
@@ -66,16 +66,18 @@ void NetworkPlayer::StepOnline()
 		SendPosData();
 	}
 
-	// 拡縮したらサーバーにスケールを送信
-	dist = MyMath::GetDistance(m_Transform.GetScale(), oldTransform.GetScale());
-	if (dist >= SCALE_THRESHOLD)
-	{
-	}
-
 	// 回転したらサーバーに回転値を送信
 	dist = MyMath::GetDistance(m_Transform.GetRot(), oldTransform.GetRot());
 	if (dist >= ROT_THRESHOLD)
 	{
+		SendRotData();
+	}
+
+	// 拡縮したらサーバーにスケールを送信
+	dist = MyMath::GetDistance(m_Transform.GetScale(), oldTransform.GetScale());
+	if (dist >= SCALE_THRESHOLD)
+	{
+		SendScaleData();
 	}
 }
 
@@ -87,11 +89,33 @@ void NetworkPlayer::SendPosData()
 	VECTOR pos = m_Transform.GetPos();
 	Network::PosData data;
 	data.playerID = m_ID;
-	data.x = pos.x;
-	data.y = pos.y;
-	data.z = pos.z;
+	data.pos = pos;
 
 	std::vector<uint8_t> buf = Network::NetworkUtility::MakePosData(data);
+
+	NetWorkSend(m_Client->GetServerHandle(), reinterpret_cast<const char*>(buf.data()), (int)buf.size());
+}
+
+void NetworkPlayer::SendRotData()
+{
+	VECTOR rot = m_Transform.GetRot();
+	Network::RotData data;
+	data.playerID = m_ID;
+	data.rot = rot;
+
+	std::vector<uint8_t> buf = Network::NetworkUtility::MakeRotData(data);
+
+	NetWorkSend(m_Client->GetServerHandle(), reinterpret_cast<const char*>(buf.data()), (int)buf.size());
+}
+
+void NetworkPlayer::SendScaleData()
+{
+	VECTOR scale = m_Transform.GetScale();
+	Network::ScaleData data;
+	data.playerID = m_ID;
+	data.scale = scale;
+
+	std::vector<uint8_t> buf = Network::NetworkUtility::MakeScaleData(data);
 
 	NetWorkSend(m_Client->GetServerHandle(), reinterpret_cast<const char*>(buf.data()), (int)buf.size());
 }

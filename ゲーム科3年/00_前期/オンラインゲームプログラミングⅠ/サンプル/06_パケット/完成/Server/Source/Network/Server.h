@@ -40,6 +40,8 @@ private:
 	void SendLogoutData(int id);
 	void SendAllTransformData();
 	void SyncPos(int handle);
+	void SyncRot(int handle);
+	void SyncScale(int handle);
 
 private:
 	std::list<NetworkPlayerData> m_NetworkPlayerData;

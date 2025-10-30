@@ -43,8 +43,6 @@ void NetworkPlayScene::Step()
 void NetworkPlayScene::Fin()
 {
 	PlayScene::Fin();
-
-
 }
 
 void NetworkPlayScene::ReceiveData()
