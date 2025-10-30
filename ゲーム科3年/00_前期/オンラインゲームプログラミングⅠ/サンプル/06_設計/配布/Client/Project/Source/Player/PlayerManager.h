@@ -22,13 +22,6 @@ public:
 	// 機能
 	Player& CreatePlayer();
 
-	// ネットワーク関係
-	NetworkPlayer& CreateNetworkPlayer(const Client* client, int id, bool isSelf);
-	void Login(const Client* client, Network::LoginData data);
-	void Join(Network::JoinData data);
-	void Logout(Network::LogoutData data);
-	void SyncTransform(Network::AllTransformData data);
-
 private:
 	std::list<UniquePtr<Player>> m_Players;
 };

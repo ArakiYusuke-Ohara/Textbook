@@ -1,7 +1,6 @@
 #include "SceneManager.h"
 #include "TitleScene.h"
 #include "PlayScene.h"
-#include "NetworkPlayScene.h"
 
 SceneManager::SceneManager()
 {
@@ -137,7 +136,6 @@ SceneBase* SceneManager::CreateScene(SceneType type)
 	{
 		case TITLE: scene = new TitleScene; break;
 		case PLAY: scene = new PlayScene; break;
-		case NETWORK_PLAY: scene = new NetworkPlayScene; break;
 	}
 
 	if (scene) scene->SetActive(true);
