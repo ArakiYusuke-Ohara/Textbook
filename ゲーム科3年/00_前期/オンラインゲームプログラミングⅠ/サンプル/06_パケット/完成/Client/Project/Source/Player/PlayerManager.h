@@ -27,7 +27,7 @@ public:
 	void Login(const Client* client, Network::LoginData data);
 	void Join(Network::JoinData data);
 	void Logout(Network::LogoutData data);
-	void SyncPos(Network::PosData data);
+	void SyncTransform(Network::AllTransformData data);
 
 private:
 	std::list<UniquePtr<Player>> m_Players;

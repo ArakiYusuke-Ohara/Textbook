@@ -21,7 +21,7 @@ private:
 	void ReceiveLogin();
 	void ReceiveJoin();
 	void ReceiveLogout();
-	void ReceivePos();
+	void ReceiveAllTransform();
 
 private:
 	UniquePtr<Client> m_Client;

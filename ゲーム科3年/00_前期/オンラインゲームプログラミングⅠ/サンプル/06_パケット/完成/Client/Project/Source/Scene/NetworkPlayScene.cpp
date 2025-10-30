@@ -57,10 +57,10 @@ void NetworkPlayScene::ReceiveData()
 
 		switch (header.packet)
 		{
-			case Network::Packet::LOGIN:	ReceiveLogin(); break;
-			case Network::Packet::JOIN:		ReceiveJoin(); break;
-			case Network::Packet::LOGOUT:	ReceiveLogout(); break;
-			case Network::Packet::POS:		ReceivePos(); break;
+			case Network::Packet::LOGIN:			ReceiveLogin(); break;
+			case Network::Packet::JOIN:				ReceiveJoin(); break;
+			case Network::Packet::LOGOUT:			ReceiveLogout(); break;
+			case Network::Packet::ALL_TRANSFORM:	ReceiveAllTransform(); break;
 		}
 	}
 
@@ -96,13 +96,14 @@ void NetworkPlayScene::ReceiveLogout()
 	PlayerManager::GetInstance()->Logout(data);
 }
 
-void NetworkPlayScene::ReceivePos()
+void NetworkPlayScene::ReceiveAllTransform()
 {
 	// 座標データを受信
-	Network::PosData data = {};
+	Network::AllTransformData data = {};
 	m_Client->ReceiveData(reinterpret_cast<char*>(&data), sizeof(data));
 
 	// 座標同期
-	PlayerManager::GetInstance()->SyncPos(data);
+	PlayerManager::GetInstance()->SyncTransform(data);
+
 }
 

@@ -115,18 +115,16 @@ void PlayerManager::Logout(Network::LogoutData data)
 /// 座標を同期する
 /// </summary>
 /// <param name="data">座標データ</param>
-void PlayerManager::SyncPos(Network::PosData data)
+void PlayerManager::SyncTransform(Network::AllTransformData data)
 {
-	// IDが一致したプレイヤーの座標を更新して同期
+	// 全プレイヤーのトランスフォームをサーバーから受信したものにする
+	int i = 0;
 	for (auto& player : m_Players)
 	{
-		const NetworkPlayer* nwPlayer = static_cast<NetworkPlayer*>(player.get());
-		if (nwPlayer->GetID() == data.playerID)
-		{
-			VECTOR pos = { data.x, data.y, data.z };
-			NetworkPlayer* nwPlayer = static_cast<NetworkPlayer*>(player.get());
-			nwPlayer->SetServerPos(pos);
-			break;
-		}
+		NetworkPlayer* nwPlayer = static_cast<NetworkPlayer*>(player.get());
+		nwPlayer->SetServerPos(data.pos[i]);
+		nwPlayer->SetServerRot(data.rot[i]);
+		nwPlayer->SetServerScale(data.scale[i]);
+		i++;
 	}
 }

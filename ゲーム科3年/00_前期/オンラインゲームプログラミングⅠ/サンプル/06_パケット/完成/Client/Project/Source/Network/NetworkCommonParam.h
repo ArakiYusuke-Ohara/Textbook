@@ -1,4 +1,5 @@
 #pragma once
+#include "DxLib.h"
 #include <cstdint>
 
 // NetworkCommonParam.hはクライアント/サーバー共通のパラメータ
@@ -30,6 +31,7 @@ namespace Network
 		JOIN,
 		LOGOUT,
 		POS,
+		ALL_TRANSFORM
 	};
 
 	// 全通信に使用するパケットデータ
@@ -65,6 +67,14 @@ namespace Network
 		float x;
 		float y;
 		float z;
+	};
+
+	// 全プレイヤーのトランスフォームデータ
+	struct AllTransformData
+	{
+		VECTOR pos[NETWORK_PLAYER_MAX];
+		VECTOR rot[NETWORK_PLAYER_MAX];
+		VECTOR scale[NETWORK_PLAYER_MAX];
 	};
 }
 

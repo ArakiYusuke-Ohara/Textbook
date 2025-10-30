@@ -61,7 +61,7 @@ void Client::Connect()
 	IPDATA ip;
 	ip.d1 = 10;
 	ip.d2 = 50;
-	ip.d3 = 164;
+	ip.d3 = 174;
 	ip.d4 = 100;
 
 	// 指定したIPアドレスの端末に接続

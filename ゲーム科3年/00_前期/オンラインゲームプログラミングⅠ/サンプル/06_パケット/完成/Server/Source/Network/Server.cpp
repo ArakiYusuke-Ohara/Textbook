@@ -3,6 +3,9 @@
 #include "NetworkCommonParam.h"
 #include <vector>
 
+// 1フレームに受信する通信数
+constexpr int RECEIVE_MAX = 1;
+
 using namespace Network;
 
 Server::Server()
@@ -40,7 +43,17 @@ void Server::Update()
 	}
 
 	// データ受信処理
-	ReceiveData();
+	bool isUpdate = false;
+	for (int i = 0; i < RECEIVE_MAX; i++)
+	{
+		isUpdate = ReceiveData();
+	}
+
+	// データ更新があればクライアントに送信して同期
+	if (isUpdate)
+	{
+		SendAllTransformData();
+	}
 }
 
 void Server::Draw()
@@ -65,6 +78,9 @@ void Server::AddUserData(int handle)
 	// 接続してきたマシンのＩＰアドレスを得る
 	GetNetWorkIP(handle, &player.client.ip);
 
+	// スケールは1にしておく
+	player.scale = { 1.0f, 1.0f, 1.0f };
+
 	// ユーザー配列に追加
 	m_NetworkPlayerData.push_back(player);
 
@@ -75,7 +91,7 @@ void Server::AddUserData(int handle)
 	SendJoinData(player);
 
 	// 全員の座標を同期
-	SendAllPosData();
+	SendAllTransformData();
 }
 
 /// <summary>
@@ -101,7 +117,7 @@ void Server::RemoveUserData(int handle)
 	}
 }
 
-void Server::ReceiveData()
+bool Server::ReceiveData()
 {
 	bool isUpdate = false;
 
@@ -121,11 +137,15 @@ void Server::ReceiveData()
 			// パケットごとの処理
 			switch (header.packet)
 			{
-				case Packet::POS: SyncPosData(player.client.handle); break;	// 座標を同期
+				case Packet::POS: SyncPos(player.client.handle); break;	// 座標を同期
 			}
 
+			// 更新された
+			isUpdate = true;
 		}
 	}
+
+	return isUpdate;
 }
 
 void Server::SendLoginData(const NetworkPlayerData& loginPlayer)
@@ -220,29 +240,33 @@ void Server::SendLogoutData(int id)
 	}
 }
 
-void Server::SendPosData(const NetworkPlayerData& player)
+void Server::SendAllTransformData()
 {
 	// 通信データサイズ
-	size_t dataSize = sizeof(PacketHeader) + sizeof(PosData);
+	size_t dataSize = sizeof(PacketHeader) + sizeof(AllTransformData);
 
 	// パケット ＋ データを格納するバッファー
 	std::vector<uint8_t> buffer(dataSize);
 
 	PacketHeader header = {};
-	header.packet = Packet::POS;
-	header.size = sizeof(PosData);
+	header.packet = Packet::ALL_TRANSFORM;
+	header.size = sizeof(AllTransformData);
 
-	// 座標データ設定
-	PosData data = {};
-	data.playerID = player.id;
-	data.x = player.pos.x;
-	data.y = player.pos.y;
-	data.z = player.pos.z;
+	// データ設定
+	AllTransformData data = {};
+	int i = 0;
+	for (const auto& playerData : m_NetworkPlayerData)
+	{
+		data.pos[i] = playerData.pos;
+		data.rot[i] = playerData.rot;
+		data.scale[i] = playerData.scale;
+		i++;
+	}
 
 	// パケットをバッファーに入れる
 	memcpy_s(buffer.data(), buffer.size(), &header, sizeof(PacketHeader));
 	// パケットの後ろにデータを入れる
-	memcpy_s(buffer.data() + sizeof(PacketHeader), buffer.size() - sizeof(PacketHeader), &data, sizeof(PosData));
+	memcpy_s(buffer.data() + sizeof(PacketHeader), buffer.size() - sizeof(PacketHeader), &data, sizeof(AllTransformData));
 
 	// 全クライアントに送信する
 	for (const NetworkPlayerData& player : m_NetworkPlayerData)
@@ -251,19 +275,11 @@ void Server::SendPosData(const NetworkPlayerData& player)
 	}
 }
 
-void Server::SendAllPosData()
-{
-	for (const auto& data : m_NetworkPlayerData)
-	{
-		SendPosData(data);
-	}
-}
-
 /// <summary>
 /// クライアントから座標が送られたら情報を更新
 /// 最新の座標を全クライアントに送り同期する
 /// </summary>
-void Server::SyncPosData(int handle)
+void Server::SyncPos(int handle)
 {
 	// 座標データを受信
 	Network::PosData data = {};
@@ -271,14 +287,12 @@ void Server::SyncPosData(int handle)
 
 	for (NetworkPlayerData& player : m_NetworkPlayerData)
 	{
-		// IDが一致したプレイヤーの座標を更新して送信する
+		// IDが一致したプレイヤーの座標を更新する
 		if (player.id == data.playerID)
 		{
 			player.pos.x = data.x;
 			player.pos.y = data.y;
 			player.pos.z = data.z;
-
-			SendPosData(player);
 			break;
 		}
 	}
