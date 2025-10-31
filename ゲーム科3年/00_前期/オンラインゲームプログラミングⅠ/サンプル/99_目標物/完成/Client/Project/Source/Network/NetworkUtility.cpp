@@ -12,7 +12,7 @@ namespace Network
 
 		// パケット作成
 		PacketHeader header = {};
-		header.packet = Packet::POS;
+		header.type = PacketType::POS;
 		header.size = sizeof(PosData);
 
 		// パケットをバッファーに入れる
@@ -33,7 +33,7 @@ namespace Network
 
 		// パケット作成
 		PacketHeader header = {};
-		header.packet = Packet::ROT;
+		header.type = PacketType::ROT;
 		header.size = sizeof(RotData);
 
 		// パケットをバッファーに入れる
@@ -54,7 +54,7 @@ namespace Network
 
 		// パケット作成
 		PacketHeader header = {};
-		header.packet = Packet::SCALE;
+		header.type = PacketType::SCALE;
 		header.size = sizeof(ScaleData);
 
 		// パケットをバッファーに入れる

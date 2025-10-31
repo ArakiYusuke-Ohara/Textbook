@@ -25,7 +25,7 @@ namespace Network
 	constexpr int NETWORK_MESSAGE_BUFFER_MAX = NETWORK_MESSAGE_MAX + 1;
 
 	// パケットの種類（符号なし8ビットで扱う）
-	enum class Packet : uint8_t
+	enum class PacketType : uint8_t
 	{
 		LOGIN,
 		JOIN,
@@ -39,7 +39,7 @@ namespace Network
 	// 全通信に使用するパケットデータ
 	struct PacketHeader
 	{
-		Packet packet;	// 種類
+		PacketType type;	// 種類
 		uint16_t size;	// データサイズ（符号なし16ビット）
 	};
 

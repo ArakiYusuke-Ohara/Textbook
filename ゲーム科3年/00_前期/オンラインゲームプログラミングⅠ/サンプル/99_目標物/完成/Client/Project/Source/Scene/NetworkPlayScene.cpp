@@ -60,12 +60,12 @@ void NetworkPlayScene::ReceiveData()
 		Network::PacketHeader header = {};
 		m_Client->ReceiveData(reinterpret_cast<char*>(&header), sizeof(header));
 
-		switch (header.packet)
+		switch (header.type)
 		{
-			case Network::Packet::LOGIN:			ReceiveLogin(); break;
-			case Network::Packet::JOIN:				ReceiveJoin(); break;
-			case Network::Packet::LOGOUT:			ReceiveLogout(); break;
-			case Network::Packet::ALL_TRANSFORM:	ReceiveAllTransform(); break;
+			case Network::PacketType::LOGIN:			ReceiveLogin(); break;
+			case Network::PacketType::JOIN:				ReceiveJoin(); break;
+			case Network::PacketType::LOGOUT:			ReceiveLogout(); break;
+			case Network::PacketType::ALL_TRANSFORM:	ReceiveAllTransform(); break;
 		}
 	}
 
