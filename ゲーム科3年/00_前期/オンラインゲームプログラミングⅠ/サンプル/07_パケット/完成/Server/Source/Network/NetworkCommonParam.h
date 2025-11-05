@@ -1,4 +1,5 @@
 #pragma once
+#include <cstdint>
 
 // NetworkCommonParam.hはクライアント/サーバー共通のパラメータ
 // 必ず双方で同じ状態にする必要がある
@@ -8,4 +9,20 @@
 
 namespace Network
 {
+	// パケットの種類（符号なし8ビットで扱う）
+	enum class PacketType : uint8_t
+	{
+		LOGIN,
+		JOIN,
+		LOGOUT,
+	};
+
+	// 全通信に使用するパケットデータ
+	struct PacketHeader
+	{
+		PacketType type;	// 種類
+		uint16_t size;	// データサイズ（符号なし16ビット）
+	};
 }
+
+
