@@ -78,9 +78,6 @@
     <ClCompile Include="Source\Player\PlayerManager.cpp">
       <Filter>Source\Player</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Network\NetworkUtility.cpp">
-      <Filter>Source\Network</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Network\NetworkCommonParam.h">

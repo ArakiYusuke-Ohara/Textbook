@@ -147,7 +147,6 @@
     <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="Source\MyMath\MyMath.cpp" />
     <ClCompile Include="Source\Network\Client.cpp" />
-    <ClCompile Include="Source\Network\NetworkUtility.cpp" />
     <ClCompile Include="Source\Player\NetworkPlayer.cpp" />
     <ClCompile Include="Source\Player\Player.cpp" />
     <ClCompile Include="Source\Player\PlayerManager.cpp" />

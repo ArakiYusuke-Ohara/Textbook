@@ -98,7 +98,7 @@ void NetworkPlayer::SendPosData()
 	data.playerID = m_ID;
 	data.pos = pos;
 
-	std::vector<uint8_t> buf = Network::NetworkUtility::MakePosData(data);
+	std::vector<uint8_t> buf = Network::MakePosData(data);
 
 	NetWorkSend(m_Client->GetServerHandle(), reinterpret_cast<const char*>(buf.data()), (int)buf.size());
 }
@@ -110,7 +110,7 @@ void NetworkPlayer::SendRotData()
 	data.playerID = m_ID;
 	data.rot = rot;
 
-	std::vector<uint8_t> buf = Network::NetworkUtility::MakeRotData(data);
+	std::vector<uint8_t> buf = Network::MakeRotData(data);
 
 	NetWorkSend(m_Client->GetServerHandle(), reinterpret_cast<const char*>(buf.data()), (int)buf.size());
 }
@@ -122,7 +122,7 @@ void NetworkPlayer::SendScaleData()
 	data.playerID = m_ID;
 	data.scale = m_Transform.GetScale();
 
-	std::vector<uint8_t> buf = Network::NetworkUtility::MakeScaleData(data);
+	std::vector<uint8_t> buf = Network::MakeScaleData(data);
 
 	NetWorkSend(m_Client->GetServerHandle(), reinterpret_cast<const char*>(buf.data()), (int)buf.size());
 }
@@ -136,7 +136,7 @@ void NetworkPlayer::SendTransformData()
 	data.rot = m_Transform.GetRot();
 	data.scale = m_Transform.GetScale();
 
-	std::vector<uint8_t> buf = Network::NetworkUtility::MakeTransformData(data);
+	std::vector<uint8_t> buf = Network::MakeTransformData(data);
 
 	NetWorkSend(m_Client->GetServerHandle(), reinterpret_cast<const char*>(buf.data()), (int)buf.size());
 }
