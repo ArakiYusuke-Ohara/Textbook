@@ -53,8 +53,7 @@ void NetworkPlayer::StepOffline()
 /// </summary>
 void NetworkPlayer::StepOnline()
 {
-	// 移動とか
+	// 移動など基本処理はローカルのものを使いまわす
 	Player::Step();
-
-	// TODO:変化があればサーバーに送信する
 }
+

@@ -2,7 +2,7 @@
 
 SceneBase::SceneBase()
 {
-	m_IsActive = true;
+	m_IsActive = false;
 }
 
 SceneBase::~SceneBase()

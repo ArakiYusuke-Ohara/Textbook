@@ -21,10 +21,12 @@ public:
 	void StepOffline();
 	void StepOnline();
 
-
 private:
 	bool m_IsSelf;					// 自分自身が操作するかどうか
 	int m_ID;						// 識別ID
 	const Client* m_Client;			// 通信用クライアントクラス
 	Transform m_ServerTransform;	// サーバーから受信したトランスフォーム
 };
+
+
+

@@ -18,8 +18,6 @@ public:
 	void Fin()override;
 
 private:
-	void ReceiveData();
-
-private:
 	UniquePtr<Client> m_Client;
 };
+

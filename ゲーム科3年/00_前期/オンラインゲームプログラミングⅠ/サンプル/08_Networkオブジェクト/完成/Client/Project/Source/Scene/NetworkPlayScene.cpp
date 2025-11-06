@@ -34,9 +34,6 @@ void NetworkPlayScene::Step()
 
 	// クライアントステップ
 	m_Client->Step();
-
-	// 常に受信がないか見張る
-	ReceiveData();
 }
 
 void NetworkPlayScene::Draw()
@@ -49,11 +46,5 @@ void NetworkPlayScene::Draw()
 void NetworkPlayScene::Fin()
 {
 	PlayScene::Fin();
-}
-
-void NetworkPlayScene::ReceiveData()
-{
-	// TODO:サーバーからの受信処理を書く
-
 }
 
