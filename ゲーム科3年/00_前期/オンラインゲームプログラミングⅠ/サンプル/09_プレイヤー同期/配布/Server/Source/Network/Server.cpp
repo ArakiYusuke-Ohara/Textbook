@@ -40,7 +40,7 @@ void Server::Update()
 	}
 
 	// データ受信処理
-	bool isUpdate = ReceiveData();
+
 
 	// データ更新があればクライアントに送信して同期
 
@@ -106,33 +106,6 @@ void Server::RemoveUserData(int handle)
 			return;
 		}
 	}
-}
-
-bool Server::ReceiveData()
-{
-	bool isUpdate = false;
-
-	// 接続しているクライアント全員分処理する
-	for (const NetworkPlayerData& player : m_NetworkPlayerData)
-	{
-		// クライアントから送られたデータのサイズを取得
-		int dataLength = GetNetWorkDataLength(player.client.handle);
-
-		// データが送られてきたかチェック
-		if (dataLength > 0)
-		{
-			// ヘッダーのみを受信
-			PacketHeader header = {};
-			NetWorkRecv(player.client.handle, reinterpret_cast<char*>(&header), sizeof(header));
-
-			// パケットごとの処理
-
-			// 更新された
-			isUpdate = true;
-		}
-	}
-
-	return isUpdate;
 }
 
 void Server::SendLoginData(const NetworkPlayerData& loginPlayer)

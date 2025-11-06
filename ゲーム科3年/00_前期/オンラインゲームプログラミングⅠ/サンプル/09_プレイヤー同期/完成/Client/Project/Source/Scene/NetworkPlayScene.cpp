@@ -68,7 +68,6 @@ void NetworkPlayScene::ReceiveData()
 			case Network::PacketType::ALL_TRANSFORM:	ReceiveAllTransform(); break;
 		}
 	}
-
 }
 
 void NetworkPlayScene::ReceiveLogin()
