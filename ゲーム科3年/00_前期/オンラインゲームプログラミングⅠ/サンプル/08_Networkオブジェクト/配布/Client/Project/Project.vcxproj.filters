@@ -72,12 +72,6 @@
     <ClCompile Include="Source\Player\PlayerManager.cpp">
       <Filter>Source\Player</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Scene\NetworkPlayScene.cpp">
-      <Filter>Source\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Player\NetworkPlayer.cpp">
-      <Filter>Source\Player</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Network\Client.h">
@@ -130,12 +124,6 @@
     </ClInclude>
     <ClInclude Include="Source\Network\NetworkCommonParam.h">
       <Filter>Source\Network</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scene\NetworkPlayScene.h">
-      <Filter>Source\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Player\NetworkPlayer.h">
-      <Filter>Source\Player</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
