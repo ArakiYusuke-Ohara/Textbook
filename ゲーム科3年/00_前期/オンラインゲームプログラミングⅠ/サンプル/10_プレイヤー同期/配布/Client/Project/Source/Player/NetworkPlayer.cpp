@@ -1,7 +1,6 @@
 #include "NetworkPlayer.h"
 #include "../Network/Client.h"
 #include "../MyMath/MyMath.h"
-#include "../Network/NetworkUtility.h"
 #include "../Component/Splite.h"
 
 // これだけ動いたらサーバーに送信する
