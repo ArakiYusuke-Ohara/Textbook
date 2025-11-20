@@ -13,6 +13,15 @@
     <Filter Include="Source\GameObject">
       <UniqueIdentifier>{c88c41b9-2561-4a97-b48a-1e82da0dd6e2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Player">
+      <UniqueIdentifier>{d98ff3c4-12e2-4458-8579-4681000a4cfe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Singleton">
+      <UniqueIdentifier>{ddd1e5c2-847c-4172-84f7-5b322d316ffe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Camera">
+      <UniqueIdentifier>{8d228494-0a75-4813-be45-35837ae88818}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -24,6 +33,15 @@
     <ClCompile Include="Source\MyMath\MyMath.cpp">
       <Filter>Source\MyMath</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Player\Player.cpp">
+      <Filter>Source\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Camera\Camera.cpp">
+      <Filter>Source\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Camera\CameraManager.cpp">
+      <Filter>Source\Camera</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Quatrenion\Quatrenion.h">
@@ -34,6 +52,18 @@
     </ClInclude>
     <ClInclude Include="Source\MyMath\MyMath.h">
       <Filter>Source\MyMath</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Player\Player.h">
+      <Filter>Source\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Singleton\Singleton.h">
+      <Filter>Source\Singleton</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Camera\Camera.h">
+      <Filter>Source\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Camera\CameraManager.h">
+      <Filter>Source\Camera</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
