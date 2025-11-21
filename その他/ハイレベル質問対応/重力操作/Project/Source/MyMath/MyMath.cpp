@@ -144,17 +144,24 @@ VECTOR MyMath::VecSlerp(VECTOR a, VECTOR b, float t)
 	return MyMath::VecNormalize(result);
 }
 
-VECTOR MyMath::ProjectOnPlane(const VECTOR& v, const VECTOR& planeNormal)
-{
-	float d = MyMath::VecDot(v, planeNormal);
-	return MyMath::VecCreate(MyMath::VecScale(planeNormal, d), v);
-}
-
 bool MyMath::VecEquals(const VECTOR& a, const VECTOR& b, float epsilon)
 {
 	return (fabsf(a.x - b.x) < epsilon &&
 		    fabsf(a.y - b.y) < epsilon &&
 		    fabsf(a.z - b.z) < epsilon);
+}
+
+/// <summary>
+/// ベクトルの平面投影
+/// </summary>
+/// <param name="vec">投影するベクトル</param>
+/// <param name="normal">平面の法線</param>
+/// <returns>投影後のベクトル</returns>
+VECTOR MyMath::ProjectOnPlane(const VECTOR& vec, const VECTOR& normal)
+{
+	float dot = VecDot(vec, normal);
+	VECTOR projection = VecScale(normal, dot);
+	return VecSub(vec, projection);
 }
 
 // 単位行列を生成する

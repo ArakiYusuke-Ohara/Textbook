@@ -1,13 +1,10 @@
 #include "DxLib.h"
-#include "GameObject/Transform.h"
-#include "Quatrenion/Quatrenion.h"
-#include "MyMath/MyMath.h"
+#include "Player/Player.h"
+#include "Camera/CameraManager.h"
+#include "Camera/Camera.h"
 
 #define SCREEN_WIDTH 1600
 #define SCREEN_HEIGHT 900
-
-#define CAMERA_NEAR_CLIP 0.01f
-#define CAMERA_FAR_CLIP 1000.0f
 
 // プログラムは WinMain から始まります
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nShowCmd)
@@ -26,16 +23,14 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance, 
 	// 描画先を裏画面にする
 	SetDrawScreen(DX_SCREEN_BACK);
 
-	// カメラのニアクリップとファークリップを設定
-	SetCameraNearFar(0.01f, 1000.0f);
+	Player* player = new Player();
+	player->Init();
+	player->Load();
 
-	VECTOR gravityVec = VGet(0.0f, -1.0f, 0.0f);
-	gravityVec = MyMath::VecNormalize(gravityVec);
-
-	// カメラの位置と注視点と上向きベクトルを格納する変数
-	VECTOR cameraPos = VGet(0.0f, 0.0f, -10.0f);
-	VECTOR cameraTarget = VGet(0.0f, 0.0f, 0.0f);
-	VECTOR cameraUpVec = MyMath::VecScale(gravityVec, -1.0f);
+	CameraManager::CreateInstance();
+	Camera* camera = CameraManager::GetInstance()->CreateCamera();
+	camera->Init();
+	camera->SetFollowPlayer(player);
 
 	// ゲームのメインループ
 	while (ProcessMessage() >= 0)
@@ -43,16 +38,13 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance, 
 		// 画面をクリア
 		ClearDrawScreen();
 
-		VECTOR cameraForward = MyMath::VecCreate(cameraPos, cameraTarget);
-		cameraForward = MyMath::VecNormalize(cameraForward);
-		VECTOR cameraRight = MyMath::VecCross3D(cameraUpVec, cameraForward);
+		player->Step();
+		camera->Step();
 
+		player->Update();
+		camera->Update();
 
-
-		// カメラを配置する
-		// 引数にはカメラの位置と注視点を渡す
-		SetCameraPositionAndTargetAndUpVec(cameraPos, cameraTarget, cameraUpVec);
-
+		player->Draw();
 
 		// エスケープキーで終了
 		if (CheckHitKey(KEY_INPUT_ESCAPE)) break;
@@ -60,9 +52,6 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance, 
 		// 画面フリップ
 		ScreenFlip();
 	}
-
-	// モデルをメモリから削除
-	MV1DeleteModel(modelHandle);
 
 	DxLib_End();				// ＤＸライブラリ使用の終了処理
 

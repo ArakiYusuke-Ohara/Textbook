@@ -36,7 +36,7 @@ Quaternion MyQuaternion::QfromAxisAngle(VECTOR axis, float angleDeg)
 
 	float nx = axis.x * inv, ny = axis.y * inv, nz = axis.z * inv;
 
-	float angleRad = angleDeg * (M_PI / 180.0f);
+	float angleRad = angleDeg * (DX_PI_F / 180.0f);
 
 	float s = sinf(angleRad * 0.5f);
 

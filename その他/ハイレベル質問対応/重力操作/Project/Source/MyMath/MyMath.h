@@ -19,8 +19,8 @@ public:
 	static VECTOR VecForward(float rotY, float rotX);
 	static VECTOR VecLerp(VECTOR a, VECTOR b, float t);
 	static VECTOR VecSlerp(VECTOR a, VECTOR b, float t);
-	static VECTOR ProjectOnPlane(const VECTOR& v, const VECTOR& planeNormal);
 	static bool VecEquals(const VECTOR& a, const VECTOR& b, float epsilon = 0.0001f);
+	static VECTOR ProjectOnPlane(const VECTOR& vec, const VECTOR& normal);
 
 // 行列関連の計算関数
 	static MATRIX MatCreate();
