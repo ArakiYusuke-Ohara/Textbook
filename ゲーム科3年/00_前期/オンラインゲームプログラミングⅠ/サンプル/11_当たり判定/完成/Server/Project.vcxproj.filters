@@ -19,6 +19,15 @@
     <Filter Include="Source\Player">
       <UniqueIdentifier>{22f4b6eb-1ad3-45f1-a2d4-89871c3c87bc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Memory">
+      <UniqueIdentifier>{ba155164-8d40-43bd-8d35-3ce117de2ff5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Object">
+      <UniqueIdentifier>{a2116c4f-5ea4-4411-aaf0-4686ef6fd4be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Component\Transform">
+      <UniqueIdentifier>{a4d77537-d322-4248-8a8b-14b1f1d118ff}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -38,6 +47,15 @@
     </ClCompile>
     <ClCompile Include="Source\Player\PlayerManager.cpp">
       <Filter>Source\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\Collision\ColliderComponent.cpp">
+      <Filter>Source\Component\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Object\GameObject.cpp">
+      <Filter>Source\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\Transform\Transform.cpp">
+      <Filter>Source\Component\Transform</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -61,6 +79,18 @@
     </ClInclude>
     <ClInclude Include="Source\Player\PlayerManager.h">
       <Filter>Source\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Memory\Memory.h">
+      <Filter>Source\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component\Collision\ColliderComponent.h">
+      <Filter>Source\Component\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Object\GameObject.h">
+      <Filter>Source\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component\Transform\Transform.h">
+      <Filter>Source\Component\Transform</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

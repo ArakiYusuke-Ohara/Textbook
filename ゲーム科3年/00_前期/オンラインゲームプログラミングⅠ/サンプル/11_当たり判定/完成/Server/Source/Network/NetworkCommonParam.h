@@ -39,7 +39,7 @@ namespace Network
 	struct LoginData
 	{
 		int selfID;
-		int playerID[NETWORK_PLAYER_MAX];
+		int playerID[PLAYER_MAX];
 	};
 
 	// 他プレイヤー参加データ
@@ -86,9 +86,9 @@ namespace Network
 	// 全プレイヤーのトランスフォームデータ
 	struct AllTransformData
 	{
-		VECTOR pos[NETWORK_PLAYER_MAX];
-		VECTOR rot[NETWORK_PLAYER_MAX];
-		VECTOR scale[NETWORK_PLAYER_MAX];
+		VECTOR pos[PLAYER_MAX];
+		VECTOR rot[PLAYER_MAX];
+		VECTOR scale[PLAYER_MAX];
 	};
 }
 
