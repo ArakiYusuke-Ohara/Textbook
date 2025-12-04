@@ -5,7 +5,7 @@
 class Transform : public ComponentBase
 {
 public:
-	Transform() = default;
+	Transform();
 	~Transform() = default;
 
 	void SetPos(const VECTOR& pos) { m_Pos = pos; }

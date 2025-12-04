@@ -1,6 +1,6 @@
 #include "ComponentBase.h"
 
-ComponentBase::ComponentBase(const GameObject* owner)
+ComponentBase::ComponentBase()
+: m_Owner(nullptr)
 {
-	m_Owner = owner;
 }

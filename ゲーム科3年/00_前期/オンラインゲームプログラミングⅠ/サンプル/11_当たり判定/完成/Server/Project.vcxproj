@@ -29,26 +29,26 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v145</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v145</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v145</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v145</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -141,9 +141,11 @@
   <ItemGroup>
     <ClCompile Include="Source\Component\Collision\AABB.cpp" />
     <ClCompile Include="Source\Component\Collision\ColliderComponent.cpp" />
+    <ClCompile Include="Source\Component\Collision\CollisionManager.cpp" />
     <ClCompile Include="Source\Component\ComponentBase.cpp" />
     <ClCompile Include="Source\Component\Transform\Transform.cpp" />
     <ClCompile Include="Source\Main.cpp" />
+    <ClCompile Include="Source\MyMath\MyMath.cpp" />
     <ClCompile Include="Source\Network\Server.cpp" />
     <ClCompile Include="Source\Object\GameObject.cpp" />
     <ClCompile Include="Source\Player\Player.cpp" />
@@ -152,9 +154,12 @@
   <ItemGroup>
     <ClInclude Include="Source\Component\Collision\AABB.h" />
     <ClInclude Include="Source\Component\Collision\ColliderComponent.h" />
+    <ClInclude Include="Source\Component\Collision\CollisionManager.h" />
+    <ClInclude Include="Source\Component\Collision\CollisionParameter.h" />
     <ClInclude Include="Source\Component\ComponentBase.h" />
     <ClInclude Include="Source\Component\Transform\Transform.h" />
     <ClInclude Include="Source\Memory\Memory.h" />
+    <ClInclude Include="Source\MyMath\MyMath.h" />
     <ClInclude Include="Source\Network\NetworkCommonParam.h" />
     <ClInclude Include="Source\Network\Server.h" />
     <ClInclude Include="Source\Object\GameObject.h" />

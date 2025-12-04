@@ -1,20 +1,17 @@
 #pragma once
 #include "../ComponentBase.h"
+#include "CollisionParameter.h"
 
-enum class ColliderType
-{
-	AABB,
-	SPHERE,
-};
 
 class ColliderComponent : public ComponentBase
 {
-protected:
-	ColliderComponent() = default;
-	virtual ~ColliderComponent() = default;
-
 public:
-	virtual bool IsCollide(const ColliderComponent& other) const = 0;
+	ColliderComponent();
+	virtual ~ColliderComponent();
+
+	ColliderType GetType() const { return m_Type; }
+
+	virtual CollisionResult IsCollide(const ColliderComponent& other) const = 0;
 
 protected:
 	ColliderType m_Type;

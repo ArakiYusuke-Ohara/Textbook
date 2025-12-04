@@ -28,6 +28,9 @@
     <Filter Include="Source\Component\Transform">
       <UniqueIdentifier>{a4d77537-d322-4248-8a8b-14b1f1d118ff}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\MyMath">
+      <UniqueIdentifier>{b7f08705-f3de-495c-bd72-c35c1d336902}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -56,6 +59,12 @@
     </ClCompile>
     <ClCompile Include="Source\Component\Transform\Transform.cpp">
       <Filter>Source\Component\Transform</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\Collision\CollisionManager.cpp">
+      <Filter>Source\Component\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\MyMath\MyMath.cpp">
+      <Filter>Source\MyMath</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -91,6 +100,15 @@
     </ClInclude>
     <ClInclude Include="Source\Component\Transform\Transform.h">
       <Filter>Source\Component\Transform</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component\Collision\CollisionManager.h">
+      <Filter>Source\Component\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\MyMath\MyMath.h">
+      <Filter>Source\MyMath</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component\Collision\CollisionParameter.h">
+      <Filter>Source\Component\Collision</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

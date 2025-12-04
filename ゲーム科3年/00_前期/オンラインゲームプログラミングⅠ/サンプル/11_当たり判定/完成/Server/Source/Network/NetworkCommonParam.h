@@ -11,9 +11,6 @@ namespace Network
 	constexpr int PORT_NUMBER = 50000;
 	// プレイヤー最大人数
 	constexpr int PLAYER_MAX = 4;
-	// プレイヤーサイズ
-	constexpr int PLAYER_WIDTH = 64;
-	constexpr int PLAYER_HEIGHT = 64;
 
 	// パケットの種類（符号なし8ビットで扱う）
 	enum class PacketType : uint8_t

@@ -1,6 +1,7 @@
 #include "DxLib.h"
 #include "Server.h"
 #include "NetworkCommonParam.h"
+#include "../Component/Collision/CollisionManager.h"
 #include <vector>
 
 using namespace Network;
@@ -17,6 +18,9 @@ Server::~Server()
 
 void Server::Init()
 {
+	// 当たり判定はサーバー側でする
+	CollisionManager::GetInstance()->CreateInstance();
+
 	// 接続してくるのを待つ状態にする
 	int success = PreparationListenNetWork(PORT_NUMBER);
 }
@@ -56,6 +60,9 @@ void Server::Draw()
 void Server::Fin()
 {
 	m_NetworkPlayerData.clear();
+
+	// 当たり判定終了
+	CollisionManager::GetInstance()->DeleteInstance();
 }
 
 /// <summary>
@@ -360,4 +367,5 @@ void Server::SyncTransform(int handle)
 
 void Server::CheckCollision()
 {
+	CollisionManager::GetInstance()->CheckCollision();
 }

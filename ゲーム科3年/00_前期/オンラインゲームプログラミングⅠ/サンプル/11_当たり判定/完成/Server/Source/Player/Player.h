@@ -3,6 +3,7 @@
 
 class ComponentBase;
 
+// サーバー用プレイヤークラス
 class Player : public GameObject
 {
 public:

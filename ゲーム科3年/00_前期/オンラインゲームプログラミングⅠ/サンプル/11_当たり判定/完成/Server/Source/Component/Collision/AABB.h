@@ -2,17 +2,39 @@
 #include "ColliderComponent.h"
 #include "DxLib.h"
 
-class AABB : public ColliderComponent
+
+class AABB3D : public ColliderComponent
 {
 public:
-	AABB();
-	~AABB() = default;
+	AABB3D();
+	virtual ~AABB3D() = default;
+
+	void Draw();
 
 	void SetCenter(const VECTOR& center) { m_Center = center; }
 	void SetSize(const VECTOR& size) { m_Size = size; }
 
-	bool IsCollide(const ColliderComponent& other) const override;
-	bool IsCollideAABB(const AABB& other) const;
+	CollisionResult IsCollide(const ColliderComponent& other) const override;
+	CollisionResult IsCollideAABB(const AABB3D& other) const;
+
+private:
+	VECTOR m_Center;
+	VECTOR m_Size;
+};
+
+class AABB2D : public ColliderComponent
+{
+public:
+	AABB2D();
+	virtual ~AABB2D() = default;
+
+	void Draw();
+
+	void SetCenter(const VECTOR& center) { m_Center = center; }
+	void SetSize(const VECTOR& size) { m_Size = size; }
+
+	CollisionResult IsCollide(const ColliderComponent& other) const override;
+	CollisionResult IsCollideAABB(const AABB2D& other) const;
 
 private:
 	VECTOR m_Center;

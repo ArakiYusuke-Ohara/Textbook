@@ -1,5 +1,5 @@
 #pragma once
-#include <list>
+#include <vector>
 #include "../Memory/Memory.h"
 #include "../Component/Transform/Transform.h"
 #include "../Component/ComponentBase.h"
@@ -14,12 +14,26 @@ public:
 	void SetRotation(const VECTOR& rot) { m_Transform.SetRot(rot); }
 	void SetScale(const VECTOR& scale) { m_Transform.SetScale(scale); }
 
-	void AddComponent(SharedPtr<ComponentBase> component) { m_Components.push_back(std::move(component)); }
+	const VECTOR& GetPosition() const { return m_Transform.GetPosition(); }
+
+	void Move(const VECTOR& vec);
+
+	// コンポーネント追加
+	template <class T>
+	T* AddComponent()
+	{
+		UniquePtr<T>component = MakeUnique<T>();
+		component->SetOwner(this);          
+		T* rawPtr = component.get();
+		m_Components.emplace_back(std::move(component));  
+
+		return rawPtr;
+	}
 
 private:
 	// トランスフォームは必ず持つ
 	Transform m_Transform;
 
 	// 他に必要な機能はコンポーネントとして後付けしていく
-	std::list<SharedPtr<ComponentBase>> m_Components;
+	std::vector<SharedPtr<ComponentBase>> m_Components;
 };

@@ -1,12 +1,16 @@
 #pragma once
-#include "../Object/GameObject.h"
+
+class GameObject;
 
 class ComponentBase
 {
 public:
-	ComponentBase(const GameObject* owner);
+	ComponentBase();
 	virtual ~ComponentBase() = default;
 
-private:
-	const GameObject* m_Owner;
+	void SetOwner(GameObject* owner) { m_Owner = owner; }
+	GameObject* GetOwner()  { return m_Owner; }
+
+protected:
+	GameObject* m_Owner;
 };

@@ -1,6 +1,10 @@
 #include "Player.h"
 #include "../Component/Collision/AABB.h"
-#include "../Network/NetworkCommonParam.h"
+
+// プレイヤーサイズ
+constexpr int PLAYER_WIDTH = 64;
+constexpr int PLAYER_HEIGHT = 64;
+
 
 Player::Player()
 {
@@ -9,11 +13,9 @@ Player::Player()
 
 void Player::Init()
 {
-	// AABBを追加
-	SharedPtr<AABB> aabb = MakeShared<AABB>();
-	aabb->SetSize(VGet(Network::PLAYER_WIDTH, Network::PLAYER_HEIGHT, 0));
-
-	AddComponent(aabb);
+	AABB2D* aabb = AddComponent<AABB2D>();
+	aabb->SetCenter(VGet(PLAYER_WIDTH / 2.0f, PLAYER_HEIGHT / 2.0f, 0.0f));
+	aabb->SetSize(VGet(PLAYER_WIDTH, PLAYER_HEIGHT, 0.0f));
 }
 
 
