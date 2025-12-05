@@ -17,7 +17,7 @@ Player::~Player() = default;
 
 void Player::Init()
 {
-	m_MoveSpeed = 3.0f;
+	m_MoveSpeed = 10.0f;
 	m_ScaleSpeed = 0.01f;
 	m_RotSpeed = 0.01f;
 	m_Splite = MakeUnique<Splite>();

@@ -11,6 +11,8 @@ public:
 	CollisionManager() = default;
 	~CollisionManager() = default;
 
+	void Draw();
+
 	void Register(ColliderComponent* col);
 	void Unregister(ColliderComponent* col);
 

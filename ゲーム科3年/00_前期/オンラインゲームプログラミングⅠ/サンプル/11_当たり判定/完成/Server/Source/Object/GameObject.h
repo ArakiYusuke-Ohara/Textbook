@@ -15,6 +15,8 @@ public:
 	void SetScale(const VECTOR& scale) { m_Transform.SetScale(scale); }
 
 	const VECTOR& GetPosition() const { return m_Transform.GetPosition(); }
+	const VECTOR& GetRotation() const { return m_Transform.GetRotation(); }
+	const VECTOR& GetScale() const { return m_Transform.GetScale(); }
 
 	void Move(const VECTOR& vec);
 

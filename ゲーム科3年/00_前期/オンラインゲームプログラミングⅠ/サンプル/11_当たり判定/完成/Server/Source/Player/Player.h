@@ -1,5 +1,6 @@
 #pragma once
 #include "../Object/GameObject.h"
+#include "DxLib.h"
 
 class ComponentBase;
 
@@ -10,8 +11,14 @@ public:
 	Player();
 	~Player() = default;
 
-	void Init();
+	void Init(int nwHandle);
+	void Draw();
+
+	int GetID() const { return m_ID; }
+	int GetNetworkHandle() const { return m_NWHandle; }
 
 private:
 	int m_ID;
+	int m_NWHandle;
+	IPDATA m_IPAddress;
 };

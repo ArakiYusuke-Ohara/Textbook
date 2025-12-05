@@ -13,6 +13,7 @@ AABB3D::AABB3D() : ColliderComponent()
 
 void AABB3D::Draw()
 {
+#ifdef _DEBUG
 	float hw = m_Size.x * 0.5f;
 	float hh = m_Size.y * 0.5f;
 	float hd = m_Size.z * 0.5f;
@@ -45,22 +46,23 @@ void AABB3D::Draw()
 			GetColor(255, 255, 255)
 		);
 	}
+#endif
 }
 
-CollisionResult AABB3D::IsCollide(const ColliderComponent& other) const
+CollisionResult AABB3D::CheckCollide(const ColliderComponent& other) const
 {
 	CollisionResult result = {};
 
 	ColliderType type = other.GetType();
 	switch (type)
 	{
-		case ColliderType::AABB_3D: result = IsCollideAABB(static_cast<const AABB3D&>(other)); break;
+		case ColliderType::AABB_3D: result = CheckCollideAABB(static_cast<const AABB3D&>(other)); break;
 	}
 
 	return result;
 }
 
-CollisionResult AABB3D::IsCollideAABB(const AABB3D& other) const
+CollisionResult AABB3D::CheckCollideAABB(const AABB3D& other) const
 {
 	CollisionResult result = {};
 	VECTOR centerA = m_Owner->GetPosition();
@@ -119,6 +121,7 @@ AABB2D::AABB2D() : ColliderComponent()
 
 void AABB2D::Draw()
 {
+#ifdef _DEBUG
 	VECTOR center = m_Owner->GetPosition() + m_Center;
 
 	float left = center.x - m_Size.x / 2.0f;
@@ -127,22 +130,23 @@ void AABB2D::Draw()
 	float bottom = center.y + m_Size.y / 2.0f;
 
 	DrawBox((int)left, (int)top, (int)right, (int)bottom, GetColor(255, 255, 255), FALSE);
+#endif
 }
 
-CollisionResult AABB2D::IsCollide(const ColliderComponent& other) const
+CollisionResult AABB2D::CheckCollide(const ColliderComponent& other) const
 {
 	CollisionResult result = {};
 
 	ColliderType type = other.GetType();
 	switch (type)
 	{
-		case ColliderType::AABB_2D: result = IsCollideAABB(static_cast<const AABB2D&>(other)); break;
+		case ColliderType::AABB_2D: result = CheckCollideAABB(static_cast<const AABB2D&>(other)); break;
 	}
 
 	return result;
 }
 
-CollisionResult AABB2D::IsCollideAABB(const AABB2D& other) const
+CollisionResult AABB2D::CheckCollideAABB(const AABB2D& other) const
 {
 	CollisionResult result = {};
 	VECTOR centerA = m_Owner->GetPosition();
@@ -168,6 +172,7 @@ CollisionResult AABB2D::IsCollideAABB(const AABB2D& other) const
 		result.overlapX = std::fmin(rightA, rightB) - std::fmax(leftA, leftB);
 		result.overlapY = std::fmin(bottomA, bottomB) - std::fmax(topA, topB);
 
+		// 押し出し向きの設定
 		if (result.overlapX <= result.overlapY)
 		{
 			result.normalX = (m_Center.x < other.m_Center.x) ? -1.0f : 1.0f;

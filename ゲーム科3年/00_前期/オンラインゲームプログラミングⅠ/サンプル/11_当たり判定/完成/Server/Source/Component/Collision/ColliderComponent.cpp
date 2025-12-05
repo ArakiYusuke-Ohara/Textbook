@@ -11,3 +11,7 @@ ColliderComponent::~ColliderComponent()
 {
 	CollisionManager::GetInstance()->Unregister(this);
 }
+
+void ColliderComponent::Draw()
+{
+}

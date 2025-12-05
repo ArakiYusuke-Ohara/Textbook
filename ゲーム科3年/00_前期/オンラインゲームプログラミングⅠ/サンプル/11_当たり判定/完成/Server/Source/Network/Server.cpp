@@ -2,13 +2,15 @@
 #include "Server.h"
 #include "NetworkCommonParam.h"
 #include "../Component/Collision/CollisionManager.h"
+#include "../Player/PlayerManager.h"
+#include "../Player/Player.h"
 #include <vector>
 
 using namespace Network;
 
 Server::Server()
 {
-	m_NetworkPlayerData = {};
+
 }
 
 Server::~Server()
@@ -18,6 +20,9 @@ Server::~Server()
 
 void Server::Init()
 {
+	// サーバー用プレイヤー管理
+	PlayerManager::CreateInstance();
+
 	// 当たり判定はサーバー側でする
 	CollisionManager::GetInstance()->CreateInstance();
 
@@ -40,7 +45,7 @@ void Server::Update()
 	// 切断があった
 	if (lostHandle != -1)
 	{
-		RemoveUserData(lostHandle);
+		PlayerManager::GetInstance()->RemovePlayer(lostHandle);
 	}
 
 	// データ受信処理
@@ -55,14 +60,19 @@ void Server::Update()
 
 void Server::Draw()
 {
+#ifdef _DEBUG
+	PlayerManager::GetInstance()->Draw();
+	CollisionManager::GetInstance()->Draw();
+#endif
 }
 
 void Server::Fin()
 {
-	m_NetworkPlayerData.clear();
+	// プレイヤー終了
+	PlayerManager::DeleteInstance();
 
 	// 当たり判定終了
-	CollisionManager::GetInstance()->DeleteInstance();
+	CollisionManager::DeleteInstance();
 }
 
 /// <summary>
@@ -71,19 +81,9 @@ void Server::Fin()
 /// <param name="handle">追加するユーザーのハンドル</param>
 void Server::AddUserData(int handle)
 {
-	NetworkPlayerData player = {};
-
-	player.id = (int)m_NetworkPlayerData.size();
-	player.client.handle = handle;
-	// 接続してきたマシンのＩＰアドレスを得る
-	GetNetWorkIP(handle, &player.client.ip);
-
-	// 初期設定
-	player.pos = { 100.0f, 100.0f, 0.0f };
-	player.scale = { 1.0f, 1.0f, 1.0f };
-
-	// ユーザー配列に追加
-	m_NetworkPlayerData.push_back(player);
+	// プレイヤー生成
+	Player& player = PlayerManager::GetInstance()->CreatePlayer();
+	player.Init(handle);
 
 	// ログインデータを送信
 	SendLoginData(player);
@@ -95,50 +95,29 @@ void Server::AddUserData(int handle)
 	SendAllTransformData();
 }
 
-/// <summary>
-/// ユーザーデータを取り除く
-/// </summary>
-/// <param name="handle">取り除くユーザーのハンドル</param>
-void Server::RemoveUserData(int handle)
-{
-	// イテレータを使って部分削除する
-	for(auto itr = m_NetworkPlayerData.begin(); itr != m_NetworkPlayerData.end(); itr++)
-	{
-		const NetworkPlayerData& player = (*itr);
-		// 削除するユーザーをハンドルから検索
-		if (player.client.handle == handle)
-		{
-			// ログアウトをクライアントに送信
-			SendLogoutData(player.id);
-
-			// 見つかったら削除して終了
-			m_NetworkPlayerData.erase(itr);
-			return;
-		}
-	}
-}
-
 bool Server::ReceiveData()
 {
 	bool isUpdate = false;
 
 	// 接続しているクライアント全員分処理する
-	for (const NetworkPlayerData& player : m_NetworkPlayerData)
+	auto players = PlayerManager::GetInstance()->GetPlayers();
+	for (const auto& player : players)
 	{
+		int nwHandle = player->GetNetworkHandle();
 		// クライアントから送られたデータのサイズを取得
-		int dataLength = GetNetWorkDataLength(player.client.handle);
+		int dataLength = GetNetWorkDataLength(nwHandle);
 
 		// データが送られてきたかチェック
 		if (dataLength > 0)
 		{
 			// ヘッダーのみを受信
 			PacketHeader header = {};
-			NetWorkRecv(player.client.handle, reinterpret_cast<char*>(&header), sizeof(header));
+			NetWorkRecv(nwHandle, reinterpret_cast<char*>(&header), sizeof(header));
 
 			// パケットごとの処理
 			switch (header.type)
 			{
-				case PacketType::TRANSFORM: SyncTransform(player.client.handle); break;	// トランスフォームを同期
+				case PacketType::TRANSFORM: SyncTransform(nwHandle); break;	// トランスフォームを同期
 			}
 
 			// 当たり判定
@@ -152,7 +131,7 @@ bool Server::ReceiveData()
 	return isUpdate;
 }
 
-void Server::SendLoginData(const NetworkPlayerData& loginPlayer)
+void Server::SendLoginData(const Player& loginPlayer)
 {
 	// 通信データサイズ
 	size_t dataSize = sizeof(PacketHeader) + sizeof(LoginData);
@@ -168,10 +147,11 @@ void Server::SendLoginData(const NetworkPlayerData& loginPlayer)
 	LoginData data = {};
 	memset(&data, -1, sizeof(data));
 	int i = 0;
-	for (const auto& player : m_NetworkPlayerData)
+	auto players = PlayerManager::GetInstance()->GetPlayers();
+	for (const auto& player : players)
 	{
-		data.playerID[i] = player.id;				
-		data.selfID = player.id;	// 末尾にあるIDがログインしたクライアント自身のIDとなる
+		data.playerID[i] = player->GetID();				
+		data.selfID = player->GetID();	// 末尾にあるIDがログインしたクライアント自身のIDとなる（よくない）
 		i++;
 	}
 
@@ -181,10 +161,10 @@ void Server::SendLoginData(const NetworkPlayerData& loginPlayer)
 	memcpy_s(buffer.data() + sizeof(PacketHeader), buffer.size() - sizeof(PacketHeader), &data, sizeof(LoginData));
 
 	// ログインするクライアントに送信する
-	NetWorkSend(loginPlayer.client.handle, reinterpret_cast<char*>(buffer.data()), (int)buffer.size());
+	NetWorkSend(loginPlayer.GetNetworkHandle(), reinterpret_cast<char*>(buffer.data()), (int)buffer.size());
 }
 
-void Server::SendJoinData(const NetworkPlayerData& joinPlayer)
+void Server::SendJoinData(const Player& joinPlayer)
 {
 	// 通信データサイズ
 	size_t dataSize = sizeof(PacketHeader) + sizeof(JoinData);
@@ -198,7 +178,7 @@ void Server::SendJoinData(const NetworkPlayerData& joinPlayer)
 
 	// ID設定
 	JoinData data = {};
-	data.playerID = joinPlayer.id;
+	data.playerID = joinPlayer.GetID();
 
 	// パケットをバッファーに入れる
 	memcpy_s(buffer.data(), buffer.size(), &header, sizeof(PacketHeader));
@@ -206,11 +186,12 @@ void Server::SendJoinData(const NetworkPlayerData& joinPlayer)
 	memcpy_s(buffer.data() + sizeof(PacketHeader), buffer.size() - sizeof(PacketHeader), &data, sizeof(JoinData));
 
 	// 参加するクライアント以外の全クライアントに送信する
-	for (const NetworkPlayerData& player : m_NetworkPlayerData)
+	auto players = PlayerManager::GetInstance()->GetPlayers();
+	for (const auto& player : players)
 	{
-		if (player.id != joinPlayer.id)
+		if (player->GetID() != joinPlayer.GetID())
 		{
-			NetWorkSend(player.client.handle, reinterpret_cast<char*>(buffer.data()), (int)buffer.size());
+			NetWorkSend(player->GetNetworkHandle(), reinterpret_cast<char*>(buffer.data()), (int)buffer.size());
 		}
 	}
 
@@ -238,9 +219,10 @@ void Server::SendLogoutData(int id)
 	memcpy_s(buffer.data() + sizeof(PacketHeader), buffer.size() - sizeof(PacketHeader), &data, sizeof(LogoutData));
 
 	// 全クライアントに送信する
-	for (const NetworkPlayerData& player : m_NetworkPlayerData)
+	auto players = PlayerManager::GetInstance()->GetPlayers();
+	for (const auto& player : players)
 	{
-		NetWorkSend(player.client.handle, reinterpret_cast<char*>(buffer.data()), (int)buffer.size());
+		NetWorkSend(player->GetNetworkHandle(), reinterpret_cast<char*>(buffer.data()), (int)buffer.size());
 	}
 }
 
@@ -259,11 +241,12 @@ void Server::SendAllTransformData()
 	// データ設定
 	AllTransformData data = {};
 	int i = 0;
-	for (const auto& playerData : m_NetworkPlayerData)
+	auto players = PlayerManager::GetInstance()->GetPlayers();
+	for (const auto& player : players)
 	{
-		data.pos[i] = playerData.pos;
-		data.rot[i] = playerData.rot;
-		data.scale[i] = playerData.scale;
+		data.pos[i] = player->GetPosition();
+		data.rot[i] = player->GetRotation();
+		data.scale[i] = player->GetScale();;
 		i++;
 	}
 
@@ -273,9 +256,9 @@ void Server::SendAllTransformData()
 	memcpy_s(buffer.data() + sizeof(PacketHeader), buffer.size() - sizeof(PacketHeader), &data, sizeof(AllTransformData));
 
 	// 全クライアントに送信する
-	for (const NetworkPlayerData& player : m_NetworkPlayerData)
+	for (const auto& player : players)
 	{
-		NetWorkSend(player.client.handle, reinterpret_cast<char*>(buffer.data()), (int)buffer.size());
+		NetWorkSend(player->GetNetworkHandle(), reinterpret_cast<char*>(buffer.data()), (int)buffer.size());
 	}
 }
 
@@ -289,12 +272,13 @@ void Server::SyncPos(int handle)
 	Network::PosData data = {};
 	NetWorkRecv(handle, &data, sizeof(data));
 
-	for (NetworkPlayerData& player : m_NetworkPlayerData)
+	auto players = PlayerManager::GetInstance()->GetPlayers();
+	for (auto& player : players)
 	{
 		// IDが一致したプレイヤーの座標を更新する
-		if (player.id == data.playerID)
+		if (player->GetID() == data.playerID)
 		{
-			player.pos = data.pos;
+			player->SetPosition(data.pos);
 			break;
 		}
 	}
@@ -310,12 +294,13 @@ void Server::SyncRot(int handle)
 	Network::RotData data = {};
 	NetWorkRecv(handle, &data, sizeof(data));
 
-	for (NetworkPlayerData& player : m_NetworkPlayerData)
+	auto players = PlayerManager::GetInstance()->GetPlayers();
+	for (auto& player : players)
 	{
 		// IDが一致したプレイヤーの回転を更新する
-		if (player.id == data.playerID)
+		if (player->GetID() == data.playerID)
 		{
-			player.rot = data.rot;
+			player->SetRotation(data.rot);
 			break;
 		}
 	}
@@ -331,12 +316,13 @@ void Server::SyncScale(int handle)
 	Network::ScaleData data = {};
 	NetWorkRecv(handle, &data, sizeof(data));
 
-	for (NetworkPlayerData& player : m_NetworkPlayerData)
+	auto players = PlayerManager::GetInstance()->GetPlayers();
+	for (auto& player : players)
 	{
 		// IDが一致したプレイヤーの拡縮を更新する
-		if (player.id == data.playerID)
+		if (player->GetID() == data.playerID)
 		{
-			player.scale = data.scale;
+			player->SetScale(data.scale);
 			break;
 		}
 	}
@@ -352,14 +338,15 @@ void Server::SyncTransform(int handle)
 	Network::TransformData data = {};
 	NetWorkRecv(handle, &data, sizeof(data));
 
-	for (NetworkPlayerData& player : m_NetworkPlayerData)
+	auto players = PlayerManager::GetInstance()->GetPlayers();
+	for (auto& player : players)
 	{
 		// IDが一致したプレイヤーのトランスフォームを更新する
-		if (player.id == data.playerID)
+		if (player->GetID() == data.playerID)
 		{
-			player.pos = data.pos;
-			player.rot = data.rot;
-			player.scale = data.scale;
+			player->SetPosition(data.pos);
+			player->SetRotation(data.rot);
+			player->SetScale(data.scale);
 			break;
 		}
 	}

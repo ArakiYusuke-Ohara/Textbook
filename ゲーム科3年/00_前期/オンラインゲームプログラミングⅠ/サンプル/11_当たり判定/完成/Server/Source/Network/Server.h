@@ -3,20 +3,12 @@
 #include <string>
 #include "NetworkCommonParam.h"
 
+class Player;
 
 struct ClientData
 {
 	int handle;
 	IPDATA ip;
-};
-
-struct NetworkPlayerData
-{
-	ClientData client;
-	int id;
-	VECTOR pos;
-	VECTOR scale;
-	VECTOR rot;
 };
 
 class Server
@@ -33,10 +25,9 @@ public:
 
 private:
 	void AddUserData(int handle);		// ユーザーデータを追加
-	void RemoveUserData(int handle);	// ユーザーデータを除外
 	bool ReceiveData();					// データ受信
-	void SendLoginData(const NetworkPlayerData& loginPlayer);
-	void SendJoinData(const NetworkPlayerData& joinPlayer);
+	void SendLoginData(const Player& loginPlayer);
+	void SendJoinData(const Player& joinPlayer);
 	void SendLogoutData(int id);
 	void SendAllTransformData();
 	void SyncPos(int handle);
@@ -44,7 +35,4 @@ private:
 	void SyncScale(int handle);
 	void SyncTransform(int handle);
 	void CheckCollision();
-
-private:
-	std::list<NetworkPlayerData> m_NetworkPlayerData;
 };

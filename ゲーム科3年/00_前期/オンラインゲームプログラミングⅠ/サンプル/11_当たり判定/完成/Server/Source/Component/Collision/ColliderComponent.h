@@ -9,9 +9,11 @@ public:
 	ColliderComponent();
 	virtual ~ColliderComponent();
 
+	virtual void Draw();
+
 	ColliderType GetType() const { return m_Type; }
 
-	virtual CollisionResult IsCollide(const ColliderComponent& other) const = 0;
+	virtual CollisionResult CheckCollide(const ColliderComponent& other) const = 0;
 
 protected:
 	ColliderType m_Type;

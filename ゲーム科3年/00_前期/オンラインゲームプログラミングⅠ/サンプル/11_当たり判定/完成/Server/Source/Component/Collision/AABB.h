@@ -14,8 +14,8 @@ public:
 	void SetCenter(const VECTOR& center) { m_Center = center; }
 	void SetSize(const VECTOR& size) { m_Size = size; }
 
-	CollisionResult IsCollide(const ColliderComponent& other) const override;
-	CollisionResult IsCollideAABB(const AABB3D& other) const;
+	CollisionResult CheckCollide(const ColliderComponent& other) const override;
+	CollisionResult CheckCollideAABB(const AABB3D& other) const;
 
 private:
 	VECTOR m_Center;
@@ -28,13 +28,13 @@ public:
 	AABB2D();
 	virtual ~AABB2D() = default;
 
-	void Draw();
+	void Draw() override;
 
 	void SetCenter(const VECTOR& center) { m_Center = center; }
 	void SetSize(const VECTOR& size) { m_Size = size; }
 
-	CollisionResult IsCollide(const ColliderComponent& other) const override;
-	CollisionResult IsCollideAABB(const AABB2D& other) const;
+	CollisionResult CheckCollide(const ColliderComponent& other) const override;
+	CollisionResult CheckCollideAABB(const AABB2D& other) const;
 
 private:
 	VECTOR m_Center;
