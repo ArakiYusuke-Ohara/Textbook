@@ -62,7 +62,7 @@ void Client::Connect()
 	ip.d1 = 192;
 	ip.d2 = 168;
 	ip.d3 = 132;
-	ip.d4 = 123;
+	ip.d4 = 96;
 
 	// 指定したIPアドレスの端末に接続
 	m_ServerHandle = ConnectNetWork(ip, PORT_NUMBER);

@@ -13,17 +13,6 @@
 
 namespace Network
 {
-
-	// 通信できるユーザー名のMAXサイズ（全角5文字まで）
-	constexpr int NETWORK_USER_NAME_MAX = 10;
-	// 文字列の長さは文字数＋終端文字
-	constexpr int NETWORK_USER_NAME_BUFFER_MAX = NETWORK_USER_NAME_MAX + 1;
-
-	// 通信できる文字列のMAXサイズ（全角20文字まで）
-	constexpr int NETWORK_MESSAGE_MAX = 40;
-	// 文字列の長さは文字数＋終端文字
-	constexpr int NETWORK_MESSAGE_BUFFER_MAX = NETWORK_MESSAGE_MAX + 1;
-
 	// パケットの種類（符号なし8ビットで扱う）
 	enum class PacketType : uint8_t
 	{
@@ -34,7 +23,8 @@ namespace Network
 		ROT,
 		SCALE,
 		TRANSFORM,
-		ALL_TRANSFORM
+		ALL_TRANSFORM,
+		DIE
 	};
 
 	// 全通信に使用するパケットデータ
@@ -99,5 +89,12 @@ namespace Network
 		VECTOR rot[NETWORK_PLAYER_MAX];
 		VECTOR scale[NETWORK_PLAYER_MAX];
 	};
+
+	// プレイヤーの死亡データ
+	struct DieData
+	{
+		int playerID;
+	};
+
 }
 

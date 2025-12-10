@@ -22,7 +22,8 @@ namespace Network
 		ROT,
 		SCALE,
 		TRANSFORM,
-		ALL_TRANSFORM
+		ALL_TRANSFORM,
+		DIE
 	};
 
 	// 全通信に使用するパケットデータ
@@ -86,6 +87,12 @@ namespace Network
 		VECTOR pos[PLAYER_MAX];
 		VECTOR rot[PLAYER_MAX];
 		VECTOR scale[PLAYER_MAX];
+	};
+
+	// プレイヤーの死亡データ
+	struct DieData
+	{
+		int playerID;
 	};
 }
 

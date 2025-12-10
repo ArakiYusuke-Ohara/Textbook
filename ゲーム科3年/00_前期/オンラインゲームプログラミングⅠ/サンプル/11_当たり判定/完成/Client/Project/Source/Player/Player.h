@@ -23,7 +23,10 @@ public:
 	void SetRot(const VECTOR& rot) { m_Transform.SetRot(rot); }
 	void SetScale(const VECTOR& scale) { m_Transform.SetScale(scale); }
 
+	void Die();
+
 protected:
+	bool m_IsActive;
 	float m_MoveSpeed;
 	float m_ScaleSpeed;
 	float m_RotSpeed;

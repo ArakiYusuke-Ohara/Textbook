@@ -5,12 +5,13 @@
 #include "../MyMath/MyMath.h"
 
 Player::Player()
+: m_IsActive(true)
+, m_MoveSpeed(0.0f)
+, m_ScaleSpeed(0.0f)
+, m_RotSpeed(0.0f)
+, m_Splite(nullptr)
+, m_Controller(nullptr)
 {
-	m_MoveSpeed = 0.0f;
-	m_ScaleSpeed = 0.0f;
-	m_RotSpeed = 0.0f;
-	m_Splite = nullptr;
-	m_Controller = nullptr;
 }
 
 Player::~Player() = default;
@@ -36,6 +37,8 @@ void Player::Start()
 
 void Player::Step()
 {
+	if (!m_IsActive) return;
+
 	VECTOR pos = m_Transform.GetPos();
 	VECTOR scale = m_Transform.GetScale();
 	VECTOR rot = m_Transform.GetRot();
@@ -56,10 +59,20 @@ void Player::Step()
 
 void Player::Draw()
 {
+	if (!m_IsActive) return;
+
 	if (m_Splite)
 	{
 		m_Splite->SetTransform(m_Transform);
 		m_Splite->Draw();
 	}
+}
+
+/// <summary>
+/// €–Sˆ—
+/// </summary>
+void Player::Die()
+{
+	m_IsActive = false;
 }
 

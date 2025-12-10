@@ -1,6 +1,9 @@
 #include "Player.h"
 #include "../Component/Collision/AABB.h"
 #include "PlayerManager.h"
+#include "../Network/NetworkCommonParam.h"
+
+using namespace Network;
 
 // プレイヤーサイズ
 constexpr int PLAYER_WIDTH = 64;
@@ -11,6 +14,7 @@ Player::Player() : GameObject()
 , m_NWHandle(-1)
 , m_IPAddress{}
 {
+	m_Type = GameObjectType::PLAYER;
 }
 
 void Player::Init(int nwHandle)
@@ -40,4 +44,49 @@ void Player::Draw()
 	VECTOR pos = GetPosition();
 	DrawFormatString(0, (m_ID - 1) * 20, GetColor(255, 255, 255), "ID:%d POS:[%.2f, %.2f, %.2f]", m_ID, pos.x, pos.y, pos.z);
 #endif
+}
+
+/// <summary>
+/// 死亡したことをプレイヤーに送信する
+/// </summary>
+void Player::SendDie()
+{
+	// 通信データサイズ
+	size_t dataSize = sizeof(PacketHeader) + sizeof(DieData);
+
+	// パケット ＋ データを格納するバッファー
+	std::vector<uint8_t> buffer(dataSize);
+
+	PacketHeader header = {};
+	header.type = PacketType::DIE;
+	header.size = sizeof(DieData);
+
+	// ID設定
+	DieData data = {};
+	data.playerID = m_ID;
+
+	// パケットをバッファーに入れる
+	memcpy_s(buffer.data(), buffer.size(), &header, sizeof(PacketHeader));
+	// パケットの後ろにデータを入れる
+	memcpy_s(buffer.data() + sizeof(PacketHeader), buffer.size() - sizeof(PacketHeader), &data, sizeof(DieData));
+
+	// 全クライアントに送信
+	auto players = PlayerManager::GetInstance()->GetPlayers();
+	for (const auto& player : players)
+	{
+		NetWorkSend(player->GetNetworkHandle(), reinterpret_cast<char*>(buffer.data()), (int)buffer.size());
+	}
+}
+
+void Player::OverlapGameObject(GameObject& other)
+{
+	// プレイヤーに当たった
+	if (other.GetType() == GameObjectType::PLAYER)
+	{
+		// 非アクティブ
+		m_IsActive = false;
+
+		// 死亡を送信
+		SendDie();
+	}
 }

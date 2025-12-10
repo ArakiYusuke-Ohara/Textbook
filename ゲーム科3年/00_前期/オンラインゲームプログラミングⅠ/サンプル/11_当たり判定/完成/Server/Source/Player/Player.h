@@ -17,6 +17,11 @@ public:
 	int GetID() const { return m_ID; }
 	int GetNetworkHandle() const { return m_NWHandle; }
 
+	void SendDie();
+
+	void OverlapGameObject(GameObject& other) override;
+
+
 private:
 	int m_ID;
 	int m_NWHandle;

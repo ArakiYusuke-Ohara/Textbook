@@ -129,3 +129,22 @@ void PlayerManager::SyncTransform(Network::AllTransformData data)
 		i++;
 	}
 }
+
+/// <summary>
+/// プレイヤーを死亡させる
+/// </summary>
+/// <param name="playerID">死亡させるプレイヤーID</param>
+void PlayerManager::DiePlayer(int playerID)
+{
+	// IDが一致したプレイヤーを死亡させる
+	for (auto itr = m_Players.begin(); itr != m_Players.end(); itr++)
+	{
+		NetworkPlayer* nwPlayer = static_cast<NetworkPlayer*>((*itr).get());
+
+		if (nwPlayer->GetID() == playerID)
+		{
+			nwPlayer->Die();
+			break;
+		}
+	}
+}

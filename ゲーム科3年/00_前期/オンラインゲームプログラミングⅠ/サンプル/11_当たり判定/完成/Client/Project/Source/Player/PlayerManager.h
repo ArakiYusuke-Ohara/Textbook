@@ -28,6 +28,7 @@ public:
 	void Join(Network::JoinData data);
 	void Logout(Network::LogoutData data);
 	void SyncTransform(Network::AllTransformData data);
+	void DiePlayer(int playerID);
 
 private:
 	std::list<UniquePtr<Player>> m_Players;

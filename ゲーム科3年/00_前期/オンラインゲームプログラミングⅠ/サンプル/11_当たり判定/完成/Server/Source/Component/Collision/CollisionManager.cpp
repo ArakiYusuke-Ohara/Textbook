@@ -60,26 +60,22 @@ void CollisionManager::CheckCollision()
     // 全コライダー総当たり
     for (int i = 0; i < size; ++i)
     {
+        ColliderComponent* a = m_Colliders[i];
+        if (!a->IsActive()) continue;
+
         for (int j = i + 1; j < size; ++j)
         {
-            ColliderComponent* a = m_Colliders[i];
             ColliderComponent* b = m_Colliders[j];
+            if (!b->IsActive()) continue;
 
             CollisionResult result = a->CheckCollide(*b);
 
-            // 当たっていたら押し出し
+            // 当たったら死亡
             if (result.isHit)
             {
-                if (result.overlapX <= result.overlapY)
-                {
-					a->GetOwner()->Move(VGet( result.normalX * result.overlapX * 0.5f, 0.0f, 0.0f));
-                    b->GetOwner()->Move(VGet(-result.normalX * result.overlapX * 0.5f, 0.0f, 0.0f));
-                }
-                else
-                {
-                    a->GetOwner()->Move(VGet(0.0f,  result.normalY * result.overlapY * 0.5f, 0.0f));
-                    b->GetOwner()->Move(VGet(0.0f, -result.normalY * result.overlapY * 0.5f, 0.0f));
-                }
+                // 衝突処理
+				a->GetOwner()->OverlapGameObject(*b->GetOwner());
+                b->GetOwner()->OverlapGameObject(*a->GetOwner());
             }
         }
     }

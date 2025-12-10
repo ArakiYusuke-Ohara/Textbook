@@ -37,6 +37,8 @@ void NetworkPlayer::Step()
 /// </summary>
 void NetworkPlayer::Draw()
 {
+	if (!m_IsActive) return;
+
 	if (m_Splite)
 	{
 		m_Splite->SetTransform(m_ServerTransform);

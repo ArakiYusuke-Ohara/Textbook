@@ -23,6 +23,7 @@ private:
 	void ReceiveJoin();
 	void ReceiveLogout();
 	void ReceiveAllTransform();
+	void ReceiveDie();
 
 private:
 	UniquePtr<Client> m_Client;

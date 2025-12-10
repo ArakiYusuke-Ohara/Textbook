@@ -66,6 +66,7 @@ void NetworkPlayScene::ReceiveData()
 			case Network::PacketType::JOIN:				ReceiveJoin(); break;
 			case Network::PacketType::LOGOUT:			ReceiveLogout(); break;
 			case Network::PacketType::ALL_TRANSFORM:	ReceiveAllTransform(); break;
+			case Network::PacketType::DIE:				ReceiveDie(); break;
 		}
 	}
 }
@@ -111,3 +112,11 @@ void NetworkPlayScene::ReceiveAllTransform()
 
 }
 
+void NetworkPlayScene::ReceiveDie()
+{
+	// 死亡データを受信
+	Network::DieData data = {};
+	m_Client->ReceiveData(reinterpret_cast<char*>(&data), sizeof(data));
+
+	PlayerManager::GetInstance()->DiePlayer(data.playerID);
+}
