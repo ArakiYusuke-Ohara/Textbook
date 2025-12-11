@@ -1,16 +1,16 @@
 #pragma once
 #include "DxLib.h"
 #include "../Memory/Memory.h"
-#include "../Component/Transform.h"
+#include "../Object/GameObject.h"
 
 class Splite;
 class Controller2D;
 
-class Player
+class Player : public GameObject
 {
 public:
 	Player();
-	~Player();
+	virtual ~Player();
 
 	void Init();
 	void Load();
@@ -19,8 +19,8 @@ public:
 	virtual void Draw();
 
 	// アクセサ
-	void SetPos(const VECTOR& pos) { m_Transform.SetPos(pos); }
-	void SetRot(const VECTOR& rot) { m_Transform.SetRot(rot); }
+	void SetPos(const VECTOR& pos) { m_Transform.SetPosition(pos); }
+	void SetRot(const VECTOR& rot) { m_Transform.SetRotation(rot); }
 	void SetScale(const VECTOR& scale) { m_Transform.SetScale(scale); }
 
 	void Die();
@@ -30,7 +30,6 @@ protected:
 	float m_MoveSpeed;
 	float m_ScaleSpeed;
 	float m_RotSpeed;
-	Transform m_Transform;
-	UniquePtr<Splite> m_Splite;
-	UniquePtr<Controller2D> m_Controller;
+	Splite* m_Splite;
+	Controller2D* m_Controller;
 };

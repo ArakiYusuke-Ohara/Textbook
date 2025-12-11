@@ -1,17 +1,15 @@
 #pragma once
-#include "Transform.h"
+#include "../ComponentBase.h"
 
-class Splite
+class Splite : public ComponentBase
 {
 public:
 	Splite();
-	~Splite();
+	virtual ~Splite();
 
 	void Load(const char* filePath);
 	void Draw();
 	void Fin();
-
-	void SetTransform(Transform transform) { m_Transform = transform; }
 
 private:
 	int m_Handle;
@@ -19,5 +17,4 @@ private:
 	int m_Height;
 	int m_CenterX;
 	int m_CenterY;
-	Transform m_Transform;
 };

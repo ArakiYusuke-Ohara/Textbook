@@ -10,12 +10,11 @@ public:
 	virtual ~NetworkPlayer();
 
 	void Step() override;
-	void Draw() override;
 
 	int GetID() const { return m_ID; }
 
-	void SetServerPos(const VECTOR& pos) { m_ServerTransform.SetPos(pos); }
-	void SetServerRot(const VECTOR& rot) { m_ServerTransform.SetRot(rot); }
+	void SetServerPosition(const VECTOR& pos) { m_ServerTransform.SetPosition(pos); }
+	void SetServerRotation(const VECTOR& rot) { m_ServerTransform.SetRotation(rot); }
 	void SetServerScale(const VECTOR& scale) { m_ServerTransform.SetScale(scale); }
 
 	void StepOffline();
@@ -31,5 +30,4 @@ private:
 	bool m_IsSelf;					// 自分自身が操作するかどうか
 	int m_ID;						// 識別ID
 	const Client* m_Client;			// 通信用クライアントクラス
-	Transform m_ServerTransform;	// サーバーから受信したトランスフォーム
 };

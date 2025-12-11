@@ -123,8 +123,8 @@ void PlayerManager::SyncTransform(Network::AllTransformData data)
 	for (auto& player : m_Players)
 	{
 		NetworkPlayer* nwPlayer = static_cast<NetworkPlayer*>(player.get());
-		nwPlayer->SetServerPos(data.pos[i]);
-		nwPlayer->SetServerRot(data.rot[i]);
+		nwPlayer->SetServerPosition(data.pos[i]);
+		nwPlayer->SetServerRotation(data.rot[i]);
 		nwPlayer->SetServerScale(data.scale[i]);
 		i++;
 	}

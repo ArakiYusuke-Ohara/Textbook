@@ -28,6 +28,21 @@
     <Filter Include="Source\Scene">
       <UniqueIdentifier>{732c8e15-a04a-49f8-8921-b061617ae1a5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Component\Transform">
+      <UniqueIdentifier>{a038d57d-1092-4312-b688-7add59e6bfc9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Component\Collision">
+      <UniqueIdentifier>{5c9b0625-b3f6-4cab-9900-9ade7fd99144}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Object">
+      <UniqueIdentifier>{f4dc4198-2934-43d5-b965-5a8acbbecc21}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Component\Controller">
+      <UniqueIdentifier>{330714e1-f8d2-4fda-9808-cd306f6aa137}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Component\Renderer">
+      <UniqueIdentifier>{bd1cff29-6066-4826-b2f4-2712461b9ba0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -41,15 +56,6 @@
     </ClCompile>
     <ClCompile Include="Source\Input\Input.cpp">
       <Filter>Source\Input</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Component\Controller2D.cpp">
-      <Filter>Source\Component</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Component\Splite.cpp">
-      <Filter>Source\Component</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Component\Transform.cpp">
-      <Filter>Source\Component</Filter>
     </ClCompile>
     <ClCompile Include="Source\MyMath\MyMath.cpp">
       <Filter>Source\MyMath</Filter>
@@ -78,6 +84,30 @@
     <ClCompile Include="Source\Player\PlayerManager.cpp">
       <Filter>Source\Player</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Component\Collision\AABB.cpp">
+      <Filter>Source\Component\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\Collision\ColliderComponent.cpp">
+      <Filter>Source\Component\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\Collision\CollisionManager.cpp">
+      <Filter>Source\Component\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\ComponentBase.cpp">
+      <Filter>Source\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\Transform\Transform.cpp">
+      <Filter>Source\Component\Transform</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Object\GameObject.cpp">
+      <Filter>Source\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\Controller\Controller2D.cpp">
+      <Filter>Source\Component\Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\Renderer\Splite.cpp">
+      <Filter>Source\Component\Renderer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Network\NetworkCommonParam.h">
@@ -91,15 +121,6 @@
     </ClInclude>
     <ClInclude Include="Source\Input\Input.h">
       <Filter>Source\Input</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Component\Controller2D.h">
-      <Filter>Source\Component</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Component\Splite.h">
-      <Filter>Source\Component</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Component\Transform.h">
-      <Filter>Source\Component</Filter>
     </ClInclude>
     <ClInclude Include="Source\MyMath\MyMath.h">
       <Filter>Source\MyMath</Filter>
@@ -139,6 +160,33 @@
     </ClInclude>
     <ClInclude Include="Source\Network\NetworkUtility.h">
       <Filter>Source\Network</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component\Collision\AABB.h">
+      <Filter>Source\Component\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component\Collision\ColliderComponent.h">
+      <Filter>Source\Component\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component\Collision\CollisionManager.h">
+      <Filter>Source\Component\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component\Collision\CollisionParameter.h">
+      <Filter>Source\Component\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component\ComponentBase.h">
+      <Filter>Source\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component\Transform\Transform.h">
+      <Filter>Source\Component\Transform</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Object\GameObject.h">
+      <Filter>Source\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component\Controller\Controller2D.h">
+      <Filter>Source\Component\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component\Renderer\Splite.h">
+      <Filter>Source\Component\Renderer</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

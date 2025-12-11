@@ -1,7 +1,5 @@
 #include "DxLib.h"
 #include "Input/Input.h"
-#include "Player/Player.h"
-#include "Memory/Memory.h"
 #include "Scene/SceneManager.h"
 
 // 関数のプロトタイプ宣言

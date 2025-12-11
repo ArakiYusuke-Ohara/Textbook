@@ -2,7 +2,7 @@
 #include "../Network/Client.h"
 #include "../MyMath/MyMath.h"
 #include "../Network/NetworkUtility.h"
-#include "../Component/Splite.h"
+#include "../Component/Renderer/Splite.h"
 
 // これだけ動いたらサーバーに送信する
 constexpr float POS_THRESHOLD = 1.0f;
@@ -14,6 +14,8 @@ NetworkPlayer::NetworkPlayer(const Client* client, int id, bool isSelf) : Player
 , m_ID(id)
 , m_Client(client)
 {
+	// サーバー座標を使用する
+	m_UseServerTransform = true;
 }
 
 NetworkPlayer::~NetworkPlayer() = default;
@@ -29,20 +31,6 @@ void NetworkPlayer::Step()
 	{
 		case Client::State::OFFLINE: StepOffline(); break;
 		case Client::State::ONLINE: StepOnline(); break;
-	}
-}
-
-/// <summary>
-/// サーバーから受信した座標で描画する
-/// </summary>
-void NetworkPlayer::Draw()
-{
-	if (!m_IsActive) return;
-
-	if (m_Splite)
-	{
-		m_Splite->SetTransform(m_ServerTransform);
-		m_Splite->Draw();
 	}
 }
 
@@ -63,14 +51,14 @@ void NetworkPlayer::StepOnline()
 	bool isMove = false;
 
 	// 移動したらサーバーに座標を送信
-	float dist = MyMath::GetDistance(m_Transform.GetPos(), m_ServerTransform.GetPos());
+	float dist = MyMath::GetDistance(m_Transform.GetPosition(), m_ServerTransform.GetPosition());
 	if (dist >= POS_THRESHOLD)
 	{
 		isMove = true;
 	}
 
 	// 回転したらサーバーに回転値を送信
-	dist = MyMath::GetDistance(m_Transform.GetRot(), m_ServerTransform.GetRot());
+	dist = MyMath::GetDistance(m_Transform.GetRotation(), m_ServerTransform.GetRotation());
 	if (dist >= ROT_THRESHOLD)
 	{
 		isMove = true;
@@ -95,7 +83,7 @@ void NetworkPlayer::StepOnline()
 /// </summary>
 void NetworkPlayer::SendPosData()
 {
-	VECTOR pos = m_Transform.GetPos();
+	VECTOR pos = m_Transform.GetPosition();
 	Network::PosData data;
 	data.playerID = m_ID;
 	data.pos = pos;
@@ -107,7 +95,7 @@ void NetworkPlayer::SendPosData()
 
 void NetworkPlayer::SendRotData()
 {
-	VECTOR rot = m_Transform.GetRot();
+	VECTOR rot = m_Transform.GetRotation();
 	Network::RotData data;
 	data.playerID = m_ID;
 	data.rot = rot;
@@ -134,8 +122,8 @@ void NetworkPlayer::SendTransformData()
 	Network::TransformData data;
 
 	data.playerID = m_ID;
-	data.pos = m_Transform.GetPos();
-	data.rot = m_Transform.GetRot();
+	data.pos = m_Transform.GetPosition();
+	data.rot = m_Transform.GetRotation();
 	data.scale = m_Transform.GetScale();
 
 	std::vector<uint8_t> buf = Network::MakeTransformData(data);
