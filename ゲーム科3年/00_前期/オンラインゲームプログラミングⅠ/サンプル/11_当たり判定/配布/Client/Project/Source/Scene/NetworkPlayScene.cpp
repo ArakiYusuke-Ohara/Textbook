@@ -118,5 +118,6 @@ void NetworkPlayScene::ReceiveDie()
 	Network::DieData data = {};
 	m_Client->ReceiveData(reinterpret_cast<char*>(&data), sizeof(data));
 
-	PlayerManager::GetInstance()->DiePlayer(data.playerID);
+	// ƒvƒŒƒCƒ„[‚ğ€–S‚³‚¹‚é
+
 }

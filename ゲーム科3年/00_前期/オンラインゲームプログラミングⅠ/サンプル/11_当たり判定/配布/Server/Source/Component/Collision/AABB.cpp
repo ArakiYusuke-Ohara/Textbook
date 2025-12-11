@@ -65,10 +65,8 @@ CollisionResult AABB3D::CheckCollide(const ColliderComponent& other) const
 CollisionResult AABB3D::CheckCollideAABB(const AABB3D& other) const
 {
 	CollisionResult result = {};
-	VECTOR centerA = m_Owner->GetPosition();
-	VECTOR centerB = other.m_Owner->GetPosition();
-	centerA += m_Center;
-	centerB += other.m_Center;
+	VECTOR centerA = m_Owner->GetPosition() + m_Center;
+	VECTOR centerB = other.m_Owner->GetPosition() + other.m_Center;
 
 	float leftA = centerA.x - m_Size.x / 2.0f;
 	float rightA = centerA.x + m_Size.x / 2.0f;

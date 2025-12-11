@@ -87,6 +87,6 @@ void Player::OverlapGameObject(GameObject& other)
 		m_IsActive = false;
 
 		// €–S‚ğ‘—M
-		SendDie();
+
 	}
 }

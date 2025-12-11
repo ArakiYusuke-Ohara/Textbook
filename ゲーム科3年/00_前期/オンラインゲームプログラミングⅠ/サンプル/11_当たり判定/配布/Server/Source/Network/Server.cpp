@@ -121,7 +121,7 @@ bool Server::ReceiveData()
 			}
 
 			// “–‚½‚è”»’è
-			CheckCollision();
+
 
 			// XV‚³‚ê‚½
 			isUpdate = true;
