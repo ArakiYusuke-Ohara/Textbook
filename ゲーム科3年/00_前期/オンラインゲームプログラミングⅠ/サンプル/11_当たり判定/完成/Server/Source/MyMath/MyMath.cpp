@@ -235,27 +235,27 @@ namespace MyMath
 	}
 
 	// ヨー行列を取得
-	MATRIX MatRotationYaw(float pitch)
+	MATRIX MatRotationYaw(float yaw)
 	{
 		MATRIX result = MatCreate();
 
-		result.m[0][0] = cosf(pitch);
-		result.m[0][2] = sinf(pitch);
-		result.m[2][0] = -sinf(pitch);
-		result.m[2][2] = cosf(pitch);
+		result.m[0][0] = cosf(yaw);
+		result.m[0][2] = sinf(yaw);
+		result.m[2][0] = -sinf(yaw);
+		result.m[2][2] = cosf(yaw);
 
 		return result;
 	}
 
 	// ロール行列を取得
-	MATRIX MatRotationRoll(float pitch)
+	MATRIX MatRotationRoll(float roll)
 	{
 		MATRIX result = MatCreate();
 
-		result.m[0][0] = cosf(pitch);
-		result.m[0][1] = -sinf(pitch);
-		result.m[1][0] = sinf(pitch);
-		result.m[1][1] = cosf(pitch);
+		result.m[0][0] = cosf(roll);
+		result.m[0][1] = -sinf(roll);
+		result.m[1][0] = sinf(roll);
+		result.m[1][1] = cosf(roll);
 
 		return result;
 	}

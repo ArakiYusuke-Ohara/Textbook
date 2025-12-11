@@ -24,8 +24,8 @@ namespace MyMath
 	MATRIX MatTranslation(VECTOR trans);
 	MATRIX MatScale(VECTOR scale);
 	MATRIX MatRotationPitch(float pitch);
-	MATRIX MatRotationYaw(float pitch);
-	MATRIX MatRotationRoll(float pitch);
+	MATRIX MatRotationYaw(float yaw);
+	MATRIX MatRotationRoll(float roll);
 	VECTOR MatTransform(MATRIX transMat, VECTOR pos);
 	// そのほか数学系の便利関数
 	float MinF(float valueA, float valueB);
