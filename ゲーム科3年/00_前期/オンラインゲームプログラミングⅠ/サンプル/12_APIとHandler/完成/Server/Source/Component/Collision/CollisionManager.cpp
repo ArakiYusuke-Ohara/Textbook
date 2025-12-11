@@ -68,7 +68,7 @@ void CollisionManager::CheckCollision()
 
             CollisionResult result = a->CheckCollide(*b);
 
-            // “–‚½‚Á‚½‚©‚Ç‚¤‚©
+            // “–‚½‚Á‚½‚ç€–S
             if (result.isHit)
             {
                 // Õ“Ëˆ—
