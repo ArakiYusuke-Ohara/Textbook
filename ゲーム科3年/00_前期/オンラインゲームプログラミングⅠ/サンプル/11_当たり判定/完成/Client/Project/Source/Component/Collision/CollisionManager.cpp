@@ -54,10 +54,8 @@ void CollisionManager::Unregister(ColliderComponent* col)
 /// </summary>
 void CollisionManager::CheckCollision()
 {
-    // コライダーに対して当たり判定＆押し出し
-    const size_t size = m_Colliders.size();
-
     // 全コライダー総当たり
+    const size_t size = m_Colliders.size();
     for (int i = 0; i < size; ++i)
     {
         ColliderComponent* a = m_Colliders[i];
