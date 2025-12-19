@@ -3,6 +3,8 @@
 #include "NetworkPlayer.h"
 #include "../Network/Client.h"
 
+using namespace Network;
+
 PlayerManager::PlayerManager()
 {
 }
@@ -54,6 +56,21 @@ Player& PlayerManager::CreatePlayer()
 	return *(m_Players.back().get());
 }
 
+NetworkPlayer& PlayerManager::CreateNetworkPlayer(int id, bool isSelf)
+{
+	// 生成して初期化～開始
+	UniquePtr<NetworkPlayer> player = MakeUnique<NetworkPlayer>(id, isSelf);
+	player->Init();
+	player->Load();
+	player->Start();
+
+	// 末尾に格納
+	m_Players.push_back(std::move(player));
+
+	// 実は参照渡しの方が安全
+	return *static_cast<NetworkPlayer*>(m_Players.back().get());
+}
+
 NetworkPlayer& PlayerManager::CreateNetworkPlayer(const Client* client, int id, bool isSelf)
 {
 	// 生成して初期化～開始
@@ -69,15 +86,28 @@ NetworkPlayer& PlayerManager::CreateNetworkPlayer(const Client* client, int id, 
 	return *static_cast<NetworkPlayer*>(m_Players.back().get());
 }
 
+void PlayerManager::Login(Network::ResponseLoginData data)
+{
+	// 既に参加済みのプレイヤーも含め生成
+	for (int i = 0; i < PLAYER_MAX; i++)
+	{
+		int id = data.playerID[i];
+		if (id < 0) continue;
+
+		bool isSelf = id == data.selfID;
+		CreateNetworkPlayer(id, isSelf);
+	}
+}
+
 /// <summary>
 /// プレイヤーを追加する
 /// </summary>
 /// <param name="client">通信に使われているクライアントクラス</param>
 /// <param name="data">ログインデータ</param>
-void PlayerManager::Login(const Client* client, Network::LoginData data)
+void PlayerManager::Login(const Client* client, Network::ResponseLoginData data)
 {
 	// 既に参加済みのプレイヤーも含め生成
-	for (int i = 0; i < NETWORK_PLAYER_MAX; i++)
+	for (int i = 0; i < PLAYER_MAX; i++)
 	{
 		int id = data.playerID[i];
 		if (id < 0) continue;

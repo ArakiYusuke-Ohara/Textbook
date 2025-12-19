@@ -33,8 +33,14 @@ namespace Network
 		uint16_t size;	// データサイズ（符号なし16ビット）
 	};
 
-	// プレイヤーログインデータ
-	struct LoginData
+	// ログインデータ（リクエスト）
+	struct RequestLoginData
+	{
+
+	};
+
+	// ログインデータ（レスポンス）
+	struct ResponseLoginData
 	{
 		int selfID;
 		int playerID[PLAYER_MAX];

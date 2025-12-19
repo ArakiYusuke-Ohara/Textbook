@@ -1,9 +1,5 @@
 #include "DxLib.h"
-#include "Input/Input.h"
-#include "Scene/SceneManager.h"
-
-// 関数のプロトタイプ宣言
-void GameExec();
+#include "GameApp/GameApp.h"
 
 // プログラムは WinMain から始まります
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nShowCmd)
@@ -31,47 +27,16 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance, 
 	// 描画先を裏画面にする
 	SetDrawScreen(DX_SCREEN_BACK);
 
-	// 入力初期化
-	Input::Init();
-
-	// シーンマネージャー
-	SceneManager::CreateInstance();
-	SceneManager::GetInstance()->Init();
+	// ゲームシステム生成/初期化
+	GameApp::CreateInstance();
+	GameApp::GetInstance()->Init();
 
 	// ゲーム実行
-	GameExec();
+	GameApp::GetInstance()->Exec();
 
-	// 以降は終了処理
+	// 終了処理
+	GameApp::DeleteInstance();
+	DxLib_End();
 
-	// 入力終了
-	Input::Fin();
-
-	DxLib_End();				// ＤＸライブラリ使用の終了処理
-
-	return 0;				// ソフトの終了 
-}
-
-void GameExec()
-{
-	// ゲームのメインループ
-	while (ProcessMessage() >= 0)
-	{
-		Sleep(1);
-
-		// 画面をクリア
-		ClearDrawScreen();
-
-		// 入力更新
-		Input::Step();
-
-		// シーン更新
-		SceneManager::GetInstance()->Step();
-
-		// エスケープキーで終了
-		if (CheckHitKey(KEY_INPUT_ESCAPE)) break;
-
-		// 画面フリップ
-		ScreenFlip();
-	}
-
+	return 0;
 }

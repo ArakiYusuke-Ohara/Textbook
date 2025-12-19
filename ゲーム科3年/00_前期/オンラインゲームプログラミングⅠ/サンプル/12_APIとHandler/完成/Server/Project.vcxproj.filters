@@ -66,6 +66,9 @@
     <ClCompile Include="Source\MyMath\MyMath.cpp">
       <Filter>Source\MyMath</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Network\ServerHandler.cpp">
+      <Filter>Source\Network</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Network\NetworkCommonParam.h">
@@ -109,6 +112,12 @@
     </ClInclude>
     <ClInclude Include="Source\Component\Collision\CollisionParameter.h">
       <Filter>Source\Component\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Network\ServerHandler.h">
+      <Filter>Source\Network</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Network\NetworkUtility.h">
+      <Filter>Source\Network</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -21,6 +21,7 @@ public:
 	bool CheckReceive();
 	void ReceiveData(void* buffer, unsigned int size);
 	void Disconnect();
+	bool IsConnected() const { return m_State == ONLINE; }
 
 	// ’ÊM‚Ìó‘Ô
 	enum State
@@ -31,7 +32,6 @@ public:
 	};
 
 	State GetState() const { return m_State; }
-	int GetServerHandle() const { return m_ServerHandle; }
 
 private:
 	void UpdateWaiting();

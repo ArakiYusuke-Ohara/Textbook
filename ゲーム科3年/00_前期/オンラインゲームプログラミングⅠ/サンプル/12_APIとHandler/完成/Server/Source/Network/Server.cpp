@@ -1,5 +1,6 @@
 #include "DxLib.h"
 #include "Server.h"
+#include "ServerHandler.h"
 #include "NetworkCommonParam.h"
 #include "../Component/Collision/CollisionManager.h"
 #include "../Player/PlayerManager.h"
@@ -49,13 +50,7 @@ void Server::Update()
 	}
 
 	// データ受信処理
-	bool isUpdate = ReceiveData();
-
-	// データ更新があればクライアントに送信して同期
-	if (isUpdate)
-	{
-		SendAllTransformData();
-	}
+	ReceiveData();
 }
 
 void Server::Draw()
@@ -85,20 +80,15 @@ void Server::AddUserData(int handle)
 	Player& player = PlayerManager::GetInstance()->CreatePlayer();
 	player.Init(handle);
 
-	// ログインデータを送信
-	SendLoginData(player);
-
 	// 参加データを送信
 	SendJoinData(player);
 
 	// 全員の座標を同期
-	SendAllTransformData();
+	//SendAllTransformData();
 }
 
-bool Server::ReceiveData()
+void Server::ReceiveData()
 {
-	bool isUpdate = false;
-
 	// 接続しているクライアント全員分処理する
 	auto players = PlayerManager::GetInstance()->GetPlayers();
 	for (const auto& player : players)
@@ -117,34 +107,27 @@ bool Server::ReceiveData()
 			// パケットごとの処理
 			switch (header.type)
 			{
+			case PacketType::LOGIN: ServerHandler::HandleLogin(nwHandle); break;					// ログイン
 				case PacketType::TRANSFORM: SyncTransform(nwHandle); break;	// トランスフォームを同期
 			}
-
-			// 当たり判定
-			CheckCollision();
-
-			// 更新された
-			isUpdate = true;
 		}
 	}
-
-	return isUpdate;
 }
 
 void Server::SendLoginData(const Player& loginPlayer)
 {
 	// 通信データサイズ
-	size_t dataSize = sizeof(PacketHeader) + sizeof(LoginData);
+	size_t dataSize = sizeof(PacketHeader) + sizeof(ResponseLoginData);
 
 	// パケット ＋ データを格納するバッファー
 	std::vector<uint8_t> buffer(dataSize);
 
 	PacketHeader header = {};
 	header.type = PacketType::LOGIN;
-	header.size = sizeof(LoginData);
+	header.size = sizeof(ResponseLoginData);
 
 	// ID設定
-	LoginData data = {};
+	ResponseLoginData data = {};
 	memset(&data, -1, sizeof(data));
 	int i = 0;
 	auto players = PlayerManager::GetInstance()->GetPlayers();
@@ -158,7 +141,7 @@ void Server::SendLoginData(const Player& loginPlayer)
 	// パケットをバッファーに入れる
 	memcpy_s(buffer.data(), buffer.size(), &header, sizeof(PacketHeader));
 	// パケットの後ろにデータを入れる
-	memcpy_s(buffer.data() + sizeof(PacketHeader), buffer.size() - sizeof(PacketHeader), &data, sizeof(LoginData));
+	memcpy_s(buffer.data() + sizeof(PacketHeader), buffer.size() - sizeof(PacketHeader), &data, sizeof(ResponseLoginData));
 
 	// ログインするクライアントに送信する
 	NetWorkSend(loginPlayer.GetNetworkHandle(), reinterpret_cast<char*>(buffer.data()), (int)buffer.size());
@@ -350,6 +333,12 @@ void Server::SyncTransform(int handle)
 			break;
 		}
 	}
+
+	// 当たり判定
+	CheckCollision();
+
+	// 全員の座標を同期
+	SendAllTransformData();
 }
 
 void Server::CheckCollision()

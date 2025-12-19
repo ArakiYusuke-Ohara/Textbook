@@ -5,14 +5,13 @@
 // NetworkCommonParam.hはクライアント/サーバー共通のパラメータ
 // 必ず双方で同じ状態にする必要がある
 
-// ポート番号は49152～65535が好ましい
-#define PORT_NUMBER 50000
-
-// プレイヤー最大人数
-#define NETWORK_PLAYER_MAX 4
-
 namespace Network
 {
+	// ポート番号
+	constexpr int PORT_NUMBER = 50000;
+	// プレイヤー最大人数
+	constexpr int PLAYER_MAX = 4;
+
 	// パケットの種類（符号なし8ビットで扱う）
 	enum class PacketType : uint8_t
 	{
@@ -34,11 +33,18 @@ namespace Network
 		uint16_t size;	// データサイズ（符号なし16ビット）
 	};
 
-	// プレイヤーログインデータ
-	struct LoginData
+	// ログインデータ（リクエスト）
+	struct RequestLoginData
+	{
+		// 練習ではデータなし
+		// プレイヤー名など固有のデータを入れる場合がある
+	};
+
+	// ログインデータ（レスポンス）
+	struct ResponseLoginData
 	{
 		int selfID;
-		int playerID[NETWORK_PLAYER_MAX];
+		int playerID[PLAYER_MAX];
 	};
 
 	// 他プレイヤー参加データ
@@ -85,9 +91,9 @@ namespace Network
 	// 全プレイヤーのトランスフォームデータ
 	struct AllTransformData
 	{
-		VECTOR pos[NETWORK_PLAYER_MAX];
-		VECTOR rot[NETWORK_PLAYER_MAX];
-		VECTOR scale[NETWORK_PLAYER_MAX];
+		VECTOR pos[PLAYER_MAX];
+		VECTOR rot[PLAYER_MAX];
+		VECTOR scale[PLAYER_MAX];
 	};
 
 	// プレイヤーの死亡データ

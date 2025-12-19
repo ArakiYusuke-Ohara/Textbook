@@ -4,10 +4,20 @@
 #include "../Network/NetworkUtility.h"
 #include "../Component/Renderer/Splite.h"
 
+using namespace Network;
+
 // これだけ動いたらサーバーに送信する
 constexpr float POS_THRESHOLD = 1.0f;
 constexpr float SCALE_THRESHOLD = 0.005f;
 constexpr float ROT_THRESHOLD = 0.005f;
+
+NetworkPlayer::NetworkPlayer(int id, bool isSelf) : Player()
+, m_IsSelf(isSelf)
+, m_ID(id)
+{
+	// サーバー座標を使用する
+	m_UseServerTransform = true;
+}
 
 NetworkPlayer::NetworkPlayer(const Client* client, int id, bool isSelf) : Player()
 , m_IsSelf(isSelf)
@@ -84,49 +94,45 @@ void NetworkPlayer::StepOnline()
 void NetworkPlayer::SendPosData()
 {
 	VECTOR pos = m_Transform.GetPosition();
-	Network::PosData data;
+	PosData data;
 	data.playerID = m_ID;
 	data.pos = pos;
 
-	std::vector<uint8_t> buf = Network::MakePosData(data);
-
-	NetWorkSend(m_Client->GetServerHandle(), reinterpret_cast<const char*>(buf.data()), (int)buf.size());
+	std::vector<uint8_t> buf = MakePacket<PosData>(PacketType::POS, data);
+	m_Client->SendData(buf.data(), (unsigned int)buf.size());
 }
 
 void NetworkPlayer::SendRotData()
 {
 	VECTOR rot = m_Transform.GetRotation();
-	Network::RotData data;
+	RotData data;
 	data.playerID = m_ID;
 	data.rot = rot;
 
-	std::vector<uint8_t> buf = Network::MakeRotData(data);
-
-	NetWorkSend(m_Client->GetServerHandle(), reinterpret_cast<const char*>(buf.data()), (int)buf.size());
+	std::vector<uint8_t> buf = MakePacket<RotData>(PacketType::ROT, data);
+	m_Client->SendData(buf.data(), (unsigned int)buf.size());
 }
 
 void NetworkPlayer::SendScaleData()
 {
-	Network::ScaleData data;
+	ScaleData data;
 
 	data.playerID = m_ID;
 	data.scale = m_Transform.GetScale();
 
-	std::vector<uint8_t> buf = Network::MakeScaleData(data);
-
-	NetWorkSend(m_Client->GetServerHandle(), reinterpret_cast<const char*>(buf.data()), (int)buf.size());
+	std::vector<uint8_t> buf = MakePacket<ScaleData>(PacketType::SCALE, data);
+	m_Client->SendData(buf.data(), (unsigned int)buf.size());
 }
 
 void NetworkPlayer::SendTransformData()
 {
-	Network::TransformData data;
+	TransformData data;
 
 	data.playerID = m_ID;
 	data.pos = m_Transform.GetPosition();
 	data.rot = m_Transform.GetRotation();
 	data.scale = m_Transform.GetScale();
 
-	std::vector<uint8_t> buf = Network::MakeTransformData(data);
-
-	NetWorkSend(m_Client->GetServerHandle(), reinterpret_cast<const char*>(buf.data()), (int)buf.size());
+	std::vector<uint8_t> buf = MakePacket<TransformData>(PacketType::TRANSFORM, data);
+	m_Client->SendData(buf.data(), (unsigned int)buf.size());
 }

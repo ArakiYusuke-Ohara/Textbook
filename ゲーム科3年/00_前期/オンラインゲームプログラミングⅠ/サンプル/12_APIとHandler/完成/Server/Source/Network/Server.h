@@ -25,7 +25,7 @@ public:
 
 private:
 	void AddUserData(int handle);		// ユーザーデータを追加
-	bool ReceiveData();					// データ受信
+	void ReceiveData();					// データ受信
 	void SendLoginData(const Player& loginPlayer);
 	void SendJoinData(const Player& joinPlayer);
 	void SendLogoutData(int id);

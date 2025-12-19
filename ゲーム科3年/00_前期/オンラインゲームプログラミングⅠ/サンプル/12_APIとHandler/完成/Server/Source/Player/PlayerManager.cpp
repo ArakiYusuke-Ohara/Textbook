@@ -35,3 +35,16 @@ void PlayerManager::RemovePlayer(int handle)
 		}
 	}
 }
+
+Player* PlayerManager::GetPlayer(int id) const
+{
+	for (const auto& player : m_Players)
+	{
+		if (player->GetID() == id)
+		{
+			return player.get();
+		}
+	}
+
+	return nullptr;
+}

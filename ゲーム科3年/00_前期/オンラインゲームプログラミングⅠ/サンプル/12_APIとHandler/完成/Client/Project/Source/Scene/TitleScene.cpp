@@ -1,6 +1,8 @@
 #include "TitleScene.h"
 #include "../Input/Input.h"
 #include "SceneManager.h"
+#include "../GameApp/GameApp.h"
+#include "../Network/ClientAPI.h"
 #include "DxLib.h"
 
 TitleScene::TitleScene()
@@ -27,11 +29,18 @@ void TitleScene::Step()
 {
 	if (Input::IsTriggerKey(KEY_Z))
 	{
-		SceneManager::GetInstance()->ChangeScene(NETWORK_PLAY);
+		// ネットワーク開始
+		GameApp::GetInstance()->StartNetwork();
 	}
 	else if (Input::IsTriggerKey(KEY_X))
 	{
 		SceneManager::GetInstance()->ChangeScene(PLAY);
+	}
+
+	// 接続したらプレイシーンへ
+	if (GameApp::GetInstance()->IsConnected())
+	{
+		SceneManager::GetInstance()->ChangeScene(NETWORK_PLAY);
 	}
 }
 

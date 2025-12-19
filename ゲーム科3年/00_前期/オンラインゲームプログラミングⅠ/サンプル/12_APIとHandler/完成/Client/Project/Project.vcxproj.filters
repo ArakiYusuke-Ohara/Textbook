@@ -43,6 +43,9 @@
     <Filter Include="Source\Component\Renderer">
       <UniqueIdentifier>{bd1cff29-6066-4826-b2f4-2712461b9ba0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\GameApp">
+      <UniqueIdentifier>{9c80f018-510c-4329-918a-fbbd18b3b741}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -107,6 +110,12 @@
     </ClCompile>
     <ClCompile Include="Source\Component\Renderer\Splite.cpp">
       <Filter>Source\Component\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Network\ClientAPI.cpp">
+      <Filter>Source\Network</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameApp\GameApp.cpp">
+      <Filter>Source\GameApp</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -187,6 +196,12 @@
     </ClInclude>
     <ClInclude Include="Source\Component\Renderer\Splite.h">
       <Filter>Source\Component\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Network\ClientAPI.h">
+      <Filter>Source\Network</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameApp\GameApp.h">
+      <Filter>Source\GameApp</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
