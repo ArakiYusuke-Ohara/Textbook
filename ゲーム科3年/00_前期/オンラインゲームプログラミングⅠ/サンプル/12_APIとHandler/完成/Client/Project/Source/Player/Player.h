@@ -18,11 +18,6 @@ public:
 	virtual void Step();
 	virtual void Draw();
 
-	// アクセサ
-	void SetPos(const VECTOR& pos) { m_Transform.SetPosition(pos); }
-	void SetRot(const VECTOR& rot) { m_Transform.SetRotation(rot); }
-	void SetScale(const VECTOR& scale) { m_Transform.SetScale(scale); }
-
 	void Die();
 
 protected:

@@ -24,12 +24,10 @@ public:
 
 	// ネットワーク関係
 	NetworkPlayer& CreateNetworkPlayer(int id, bool isSelf);
-	NetworkPlayer& CreateNetworkPlayer(const Client* client, int id, bool isSelf);
 	void Login(Network::ResponseLoginData data);
-	void Login(const Client* client, Network::ResponseLoginData data);
 	void Join(Network::JoinData data);
 	void Logout(Network::LogoutData data);
-	void SyncTransform(Network::AllTransformData data);
+	void SyncServerTransform(Network::ResponseTransformData data);
 	void DiePlayer(int playerID);
 
 private:

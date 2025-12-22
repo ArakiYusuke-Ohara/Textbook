@@ -62,22 +62,6 @@ NetworkPlayer& PlayerManager::CreateNetworkPlayer(int id, bool isSelf)
 	UniquePtr<NetworkPlayer> player = MakeUnique<NetworkPlayer>(id, isSelf);
 	player->Init();
 	player->Load();
-	player->Start();
-
-	// 末尾に格納
-	m_Players.push_back(std::move(player));
-
-	// 実は参照渡しの方が安全
-	return *static_cast<NetworkPlayer*>(m_Players.back().get());
-}
-
-NetworkPlayer& PlayerManager::CreateNetworkPlayer(const Client* client, int id, bool isSelf)
-{
-	// 生成して初期化～開始
-	UniquePtr<NetworkPlayer> player = MakeUnique<NetworkPlayer>(client, id, isSelf);
-	player->Init();
-	player->Load();
-	player->Start();
 
 	// 末尾に格納
 	m_Players.push_back(std::move(player));
@@ -92,35 +76,23 @@ void PlayerManager::Login(Network::ResponseLoginData data)
 	for (int i = 0; i < PLAYER_MAX; i++)
 	{
 		int id = data.playerID[i];
-		if (id < 0) continue;
+		if (id <= 0) continue;
 
 		bool isSelf = id == data.selfID;
-		CreateNetworkPlayer(id, isSelf);
-	}
-}
+		NetworkPlayer& player = CreateNetworkPlayer(id, isSelf);
 
-/// <summary>
-/// プレイヤーを追加する
-/// </summary>
-/// <param name="client">通信に使われているクライアントクラス</param>
-/// <param name="data">ログインデータ</param>
-void PlayerManager::Login(const Client* client, Network::ResponseLoginData data)
-{
-	// 既に参加済みのプレイヤーも含め生成
-	for (int i = 0; i < PLAYER_MAX; i++)
-	{
-		int id = data.playerID[i];
-		if (id < 0) continue;
-
-		bool isSelf = id == data.selfID;
-		CreateNetworkPlayer(client, id, isSelf);
+		// スポーン位置に移動
+		player.SetPosition(data.spawnPos);
+		player.SetServerPosition(data.spawnPos);
 	}
 }
 
 void PlayerManager::Join(Network::JoinData data)
 {
 	// 参加プレイヤーを生成
-	CreateNetworkPlayer(nullptr, data.playerID, false);
+	NetworkPlayer& player = CreateNetworkPlayer(data.playerID, false);
+	player.SetPosition(data.spawnPos);
+	player.SetServerPosition(data.spawnPos);
 }
 
 /// <summary>
@@ -146,7 +118,7 @@ void PlayerManager::Logout(Network::LogoutData data)
 /// 座標を同期する
 /// </summary>
 /// <param name="data">座標データ</param>
-void PlayerManager::SyncTransform(Network::AllTransformData data)
+void PlayerManager::SyncServerTransform(Network::ResponseTransformData data)
 {
 	// 全プレイヤーのトランスフォームをサーバーから受信したものにする
 	int i = 0;

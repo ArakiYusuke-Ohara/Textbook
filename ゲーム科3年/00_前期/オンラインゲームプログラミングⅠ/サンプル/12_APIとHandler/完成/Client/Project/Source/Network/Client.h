@@ -1,7 +1,4 @@
 #pragma once
-#include "DxLib.h"
-#include "NetworkCommonParam.h"
-#include <list>
 
 class InputString;
 

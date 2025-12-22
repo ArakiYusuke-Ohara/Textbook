@@ -62,5 +62,4 @@ VECTOR Controller2D::Rotate()
 	}
 
 	return MyMath::VecNormalize(rotate);
-
 }

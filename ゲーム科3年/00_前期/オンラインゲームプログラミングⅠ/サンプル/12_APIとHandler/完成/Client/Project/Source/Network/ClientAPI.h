@@ -1,5 +1,6 @@
 #pragma once
 #include "Client.h"
+#include "../Component/Transform/Transform.h"
 
 class ClientAPI
 {
@@ -23,15 +24,15 @@ public:
 
 	// サーバーへのリクエスト処理
 	void RequestLogin();
-	void RequestJoin();
-	void RequestLogout();
+	void RequestLogout(int playerID);
+	void RequestTransform(int playerID, Transform transform);
 
-	// サーバーからのレスポンス処理
-	void ReceiveLogin();
-	void ReceiveJoin();
-	void ReceiveLogout();
-	void ReceiveAllTransform();
-	void ReceiveDie();
+	// サーバーからの受信処理
+	void OnReceiveLogin();
+	void OnReceiveJoin();
+	void OnReceiveLogout();
+	void OnReceiveAllTransform();
+	void OnReceiveDead();
 
 	void Fin();
 

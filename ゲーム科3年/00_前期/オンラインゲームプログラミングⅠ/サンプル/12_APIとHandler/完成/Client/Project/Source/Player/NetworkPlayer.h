@@ -18,17 +18,7 @@ public:
 	void SetServerRotation(const VECTOR& rot) { m_ServerTransform.SetRotation(rot); }
 	void SetServerScale(const VECTOR& scale) { m_ServerTransform.SetScale(scale); }
 
-	void StepOffline();
-	void StepOnline();
-
-private:
-	void SendPosData();
-	void SendRotData();
-	void SendScaleData();
-	void SendTransformData();
-
 private:
 	bool m_IsSelf;					// 自分自身が操作するかどうか
 	int m_ID;						// 識別ID
-	const Client* m_Client;			// 通信用クライアントクラス
 };

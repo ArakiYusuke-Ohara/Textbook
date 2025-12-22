@@ -2,6 +2,7 @@
 #include "../Component/Collision/AABB.h"
 #include "PlayerManager.h"
 #include "../Network/NetworkCommonParam.h"
+#include "../Network/ServerHandler.h"
 
 using namespace Network;
 
@@ -46,38 +47,6 @@ void Player::Draw()
 #endif
 }
 
-/// <summary>
-/// 死亡したことをプレイヤーに送信する
-/// </summary>
-void Player::SendDie()
-{
-	// 通信データサイズ
-	size_t dataSize = sizeof(PacketHeader) + sizeof(DieData);
-
-	// パケット ＋ データを格納するバッファー
-	std::vector<uint8_t> buffer(dataSize);
-
-	PacketHeader header = {};
-	header.type = PacketType::DIE;
-	header.size = sizeof(DieData);
-
-	// ID設定
-	DieData data = {};
-	data.playerID = m_ID;
-
-	// パケットをバッファーに入れる
-	memcpy_s(buffer.data(), buffer.size(), &header, sizeof(PacketHeader));
-	// パケットの後ろにデータを入れる
-	memcpy_s(buffer.data() + sizeof(PacketHeader), buffer.size() - sizeof(PacketHeader), &data, sizeof(DieData));
-
-	// 全クライアントに送信
-	auto players = PlayerManager::GetInstance()->GetPlayers();
-	for (const auto& player : players)
-	{
-		NetWorkSend(player->GetNetworkHandle(), reinterpret_cast<char*>(buffer.data()), (int)buffer.size());
-	}
-}
-
 void Player::OverlapGameObject(GameObject& other)
 {
 	// プレイヤーに当たった
@@ -87,6 +56,6 @@ void Player::OverlapGameObject(GameObject& other)
 		m_IsActive = false;
 
 		// 死亡を送信
-		SendDie();
+		ServerHandler::OnDead(m_ID);
 	}
 }

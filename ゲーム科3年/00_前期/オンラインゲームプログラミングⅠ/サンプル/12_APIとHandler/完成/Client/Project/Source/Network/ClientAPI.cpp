@@ -26,11 +26,11 @@ void ClientAPI::Step()
 
 		switch (header.type)
 		{
-			case Network::PacketType::LOGIN:			ReceiveLogin(); break;
-			case Network::PacketType::JOIN:				ReceiveJoin(); break;
-			case Network::PacketType::LOGOUT:			ReceiveLogout(); break;
-			case Network::PacketType::ALL_TRANSFORM:	ReceiveAllTransform(); break;
-			case Network::PacketType::DIE:				ReceiveDie(); break;
+			case Network::PacketType::LOGIN:			OnReceiveLogin(); break;
+			case Network::PacketType::JOIN:				OnReceiveJoin(); break;
+			case Network::PacketType::LOGOUT:			OnReceiveLogout(); break;
+			case Network::PacketType::ALL_TRANSFORM:	OnReceiveAllTransform(); break;
+			case Network::PacketType::DIE:				OnReceiveDead(); break;
 		}
 	}
 }
@@ -43,20 +43,34 @@ void ClientAPI::Draw()
 void ClientAPI::RequestLogin()
 {
 	RequestLoginData data = {};
-	auto packet = MakePacket<RequestLoginData>(PacketType::LOGIN, data);
 
+	auto packet = MakePacket<RequestLoginData>(PacketType::LOGIN, data);
 	m_Client.SendData(packet.data(), (unsigned int)packet.size());
 }
 
-void ClientAPI::RequestJoin()
+void ClientAPI::RequestLogout(int playerID)
 {
+	LogoutData data = {};
+	data.playerID = playerID;
+
+	auto packet = MakePacket<LogoutData>(PacketType::LOGOUT, data);
+	m_Client.SendData(packet.data(), (unsigned int)packet.size());
 }
 
-void ClientAPI::RequestLogout()
+void ClientAPI::RequestTransform(int playerID, Transform transform)
 {
+	RequestTransformData data = {};
+
+	data.playerID = playerID;
+	data.pos = transform.GetPosition();
+	data.rot = transform.GetRotation();
+	data.scale = transform.GetScale();
+
+	std::vector<uint8_t> buf = MakePacket<RequestTransformData>(PacketType::TRANSFORM, data);
+	m_Client.SendData(buf.data(), (unsigned int)buf.size());
 }
 
-void ClientAPI::ReceiveLogin()
+void ClientAPI::OnReceiveLogin()
 {
 	// ログインデータを受信
 	Network::ResponseLoginData data = {};
@@ -66,7 +80,7 @@ void ClientAPI::ReceiveLogin()
 	PlayerManager::GetInstance()->Login(data);
 }
 
-void ClientAPI::ReceiveJoin()
+void ClientAPI::OnReceiveJoin()
 {
 	// 参加データを受信
 	Network::JoinData data = {};
@@ -76,7 +90,7 @@ void ClientAPI::ReceiveJoin()
 	PlayerManager::GetInstance()->Join(data);
 }
 
-void ClientAPI::ReceiveLogout()
+void ClientAPI::OnReceiveLogout()
 {
 	// ログアウトデータを受信
 	Network::LogoutData data = {};
@@ -86,18 +100,18 @@ void ClientAPI::ReceiveLogout()
 	PlayerManager::GetInstance()->Logout(data);
 }
 
-void ClientAPI::ReceiveAllTransform()
+void ClientAPI::OnReceiveAllTransform()
 {
 	// 座標データを受信
-	Network::AllTransformData data = {};
+	Network::ResponseTransformData data = {};
 	m_Client.ReceiveData(reinterpret_cast<char*>(&data), sizeof(data));
 
 	// 座標同期
-	PlayerManager::GetInstance()->SyncTransform(data);
+	PlayerManager::GetInstance()->SyncServerTransform(data);
 
 }
 
-void ClientAPI::ReceiveDie()
+void ClientAPI::OnReceiveDead()
 {
 	// 死亡データを受信
 	Network::DieData data = {};

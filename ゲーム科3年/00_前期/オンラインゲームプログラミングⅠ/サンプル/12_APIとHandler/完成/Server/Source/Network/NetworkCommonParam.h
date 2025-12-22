@@ -18,9 +18,6 @@ namespace Network
 		LOGIN,
 		JOIN,
 		LOGOUT,
-		POS,
-		ROT,
-		SCALE,
 		TRANSFORM,
 		ALL_TRANSFORM,
 		DIE
@@ -44,12 +41,14 @@ namespace Network
 	{
 		int selfID;
 		int playerID[PLAYER_MAX];
+		VECTOR spawnPos;
 	};
 
 	// 他プレイヤー参加データ
 	struct JoinData
 	{
 		int playerID;
+		VECTOR spawnPos;
 	};
 
 	// プレイヤーログアウトデータ
@@ -79,7 +78,7 @@ namespace Network
 		VECTOR scale;
 	};
 
-	struct TransformData
+	struct RequestTransformData
 	{
 		int playerID;
 		VECTOR pos;
@@ -88,7 +87,7 @@ namespace Network
 	};
 
 	// 全プレイヤーのトランスフォームデータ
-	struct AllTransformData
+	struct ResponseTransformData
 	{
 		VECTOR pos[PLAYER_MAX];
 		VECTOR rot[PLAYER_MAX];
