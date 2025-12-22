@@ -4,13 +4,12 @@
 #include "../Network/ClientAPI.h"
 
 GameApp::GameApp()
-: m_ClientAPI(nullptr)
 {
 }
 
 GameApp::~GameApp()
 {
-	EndNetwork();
+	ClientAPI::Fin();;
 	Input::Fin();
 	SceneManager::DeleteInstance();
 }
@@ -40,11 +39,8 @@ void GameApp::Exec()
 		SceneManager::GetInstance()->Step();
 
 		// ネットワーク更新
-		if (m_ClientAPI)
-		{
-			m_ClientAPI->Step();
-			m_ClientAPI->Draw();
-		}
+		ClientAPI::Step();
+		ClientAPI::Draw();
 
 		// エスケープキーで終了
 		if (CheckHitKey(KEY_INPUT_ESCAPE)) break;
@@ -52,28 +48,4 @@ void GameApp::Exec()
 		// 画面フリップ
 		ScreenFlip();
 	}
-}
-
-void GameApp::StartNetwork()
-{
-	if(!m_ClientAPI)
-	{
-		m_ClientAPI = MakeUnique<ClientAPI>();
-		m_ClientAPI->Connect();
-	}
-}
-
-void GameApp::EndNetwork()
-{
-	if (m_ClientAPI)
-	{
-		m_ClientAPI.reset();
-	}
-}
-
-bool GameApp::IsConnected() const
-{
-	if (m_ClientAPI && m_ClientAPI->IsConnected()) return true;
-
-	return false;
 }

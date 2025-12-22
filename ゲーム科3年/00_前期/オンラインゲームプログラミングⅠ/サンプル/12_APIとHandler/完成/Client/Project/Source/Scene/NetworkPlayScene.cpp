@@ -11,8 +11,7 @@ NetworkPlayScene::~NetworkPlayScene()
 void NetworkPlayScene::Init()
 {
 	// ログイン
-	ClientAPI& api = GameApp::GetInstance()->GetClientAPI();
-	api.RequestLogin();
+	ClientAPI::RequestLogin();
 
 	// プレイヤー管理生成
 	PlayerManager::CreateInstance();
@@ -29,5 +28,5 @@ void NetworkPlayScene::Fin()
 	PlayScene::Fin();
 
 	// ネットワーク終了
-	GameApp::GetInstance()->EndNetwork();
+	ClientAPI::Disconnect();
 }

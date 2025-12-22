@@ -30,7 +30,7 @@ void TitleScene::Step()
 	if (Input::IsTriggerKey(KEY_Z))
 	{
 		// ネットワーク開始
-		GameApp::GetInstance()->StartNetwork();
+		ClientAPI::Connect();
 	}
 	else if (Input::IsTriggerKey(KEY_X))
 	{
@@ -38,7 +38,7 @@ void TitleScene::Step()
 	}
 
 	// 接続したらプレイシーンへ
-	if (GameApp::GetInstance()->IsConnected())
+	if (ClientAPI::IsConnected())
 	{
 		SceneManager::GetInstance()->ChangeScene(NETWORK_PLAY);
 	}

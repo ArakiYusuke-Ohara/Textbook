@@ -2,25 +2,14 @@
 #include "Client.h"
 #include "../Component/Transform/Transform.h"
 
-class ClientAPI
+namespace ClientAPI
 {
-public:
-	// コピー禁止
-	ClientAPI(const ClientAPI&) = delete;
-	ClientAPI& operator=(const ClientAPI&) = delete;
-
-	// ムーブ禁止
-	ClientAPI(ClientAPI&&) = delete;
-	ClientAPI& operator=(ClientAPI&&) = delete;
-
-	ClientAPI() = default;
-	~ClientAPI();
-
 	void Connect();
+	void Disconnect();
 	void Step();
 	void Draw();
 
-	bool IsConnected() const { return m_Client.IsConnected(); }
+	bool IsConnected();
 
 	// サーバーへのリクエスト処理
 	void RequestLogin();
@@ -35,7 +24,4 @@ public:
 	void OnReceiveDead();
 
 	void Fin();
-
-private:
-	Client m_Client;
-};
+}

@@ -2,27 +2,29 @@
 #include "NetworkUtility.h"
 #include "../Player/PlayerManager.h"
 
-using namespace Network;
+Client g_Client;
 
-ClientAPI::~ClientAPI()
-{
-	Fin();
-}
+using namespace Network;
 
 void ClientAPI::Connect()
 {
-	m_Client.Connect();
+	g_Client.Connect();
+}
+
+void ClientAPI::Disconnect()
+{
+	g_Client.Disconnect();
 }
 
 void ClientAPI::Step()
 {
-	m_Client.Step();
+	g_Client.Step();
 
-	if (m_Client.CheckReceive())
+	if (g_Client.CheckReceive())
 	{
 		// ヘッダーのみを受信
 		Network::PacketHeader header = {};
-		m_Client.ReceiveData(reinterpret_cast<char*>(&header), sizeof(header));
+		g_Client.ReceiveData(reinterpret_cast<char*>(&header), sizeof(header));
 
 		switch (header.type)
 		{
@@ -37,7 +39,12 @@ void ClientAPI::Step()
 
 void ClientAPI::Draw()
 {
-	m_Client.Draw();
+	g_Client.Draw();
+}
+
+bool ClientAPI::IsConnected()
+{
+	return g_Client.IsConnected();
 }
 
 void ClientAPI::RequestLogin()
@@ -45,7 +52,7 @@ void ClientAPI::RequestLogin()
 	RequestLoginData data = {};
 
 	auto packet = MakePacket<RequestLoginData>(PacketType::LOGIN, data);
-	m_Client.SendData(packet.data(), (unsigned int)packet.size());
+	g_Client.SendData(packet.data(), (unsigned int)packet.size());
 }
 
 void ClientAPI::RequestLogout(int playerID)
@@ -54,7 +61,7 @@ void ClientAPI::RequestLogout(int playerID)
 	data.playerID = playerID;
 
 	auto packet = MakePacket<LogoutData>(PacketType::LOGOUT, data);
-	m_Client.SendData(packet.data(), (unsigned int)packet.size());
+	g_Client.SendData(packet.data(), (unsigned int)packet.size());
 }
 
 void ClientAPI::RequestTransform(int playerID, Transform transform)
@@ -67,14 +74,14 @@ void ClientAPI::RequestTransform(int playerID, Transform transform)
 	data.scale = transform.GetScale();
 
 	std::vector<uint8_t> buf = MakePacket<RequestTransformData>(PacketType::TRANSFORM, data);
-	m_Client.SendData(buf.data(), (unsigned int)buf.size());
+	g_Client.SendData(buf.data(), (unsigned int)buf.size());
 }
 
 void ClientAPI::OnReceiveLogin()
 {
 	// ログインデータを受信
 	Network::ResponseLoginData data = {};
-	m_Client.ReceiveData(reinterpret_cast<char*>(&data), sizeof(data));
+	g_Client.ReceiveData(reinterpret_cast<char*>(&data), sizeof(data));
 
 	// ログイン処理
 	PlayerManager::GetInstance()->Login(data);
@@ -84,7 +91,7 @@ void ClientAPI::OnReceiveJoin()
 {
 	// 参加データを受信
 	Network::JoinData data = {};
-	m_Client.ReceiveData(reinterpret_cast<char*>(&data), sizeof(data));
+	g_Client.ReceiveData(reinterpret_cast<char*>(&data), sizeof(data));
 
 	// プレイヤー参加処理
 	PlayerManager::GetInstance()->Join(data);
@@ -94,7 +101,7 @@ void ClientAPI::OnReceiveLogout()
 {
 	// ログアウトデータを受信
 	Network::LogoutData data = {};
-	m_Client.ReceiveData(reinterpret_cast<char*>(&data), sizeof(data));
+	g_Client.ReceiveData(reinterpret_cast<char*>(&data), sizeof(data));
 
 	// ログアウト
 	PlayerManager::GetInstance()->Logout(data);
@@ -104,7 +111,7 @@ void ClientAPI::OnReceiveAllTransform()
 {
 	// 座標データを受信
 	Network::ResponseTransformData data = {};
-	m_Client.ReceiveData(reinterpret_cast<char*>(&data), sizeof(data));
+	g_Client.ReceiveData(reinterpret_cast<char*>(&data), sizeof(data));
 
 	// 座標同期
 	PlayerManager::GetInstance()->SyncServerTransform(data);
@@ -115,7 +122,7 @@ void ClientAPI::OnReceiveDead()
 {
 	// 死亡データを受信
 	Network::DieData data = {};
-	m_Client.ReceiveData(reinterpret_cast<char*>(&data), sizeof(data));
+	g_Client.ReceiveData(reinterpret_cast<char*>(&data), sizeof(data));
 
 	// 死亡させる
 	PlayerManager::GetInstance()->DiePlayer(data.playerID);
@@ -123,5 +130,5 @@ void ClientAPI::OnReceiveDead()
 
 void ClientAPI::Fin()
 {
-	m_Client.Fin();
+	g_Client.Fin();
 }

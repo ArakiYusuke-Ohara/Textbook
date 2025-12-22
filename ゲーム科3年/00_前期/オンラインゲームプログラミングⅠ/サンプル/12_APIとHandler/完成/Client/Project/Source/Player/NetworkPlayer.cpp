@@ -32,7 +32,7 @@ void NetworkPlayer::Step()
 	// 自分自身しかステップしない
 	if (!m_IsSelf) return;
 	// オフラインだったらステップしない
-	if (!GameApp::GetInstance()->GetClientAPI().IsConnected()) return;
+	if (!ClientAPI::IsConnected()) return;
 
 	// 移動とか
 	Player::Step();
@@ -64,7 +64,6 @@ void NetworkPlayer::Step()
 	// 動いたらトランスフォームを送信
 	if (isMove)
 	{
-		ClientAPI& api = GameApp::GetInstance()->GetClientAPI();
-		api.RequestTransform(m_ID, m_Transform);
+		ClientAPI::RequestTransform(m_ID, m_Transform);
 	}
 }
