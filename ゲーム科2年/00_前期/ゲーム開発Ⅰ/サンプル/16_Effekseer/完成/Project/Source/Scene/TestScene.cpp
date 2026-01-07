@@ -96,5 +96,5 @@ void TestScene::Fin()
 	SetWriteZBuffer3D(FALSE);
 
 	// EffekseerI—¹
-	EffekseerManager::GetInstance()->Fin();
+	// EffekseerManager::GetInstance()->Fin();
 }
