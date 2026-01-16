@@ -131,7 +131,7 @@ void ServerHandler::SyncTransform()
 	{
 		data.pos[i] = player->GetPosition();
 		data.rot[i] = player->GetRotation();
-		data.scale[i] = player->GetScale();
+		data.scale[i] = player->GetScale();;
 		i++;
 	}
 
