@@ -19,9 +19,6 @@ public:
 
 private:
 	void ReceiveData();
-	void ReceiveLogin();
-	void ReceiveJoin();
-	void ReceiveLogout();
 
 private:
 	UniquePtr<Client> m_Client;

@@ -80,9 +80,6 @@ void Server::AddUserData(int handle)
 
 	// 参加データを送信
 	SendJoinData(player);
-
-	// 全員の座標を同期
-
 }
 
 /// <summary>
@@ -127,7 +124,7 @@ void Server::SendLoginData(const NetworkPlayerData& loginPlayer)
 	for (const auto& player : m_NetworkPlayerData)
 	{
 		data.playerID[i] = player.id;				
-		data.selfID = player.id;	// 末尾にあるIDがログインしたクライアント自身のIDとなる
+		data.selfID = player.id;	// 末尾にあるIDがログインしたクライアントのIDとなる
 		i++;
 	}
 

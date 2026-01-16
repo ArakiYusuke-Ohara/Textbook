@@ -43,6 +43,7 @@ void PlayerManager::Draw()
 #ifdef _DEBUG
 	DrawFormatString(0, 20, GetColor(255, 255, 255), "プレイヤー数：%d", m_Players.size());
 #endif
+
 }
 
 Player& PlayerManager::CreatePlayer()
