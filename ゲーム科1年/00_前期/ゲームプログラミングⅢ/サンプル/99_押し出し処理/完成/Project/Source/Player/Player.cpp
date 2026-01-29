@@ -124,7 +124,6 @@ void MovePlayerWithCollision()
 
 	float hitX = 0, hitY = 0;
 	// マップと当たり判定
-	const BlockData* block = CheckMapPlayerCollision();
 	if (CheckMapCollision(g_PlayerData.posX, g_PlayerData.posY, PLAYER_WIDTH, PLAYER_HEIGHT, PLAYER_CHECK_ROUND_NUM,
 		hitX, hitY))
 	{
@@ -149,7 +148,6 @@ void MovePlayerWithCollision()
 	g_PlayerData.posY += g_PlayerData.moveY;
 
 	// マップと当たり判定
-	block = CheckMapPlayerCollision();
 	if (CheckMapCollision(g_PlayerData.posX, g_PlayerData.posY, PLAYER_WIDTH, PLAYER_HEIGHT, PLAYER_CHECK_ROUND_NUM,
 		hitX, hitY))
 	{
