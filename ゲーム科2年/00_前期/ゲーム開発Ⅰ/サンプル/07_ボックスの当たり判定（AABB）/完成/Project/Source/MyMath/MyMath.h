@@ -2,16 +2,15 @@
 
 #include "DxLib.h"
 
-class MyMath
+namespace MyMath
 {
-public:
-	static VECTOR VecCreate(VECTOR startPos, VECTOR endPos);
-	static VECTOR VecAdd(VECTOR vecA, VECTOR vecB);
-	static VECTOR VecScale(VECTOR vecA, float scale);
-	static float VecDot(VECTOR vecA, VECTOR vecB);
-	static float VecCross2D(VECTOR vecA, VECTOR vecB);
-	static VECTOR VecCross3D(VECTOR vecA, VECTOR vecB);
-	static float VecLong(VECTOR vec);
-	static VECTOR VecNormalize(VECTOR vec);
-	static VECTOR VecForwardZX(float rotY);
+	VECTOR VecCreate(VECTOR startPos, VECTOR endPos);
+	VECTOR VecAdd(VECTOR vecA, VECTOR vecB);
+	VECTOR VecScale(VECTOR vecA, float scale);
+	float VecDot(VECTOR vecA, VECTOR vecB);
+	float VecCross2D(VECTOR vecA, VECTOR vecB);
+	VECTOR VecCross3D(VECTOR vecA, VECTOR vecB);
+	float VecLong(VECTOR vec);
+	VECTOR VecNormalize(VECTOR vec);
+	VECTOR VecForwardZX(float rotY);
 };
