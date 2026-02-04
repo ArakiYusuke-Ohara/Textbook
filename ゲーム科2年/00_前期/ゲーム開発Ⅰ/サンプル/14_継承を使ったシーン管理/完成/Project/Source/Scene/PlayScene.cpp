@@ -126,7 +126,7 @@ void PlayScene::Step()
 	CameraManager* cameraManager = CameraManager::GetInstance();
 
 	// デバッグカメラモード切り替え
-	if (Input::IsTriggerKey(KEY_1))
+	if (Input::IsTriggerKey(Input::KEY_1))
 	{
 		CameraManager* cameraManager = CameraManager::GetInstance();
 		// デバッグカメラON/OFF切り替え

@@ -52,23 +52,23 @@ void TestScene::Step()
 	VECTOR mousePos3D = ConvScreenPosToWorldPos(mousePos2D);
 
 	// Aキーでマウスの位置にEffectAを再生
-	if (Input::IsTriggerKey(KEY_A))
+	if (Input::IsTriggerKey(Input::KEY_A))
 	{
 		EffekseerManager::GetInstance()->PlayEffect(EFFEKSEER_HIT, mousePos3D);
 	}
 	// Sキーでマウスの位置にEffectBを再生
-	if (Input::IsTriggerKey(KEY_S))
+	if (Input::IsTriggerKey(Input::KEY_S))
 	{
 		EffekseerManager::GetInstance()->PlayEffect(EFFEKSEER_FIRE, mousePos3D);
 	}
 	// Dキーでマウスの位置にEffectCを再生
-	if (Input::IsTriggerKey(KEY_D))
+	if (Input::IsTriggerKey(Input::KEY_D))
 	{
 		EffekseerManager::GetInstance()->PlayEffect(EFFEKSEER_RING, mousePos3D);
 	}
 
 	// 1キーでタイトルシーンへ
-	if (Input::IsTriggerKey(KEY_1))
+	if (Input::IsTriggerKey(Input::KEY_1))
 	{
 		SceneManager::GetInstance()->ChangeScene(TITLE);
 	}

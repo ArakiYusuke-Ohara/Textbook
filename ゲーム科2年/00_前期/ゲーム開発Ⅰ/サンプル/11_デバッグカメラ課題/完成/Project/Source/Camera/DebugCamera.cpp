@@ -48,54 +48,54 @@ void DebugCamera::Step()
 	m_Move = VGet(0.0f, 0.0f, 0.0f);
 
 	// キー入力処理
-	if (Input::IsInputKey(KEY_RIGHT))
+	if (Input::IsInputKey(Input::KEY_RIGHT))
 	{
 		// 左回転
 		m_Rot.y += ROTATION_SPEED;
 	}
-	if (Input::IsInputKey(KEY_LEFT))
+	if (Input::IsInputKey(Input::KEY_LEFT))
 	{
 		// 右回転
 		m_Rot.y -= ROTATION_SPEED;
 	}
-	if (Input::IsInputKey(KEY_DOWN))
+	if (Input::IsInputKey(Input::KEY_DOWN))
 	{
 		// 手前回転
 		m_Rot.x += ROTATION_SPEED;
 	}
-	if (Input::IsInputKey(KEY_UP))
+	if (Input::IsInputKey(Input::KEY_UP))
 	{
 		// 奥回転
 		m_Rot.x -= ROTATION_SPEED;
 	}
 
 	// 右
-	if (Input::IsInputKey(KEY_D))
+	if (Input::IsInputKey(Input::KEY_D))
 	{
 		m_Move.x = MOVE_SPEED;
 	}
 	// 左
-	if (Input::IsInputKey(KEY_A))
+	if (Input::IsInputKey(Input::KEY_A))
 	{
 		m_Move.x = -MOVE_SPEED;
 	}
 	// 上
-	if (Input::IsInputKey(KEY_W))
+	if (Input::IsInputKey(Input::KEY_W))
 	{
 		m_Move.y = MOVE_SPEED;
 	}
 	// 下
-	if (Input::IsInputKey(KEY_S))
+	if (Input::IsInputKey(Input::KEY_S))
 	{
 		m_Move.y = -MOVE_SPEED;
 	}
 	// 前進
-	if (Input::IsInputKey(KEY_Z))
+	if (Input::IsInputKey(Input::KEY_Z))
 	{
 		m_Move.z = MOVE_SPEED;
 	}
 	// 後退
-	if (Input::IsInputKey(KEY_X))
+	if (Input::IsInputKey(Input::KEY_X))
 	{
 		m_Move.z = -MOVE_SPEED;
 	}

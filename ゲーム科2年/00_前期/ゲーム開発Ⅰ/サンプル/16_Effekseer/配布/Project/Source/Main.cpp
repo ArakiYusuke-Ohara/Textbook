@@ -100,7 +100,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance, 
 		Input::Update();
 
 		// デバッグカメラモード切り替え
-		if (Input::IsTriggerKey(KEY_1))
+		if (Input::IsTriggerKey(Input::KEY_1))
 		{
 			// デバッグカメラON/OFF切り替え
 			bool isDebugCamera = cameraManager->IsDebugCameraMode();

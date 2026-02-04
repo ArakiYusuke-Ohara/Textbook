@@ -40,7 +40,7 @@ void TestScene::Step()
 	PlayerManager::GetInstance()->Step();
 
 	// 1キーでタイトルシーンへ
-	if (Input::IsTriggerKey(KEY_1))
+	if (Input::IsTriggerKey(Input::KEY_1))
 	{
 		SceneManager::GetInstance()->ChangeScene(TITLE);
 	}

@@ -56,12 +56,12 @@ void Player::Step()
 	m_Move = VGet(0.0, 0.0f, 0.0f);
 
 	// 左右で回転
-	if (Input::IsInputKey(KEY_LEFT))
+	if (Input::IsInputKey(Input::KEY_LEFT))
 	{
 
 
 	}
-	if (Input::IsInputKey(KEY_RIGHT))
+	if (Input::IsInputKey(Input::KEY_RIGHT))
 	{
 
 
@@ -78,7 +78,7 @@ void Player::Step()
 	}
 
 	// 上キーで前進
-	if (Input::IsInputKey(KEY_UP))
+	if (Input::IsInputKey(Input::KEY_UP))
 	{
 		// 前方ベクトルを取得
 

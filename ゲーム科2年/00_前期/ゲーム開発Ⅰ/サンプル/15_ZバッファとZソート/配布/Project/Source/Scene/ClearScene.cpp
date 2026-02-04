@@ -26,7 +26,7 @@ void ClearScene::Start()
 void ClearScene::Step()
 {
 	// Zキーでタイトルシーンへ
-	if (Input::IsTriggerKey(KEY_Z))
+	if (Input::IsTriggerKey(Input::KEY_Z))
 	{
 		SceneManager::GetInstance()->ChangeScene(TITLE);
 	}

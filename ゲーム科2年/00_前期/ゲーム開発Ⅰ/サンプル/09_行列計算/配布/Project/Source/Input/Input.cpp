@@ -1,64 +1,65 @@
 #include "DxLib.h"
 #include "Input.h"
 
-int Input::m_InputState = 0;
-int Input::m_PrevInputState = 0;
+// 入力ビットフラグ
+int g_InputState;
+// 前回の入力ビット
+int g_PrevInputState;
 
-void Input::Init()
+namespace Input
 {
-	m_InputState = 0;
-	m_PrevInputState = 0;
-}
-
-void Input::Update()
-{
-	// 前回の入力を覚えておく
-	m_PrevInputState = m_InputState;
-
-	// 入力状態をクリア
-	m_InputState = 0;
-
-	// 入力状態をビットフラグで設定
-	if (CheckHitKey(KEY_INPUT_UP))
+	void Input::Init()
 	{
-		m_InputState |= KEY_UP;
+		g_InputState = 0;
+		g_PrevInputState = 0;
 	}
-	if (CheckHitKey(KEY_INPUT_DOWN))
+
+	void Input::Update()
 	{
-		m_InputState |= KEY_DOWN;
+		// 前回の入力を覚えておく
+		g_PrevInputState = g_InputState;
+
+		// 入力状態をクリア
+		g_InputState = 0;
+
+		// 入力状態をビットフラグで設定
+		if (CheckHitKey(KEY_INPUT_UP))
+		{
+			g_InputState |= KEY_UP;
+		}
+		if (CheckHitKey(KEY_INPUT_DOWN))
+		{
+			g_InputState |= KEY_DOWN;
+		}
+		if (CheckHitKey(KEY_INPUT_LEFT))
+		{
+			g_InputState |= KEY_LEFT;
+		}
+		if (CheckHitKey(KEY_INPUT_RIGHT))
+		{
+			g_InputState |= KEY_RIGHT;
+		}
+		if (CheckHitKey(KEY_INPUT_Z))
+		{
+			g_InputState |= KEY_Z;
+		}
 	}
-	if (CheckHitKey(KEY_INPUT_LEFT))
+
+	void Input::Draw()
 	{
-		m_InputState |= KEY_LEFT;
 	}
-	if (CheckHitKey(KEY_INPUT_RIGHT))
+
+	void Input::Fin()
 	{
-		m_InputState |= KEY_RIGHT;
 	}
-	if (CheckHitKey(KEY_INPUT_Z))
+
+	bool Input::IsInputKey(InputKey key)
 	{
-		m_InputState |= KEY_Z;
+		return g_InputState & key;
+	}
+
+	bool Input::IsTriggerKey(InputKey key)
+	{
+		return (g_InputState & key) && !(g_PrevInputState & key);
 	}
 }
-
-void Input::Draw()
-{
-}
-
-void Input::Fin()
-{
-}
-
-bool Input::IsInputKey(InputKey key)
-{
-	return m_InputState & key;
-}
-
-bool Input::IsTriggerKey(InputKey key)
-{
-	return (m_InputState & key) && !(m_PrevInputState & key);
-}
-
-
-
-
