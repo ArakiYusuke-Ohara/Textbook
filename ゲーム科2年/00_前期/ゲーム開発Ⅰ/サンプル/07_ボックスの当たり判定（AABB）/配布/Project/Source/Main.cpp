@@ -104,9 +104,6 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance, 
 		// ボックス更新
 		boxManager->Update();
 
-		// 当たり判定
-		collisionManager->CheckCollision();
-
 		// プレイヤー描画
 		playerManager->Draw();
 		// カメラ描画

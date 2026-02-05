@@ -3,10 +3,14 @@
 #include "../MyMath/MyMath.h"
 #include "../Collision/CollisionManager.h"
 #include "../Collision/CollisionAABB.h"
+#include "../Block/BlockManager.h"
+#include "../Block/Block.h"
 
 #define ROTATION_SPEED	0.1f
 #define MOVE_SPEED		0.1f
-
+#define PLAYER_WIDTH	1.0f
+#define PLAYER_HEIGHT	1.0f
+#define PLAYER_DEPTH	1.0f
 
 // コンストラクタ
 Player::Player()
@@ -18,7 +22,6 @@ Player::Player()
 	m_Rot = VGet(0.0f, 0.0f, 0.0f);
 	m_Scale = VGet(0.0f, 0.0f, 0.0f);
 	m_Move = VGet(0.0, 0.0f, 0.0f);
-	m_PrevPos = VGet(0.0, 0.0f, 0.0f);
 	m_AABB = nullptr;
 }
 
@@ -55,7 +58,7 @@ void Player::Start()
 	m_AABB = CollisionManager::GetInstance()->CreateAABB();
 	m_AABB->SetTargetPos(&m_Pos);
 	m_AABB->SetLocalPos(VGet(0.0f, 0.5f, 0.0f));
-	m_AABB->SetSize(VGet(1.0f, 1.0f, 1.0f));
+	m_AABB->SetSize(VGet(PLAYER_WIDTH, PLAYER_HEIGHT, PLAYER_DEPTH));
 }
 
 // ステップ
@@ -99,11 +102,8 @@ void Player::Step()
 // 更新
 void Player::Update()
 {
-	// 移動前の座標を記録
-	m_PrevPos = m_Pos;
-
-	// 移動量を反映
-	m_Pos = MyMath::VecAdd(m_Pos, m_Move);
+	// 当たり判定付き移動
+	MoveWithCollision();
 
 	// 3Dモデルの座標を設定する
 	MV1SetPosition(m_Handle, m_Pos);
@@ -133,9 +133,93 @@ void Player::Fin()
 	MV1DeleteModel(m_Handle);
 }
 
-void Player::HitBlock(CollisionAABB* other)
+void Player::MoveWithCollision()
 {
-	// 移動前の座標に設定する
-	m_Pos = m_PrevPos;
-	MV1SetPosition(m_Handle, m_Pos);
+	// X軸だけプレイヤーを移動させる
+	m_Pos.x += m_Move.x;
+
+	// ブロックと当たり判定
+	HitResultAABB hitResult = CheckHitBlocks();
+	if (hitResult.isHit)
+	{
+		// 左からあたったか
+		if (m_Move.x > 0.0f)
+		{
+			// 左に押し出す
+			m_Pos.x -= m_AABB->GetRight() - hitResult.hitLeft;
+		}
+		// 右からあたったか
+		else if (m_Move.x < 0.0f)
+		{
+			// 右に押し出す
+			m_Pos.x += hitResult.hitRight - m_AABB->GetLeft();
+		}
+
+		// 移動量は0にする
+		m_Move.x = 0.0f;
+	}
+
+	// Y軸だけプレイヤーを移動させる
+	m_Pos.y += m_Move.y;
+
+	// ブロックと当たり判定
+	hitResult = CheckHitBlocks();
+	if (hitResult.isHit)
+	{
+		// 上からあたったか
+		if (m_Move.y < 0.0f)
+		{
+			// 上に押し出す
+			m_Pos.y += hitResult.hitTop - m_AABB->GetBottom();
+		}
+		// 下からあたったか
+		else if (m_Move.y > 0.0f)
+		{
+			// 下に押し出す
+			m_Pos.y -= m_AABB->GetTop() - hitResult.hitBottom;
+		}
+
+		// 移動量は0にする
+		m_Move.y = 0.0f;
+	}
+
+	// Z軸だけプレイヤーを移動させる
+	m_Pos.z += m_Move.z;
+
+	// ブロックと当たり判定
+	hitResult = CheckHitBlocks();
+	if (hitResult.isHit)
+	{
+		// 手前からあたったか
+		if (m_Move.z > 0.0f)
+		{
+			// 手前に押し出す
+			m_Pos.z -= m_AABB->GetBack() - hitResult.hitFront;
+		}
+		// 奥からあたったか
+		else if (m_Move.z < 0.0f)
+		{
+			// 奥に押し出す
+			m_Pos.z += hitResult.hitBack - m_AABB->GetFront();
+		}
+		// 移動量は0にする
+		m_Move.z = 0.0f;
+	}
+}
+
+HitResultAABB Player::CheckHitBlocks()
+{  
+   Block* block = BlockManager::GetInstance()->GetBlocks();  
+   for (int i = 0; i < BLOCK_MAX; i++, block++)  
+   {  
+	   CollisionAABB* blockAABB = block->GetAABB();
+	   const HitResultAABB result = m_AABB->CheckAABB(blockAABB);
+	   if (result.isHit)
+	   {
+		   // 当たった
+		   return result;
+	   }
+   }
+
+   return HitResultAABB();
 }
