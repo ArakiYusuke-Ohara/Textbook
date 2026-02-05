@@ -1,6 +1,5 @@
 #pragma once
-// Box.hをインクルードしなくて済むように前方定義
-class Block;
+#include "Block.h"
 
 #define BLOCK_MAX 4
 
