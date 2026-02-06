@@ -7,10 +7,6 @@ BlockManager* BlockManager::m_Instance = nullptr;
 // コンストラクタ
 BlockManager::BlockManager()
 {
-	for (int i = 0; i < BLOCK_MAX; i++)
-	{
-		m_Blocks[i] = nullptr;
-	}
 	m_Handle = 0;
 }
 
@@ -23,10 +19,7 @@ BlockManager::~BlockManager()
 
 void BlockManager::Init()
 {
-	for (int i = 0; i < BLOCK_MAX; i++)
-	{
-		m_Blocks[i] = new Block;
-	}
+
 }
 
 void BlockManager::Load()
@@ -39,7 +32,7 @@ void BlockManager::Load()
 	{
 		// 引数で大元のモデルハンドルを渡して
 		// Box側で複製する
-		m_Blocks[i]->Load(m_Handle);
+		m_Blocks[i].Load(m_Handle);
 	}
 }
 
@@ -57,8 +50,8 @@ void BlockManager::Start()
 	// 各ボックスを開始して配置
 	for (int i = 0; i < BLOCK_MAX; i++)
 	{
-		m_Blocks[i]->Start();
-		m_Blocks[i]->SetPos(DEFAULT_POS[i]);
+		m_Blocks[i].Start();
+		m_Blocks[i].SetPos(DEFAULT_POS[i]);
 	}
 }
 
@@ -66,7 +59,7 @@ void BlockManager::Step()
 {
 	for (int i = 0; i < BLOCK_MAX; i++)
 	{
-		m_Blocks[i]->Step();
+		m_Blocks[i].Step();
 	}
 }
 
@@ -74,7 +67,7 @@ void BlockManager::Update()
 {
 	for (int i = 0; i < BLOCK_MAX; i++)
 	{
-		m_Blocks[i]->Update();
+		m_Blocks[i].Update();
 	}
 }
 
@@ -82,14 +75,11 @@ void BlockManager::Draw()
 {
 	for (int i = 0; i < BLOCK_MAX; i++)
 	{
-		m_Blocks[i]->Draw();
+		m_Blocks[i].Draw();
 	}
 }
 
 void BlockManager::Fin()
 {
-	for (int i = 0; i < BLOCK_MAX; i++)
-	{
-		delete m_Blocks[i];
-	}
+	MV1DeleteModel(m_Handle);
 }

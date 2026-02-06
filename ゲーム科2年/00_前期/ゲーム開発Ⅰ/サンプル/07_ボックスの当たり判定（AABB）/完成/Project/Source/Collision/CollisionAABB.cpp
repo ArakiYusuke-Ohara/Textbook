@@ -32,8 +32,10 @@ void CollisionAABB::Draw()
 	DrawCube3D(posA, posB, GetColor(255, 255, 255), GetColor(255, 255, 255), false);
 }
 
-bool CollisionAABB::CheckAABB(CollisionAABB* other)
+HitResultAABB CollisionAABB::CheckAABB(const CollisionAABB* other) const
 {
+	HitResultAABB result = {};
+
 	VECTOR centerPos = MyMath::VecAdd(*m_TargetPos, m_LocalPos);
 	VECTOR otherCenterPos = MyMath::VecAdd(other->GetTargetPos(), other->GetLocalPos());
 	VECTOR otherSize = other->GetSize();
@@ -55,13 +57,22 @@ bool CollisionAABB::CheckAABB(CollisionAABB* other)
 	float otherBack		= otherCenterPos.z + otherSize.z * 0.5f;	// ‰œ
 
 	// Še–Ê‚ªŒğ·‚µ‚Ä‚¢‚ê‚Î“–‚½‚Á‚Ä‚¢‚é
-	if (left <= otherRight && right >= otherLeft &&
-		bottom <= otherTop && top >= otherBottom &&
-		front <= otherBack && back >= otherFront)
+	if (left < otherRight && right > otherLeft &&
+		bottom < otherTop && top > otherBottom &&
+		front < otherBack && back > otherFront)
 	{
-		return true;
+		// “–‚½‚Á‚½
+		result.isHit = true;
+		result.hitPos = otherCenterPos;
+		result.hitSize = otherSize;
+		result.hitLeft = otherLeft;
+		result.hitRight = otherRight;
+		result.hitTop = otherTop;
+		result.hitBottom = otherBottom;
+		result.hitFront = otherFront;
+		result.hitBack = otherBack;
 	}
 
-	return false;
+	return result;
 }
 

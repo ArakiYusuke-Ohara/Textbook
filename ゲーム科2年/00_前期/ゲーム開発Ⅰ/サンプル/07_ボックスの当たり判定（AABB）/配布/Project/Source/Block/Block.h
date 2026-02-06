@@ -10,7 +10,6 @@ public:
 	Block();
 	~Block();
 
-public:
 	void Init();			// 初期化
 	void Load(int handle);	// ロード
 	void Start();			// 開始
@@ -19,7 +18,6 @@ public:
 	void Draw();			// 描画
 	void Fin();				// 終了
 
-public:
 	CollisionAABB* GetAABB() { return m_AABB; }
 
 	void SetPos(VECTOR pos) { m_Pos = pos; }
