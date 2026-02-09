@@ -69,26 +69,6 @@ void DebugCamera::Step()
 		m_Rot.x -= ROTATION_SPEED;
 	}
 
-	// âE
-	if (Input::IsInputKey(Input::KEY_D))
-	{
-		m_Move.x = MOVE_SPEED;
-	}
-	// ç∂
-	if (Input::IsInputKey(Input::KEY_A))
-	{
-		m_Move.x = -MOVE_SPEED;
-	}
-	// è„
-	if (Input::IsInputKey(Input::KEY_W))
-	{
-		m_Move.y = MOVE_SPEED;
-	}
-	// â∫
-	if (Input::IsInputKey(Input::KEY_S))
-	{
-		m_Move.y = -MOVE_SPEED;
-	}
 	// ëOêi
 	if (Input::IsInputKey(Input::KEY_Z))
 	{

@@ -15,12 +15,8 @@ CollisionManager* CollisionManager::m_Instance = nullptr;
 // コンストラクタ
 CollisionManager::CollisionManager()
 {
-	// 各配列を先頭から末尾までまわす範囲for文
-	for(int i = 0 ; i < COLLISION_MAX; i++)
-	{
-		m_AABB[i] = nullptr;
-		m_Sphere[i] = nullptr;
-	}
+	m_AABB = {};
+	m_Sphere = {};
 }
 
 // デストラクタ
@@ -33,7 +29,7 @@ CollisionManager::~CollisionManager()
 void CollisionManager::Draw()
 {
 	// m_AABBを先頭から末尾までまわす範囲for文
-	for (auto aabb : m_AABB)
+	for (CollisionAABB* aabb : m_AABB)
 	{
 		if (aabb)
 		{
@@ -42,7 +38,7 @@ void CollisionManager::Draw()
 	}
 
 	// m_Sphereを先頭から末尾までまわす範囲for文
-	for (auto sphere : m_Sphere)
+	for (CollisionSphere* sphere : m_Sphere)
 	{
 		if (sphere)
 		{
@@ -53,121 +49,39 @@ void CollisionManager::Draw()
 
 void CollisionManager::Fin()
 {
-	for (int i = 0; i < COLLISION_MAX; i++)
+	for (CollisionAABB* aabb : m_AABB)
 	{
-		// 使用されているところだけ削除して未使用状態にする
-		if (m_AABB[i])
+		if (aabb)
 		{
-			delete m_AABB[i];
-			m_AABB[i] = nullptr;
-		}
-		if (m_Sphere[i])
-		{
-			delete m_Sphere[i];
-			m_Sphere[i] = nullptr;
+			delete aabb;
 		}
 	}
+	m_AABB.clear();
+
+	for (CollisionSphere* sphere : m_Sphere)
+	{
+		if (sphere)
+		{
+			delete sphere;
+		}
+	}
+	m_Sphere.clear();
 }
 
 CollisionAABB* CollisionManager::CreateAABB()
 {
-	CollisionAABB* result = nullptr;
+	CollisionAABB* aabb = new CollisionAABB;
+	m_AABB.push_back(aabb);
 
-	// m_AABBを先頭から末尾までまわす範囲for文
-	for (int i = 0; i < COLLISION_MAX; i++)
-	{
-		// 未使用のAABBか
-		if (!m_AABB[i])
-		{
-			// AABBを生成して配列に保存
-			m_AABB[i] = result = new CollisionAABB;
-			break;
-		}
-	}
-
-	return result;
+	return aabb;
 }
 
-void CollisionManager::DeleteAABB(CollisionAABB* targetAABB)
-{
-	// m_AABBを先頭から末尾までまわす範囲for文
-	for (int i = 0; i < COLLISION_MAX; i++)
-	{
-		// 参照先が一致するAABBを探す
-		if (m_AABB[i] == targetAABB)
-		{
-			// 見つかったら削除
-			delete targetAABB;
-			// 未使用状態にするためnullptr
-			m_AABB[i] = nullptr;
-			break;
-		}
-	}
-}
 
 // Sphereを生成する
 CollisionSphere* CollisionManager::CreateSphere()
 {
-	CollisionSphere* result = nullptr;
+	CollisionSphere* sphere = new CollisionSphere;
+	m_Sphere.push_back(sphere);
 
-	for (int i = 0; i < COLLISION_MAX; i++)
-	{
-		// 未使用のSphereか
-		if (!m_Sphere[i])
-		{
-			// Sphereを生成して配列に保存
-			m_Sphere[i] = result = new CollisionSphere;
-			break;
-		}
-	}
-
-	return result;
-}
-
-// Sphereを削除する
-void CollisionManager::DeleteSphere(CollisionSphere* targetSphere)
-{
-	for (int i = 0; i < COLLISION_MAX; i++)
-	{
-		// 参照先が一致するSphereを探す
-		if (m_Sphere[i] == targetSphere)
-		{
-			// 見つかったら削除
-			delete targetSphere;
-			// 未使用状態にするためnullptr
-			m_Sphere[i] = nullptr;
-			break;
-		}
-	}
-}
-
-void CollisionManager::CheckCollision()
-{
-	Player* player = PlayerManager::GetInstance()->GetPlayer();
-	Block** blocks = BlockManager::GetInstance()->GetBlock();
-	CollisionAABB* playerAABB = player->GetAABB();
-
-	// ブロックとプレイヤーの当たり判定
-	for (int i = 0; i < BLOCK_MAX; i++)
-	{
-		Block* block = blocks[i];
-		CollisionAABB* blockAABB = block->GetAABB();
-
-		if (playerAABB->CheckAABB(blockAABB))
-		{
-			// 当たった時の処理
-			player->HitBlock(blockAABB);
-		}
-	}
-
-	// ゴールとプレイヤーの当たり判定
-	Goal* goal = GoalManager::GetInstance()->GetGoal();
-	// プレイヤーとゴールの球の当たり判定取得
-	CollisionSphere* playerSphere = player->GetSphereCollision();
-	CollisionSphere* goalSphere = goal->GetSphereCollisoin();
-	// プレイヤーとゴールは球の当たり判定
-	if (playerSphere->CheckSphere(goalSphere))
-	{
-		player->HitGoal();
-	}
+	return sphere;
 }

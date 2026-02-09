@@ -35,7 +35,7 @@ void Goal::Init()
 void Goal::Load()
 {
 	// 3Dモデルをロードする
-	m_Handle = MV1LoadModel("Resource/Goal/Goal.x");
+	m_Handle = MV1LoadModel("Data/Goal/Goal.x");
 }
 
 // 開始
@@ -79,12 +79,6 @@ void Goal::Draw()
 {
 	// 3Dモデルを描画する
 	MV1DrawModel(m_Handle);
-
-	// 座標を描画する
-	DrawFormatString(0, 0, GetColor(255, 255, 255), "座標[%f, %f, %f]", m_Pos.x, m_Pos.y, m_Pos.z);
-
-	// 回転値を描画する
-	DrawFormatString(0, 20, GetColor(255, 255, 255), "回転[%f, %f, %f]", m_Rot.x, m_Rot.y, m_Rot.z);
 }
 
 // 終了
