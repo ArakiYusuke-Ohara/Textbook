@@ -163,6 +163,7 @@
     <ClInclude Include="Source\Camera\CameraManager.h" />
     <ClInclude Include="Source\Collision\CollisionAABB.h" />
     <ClInclude Include="Source\Collision\CollisionManager.h" />
+    <ClInclude Include="Source\Collision\CollisionParameter.h" />
     <ClInclude Include="Source\Collision\CollisionSphere.h" />
     <ClInclude Include="Source\Floor\Floor.h" />
     <ClInclude Include="Source\FPS\FPS.h" />

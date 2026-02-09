@@ -21,11 +21,11 @@ public:
 
 	CollisionAABB* GetAABB() { return m_AABB; }
 
+private:
 	// 衝突判定付き移動処理
 	void MoveWithCollision();
 	HitResultAABB CheckHitBlocks();
 
-private:
 	int m_Handle;	// 画像ハンドル
 	VECTOR m_Pos;	// 座標
 	VECTOR m_Rot;	// 回転

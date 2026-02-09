@@ -119,9 +119,6 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance, 
 		// ゴール更新
 		goalManager->Update();
 
-		// 当たり判定
-		collisionManager->CheckCollision();
-
 		// プレイヤー描画
 		playerManager->Draw();
 		// カメラ描画
