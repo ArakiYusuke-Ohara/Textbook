@@ -1,6 +1,5 @@
 #pragma once
-// Box.hをインクルードしなくて済むように前方定義
-class Block;
+#include "Block.h"
 
 #define BLOCK_MAX 4
 
@@ -28,14 +27,14 @@ public:
 	void Fin();		// 終了
 
 public:
-	Block** GetBlock() { return m_Blocks; }
+	Block* GetBlocks() { return m_Blocks; }
 
 private:
 	// BlockManagerインスタンス
 	static BlockManager* m_Instance;
 
 	// ブロックを複数管理するため、配列で管理する
-	Block* m_Blocks[BLOCK_MAX];
+	Block m_Blocks[BLOCK_MAX];
 
 	// ロードして取得する大元のモデルハンドル
 	int m_Handle;

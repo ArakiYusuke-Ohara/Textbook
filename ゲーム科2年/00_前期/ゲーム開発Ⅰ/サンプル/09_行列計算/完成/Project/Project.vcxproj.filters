@@ -128,5 +128,8 @@
     <ClInclude Include="Source\Goal\GoalManager.h">
       <Filter>Source\Goal</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Collision\CollisionParameter.h">
+      <Filter>Source\Collision</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

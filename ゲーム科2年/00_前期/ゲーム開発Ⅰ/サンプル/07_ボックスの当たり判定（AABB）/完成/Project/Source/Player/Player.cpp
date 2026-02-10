@@ -6,8 +6,8 @@
 #include "../Block/BlockManager.h"
 #include "../Block/Block.h"
 
-#define ROTATION_SPEED	0.1f
-#define MOVE_SPEED		0.1f
+#define ROTATION_SPEED	0.03f
+#define MOVE_SPEED		0.03f
 #define PLAYER_WIDTH	1.0f
 #define PLAYER_HEIGHT	1.0f
 #define PLAYER_DEPTH	1.0f
