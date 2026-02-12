@@ -218,5 +218,8 @@
     <ClInclude Include="Source\Skybox\Skybox.h">
       <Filter>Source\Skybox</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Collision\CollisionParameter.h">
+      <Filter>Source\Collision</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

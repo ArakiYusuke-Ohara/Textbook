@@ -172,8 +172,6 @@ void PlayScene::Step()
 		BlockManager::GetInstance()->Step();
 		// ゴールステップ
 		GoalManager::GetInstance()->Step();
-		// 当たり判定
-		CollisionManager::GetInstance()->CheckCollision();
 		// 天球ステップ
 		m_Skybox->Step();
 	}
