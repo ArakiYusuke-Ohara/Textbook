@@ -167,5 +167,8 @@
     <ClInclude Include="Source\Enemy\RedEnemy.h">
       <Filter>Source\Enemy</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Collision\CollisionParameter.h">
+      <Filter>Source\Collision</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

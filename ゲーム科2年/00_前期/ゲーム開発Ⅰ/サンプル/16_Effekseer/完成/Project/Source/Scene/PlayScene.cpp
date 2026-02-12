@@ -183,9 +183,6 @@ void PlayScene::Update()
 	BlockManager::GetInstance()->Update();
 	// ƒS[ƒ‹XV
 	GoalManager::GetInstance()->Update();
-
-	// “–‚½‚è”»’è
-	CollisionManager::GetInstance()->CheckCollision();
 }
 
 void PlayScene::Draw()

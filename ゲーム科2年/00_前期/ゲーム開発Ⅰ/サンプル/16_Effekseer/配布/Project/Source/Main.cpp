@@ -4,6 +4,8 @@
 #include "Block/BlockManager.h"
 #include "Goal/GoalManager.h"
 #include "Collision/CollisionManager.h"
+#include "Enemy/EnemyManager.h"
+#include "Scene/SceneManager.h"
 #include "Input/Input.h"
 #include "FPS/FPS.h"
 #include "Floor/Floor.h"
@@ -29,57 +31,11 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance, 
 	// 描画先を裏画面にする
 	SetDrawScreen(DX_SCREEN_BACK);
 
-	// コリジョンマネージャー生成
-	CollisionManager::CreateInstance();
-	CollisionManager* collisionManager = CollisionManager::GetInstance();
-
-	// プレイヤーマネージャーを生成
-	PlayerManager::CreateInstance();
-	// プレイヤーマネージャーを取得
-	PlayerManager* playerManager = PlayerManager::GetInstance();
-	// プレイヤーを生成
-	playerManager->CreatePlayer();
-	// プレイヤーの初期化～開始
-	playerManager->Init();
-	playerManager->Load();
-	playerManager->Start();
-
-	// カメラマネージャーを生成
-	CameraManager::CreateInstance();
-	// カメラマネージャーを取得
-	CameraManager* cameraManager = CameraManager::GetInstance();
-	// カメラを生成
-	cameraManager->CreateCamera(CAMERA);
-	cameraManager->CreateCamera(DEBUG_CAMERA);
-	// カメラの初期化～開始
-	cameraManager->Init();
-	cameraManager->Load();
-	cameraManager->Start();
-
-	// 床生成
-	Floor* floor = new Floor;
-	// 初期化～開始
-	floor->Init();
-	floor->Load();
-	floor->Start();
-
-	// ブロックマネージャーを生成
-	BlockManager::CreateInstance();
-	BlockManager* boxManager = BlockManager::GetInstance();
-	// 初期化～開始
-	boxManager->Init();
-	boxManager->Load();
-	boxManager->Start();
-
-	// ゴールマネージャー生成
-	GoalManager::CreateInstance();
-	GoalManager* goalManager = GoalManager::GetInstance();
-	// ゴール生成
-	goalManager->CreateGoal();
-	// 初期化～開始
-	goalManager->Init();
-	goalManager->Load();
-	goalManager->Start();
+	// シーンマネージャー生成
+	SceneManager::CreateInstance();
+	// シーン初期化
+	SceneManager* sceneManager = SceneManager::GetInstance();
+	sceneManager->Init();
 
 	// 入力初期化
 	Input::Init();
@@ -99,74 +55,11 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance, 
 		// 入力更新
 		Input::Update();
 
-		// デバッグカメラモード切り替え
-		if (Input::IsTriggerKey(Input::KEY_1))
-		{
-			// デバッグカメラON/OFF切り替え
-			bool isDebugCamera = cameraManager->IsDebugCameraMode();
-			if (isDebugCamera)
-			{
-				// デバッグカメラ解除
-				cameraManager->ReleaseDebugCameraMode();
-			}
-			else
-			{
-				// デバッグカメラON
-				cameraManager->ChangeDebugCameraMode();
-			}
-		}
-
-		if (cameraManager->IsDebugCameraMode())
-		{
-			// デバッグカメラがONのときはカメラだけStep/Updateする
-			cameraManager->Step();
-			cameraManager->Update();
-		}
-		// デバッグカメラがOFFの時のみそれぞれのオブジェクトを動かす
-		else
-		{
-			// プレイヤーステップ
-			playerManager->Step();
-			// カメラステップ
-			cameraManager->Step();
-			// 床ステップ
-			floor->Step();
-			// ボックスステップ
-			boxManager->Step();
-			// ゴールステップ
-			goalManager->Step();
-
-			// プレイヤー更新
-			playerManager->Update();
-			// カメラアップデート
-			cameraManager->Update();
-			// 床更新
-			floor->Update();
-			// ボックス更新
-			boxManager->Update();
-			// ゴール更新
-			goalManager->Update();
-
-			// 当たり判定
-			collisionManager->CheckCollision();
-		}
-
-		// プレイヤー描画
-		playerManager->Draw();
-		// カメラ描画
-		cameraManager->Draw();
-		// 床描画
-		floor->Draw();
-		// ボックス描画
-		boxManager->Draw();
-		// ゴール描画
-		goalManager->Draw();
-
+		// シーンを更新
+		sceneManager->Update();
 
 		// 入力描画
 		Input::Draw();
-		// 当たり判定描画
-		CollisionManager::GetInstance()->Draw();
 
 		// FPS更新
 		FPSSystem::Update();
@@ -183,23 +76,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance, 
 		ScreenFlip();
 	}
 
-	// プレイヤーマネージャー削除
-	PlayerManager::DeleteInstance();
-
-	// カメラマネージャー削除
-	CameraManager::DeleteInstance();
-
-	// ボックスマネージャー削除
-	BlockManager::DeleteInstance();
-
-	// ゴールマネージャー削除
-	GoalManager::DeleteInstance();
-
-	// コリジョンマネージャー削除
-	CollisionManager::DeleteInstance();
-
-	// 床削除
-	delete floor;
+	// シーンマネージャー削除
+	SceneManager::DeleteInstance();
 
 	// 入力終了
 	Input::Fin();

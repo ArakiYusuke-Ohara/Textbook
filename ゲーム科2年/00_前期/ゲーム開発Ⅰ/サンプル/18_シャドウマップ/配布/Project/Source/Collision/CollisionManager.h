@@ -33,10 +33,6 @@ public:
 	// Sphereを削除する
 	void DeleteSphere(CollisionSphere* targetSphere);
 
-public:
-	// 当たり判定のチェック
-	void CheckCollision();
-
 private:
 	// CollisionManagerインスタンス
 	static CollisionManager* m_Instance;

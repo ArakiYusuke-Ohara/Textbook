@@ -140,34 +140,3 @@ void CollisionManager::DeleteSphere(CollisionSphere* targetSphere)
 		}
 	}
 }
-
-void CollisionManager::CheckCollision()
-{
-	Player* player = PlayerManager::GetInstance()->GetPlayer();
-	Block** blocks = BlockManager::GetInstance()->GetBlock();
-	CollisionAABB* playerAABB = player->GetAABB();
-
-	// ブロックとプレイヤーの当たり判定
-	for (int i = 0; i < BLOCK_MAX; i++)
-	{
-		Block* block = blocks[i];
-		CollisionAABB* blockAABB = block->GetAABB();
-
-		if (playerAABB->CheckAABB(blockAABB))
-		{
-			// 当たった時の処理
-			player->HitBlock(blockAABB);
-		}
-	}
-
-	// ゴールとプレイヤーの当たり判定
-	Goal* goal = GoalManager::GetInstance()->GetGoal();
-	// プレイヤーとゴールの球の当たり判定取得
-	CollisionSphere* playerSphere = player->GetSphereCollision();
-	CollisionSphere* goalSphere = goal->GetSphereCollisoin();
-	// プレイヤーとゴールは球の当たり判定
-	if (playerSphere->CheckSphere(goalSphere))
-	{
-		player->HitGoal();
-	}
-}

@@ -60,22 +60,6 @@ void Player::Start()
 	// 移動量を初期化
 	m_Move = VGet(0.0, 0.0f, 0.0f);
 
-	CollisionManager* collisionManager = CollisionManager::GetInstance();
-	if (collisionManager)
-	{
-		// AABBの当たり判定を設定
-		m_AABB = CollisionManager::GetInstance()->CreateAABB();
-		m_AABB->SetTargetPos(&m_Pos);
-		m_AABB->SetLocalPos(VGet(0.0f, 0.5f, 0.0f));
-		m_AABB->SetSize(VGet(1.0f, 1.0f, 1.0f));
-
-		// 球の当たり判定を設定
-		m_SphereCollision = CollisionManager::GetInstance()->CreateSphere();
-		m_SphereCollision->SetTargetPos(&m_Pos);
-		m_SphereCollision->SetLocalPos(VGet(0.0f, 0.5f, 0.0f));
-		m_SphereCollision->SetRadius(0.5f);
-	}
-
 	// ゴールフラグを折る
 	m_IsGoal = false;
 
@@ -172,18 +156,6 @@ void Player::Fin()
 {
 	// モデルをメモリから削除
 	MV1DeleteModel(m_Handle);
-}
-
-void Player::HitBlock(CollisionAABB* other)
-{
-	// 移動前の座標に設定する
-	m_Pos = m_PrevPos;
-	MV1SetPosition(m_Handle, m_Pos);
-}
-
-void Player::HitGoal()
-{
-	SceneManager::GetInstance()->ChangeScene(TITLE);
 }
 
 void Player::PlayAnimation(PlayerAnimationType anim, bool isLoop)

@@ -227,5 +227,8 @@
     <ClInclude Include="Source\MyEffekseer\EffekseerParam.h">
       <Filter>Source\MyEffekseer</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Collision\CollisionParameter.h">
+      <Filter>Source\Collision</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

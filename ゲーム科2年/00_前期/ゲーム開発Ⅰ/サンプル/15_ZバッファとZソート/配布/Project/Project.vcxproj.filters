@@ -209,5 +209,8 @@
     <ClInclude Include="Source\Scene\ClearScene.h">
       <Filter>Source\Scene</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Collision\CollisionParameter.h">
+      <Filter>Source\Collision</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

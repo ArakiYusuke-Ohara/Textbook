@@ -35,10 +35,6 @@ public:
 	CollisionAABB* GetAABB() { return m_AABB; }
 	CollisionSphere* GetSphereCollision() { return m_SphereCollision; }
 
-public:
-	void HitBlock(CollisionAABB* other);
-	void HitGoal();
-
 private:
 	void PlayAnimation(PlayerAnimationType anim, bool isLoop);
 	void UpdateAnimation();

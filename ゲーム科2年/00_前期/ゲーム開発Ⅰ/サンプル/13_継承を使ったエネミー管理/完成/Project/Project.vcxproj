@@ -171,6 +171,7 @@
     <ClInclude Include="Source\Camera\DebugCamera.h" />
     <ClInclude Include="Source\Collision\CollisionAABB.h" />
     <ClInclude Include="Source\Collision\CollisionManager.h" />
+    <ClInclude Include="Source\Collision\CollisionParameter.h" />
     <ClInclude Include="Source\Collision\CollisionSphere.h" />
     <ClInclude Include="Source\Enemy\BlueEnemy.h" />
     <ClInclude Include="Source\Enemy\EnemyBase.h" />
