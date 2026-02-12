@@ -29,7 +29,7 @@ public:
 	CollisionSphere* GetSphereCollision() { return m_SphereCollision; }
 
 public:
-	void HitStage(Stage* stage);
+	void CheckStage(Stage* stage);
 	void HitBlock(CollisionAABB* other);
 	void HitGoal();
 

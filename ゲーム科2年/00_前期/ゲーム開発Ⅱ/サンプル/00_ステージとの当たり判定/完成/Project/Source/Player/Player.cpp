@@ -165,12 +165,12 @@ void Player::Fin()
 	MV1DeleteModel(m_Handle);
 }
 
-void Player::HitStage(Stage* stage)
+void Player::CheckStage(Stage* stage)
 {
-	float playerRadius = m_SphereCollision->GetRadius();
+	MV1_COLL_RESULT_POLY_DIM hitResult = stage->CheckCollisionSphere(m_SphereCollision->GetWorldPos(), m_SphereCollision->GetRadius());
+	if (hitResult.HitNum <= 0) return;
 
-	// 衝突情報を取得
-	MV1_COLL_RESULT_POLY_DIM hitResult = stage->GetHitResult();
+	float playerRadius = m_SphereCollision->GetRadius();
 
 	// まずは壁から
 	// 衝突したポリゴンの数だけループ
@@ -252,6 +252,9 @@ void Player::HitStage(Stage* stage)
 	}
 
 	MV1SetPosition(m_Handle, m_Pos);
+
+	// ヒット結果は削除する必要がある
+	MV1CollResultPolyDimTerminate(hitResult);
 }
 
 void Player::HitBlock(CollisionAABB* other)

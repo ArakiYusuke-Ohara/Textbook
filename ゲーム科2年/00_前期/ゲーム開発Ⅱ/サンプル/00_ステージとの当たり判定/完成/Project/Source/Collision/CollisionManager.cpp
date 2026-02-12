@@ -151,11 +151,7 @@ void CollisionManager::CheckCollision()
 	CollisionAABB* playerAABB = player->GetAABB();
 
 	// ステージとプレイヤーの当たり判定
-	CollisionSphere* playerCollision = player->GetSphereCollision();
-	if (stage->CheckCollisionSphere(playerCollision->GetWorldPos(), playerCollision->GetRadius()))
-	{
-		player->HitStage(stage);
-	}
+	player->CheckStage(stage);
 
 	// ゴールとプレイヤーの当たり判定
 	Goal* goal = GoalManager::GetInstance()->GetGoal();

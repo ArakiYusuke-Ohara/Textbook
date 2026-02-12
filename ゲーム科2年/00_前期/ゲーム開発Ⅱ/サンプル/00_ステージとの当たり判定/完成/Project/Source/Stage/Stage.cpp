@@ -4,7 +4,6 @@ Stage::Stage()
 {
 	m_Handle = 0;
 	m_CollisionHandle = 0;
-	m_CollisionResult = {};
 }
 
 Stage::~Stage()
@@ -41,11 +40,8 @@ void Stage::Fin()
 	MV1DeleteModel(m_CollisionHandle);
 }
 
-bool Stage::CheckCollisionSphere(VECTOR pos, float r)
+MV1_COLL_RESULT_POLY_DIM Stage::CheckCollisionSphere(VECTOR pos, float r)
 {
 	// ステージと球の当たり判定
-	m_CollisionResult = MV1CollCheck_Sphere(m_CollisionHandle, -1, pos, r);
-
-	// HitNumが0なら当たっていない
-	return m_CollisionResult.HitNum != 0;
+	return MV1CollCheck_Sphere(m_CollisionHandle, -1, pos, r);
 }

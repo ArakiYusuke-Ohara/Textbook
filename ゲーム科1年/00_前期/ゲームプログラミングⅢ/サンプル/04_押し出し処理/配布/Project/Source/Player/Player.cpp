@@ -123,7 +123,6 @@ void MovePlayerWithCollision()
 	float hitX = 0, hitY = 0;
 
 	// X軸だけプレイヤーを移動させる
-	g_PlayerData.posX += g_PlayerData.moveX;
 
 	// マップと当たり判定
 	if (CheckMapCollision(g_PlayerData.posX, g_PlayerData.posY, PLAYER_WIDTH, PLAYER_HEIGHT, PLAYER_CHECK_ROUND_NUM,
@@ -133,21 +132,21 @@ void MovePlayerWithCollision()
 		if (g_PlayerData.moveX > 0.0f)
 		{
 			// 左に押し出す
-			g_PlayerData.posX -= (g_PlayerData.posX + PLAYER_WIDTH) - hitX;
+
 		}
 		// 右からあたったか
 		else if (g_PlayerData.moveX < 0.0f)
 		{
 			// 右に押し出す
-			g_PlayerData.posX += (hitX + MAP_CHIP_WIDTH) - g_PlayerData.posX;
+
 		}
 
 		// 移動量は0にする
-		g_PlayerData.moveX = 0.0f;
+
 	}
 
 	// Y軸だけプレイヤーを移動させる
-	g_PlayerData.posY += g_PlayerData.moveY;
+
 
 	// マップと当たり判定
 	if (CheckMapCollision(g_PlayerData.posX, g_PlayerData.posY, PLAYER_WIDTH, PLAYER_HEIGHT, PLAYER_CHECK_ROUND_NUM,
@@ -157,18 +156,19 @@ void MovePlayerWithCollision()
 		if (g_PlayerData.moveY > 0.0f)
 		{
 			// 上に押し出す
-			g_PlayerData.posY -= (g_PlayerData.posY + PLAYER_HEIGHT) - hitY;
+
+			// 着地したので空中フラグを折る
 			g_PlayerData.isAir = false;
 		}
 		// 下からあたったか
 		else if (g_PlayerData.moveY < 0.0f)
 		{
 			// 下に押し出す
-			g_PlayerData.posY += (hitY + MAP_CHIP_HEIGHT) - g_PlayerData.posY;
+
 		}
 
 		// 移動量は0にする
-		g_PlayerData.moveY = 0.0f;
+
 	}
 
 }
