@@ -53,9 +53,6 @@ void UpdatePlayScene()
 	// マップ更新
 	// プレイヤー更新
 	UpdatePlayer();
-	
-	// 当たり判定
-	CheckCollision();
 }
 
 void DrawPlayScene()
