@@ -8,8 +8,6 @@ struct BoxCollision
 	float height;
 };
 
-// 関数のプロトタイプ宣言
-
 // 矩形と点の当たり判定
 bool CheckSquarePoint(float squarePosX, float squarePosY, float squareWidth, float squareHeight, float pointX, float pointY);
 

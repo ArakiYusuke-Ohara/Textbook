@@ -19,7 +19,7 @@ void LoadMapChipData()
 			// マップ情報は１バイトずつ保存されているので、
 			// fgetc関数でちょうど１バイト取得できる
 			int map = fgetc(fp);
-			g_MapChip[i][j].mapChip = map;
+			g_MapChip[i][j].type = map;
 		}
 	}
 }
@@ -31,7 +31,7 @@ void CreateMap()
 		for (int j = 0; j < MAP_CHIP_X_NUM; j++)
 		{
 			// マップチップに合わせてブロックを生成
-			MapChipType type = (MapChipType)g_MapChip[i][j].mapChip;
+			MapChipType type = (MapChipType)g_MapChip[i][j].type;
 
 			// MAP_CHIP_NONEの場合は何もしない
 			if (type == MAP_CHIP_NONE) continue;

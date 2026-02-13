@@ -7,11 +7,6 @@
 // キャラクターの周囲何マスまでチェックするか
 #define CHECK_ROUND_NUM (2)
 
-void CheckNormalX(int left, int top, int right, int bottom);
-void CheckNormalY(int left, int top, int right, int bottom);
-void CheckSlopeX(int left, int top, int right, int bottom);
-void CheckSlopeY(int left, int top, int right, int bottom);
-
 void InitMap()
 {
 	InitBlock();
@@ -48,8 +43,9 @@ void FinMap()
 /// <param name="range">周囲何マスまでチェックするか</param>
 /// <param name="o_HitX">当たったブロックのX座標（出力）</param>
 /// <param name="o_HitY">当たったブロックのY座標（出力）</param>
+/// <param name="o_HitType">当たったブロックのタイプ（出力）</param>
 /// <returns>当たったかどうか</returns>
-bool CheckMapCollision(float posX, float posY, float width, float height, int range, float& o_HitX, float& o_HitY)
+bool CheckMapCollision(float posX, float posY, float width, float height, int range, float& o_HitX, float& o_HitY , int& o_HitType)
 {
 	// 座標を添字に変換
 	int x = (int)((posX + width / 2) / MAP_CHIP_WIDTH);
@@ -73,106 +69,23 @@ bool CheckMapCollision(float posX, float posY, float width, float height, int ra
 
 			// マップチップ取得
 			MapChipData mapChipData = GetMapChipData(x, y);
-			// マップチップが0の場合は何もない
-			if (mapChipData.mapChip == 0) continue;
+
+			// 何もなければ無視
+			if (mapChipData.type == 0) continue;
 
 			// ブロックを取り出して当たり判定
 			BlockData* block = mapChipData.data;
-			// 当たったブロックを返却
 			if (CheckSquareSquare(posX, posY, width, height, block->pos.x, block->pos.y, block->width, block->height))
 			{
+				// 当たったブロックを出力
 				o_HitX = block->pos.x;
 				o_HitY = block->pos.y;
+				o_HitType = mapChipData.type;
 				return true;
 			}
 		}
 	}
 
 	return false;
-}
-
-void CheckNormalX(int left, int top, int right, int bottom)
-{
-	for (int y = top; y <= bottom; y++)
-	{
-		// マップチップからはみ出したら処理しなくていい
-		if (y < 0 || y >= MAP_CHIP_Y_NUM) continue;
-
-		for (int x = left; x <= right; x++)
-		{
-			// マップチップからはみ出したら処理しなくていい
-			if (x < 0 || x >= MAP_CHIP_X_NUM) continue;
-
-			MapChipData mapChipData = GetMapChipData(x, y);
-
-			// MAP_CHIP_NONEの場合は何もしない
-			if (mapChipData.mapChip != NORMAL_BLOCK) continue;
-		}
-	}
-}
-
-void CheckNormalY(int left, int top, int right, int bottom)
-{
-	for (int y = top; y <= bottom; y++)
-	{
-		// マップチップからはみ出したら処理しなくていい
-		if (y < 0 || y >= MAP_CHIP_Y_NUM) continue;
-
-		for (int x = left; x <= right; x++)
-		{
-			// マップチップからはみ出したら処理しなくていい
-			if (x < 0 || x >= MAP_CHIP_X_NUM) continue;
-
-			MapChipData mapChipData = GetMapChipData(x, y);
-
-			// MAP_CHIP_NONEの場合は何もしない
-			if (mapChipData.mapChip != NORMAL_BLOCK) continue;
-
-		}
-	}
-}
-
-void CheckSlopeX(int left, int top, int right, int bottom)
-{
-	for (int y = top; y <= bottom; y++)
-	{
-		// マップチップからはみ出したら処理しなくていい
-		if (y < 0 || y >= MAP_CHIP_Y_NUM) continue;
-
-		for (int x = left; x <= right; x++)
-		{
-			// マップチップからはみ出したら処理しなくていい
-			if (x < 0 || x >= MAP_CHIP_X_NUM) continue;
-
-			MapChipData mapChipData = GetMapChipData(x, y);
-
-			// MAP_CHIP_NONEの場合は何もしない
-			if (mapChipData.mapChip != SLOPE_BLOCK) continue;
-
-			PlayerHitSlopeBlockX(mapChipData);
-		}
-	}
-}
-
-void CheckSlopeY(int left, int top, int right, int bottom)
-{
-	for (int y = top; y <= bottom; y++)
-	{
-		// マップチップからはみ出したら処理しなくていい
-		if (y < 0 || y >= MAP_CHIP_Y_NUM) continue;
-
-		for (int x = left; x <= right; x++)
-		{
-			// マップチップからはみ出したら処理しなくていい
-			if (x < 0 || x >= MAP_CHIP_X_NUM) continue;
-
-			MapChipData mapChipData = GetMapChipData(x, y);
-
-			// MAP_CHIP_NONEの場合は何もしない
-			if (mapChipData.mapChip != SLOPE_BLOCK) continue;
-
-			PlayerHitSlopeBlockY(mapChipData);
-		}
-	}
 }
 

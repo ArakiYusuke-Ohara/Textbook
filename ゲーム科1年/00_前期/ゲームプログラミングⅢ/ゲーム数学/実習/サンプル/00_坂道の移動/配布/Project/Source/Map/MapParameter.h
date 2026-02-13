@@ -21,10 +21,12 @@ struct BlockData
 	int handle;
 	MapChipType type;
 	VECTOR pos;
+	float width;
+	float height;
 };
 
 struct MapChipData
 {
-	int mapChip;
+	int type;
 	BlockData* data;
 };

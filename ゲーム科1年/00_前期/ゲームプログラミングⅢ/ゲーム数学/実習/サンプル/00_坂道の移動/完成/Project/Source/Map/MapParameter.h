@@ -27,6 +27,6 @@ struct BlockData
 
 struct MapChipData
 {
-	int mapChip;
+	int type;
 	BlockData* data;
 };

@@ -41,7 +41,3 @@ void FinPlayer();
 
 // æ“¾ŠÖ”
 PlayerData GetPlayer();
-
-// â“¹ƒuƒƒbƒN‚Æ‚Ì“–‚½‚è”»’è
-void PlayerHitSlopeBlockX(MapChipData mapChipData);
-void PlayerHitSlopeBlockY(MapChipData mapChipData);

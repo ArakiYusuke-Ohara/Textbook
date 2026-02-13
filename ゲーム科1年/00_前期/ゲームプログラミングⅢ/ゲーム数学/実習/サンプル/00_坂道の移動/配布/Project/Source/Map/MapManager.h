@@ -6,4 +6,4 @@ void StartMap();
 void DrawMap();
 void FinMap();
 
-void ChceckMapPlayerCollision();
+bool CheckMapCollision(float posX, float posY, float width, float height, int range, float& o_HitX, float& o_HitY, int& o_HitType);

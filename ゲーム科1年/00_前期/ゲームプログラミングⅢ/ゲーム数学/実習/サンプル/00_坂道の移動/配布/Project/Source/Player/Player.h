@@ -3,11 +3,6 @@
 #include "../Animation/Animation.h"
 #include "../Collision/Collision.h"
 
-// プレイヤーサイズ
-#define PLAYER_WIDTH	(72.0f)
-#define PLAYER_HEIGHT	(72.0f)
-#define PLAYER_RADIUS	(36.0f)
-
 // アニメーションタイプ
 enum PlayerAnimationType
 {
@@ -46,11 +41,3 @@ void FinPlayer();
 
 // 取得関数
 PlayerData GetPlayer();
-
-// 当たり判定
-// 通常ブロックとの当たり判定
-void PlayerHitNormalBlockX(MapChipData mapChipData, bool checkRight = true, bool checkLeft = true);
-void PlayerHitNormalBlockY(MapChipData mapChipData);												
-// 坂道ブロックとの当たり判定
-void PlayerHitSlopeBlockX(MapChipData mapChipData);
-void PlayerHitSlopeBlockY(MapChipData mapChipData);

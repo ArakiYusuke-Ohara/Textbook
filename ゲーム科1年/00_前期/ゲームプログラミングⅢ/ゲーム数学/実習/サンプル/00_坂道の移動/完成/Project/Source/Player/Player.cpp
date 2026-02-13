@@ -28,7 +28,7 @@ const PlayerAnimationParam PLAYER_ANIM_PARAM[PLAYER_ANIM_MAX] =
 #define PLAYER_RADIUS	(36.0f)
 #define PLAYER_DEFAULT_POS_X (100.0f)
 #define PLAYER_DEFAULT_POS_Y (600.0f)
-#define PLAYER_MOVE_SPEED (4.0f)
+#define PLAYER_MOVE_SPEED (3.0f)
 
 // ジャンプ力
 #define PLAYER_JUMP_POWER (12.0f)
@@ -44,7 +44,7 @@ const PlayerAnimationParam PLAYER_ANIM_PARAM[PLAYER_ANIM_MAX] =
 #define PLAYER_BOX_COLLISION_WIDTH (20)
 #define PLAYER_BOX_COLLISION_HEIGHT (44)
 // 坂の吸い寄せ範囲
-#define PLAYER_SLOPE_ATTRACTION (8.0f)
+#define PLAYER_SLOPE_ATTRACTION (14.0f)
 // 落下判定になるY移動量
 #define PLAYER_FALL_Y_MOVE (PLAYER_GRAVITY * 3.0f)
 // キャラクターの周囲何マスまでチェックするか
@@ -59,7 +59,14 @@ void StartPlayerAnimation(PlayerAnimationType anim);	// アニメーション再生
 void UpdatePlayerAnimation();							// アニメーション更新
 
 // 当たり判定付き移動
-void MovePlayerWithCollision();
+void MoveWithCollision();
+
+// 当たり判定後の押し出し処理
+bool ResolveCollision();
+void PushNormalBlockX(float x, float w, float hitX);
+void PushNormalBlockY(float y, float h, float hitY);
+void PushNormalSlopeX(float x, float w, float hitX);
+void PushNormalSlopeY(float x, float y, float w, float h, float hitX, float hitY);
 
 // 着地処理
 void LadingPlayer();
@@ -148,15 +155,24 @@ void UpdatePlayer()
 	// 死んでいたら処理しない
 	if (!g_PlayerData.active) return;
 
+	// 当たり判定付き移動
+	MoveWithCollision();
+
 	// 上昇しているもしくは落ちている場合は空中フラグを立てる
 	if (g_PlayerData.moveY < 0.0f || g_PlayerData.moveY > PLAYER_FALL_Y_MOVE)
 	{
 		g_PlayerData.isAir = true;
 	}
 
-	// 当たり判定付き移動
-	MovePlayerWithCollision();
+	// まだ当たってるかもしれないので
+	// 何回か当たり判定と押し出しをやる
+	bool isHit = ResolveCollision();
+	for (int i = 0; i < 2 && isHit == true; i++)
+	{
+		isHit = ResolveCollision();
+	}
 
+	// アニメーション更新
 	UpdatePlayerAnimation();
 }
 
@@ -192,57 +208,6 @@ void FinPlayer()
 PlayerData GetPlayer()
 {
 	return g_PlayerData;
-}
-
-void PlayerHitSlopeBlockX(MapChipData mapChipData)
-{
-	
-}
-
-void PlayerHitSlopeBlockY(MapChipData mapChipData)
-{
-	PlayerData player = g_PlayerData;
-
-	// X移動を戻し、縦に当たっているかチェック
-	player.posX = g_PrevPlayerData.posX;
-	player.posY = g_PlayerData.posY;
-
-	// ターンフラグは前回のものにしないと反転した分ずれる
-	player.isTurn = g_PrevPlayerData.isTurn;
-
-	// ボックスコリジョンの座標と幅を計算する
-	float x = 0.0f, y = 0.0f, w = 0.0f, h = 0.0f;
-
-	// 坂道の始点（左側）
-	float startX = mapChipData.data->pos.x;
-	float startY = mapChipData.data->pos.y + MAP_CHIP_HEIGHT;
-	// 坂道の終点（右側）
-	float endX = mapChipData.data->pos.x + MAP_CHIP_WIDTH;
-	float endY = mapChipData.data->pos.y;
-	// プレイヤーの足元のX座標
-	float playerFootX = x + w;
-
-	// プレイヤーが坂道上にいなければ何もしない
-	if (playerFootX < startX || playerFootX > endX) return;
-
-	// ① 傾きの値は「Yの増加量 / Xの増加量」
-	float a = (endY - startY) / (endX - startX);
-
-	// ② 始点の値と傾きの値を使って切片を計算する
-	float b = startY - a * startX;
-
-	// ③ プレイヤーのX座標の中心から坂道の高さ(Y座標を計算する)
-	float slopeY = a * playerFootX + b;
-
-	// 坂の高さからある程度上から吸い寄せないと、下るときに浮いてしまう
-	if ((y + h) > (slopeY - PLAYER_SLOPE_ATTRACTION))
-	{
-		// 着地
-		LadingPlayer();
-
-		// 坂とめり込んでいる分だけ上へ移動
-		g_PlayerData.posY -= (y + h) - slopeY;
-	}
 }
 
 void StartPlayerAnimation(PlayerAnimationType anim)
@@ -305,14 +270,15 @@ void LadingPlayer()
 	g_PlayerData.isAir = false;
 }
 
-void MovePlayerWithCollision()
+void MoveWithCollision()
 {
+	// CheckMapCollision関数を呼ぶとこれらの変数に値が入る
+	float hitX = 0, hitY = 0;
+	int hitType = 0;
+
 	// 当たり判定ボックスの位置をプレイヤーの位置に揃える
 	g_PlayerData.boxCollision.posX = g_PlayerData.posX + PLAYER_BOX_COLLISION_OFFSET_X;
 	g_PlayerData.boxCollision.posY = g_PlayerData.posY + PLAYER_BOX_COLLISION_OFFSET_Y;
-
-	// CheckMapCollision関数を呼ぶと当たった物体の座標が入る
-	float hitX = 0, hitY = 0;
 
 	// X軸だけプレイヤーと当たり判定ボックスを移動させる
 	g_PlayerData.posX += g_PlayerData.moveX;
@@ -325,23 +291,13 @@ void MovePlayerWithCollision()
 	float h = g_PlayerData.boxCollision.height;
 
 	// マップと当たり判定
-	if (CheckMapCollision(x, y, w, h, PLAYER_CHECK_ROUND_NUM, hitX, hitY))
+	if (CheckMapCollision(x, y, w, h, PLAYER_CHECK_ROUND_NUM, hitX, hitY, hitType))
 	{
-		// 左からあたったか
-		if (g_PlayerData.moveX > 0.0f)
+		switch (hitType)
 		{
-			// 左に押し出す
-			g_PlayerData.posX -= (x + w) - hitX;
+			case NORMAL_BLOCK: PushNormalBlockX(x, w, hitX);
+			case SLOPE_BLOCK:  PushNormalSlopeX(x, w, hitX);
 		}
-		// 右からあたったか
-		else if (g_PlayerData.moveX < 0.0f)
-		{
-			// 右に押し出す
-			g_PlayerData.posX += (hitX + MAP_CHIP_WIDTH) - x;
-		}
-
-		// 移動量は0にする
-		g_PlayerData.moveX = 0.0f;
 	}
 
 	// 当たり判定ボックスの位置をプレイヤーの位置に揃える
@@ -359,26 +315,148 @@ void MovePlayerWithCollision()
 	h = g_PlayerData.boxCollision.height;
 
 	// マップと当たり判定
-	// マップと当たり判定
-	if (CheckMapCollision(x, y, w, h, PLAYER_CHECK_ROUND_NUM, hitX, hitY))
+	if (CheckMapCollision(x, y, w, h, PLAYER_CHECK_ROUND_NUM, hitX, hitY, hitType))
 	{
-		// 上からあたったか
-		if (g_PlayerData.moveY > 0.0f)
+		switch (hitType)
 		{
-			// 上に押し出す
-			g_PlayerData.posY -= (y + h) - hitY;
-			g_PlayerData.isAir = false;
+			case NORMAL_BLOCK: PushNormalBlockY(y, h, hitY);
+			case SLOPE_BLOCK:  PushNormalSlopeY(x, y, w, h, hitX, hitY);
 		}
-		// 下からあたったか
-		else if (g_PlayerData.moveY < 0.0f)
+	}
+}
+
+bool ResolveCollision()
+{
+	bool isHit = false;
+
+	// CheckMapCollision関数を呼ぶとこれらの変数に値が入る
+	float hitX = 0, hitY = 0;
+	int hitType = 0;
+
+	// 当たり判定ボックスの位置をプレイヤーの位置に揃える
+	g_PlayerData.boxCollision.posX = g_PlayerData.posX + PLAYER_BOX_COLLISION_OFFSET_X;
+	g_PlayerData.boxCollision.posY = g_PlayerData.posY + PLAYER_BOX_COLLISION_OFFSET_Y;
+
+	// わかりやすく変数にする
+	float x = g_PlayerData.boxCollision.posX;
+	float y = g_PlayerData.boxCollision.posY;
+	float w = g_PlayerData.boxCollision.width;
+	float h = g_PlayerData.boxCollision.height;
+
+	// マップと当たり判定
+	if (CheckMapCollision(x, y, w, h, PLAYER_CHECK_ROUND_NUM, hitX, hitY, hitType))
+	{
+		switch (hitType)
 		{
-			// 下に押し出す
-			g_PlayerData.posY += (hitY + MAP_CHIP_HEIGHT) - y;
+		case NORMAL_BLOCK: PushNormalBlockX(x, w, hitX);
+		case SLOPE_BLOCK:  PushNormalSlopeX(x, w, hitX);
 		}
 
+		isHit = true;
+	}
+
+	// 当たり判定ボックスの位置をプレイヤーの位置に揃える
+	g_PlayerData.boxCollision.posX = g_PlayerData.posX + PLAYER_BOX_COLLISION_OFFSET_X;
+
+	// わかりやすく変数にする
+	x = g_PlayerData.boxCollision.posX;
+	y = g_PlayerData.boxCollision.posY;
+	w = g_PlayerData.boxCollision.width;
+	h = g_PlayerData.boxCollision.height;
+
+	// マップと当たり判定
+	if (CheckMapCollision(x, y, w, h, PLAYER_CHECK_ROUND_NUM, hitX, hitY, hitType))
+	{
+		switch (hitType)
+		{
+		case NORMAL_BLOCK: PushNormalBlockY(y, h, hitY);
+		case SLOPE_BLOCK:  PushNormalSlopeY(x, y, w, h, hitX, hitY);
+		}
+
+		isHit = true;
+	}
+
+	return isHit;
+}
+
+void PushNormalBlockX(float x, float w, float hitX)
+{
+	// 左からあたったか
+	if (g_PlayerData.moveX > 0.0f)
+	{
+		// 左に押し出す
+		g_PlayerData.posX -= (x + w) - hitX;
+	}
+	// 右からあたったか
+	else if (g_PlayerData.moveX < 0.0f)
+	{
+		// 右に押し出す
+		g_PlayerData.posX += (hitX + MAP_CHIP_WIDTH) - x;
+	}
+
+	// 移動量は0にする
+	g_PlayerData.moveX = 0.0f;
+}
+
+void PushNormalBlockY(float y, float h, float hitY)
+{
+	// 上からあたったか
+	if (g_PlayerData.moveY > 0.0f)
+	{
+		// 上に押し出す
+		g_PlayerData.posY -= (y + h) - hitY;
+		// 着地
+		LadingPlayer();
+	}
+	// 下からあたったか
+	else if (g_PlayerData.moveY < 0.0f)
+	{
+		// 下に押し出す
+		g_PlayerData.posY += (hitY + MAP_CHIP_HEIGHT) - y;
 		// 移動量は0にする
 		g_PlayerData.moveY = 0.0f;
 	}
+}
 
+void PushNormalSlopeX(float x, float w, float hitX)
+{
+}
+
+void PushNormalSlopeY(float x, float y, float w, float h, float hitX, float hitY)
+{
+	// 上からあたったか
+	if (g_PlayerData.moveY > 0.0f)
+	{
+		// 坂道の始点（左側）
+		float startX = hitX;
+		float startY = hitY + MAP_CHIP_HEIGHT;
+		// 坂道の終点（右側）
+		float endX = hitX + MAP_CHIP_WIDTH;
+		float endY = hitY;
+		// プレイヤーの足先のX座標
+		float playerFootX = x + w;
+		// プレイヤーの足先座標は坂の端を超えてはいけない
+		if (playerFootX < hitX) playerFootX = hitX;
+		if (playerFootX > (hitX + MAP_CHIP_WIDTH)) playerFootX = (hitX + MAP_CHIP_WIDTH);
+
+		// ① 傾きの値は「Yの増加量 / Xの増加量」
+		float a = (endY - startY) / (endX - startX);
+
+		// ② 始点の値と傾きの値を使って切片を計算する
+		float b = startY - a * startX;
+
+		// ③ プレイヤーのX座標の中心から坂道の高さ(Y座標を計算する)
+		float slopeY = a * playerFootX + b;
+
+		// 坂の高さからある程度上から吸い寄せないと、下るときに浮いてしまう
+		if ((y + h) >= (slopeY - PLAYER_SLOPE_ATTRACTION))
+		{
+			// 着地
+			LadingPlayer();
+
+			// 坂とめり込んでいる分だけ上へ移動
+			g_PlayerData.posY -= (y + h) - slopeY;
+		}
+	}
 }
 
