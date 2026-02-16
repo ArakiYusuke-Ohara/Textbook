@@ -9,6 +9,7 @@
 // プレイヤー設定関連
 #define PLAYER_WIDTH (50.0f)
 #define PLAYER_HEIGHT (50.0f)
+#define PLAYER_RADIUS	(36.0f)
 #define PLAYER_DEFAULT_POS_X (100.0f)
 #define PLAYER_DEFAULT_POS_Y (600.0f)
 #define PLAYER_MOVE_SPEED (4.0f)
@@ -27,7 +28,6 @@
 
 // このCPPでしか使わない関数
 void MovePlayerWithCollision();	// 当たり判定付き移動
-const BlockData* CheckMapPlayerCollision();	// マップとの当たり判定チェック
 
 PlayerData g_PlayerData = { 0 };
 
@@ -171,51 +171,4 @@ void MovePlayerWithCollision()
 		g_PlayerData.moveY = 0.0f;
 	}
 
-}
-
-const BlockData* CheckMapPlayerCollision()
-{
-	// プレイヤーの足元の座標をマップチップのインデックスに変換
-	int playerX = (int)(g_PlayerData.posX / MAP_CHIP_WIDTH);
-	int playerY = (int)((g_PlayerData.posY + PLAYER_HEIGHT) / MAP_CHIP_HEIGHT);
-	// プレイヤーの左上にあるマップチップインデックス
-	int left = playerX - PLAYER_CHECK_ROUND_NUM;
-	int top = playerY - PLAYER_CHECK_ROUND_NUM;
-	// プレイヤーの右下にあるマップチップインデックス
-	int right = playerX + PLAYER_CHECK_ROUND_NUM;
-	int bottom = playerY + PLAYER_CHECK_ROUND_NUM;
-	// 左上から3マスずつチェックしていく
-	for (int y = top; y <= bottom; y++)
-	{
-		// マップチップからはみ出したら処理しなくていい
-		if (y < 0 || y >= MAP_CHIP_Y_NUM) continue;
-
-		for (int x = left; x <= right; x++)
-		{
-			// マップチップからはみ出したら処理しなくていい
-			if (x < 0 || x >= MAP_CHIP_X_NUM) continue;
-
-			// わかりやすくするために変数に代入
-			float playerX = g_PlayerData.posX;
-			float playerY = g_PlayerData.posY;
-			float playerW = PLAYER_WIDTH;
-			float playerH = PLAYER_HEIGHT;
-
-			// ブロックを取り出して当たり判定
-			MapChipData mapChipData = GetMapChipData(x, y);
-			// マップチップが0の場合は何もない
-			if (mapChipData.mapChip == 0) continue;
-
-			BlockData* block = mapChipData.data;
-
-			// 当たったブロックを返却
-			if (CheckSquareSquare(playerX, playerY, playerW, playerH, block->pos.x, block->pos.y, block->width, block->height))
-			{
-				return block;
-			}
-		}
-	}
-
-	// 当たってなければnullを返却
-	return nullptr;
 }

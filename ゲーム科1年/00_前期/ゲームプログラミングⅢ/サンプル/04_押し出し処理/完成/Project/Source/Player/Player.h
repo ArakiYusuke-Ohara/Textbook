@@ -1,10 +1,5 @@
 #pragma once
 
-// プレイヤーサイズ
-#define PLAYER_WIDTH	(72.0f)
-#define PLAYER_HEIGHT	(72.0f)
-#define PLAYER_RADIUS	(36.0f)
-
 // アニメーションタイプ
 enum PlayerAnimationType
 {
