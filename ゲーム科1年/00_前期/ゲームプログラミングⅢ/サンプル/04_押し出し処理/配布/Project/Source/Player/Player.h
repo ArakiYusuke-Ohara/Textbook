@@ -1,9 +1,5 @@
 #pragma once
-
-// プレイヤーサイズ
-#define PLAYER_WIDTH	(72.0f)
-#define PLAYER_HEIGHT	(72.0f)
-#define PLAYER_RADIUS	(36.0f)
+#include "../Collision/CollisionParameter.h"
 
 // アニメーションタイプ
 enum PlayerAnimationType
@@ -20,13 +16,9 @@ enum PlayerAnimationType
 // プレイヤーデータ
 struct PlayerData
 {
-	bool active;								// 生存フラグ
-	bool isAir;									// 空中にいるか
-	int handle;									// 画像ハンドル	
-	float posX;									// X座標
-	float posY;									// Y座標
-	float moveX;								// X移動量
-	float moveY;								// Y移動量
+	bool active;	// 生存フラグ
+	int handle;		// 画像ハンドル	
+	Body body;		// 当たり判定ボディ
 };
 
 // 関数のプロトタイプ宣言

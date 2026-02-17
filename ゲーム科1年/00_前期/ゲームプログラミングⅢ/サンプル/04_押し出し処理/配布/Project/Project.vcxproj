@@ -170,6 +170,7 @@
     <ClInclude Include="Source\Bullet\BulletParameter.h" />
     <ClInclude Include="Source\Bullet\StraightBullet.h" />
     <ClInclude Include="Source\Collision\Collision.h" />
+    <ClInclude Include="Source\Collision\CollisionParameter.h" />
     <ClInclude Include="Source\Effect\AnimationEffect.h" />
     <ClInclude Include="Source\Effect\AnimationEffectParameter.h" />
     <ClInclude Include="Source\Enemy\EnemyManager.h" />
