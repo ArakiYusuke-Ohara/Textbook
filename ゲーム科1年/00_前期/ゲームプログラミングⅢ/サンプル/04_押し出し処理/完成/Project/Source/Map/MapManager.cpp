@@ -30,40 +30,19 @@ void FinMap()
 }
 
 /// <summary>
-/// マップに配置されたブロックとの当たり判定
+/// マップとの当たり判定＆移動＆押し出し
 /// </summary>
-/// <param name="posX">判定したい物体のX座標</param>
-/// <param name="posY">判定したい物体のY座標</param>
-/// <param name="width">判定したい物体の横幅</param>
-/// <param name="height">判定したい物体の縦幅</param>
-/// <param name="range">周囲何マスまでチェックするか</param>
-/// <param name="o_HitX">当たったブロックのX座標（出力）</param>
-/// <param name="o_HitY">当たったブロックのY座標（出力）</param>
-/// <param name="o_HitW">当たったブロックの横幅（出力）</param>
-/// <param name="o_HitH">当たったブロックの縦幅（出力）</param>
-/// <returns>当たったかどうか</returns>
-bool CheckMapCollision(float posX, float posY, float width, float height, int range, float &o_HitX, float &o_HitY)
+/// <param name="body">対象の当たり判定ボディ</param>
+void MoveWithMapCollision(Body* body)
 {
-	// 座標を添字に変換
-	int x = (int)((posX + width / 2) / MAP_CHIP_WIDTH);
-	int y = (int)((posY + height / 2) / MAP_CHIP_HEIGHT);
-	// プレイヤーの左上にあるマップチップインデックス
-	int left = x - range;
-	int top = y - range;
-	// プレイヤーの右下にあるマップチップインデックス
-	int right = x + range;
-	int bottom = y + range;
-	// 左上からチェックしていく
-	for (int y = top; y <= bottom; y++)
+	// X軸だけ移動する
+	body->pos.x += body->move.x;
+
+	// マップチップと当たり判定＆押し出し
+	for (int y = 0; y < MAP_CHIP_Y_NUM; y++)
 	{
-		// マップチップからはみ出したら処理しなくていい
-		if (y < 0 || y >= MAP_CHIP_Y_NUM) continue;
-
-		for (int x = left; x <= right; x++)
+		for (int x = 0; x < MAP_CHIP_X_NUM; x++)
 		{
-			// マップチップからはみ出したら処理しなくていい
-			if (x < 0 || x >= MAP_CHIP_X_NUM) continue;
-
 			// マップチップ取得
 			MapChipData mapChipData = GetMapChipData(x, y);
 			// マップチップが0の場合は何もない
@@ -71,15 +50,67 @@ bool CheckMapCollision(float posX, float posY, float width, float height, int ra
 
 			// ブロックを取り出して当たり判定
 			BlockData* block = mapChipData.data;
-			// 当たったブロックを返却
-			if (CheckSquareSquare(posX, posY, width, height, block->pos.x, block->pos.y, block->width, block->height))
+			// 当たり判定
+			if (CheckSquareSquare(	body->pos.x, body->pos.y, body->width, body->height, 
+									block->pos.x, block->pos.y, block->width, block->height))
 			{
-				o_HitX = block->pos.x;
-				o_HitY = block->pos.y;
-				return true;
+				// 左からあたったか
+				if (body->move.x > 0.0f)
+				{
+					// 左に押し出す
+					body->pos.x -= (body->pos.x + body->width) - block->pos.x;
+				}
+				// 右からあたったか
+				else if (body->move.x < 0.0f)
+				{
+					// 右に押し出す
+					body->pos.x += (block->pos.x + block->width) - body->pos.x;
+				}
+
+				// 移動量は0にする
+				body->move.x = 0.0f;
 			}
+
 		}
 	}
 
-	return false;
+	// Y軸だけ移動する
+	body->pos.y += body->move.y;
+
+	// マップチップと当たり判定＆押し出し
+	for (int y = 0; y < MAP_CHIP_Y_NUM; y++)
+	{
+		for (int x = 0; x < MAP_CHIP_X_NUM; x++)
+		{
+			// マップチップ取得
+			MapChipData mapChipData = GetMapChipData(x, y);
+			// マップチップが0の場合は何もない
+			if (mapChipData.mapChip == 0) continue;
+
+			// ブロックを取り出して当たり判定
+			BlockData* block = mapChipData.data;
+			// 当たり判定
+			if (CheckSquareSquare(body->pos.x, body->pos.y, body->width, body->height,
+				block->pos.x, block->pos.y, block->width, block->height))
+			{
+				// 上からあたったか
+				if (body->move.y > 0.0f)
+				{
+					// 上に押し出す
+					body->pos.y -= (body->pos.y + body->height) - block->pos.y;
+					body->isAir = false;
+				}
+				// 下からあたったか
+				else if (body->move.y < 0.0f)
+				{
+					// 下に押し出す
+					body->pos.y += (block->pos.y + MAP_CHIP_HEIGHT) - body->pos.y;
+				}
+
+				// 移動量は0にする
+				body->move.y = 0.0f;
+			}
+
+		}
+	}
 }

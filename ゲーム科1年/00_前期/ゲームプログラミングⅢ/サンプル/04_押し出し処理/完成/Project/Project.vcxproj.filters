@@ -212,5 +212,8 @@
     <ClInclude Include="Source\Animation\Animation.h">
       <Filter>Source\Animation</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Collision\CollisionParameter.h">
+      <Filter>Source\Collision</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
