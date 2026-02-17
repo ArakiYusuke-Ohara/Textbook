@@ -37,9 +37,10 @@ void CreateMap()
 			if (type == MAP_CHIP_NONE) continue;
 
 			// インデックスから座標を計算
-			VECTOR pos = VGet(j * MAP_CHIP_WIDTH, i * MAP_CHIP_HEIGHT, 0.0f);
+			float posX = j * MAP_CHIP_WIDTH;
+			float posY = i * MAP_CHIP_HEIGHT;
 			// 生成したブロックはMapChipDataで参照しておく
-			g_MapChip[i][j].data = CreateBlock(type, pos);
+			g_MapChip[i][j].data = CreateBlock(type, posX, posY);
 		}
 	}
 }

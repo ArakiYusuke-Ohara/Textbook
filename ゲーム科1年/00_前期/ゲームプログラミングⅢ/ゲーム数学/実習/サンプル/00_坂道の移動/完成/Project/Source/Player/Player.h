@@ -1,7 +1,7 @@
 #pragma once
 #include "../Map/MapParameter.h"
 #include "../Animation/Animation.h"
-#include "../Collision/Collision.h"
+#include "../Collision/CollisionParameter.h"
 
 // アニメーションタイプ
 enum PlayerAnimationType
@@ -20,14 +20,11 @@ struct PlayerData
 {
 	bool active;								// 生存フラグ
 	bool isTurn;								// 左を向いているか
-	bool isAir;									// 空中にいるか
-	float posX;									// X座標
-	float posY;									// Y座標
-	float moveX;								// X移動量
-	float moveY;								// Y移動量
+	Body body;
+	float drawOffsetX;							// 描画位置補正
+	float drawOffsetY;							// 描画位置補正
 	AnimationData animation[PLAYER_ANIM_MAX];	// アニメーション
 	PlayerAnimationType playAnim;				// 再生中のアニメーション
-	BoxCollision boxCollision;					// 矩形当たり判定
 };
 
 // 関数のプロトタイプ宣言
