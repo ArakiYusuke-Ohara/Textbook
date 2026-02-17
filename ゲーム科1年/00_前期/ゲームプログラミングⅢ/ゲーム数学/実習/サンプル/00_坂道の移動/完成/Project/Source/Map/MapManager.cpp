@@ -6,12 +6,10 @@
 #include "../Collision/Collision.h"
 
 // 坂の吸い寄せ範囲
-#define SLOPE_ATTRACTION (14.0f)
+#define SLOPE_ATTRACTION (8.0f)
 
 // このCPPでしか使わない関数
 void ResolveSlope(Body* body, const BlockData* block);	// 坂の押し出し
-
-
 
 void InitMap()
 {
@@ -68,8 +66,15 @@ void MoveWithMapCollision(Body* body, int range)
 			// マップチップ取得
 			MapChipData mapChipData = GetMapChipData(x, y);
 
-			// 坂ブロックのみ当たり判定する
+			if (!mapChipData.isCollision) continue;
+			// 通常ブロックのみ当たり判定する
 			if (mapChipData.type != NORMAL_BLOCK) continue;
+
+			// フラグチェック
+			if (!mapChipData.isCollision)
+			{
+				int test = 0;
+			}
 
 			// ブロックを取り出して当たり判定
 			BlockData* block = mapChipData.data;
@@ -112,6 +117,8 @@ void MoveWithMapCollision(Body* body, int range)
 			// マップチップ取得
 			MapChipData mapChipData = GetMapChipData(x, y);
 
+			// フラグチェック
+			if (!mapChipData.isCollision) continue;
 			// 通常ブロックのみ当たり判定する
 			if (mapChipData.type != NORMAL_BLOCK) continue;
 
@@ -168,6 +175,8 @@ void SlopeCollision(Body* body, int range)
 			// マップチップ取得
 			MapChipData mapChipData = GetMapChipData(x, y);
 
+			// フラグチェック
+			if (!mapChipData.isCollision) continue;
 			// 通常ブロックのみ当たり判定する
 			if (mapChipData.type != SLOPE_BLOCK) continue;
 

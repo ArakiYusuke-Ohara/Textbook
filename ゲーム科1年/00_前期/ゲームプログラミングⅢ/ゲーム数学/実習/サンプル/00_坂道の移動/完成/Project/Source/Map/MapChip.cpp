@@ -1,6 +1,4 @@
 #include "MapChip.h"
-#include "DxLib.h"
-#include "../GameSetting/GameSetting.h"
 #include "MapParameter.h"
 #include "Block.h"
 
@@ -9,8 +7,10 @@ MapChipData g_MapChip[MAP_CHIP_Y_NUM][MAP_CHIP_X_NUM] = { 0 };
 
 void LoadMapChipData()
 {
-	FILE* fp;
-	if (fopen_s(&fp, "Data/Map/Map.bin", "rb") != 0) return;
+	FILE* mapfp;
+	FILE* colfp;
+	if (fopen_s(&mapfp, "Data/Map/Map.bin", "rb") != 0) return;
+	if (fopen_s(&colfp, "Data/Map/MapCollision.bin", "rb") != 0) return;
 
 	for (int i = 0; i < MAP_CHIP_Y_NUM; i++)
 	{
@@ -18,8 +18,10 @@ void LoadMapChipData()
 		{
 			// マップ情報は１バイトずつ保存されているので、
 			// fgetc関数でちょうど１バイト取得できる
-			int map = fgetc(fp);
+			int map = fgetc(mapfp);
+			int col = fgetc(colfp);
 			g_MapChip[i][j].type = map;
+			g_MapChip[i][j].isCollision = col;
 		}
 	}
 }

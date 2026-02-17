@@ -28,6 +28,7 @@ struct BlockData
 
 struct MapChipData
 {
+	bool isCollision;
 	int type;
 	BlockData* data;
 };
