@@ -79,6 +79,7 @@ void PlayerManager::Fin()
 {
 	if (m_Player)
 	{
-		m_Player->Fin();
+		delete m_Player;
+		m_Player = nullptr;
 	}
 }

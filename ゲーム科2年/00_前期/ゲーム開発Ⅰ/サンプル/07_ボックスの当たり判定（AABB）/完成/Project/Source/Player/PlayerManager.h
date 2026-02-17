@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Player.h"
+class Player;
 
 // プレイヤーオブジェクト管理クラス
 class PlayerManager

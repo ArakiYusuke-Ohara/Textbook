@@ -1,4 +1,5 @@
 #include "PlayerManager.h"
+#include "Player.h"
 
 // Ã“I•Ï”‚Ì‰Šú‰»
 PlayerManager* PlayerManager::m_Instance = nullptr;
@@ -78,6 +79,7 @@ void PlayerManager::Fin()
 {
 	if (m_Player)
 	{
-		m_Player->Fin();
+		delete m_Player;
+		m_Player = nullptr;
 	}
 }

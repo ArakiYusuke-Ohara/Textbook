@@ -24,7 +24,6 @@ public:
 private:
 	// 衝突判定付き移動処理
 	void MoveWithCollision();
-	HitResultAABB CheckHitBlocks();
 
 	int m_Handle;	// 画像ハンドル
 	VECTOR m_Pos;	// 座標
