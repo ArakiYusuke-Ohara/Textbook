@@ -1,13 +1,5 @@
 #pragma once
 
-struct BoxCollision
-{
-	float posX;
-	float posY;
-	float width;
-	float height;
-};
-
 // ‹éŒ`‚Æ“_‚Ì“–‚½‚è”»’è
 bool CheckSquarePoint(float squarePosX, float squarePosY, float squareWidth, float squareHeight, float pointX, float pointY);
 

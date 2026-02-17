@@ -20,13 +20,15 @@ struct BlockData
 	bool active;
 	int handle;
 	MapChipType type;
-	VECTOR pos;
+	float posX;
+	float posY;
 	float width;
 	float height;
 };
 
 struct MapChipData
 {
+	bool isCollision;
 	int type;
 	BlockData* data;
 };

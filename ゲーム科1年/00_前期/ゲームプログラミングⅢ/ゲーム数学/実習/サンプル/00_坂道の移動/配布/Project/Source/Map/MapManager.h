@@ -1,4 +1,6 @@
 #pragma once
+#include "MapParameter.h"
+#include "../Collision/CollisionParameter.h"
 
 void InitMap();
 void LoadMap();
@@ -6,4 +8,8 @@ void StartMap();
 void DrawMap();
 void FinMap();
 
-bool CheckMapCollision(float posX, float posY, float width, float height, int range, float& o_HitX, float& o_HitY, int& o_HitType);
+// 通常ブロック
+void MoveWithMapCollision(Body* body, int range);
+
+// 坂ブロック
+void SlopeCollision(Body* body, int range);		// 当たり判定

@@ -11,7 +11,8 @@ void InitBlock()
 	for (int i = 0; i < BLOCK_MAX; i++, block++)
 	{
 		block->active = false;
-		block->pos = VGet(0.0f, 0.0f, 0.0f);
+		block->posX = 0.0f;
+		block->posY = 0.0f;
 		block->type = MAP_CHIP_NONE;
 		block->width = 0.0f;
 		block->height = 0.0f;
@@ -42,7 +43,7 @@ void DrawBlock()
 	{
 		if (block->active)
 		{
-			DrawGraph((int)(block->pos.x - camera.posX), (int)(block->pos.y - camera.posY), block->handle, TRUE);
+			DrawGraph((int)(block->posX - camera.posX), (int)(block->posY - camera.posY), block->handle, TRUE);
 		}
 	}
 }
@@ -51,7 +52,7 @@ void FinBlock()
 {
 }
 
-BlockData* CreateBlock(MapChipType type, VECTOR pos)
+BlockData* CreateBlock(MapChipType type, float posX, float posY)
 {
 	// 未使用のブロックを探す
 	BlockData* block = g_Blocks;
@@ -62,7 +63,8 @@ BlockData* CreateBlock(MapChipType type, VECTOR pos)
 			// ブロック生成
 			block->active = true;
 			block->handle = g_BlockHandle[type];
-			block->pos = pos;
+			block->posX = posX;
+			block->posY = posY;
 			block->type = type;
 			block->width = MAP_CHIP_WIDTH;
 			block->height = MAP_CHIP_HEIGHT;

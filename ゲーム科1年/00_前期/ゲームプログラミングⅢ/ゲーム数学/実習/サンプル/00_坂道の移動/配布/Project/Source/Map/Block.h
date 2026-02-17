@@ -8,5 +8,5 @@ void StepBlock();
 void DrawBlock();
 void FinBlock();
 
-BlockData* CreateBlock(MapChipType type, VECTOR pos);
+BlockData* CreateBlock(MapChipType type, float posX, float posY);
 BlockData* GetBlocks();
