@@ -1,12 +1,7 @@
 #pragma once
 #include "../Map/MapParameter.h"
 #include "../Animation/Animation.h"
-#include "../Collision/Collision.h"
-
-// プレイヤーサイズ
-#define PLAYER_WIDTH	(72.0f)
-#define PLAYER_HEIGHT	(72.0f)
-#define PLAYER_RADIUS	(36.0f)
+#include "../Collision/CollisionParameter.h"
 
 // アニメーションタイプ
 enum PlayerAnimationType
@@ -25,14 +20,11 @@ struct PlayerData
 {
 	bool active;								// 生存フラグ
 	bool isTurn;								// 左を向いているか
-	bool isAir;									// 空中にいるか
-	float posX;									// X座標
-	float posY;									// Y座標
-	float moveX;								// X移動量
-	float moveY;								// Y移動量
+	Body body;
+	float drawOffsetX;							// 描画位置補正
+	float drawOffsetY;							// 描画位置補正
 	AnimationData animation[PLAYER_ANIM_MAX];	// アニメーション
 	PlayerAnimationType playAnim;				// 再生中のアニメーション
-	BoxCollision boxCollision;					// 矩形当たり判定
 };
 
 // 関数のプロトタイプ宣言
@@ -46,15 +38,3 @@ void FinPlayer();
 
 // 取得関数
 PlayerData GetPlayer();
-
-// 当たり判定
-// 通常ブロックとの当たり判定
-void PlayerHitNormalBlockX(MapChipData mapChipData, bool checkRight = true, bool checkLeft = true);
-void PlayerHitNormalBlockY(MapChipData mapChipData);												
-// 坂道ブロックとの当たり判定
-void PlayerHitSlopeBlockX(MapChipData mapChipData);
-void PlayerHitSlopeBlockY(MapChipData mapChipData);
-// 自動ドアとの当たり判定
-void PlayerHitAutoDoorX(AutoDoorData autoDoor);
-void PlayerHitAutoDoorY(AutoDoorData autoDoor);
-

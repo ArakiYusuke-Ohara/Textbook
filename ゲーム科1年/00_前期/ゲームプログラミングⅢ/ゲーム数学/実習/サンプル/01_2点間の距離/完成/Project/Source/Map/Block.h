@@ -1,12 +1,19 @@
 #pragma once
 #include "MapParameter.h"
 
+// ëOï˚êÈåæ
+struct Body;
+
 void InitBlock();
 void LoadBlock();
 void StartBlock();
 void StepBlock();
+void UpdateBlock();
 void DrawBlock();
 void FinBlock();
 
-BlockData* CreateBlock(MapChipType type, VECTOR pos);
+void ResolveNormalBlockX(Body* body, const BlockData* block);
+void ResolveNormalBlockY(Body* body, const BlockData* block);
+
+BlockData* CreateBlock(MapChipType type, float posX, float posY);
 BlockData* GetBlocks();

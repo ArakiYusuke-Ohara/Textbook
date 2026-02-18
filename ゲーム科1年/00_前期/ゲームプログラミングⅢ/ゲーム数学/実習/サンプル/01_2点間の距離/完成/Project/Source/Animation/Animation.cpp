@@ -80,10 +80,10 @@ void UpdateAnimation(AnimationData* animData)
 
 void DrawAnimation(AnimationData* animData, bool isTurnX, bool isTurnY)
 {
-	DrawAnimation(animData, animData->posX, animData->posY);
+	DrawAnimation(animData, (int)animData->posX, (int)animData->posY, isTurnX, isTurnY);
 }
 
-void DrawAnimation(AnimationData* animData, float posX, float posY, bool isTurnX, bool isTurnY)
+void DrawAnimation(AnimationData* animData, int posX, int posY, bool isTurnX, bool isTurnY)
 {
 	if (!animData->active)return;
 

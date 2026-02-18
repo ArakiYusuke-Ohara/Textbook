@@ -5,44 +5,21 @@
 #include <math.h>
 
 #define AUTO_DOOR_OPEN_DISTANCE (200.0f)
-#define AUTO_DOOR_SPEED (8.0f)
+#define AUTO_DOOR_SPEED (4.0f)
 
-AutoDoorData g_AutoDoorData = { 0 };
+#define AUTO_DOOR_WIDTH (50.0f)
+#define AUTO_DOOR_HEIGHT (100.0f)
 
-void InitAutoDoor()
+void StepAutoDoor(BlockData* block)
 {
-	g_AutoDoorData.active = false;
-	g_AutoDoorData.isOpen = false;
-	g_AutoDoorData.handle = 0;
-	g_AutoDoorData.posX = 0.0f;
-	g_AutoDoorData.posY = 0.0f;
-	g_AutoDoorData.startPosX = 0.0f;
-	g_AutoDoorData.startPosY = 0.0f;
-}
-
-void LoadAutoDoor()
-{
-	g_AutoDoorData.handle = LoadGraph("Data/Map/AutoDoor.png");
-}
-
-void StartAutoDoor()
-{
-	// 初期位置設定
-	g_AutoDoorData.posX = 950.0f;
-	g_AutoDoorData.posY = 750.0f;
-	g_AutoDoorData.startPosX = g_AutoDoorData.posX;
-	g_AutoDoorData.startPosY = g_AutoDoorData.posY;
-}
-
-void StepAutoDoor()
-{
+	bool isOpen = false;
 	PlayerData player = GetPlayer();
 
 	// ① 自動ドアとプレイヤーがX軸でどれだけ離れているか計算する
-	float distanceX = g_AutoDoorData.posX - player.posX;
+	float distanceX = block->startPosX - player.body.posX;
 
 	// ② 自動ドアとプレイヤーがY軸でどれだけ離れているか計算する
-	float distanceY = g_AutoDoorData.posY - player.posY;
+	float distanceY = block->startPosY - player.body.posY;
 
 	// ③ 公式より２点間の距離を計算する
 	float distance = sqrtf(distanceX * distanceX + distanceY * distanceY);
@@ -50,44 +27,70 @@ void StepAutoDoor()
 	// ④ ２点間の距離がAUTO_DOOR_OPEN_DISTANCE以下であればisOpenフラグをtrueにする
 	if (distance <= AUTO_DOOR_OPEN_DISTANCE)
 	{
-		g_AutoDoorData.isOpen = true;
+		isOpen = true;
 	}
+
+	// isOpenがtrueなら上昇、falseなら下降
+	block->moveY = isOpen ? -AUTO_DOOR_SPEED : AUTO_DOOR_SPEED;
 }
 
-void UpdateAutoDoor()
+void UpdateAutoDoor(BlockData* block)
 {
-	// isOpenがtrueなら上昇
-	if (g_AutoDoorData.isOpen)
+	// 移動
+	block->posX += block->moveX;
+	block->posY += block->moveY;
+
+	// 位置制限
+	if (block->posY < block->startPosY - AUTO_DOOR_HEIGHT)
 	{
-		g_AutoDoorData.posY -= AUTO_DOOR_SPEED;
-		if (g_AutoDoorData.posY < (g_AutoDoorData.startPosY - AUTO_DOOR_HEIGHT))
-		{
-			g_AutoDoorData.posY = g_AutoDoorData.startPosY - AUTO_DOOR_HEIGHT;
-		}
+		block->posY = block->startPosY - AUTO_DOOR_HEIGHT;
+		block->moveY = 0.0f;
 	}
-	// isOpenがfalseなら下降
-	else
+	else if (block->posY > (block->startPosY))
 	{
-		g_AutoDoorData.posY += AUTO_DOOR_SPEED;
-		if (g_AutoDoorData.posY > (g_AutoDoorData.startPosY))
-		{
-			g_AutoDoorData.posY = g_AutoDoorData.startPosY;
-		}
+		block->posY = block->startPosY;
+		block->moveY = 0.0f;
 	}
 }
 
-void DrawAutoDoor()
+void ResolveAutoDoorX(Body* body, const BlockData* block)
 {
-	CameraData camera = GetCamera();
-	DrawGraph((int)(g_AutoDoorData.posX - camera.posX), (int)(g_AutoDoorData.posY - camera.posY), g_AutoDoorData.handle, TRUE);
+	// 左からあたったか
+	if (body->moveX > 0.0f)
+	{
+		// 左に押し出す
+		body->posX -= (body->posX + body->width) - block->posX;
+	}
+	// 右からあたったか
+	else if (body->moveX < 0.0f)
+	{
+		// 右に押し出す
+		body->posX += (block->posX + block->width) - body->posX;
+	}
+
+	// 移動量は0にする
+	body->moveX = 0.0f;
 }
 
-void FinAutoDoor()
+void ResolveAutoDoorY(Body* body, const BlockData* block)
 {
-	DeleteGraph(g_AutoDoorData.handle);
-}
+	// 上からあたったか
+	if (body->moveY > 0.0f)
+	{
+		// 上に押し出す
+		body->posY -= (body->posY + body->height) - block->posY;
+		// 着地
+		body->isAir = false;
+		// 足元ブロックとして登録
+		body->groundBlock = block;
+	}
+	// 下からあたったか
+	else if (body->moveY < 0.0f)
+	{
+		// 下に押し出す
+		body->posY += (block->posY + block->height) - body->posY;
+	}
 
-AutoDoorData GetAutoDoorData()
-{
-	return g_AutoDoorData;
+	// 移動量は0にする
+	body->moveY = 0.0f;
 }
