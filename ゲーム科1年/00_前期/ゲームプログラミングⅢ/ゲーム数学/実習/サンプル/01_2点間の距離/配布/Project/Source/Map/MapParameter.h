@@ -7,15 +7,13 @@
 #define MAP_CHIP_WIDTH (50.0f)
 #define MAP_CHIP_HEIGHT (50.0f)
 
-#define AUTO_DOOR_WIDTH (50.0f)
-#define AUTO_DOOR_HEIGHT (100.0f)
-
 enum MapChipType
 {
 	MAP_CHIP_NONE,
 	NORMAL_BLOCK,
 	SLOPE_BLOCK,
-	MAP_CHIP_TYPE_MAX,
+	AUTO_DOOR,
+	BLOCK_TYPE_MAX,
 };
 
 struct BlockData
@@ -23,22 +21,32 @@ struct BlockData
 	bool active;
 	int handle;
 	MapChipType type;
-	VECTOR pos;
+	float posX;
+	float posY;
+	float moveX;
+	float moveY;
+	float width;
+	float height;
+	float startPosX;
+	float startPosY;
 };
 
 struct MapChipData
 {
-	int mapChip;
+	bool isCollision;
+	int type;
 	BlockData* data;
 };
 
-struct AutoDoorData
+struct BlockMasterData
 {
-	bool active;
-	bool isOpen;
-	float posX;
-	float posY;
-	float startPosX;
-	float startPosY;
-	int handle;
+	int width;
+	int height;
+};
+static const BlockMasterData BLOCK_MASTER_DATA[BLOCK_TYPE_MAX] =
+{
+	{ 0, 0 },	// MAP_CHIP_NONE
+	{ 50, 50 },		// NORMAL_BLOCK
+	{ 50, 50 },		// SLOPE_BLOCK
+	{ 50, 100 },	// AUTO_DOOR
 };

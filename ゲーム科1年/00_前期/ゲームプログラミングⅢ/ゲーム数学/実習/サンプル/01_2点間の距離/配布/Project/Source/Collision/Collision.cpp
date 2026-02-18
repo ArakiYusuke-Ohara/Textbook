@@ -58,10 +58,10 @@ bool CheckSquareSquare(float squareA_PosX, float squareA_PosY, float squareA_Wid
 	float bottomB = squareB_PosY + squareB_Height;
 
 	// 左右の辺がめり込んでいるかチェック
-	if (rightA >= leftB && leftA <= rightB)
+	if (rightA > leftB && leftA < rightB)
 	{
 		// 上下の片がめり込んでいるかチェック
-		if (bottomA >= topB && topA <= bottomB)
+		if (bottomA > topB && topA < bottomB)
 		{
 			// 当たっている
 			return true;
@@ -117,12 +117,3 @@ bool CheckCircleCircle(float circleA_PosX, float circleA_PosY, float circleA_Rad
 
 	return false;
 }
-
-void CheckCollision()
-{
-	// ここに当たり判定の処理を書く
-
-	// プレイヤーとマップの当たり判定
-	ChceckMapPlayerCollision();
-}
-

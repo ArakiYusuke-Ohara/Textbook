@@ -1,15 +1,5 @@
 #pragma once
 
-struct BoxCollision
-{
-	float posX;
-	float posY;
-	float width;
-	float height;
-};
-
-// 関数のプロトタイプ宣言
-
 // 矩形と点の当たり判定
 bool CheckSquarePoint(float squarePosX, float squarePosY, float squareWidth, float squareHeight, float pointX, float pointY);
 
@@ -21,7 +11,3 @@ bool CheckCirclePoint(float circlePosX, float circlePosY, float circleRadius, fl
 
 // 円と円の当たり判定
 bool CheckCircleCircle(float circleA_PosX, float circleA_PosY, float circleA_Radius, float circleB_PosX, float circleB_PosY, float circleB_Radius);
-
-// 各当たり判定を行う
-void CheckCollision();
-
