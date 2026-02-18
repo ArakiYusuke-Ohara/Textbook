@@ -12,5 +12,7 @@ struct Body
 	float moveY;
 	float width;
 	float height;
+	float prevPosX;
+	float prevPosY;
 	const BlockData* groundBlock;
 };

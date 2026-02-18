@@ -125,6 +125,10 @@ void ResolveMapCollisionX(Body* body, int range)
 			if (CheckSquareSquare(body->posX, body->posY, body->width, body->height,
 				block->posX, block->posY, block->width, block->height))
 			{
+				if (mapChipData->type == AUTO_DOOR)
+				{
+					int t = 0;
+				}
 				// Õ“Ë‰ğŒˆ
 				ResolveMapchipX(body, mapChipData);
 			}

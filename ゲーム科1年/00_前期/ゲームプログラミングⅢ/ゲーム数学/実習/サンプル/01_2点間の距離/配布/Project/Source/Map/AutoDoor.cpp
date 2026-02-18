@@ -12,6 +12,10 @@
 
 void StepAutoDoor(BlockData* block)
 {
+	// 前回の座標を記憶
+	block->prevPosX = block->posX;
+	block->prevPosY = block->posY;
+
 	bool isOpen = false;
 	PlayerData player = GetPlayer();
 
@@ -21,7 +25,7 @@ void StepAutoDoor(BlockData* block)
 	// ② 自動ドアとプレイヤーがY軸でどれだけ離れているか計算する
 
 
-	// ③ 公式より２点間の距離を計算する（結果をdistanceに代入）
+	// ③ 公式より２点間の距離を計算する
 
 
 	// ④ ２点間の距離がAUTO_DOOR_OPEN_DISTANCE以下であればisOpenフラグをtrueにする
@@ -56,13 +60,13 @@ void UpdateAutoDoor(BlockData* block)
 void ResolveAutoDoorX(Body* body, const BlockData* block)
 {
 	// 左からあたったか
-	if (body->moveX > 0.0f)
+	if ((body->prevPosX + body->width) <= block->prevPosX)
 	{
 		// 左に押し出す
 		body->posX -= (body->posX + body->width) - block->posX;
 	}
 	// 右からあたったか
-	else if (body->moveX < 0.0f)
+	else if (body->prevPosX >= (block->prevPosX + block->width))
 	{
 		// 右に押し出す
 		body->posX += (block->posX + block->width) - body->posX;
@@ -75,7 +79,7 @@ void ResolveAutoDoorX(Body* body, const BlockData* block)
 void ResolveAutoDoorY(Body* body, const BlockData* block)
 {
 	// 上からあたったか
-	if (body->moveY > 0.0f)
+	if ((body->prevPosY + body->height) <= block->prevPosY)
 	{
 		// 上に押し出す
 		body->posY -= (body->posY + body->height) - block->posY;
@@ -85,7 +89,7 @@ void ResolveAutoDoorY(Body* body, const BlockData* block)
 		body->groundBlock = block;
 	}
 	// 下からあたったか
-	else if (body->moveY < 0.0f)
+	else if (body->prevPosY >= (block->prevPosY + block->height))
 	{
 		// 下に押し出す
 		body->posY += (block->posY + block->height) - body->posY;

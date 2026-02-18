@@ -29,6 +29,8 @@ struct BlockData
 	float height;
 	float startPosX;
 	float startPosY;
+	float prevPosX;
+	float prevPosY;
 };
 
 struct MapChipData

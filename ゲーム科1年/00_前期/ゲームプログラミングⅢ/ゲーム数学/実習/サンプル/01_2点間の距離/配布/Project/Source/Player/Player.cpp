@@ -97,6 +97,10 @@ void StepPlayer()
 		return;
 	}
 
+	// 前回の座標を記憶
+	g_PlayerData.body.prevPosX = g_PlayerData.body.posX;
+	g_PlayerData.body.prevPosY = g_PlayerData.body.posY;
+
 	// X移動量は毎回リセットする
 	g_PlayerData.body.moveX = 0.0f;
 

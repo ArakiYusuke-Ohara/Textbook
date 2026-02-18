@@ -24,8 +24,8 @@ const PlayerAnimationParam PLAYER_ANIM_PARAM[PLAYER_ANIM_MAX] =
 
 // プレイヤー設定関連
 #define PLAYER_RADIUS	(36.0f)
-#define PLAYER_DEFAULT_POS_X (1300.0f)
-#define PLAYER_DEFAULT_POS_Y (800.0f)
+#define PLAYER_DEFAULT_POS_X (100.0f)
+#define PLAYER_DEFAULT_POS_Y (700.0f)
 #define PLAYER_MOVE_SPEED (3.0f)
 #define PLAYER_WIDTH (20)
 #define PLAYER_HEIGHT (44)
@@ -96,6 +96,10 @@ void StepPlayer()
 	{
 		return;
 	}
+
+	// 前回の座標を記憶
+	g_PlayerData.body.prevPosX = g_PlayerData.body.posX;
+	g_PlayerData.body.prevPosY = g_PlayerData.body.posY;
 
 	// X移動量は毎回リセットする
 	g_PlayerData.body.moveX = 0.0f;
