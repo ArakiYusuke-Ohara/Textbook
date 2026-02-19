@@ -4,6 +4,10 @@
 
 MapChipData g_MapChip[MAP_CHIP_Y_NUM][MAP_CHIP_X_NUM] = { 0 };
 
+void InitMapChip()
+{
+	memset(g_MapChip, 0, sizeof(g_MapChip));
+}
 
 void LoadMapChipData()
 {
@@ -24,6 +28,10 @@ void LoadMapChipData()
 			g_MapChip[i][j].isCollision = col;
 		}
 	}
+
+	// ƒtƒ@ƒCƒ‹‚ð•Â‚¶‚é
+	fclose(mapfp);
+	fclose(colfp);
 }
 
 void CreateMap()
@@ -47,7 +55,7 @@ void CreateMap()
 	}
 }
 
-MapChipData GetMapChipData(int x, int y)
+const MapChipData* GetMapChipData(int x, int y)
 {
-	return g_MapChip[y][x];
+	return &g_MapChip[y][x];
 }

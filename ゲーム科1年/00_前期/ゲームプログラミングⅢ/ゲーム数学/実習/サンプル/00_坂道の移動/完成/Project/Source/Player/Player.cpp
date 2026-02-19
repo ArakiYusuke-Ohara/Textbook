@@ -25,7 +25,7 @@ const PlayerAnimationParam PLAYER_ANIM_PARAM[PLAYER_ANIM_MAX] =
 // プレイヤー設定関連
 #define PLAYER_RADIUS	(36.0f)
 #define PLAYER_DEFAULT_POS_X (100.0f)
-#define PLAYER_DEFAULT_POS_Y (600.0f)
+#define PLAYER_DEFAULT_POS_Y (700.0f)
 #define PLAYER_MOVE_SPEED (3.0f)
 #define PLAYER_WIDTH (20)
 #define PLAYER_HEIGHT (44)
@@ -34,14 +34,16 @@ const PlayerAnimationParam PLAYER_ANIM_PARAM[PLAYER_ANIM_MAX] =
 #define PLAYER_JUMP_POWER (12.0f)
 // 重力
 #define PLAYER_GRAVITY (0.4f)
+// 地面吸いつき力
+#define PLAYER_GROUND_SNAP (3.0f)
 
 // 描画位置補正
 #define PLAYER_DRAW_OFFSET_X (-24)
 #define PLAYER_DRAW_OFFSET_Y (-20)
 // 落下判定になるY移動量
-#define PLAYER_FALL_Y_MOVE (PLAYER_GRAVITY * 3.0f)
+#define PLAYER_FALL_Y_MOVE (1.6f)
 // キャラクターの周囲何マスまでチェックするか
-#define PLAYER_CHECK_ROUND_NUM (2)
+#define PLAYER_CHECK_ROUND_NUM (4)
 
 PlayerData g_PlayerData = { 0 };
 
@@ -95,6 +97,10 @@ void StepPlayer()
 		return;
 	}
 
+	// 前回の座標を記憶
+	g_PlayerData.body.prevPosX = g_PlayerData.body.posX;
+	g_PlayerData.body.prevPosY = g_PlayerData.body.posY;
+
 	// X移動量は毎回リセットする
 	g_PlayerData.body.moveX = 0.0f;
 
@@ -127,15 +133,26 @@ void UpdatePlayer()
 	if (!g_PlayerData.active) return;
 
 	// 当たり判定付き移動
-	MoveWithMapCollision(&g_PlayerData.body, PLAYER_CHECK_ROUND_NUM);
-
-	// 坂の当たり判定
-	SlopeCollision(&g_PlayerData.body, PLAYER_CHECK_ROUND_NUM);
+	ResolveMapCollision(&g_PlayerData.body, PLAYER_CHECK_ROUND_NUM);
 
 	// 上昇しているもしくは落ちている場合は空中フラグを立てる
 	if (g_PlayerData.body.moveY < 0.0f || g_PlayerData.body.moveY > PLAYER_FALL_Y_MOVE)
 	{
 		g_PlayerData.body.isAir = true;
+	}
+
+	// 地面にいる場合、足元ブロックに吸いつく（簡単に浮かないようにする）
+	if (!g_PlayerData.body.isAir)
+	{
+		g_PlayerData.body.moveY += PLAYER_GROUND_SNAP;
+		ResolveMapCollisionY(&g_PlayerData.body, PLAYER_CHECK_ROUND_NUM);
+	}
+
+	// 足元ブロックが動いていればプレイヤーも動く
+	if (g_PlayerData.body.groundBlock != NULL)
+	{
+		g_PlayerData.body.posX += g_PlayerData.body.groundBlock->moveX;
+		g_PlayerData.body.posY += g_PlayerData.body.groundBlock->moveY;
 	}
 
 	// アニメーション更新

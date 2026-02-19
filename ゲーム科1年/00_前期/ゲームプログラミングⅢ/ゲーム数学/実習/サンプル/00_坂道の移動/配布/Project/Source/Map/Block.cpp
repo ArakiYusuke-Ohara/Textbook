@@ -1,9 +1,9 @@
 #include "Block.h"
 #include "../Camera/Camera.h"
+#include "../Collision/CollisionParameter.h"
 
 BlockData g_Blocks[BLOCK_MAX] = { 0 };
 int g_BlockHandle[BLOCK_TYPE_MAX] = { 0 };
-
 
 void InitBlock()
 {
@@ -13,9 +13,13 @@ void InitBlock()
 		block->active = false;
 		block->posX = 0.0f;
 		block->posY = 0.0f;
+		block->moveX = 0.0f;
+		block->moveY = 0.0f;
 		block->type = MAP_CHIP_NONE;
 		block->width = 0.0f;
 		block->height = 0.0f;
+		block->startPosX = 0.0f;
+		block->startPosY = 0.0f;
 	}
 }
 
@@ -23,13 +27,25 @@ void LoadBlock()
 {
 	g_BlockHandle[NORMAL_BLOCK] = LoadGraph("Data/Map/NormalBlock.png");
 	g_BlockHandle[SLOPE_BLOCK] = LoadGraph("Data/Map/SlopeBlock.png");
+	g_BlockHandle[AUTO_DOOR] = LoadGraph("Data/Map/AutoDoor.png");
 }
 
 void StartBlock()
 {
+	BlockData* block = g_Blocks;
+	for (int i = 0; i < BLOCK_MAX; i++, block++)
+	{
+		// 配置位置を記憶
+		block->startPosX = block->posX;
+		block->startPosY = block->posY;
+	}
 }
 
 void StepBlock()
+{
+}
+
+void UpdateBlock()
 {
 }
 
@@ -50,6 +66,50 @@ void DrawBlock()
 
 void FinBlock()
 {
+	for (int i = 0; i < BLOCK_TYPE_MAX; i++)
+	{
+		DeleteGraph(g_BlockHandle[i]);
+	}
+}
+
+void ResolveNormalBlockX(Body* body, const BlockData* block)
+{
+	// 左からあたったか
+	if (body->moveX > 0.0f)
+	{
+		// 左に押し出す
+		body->posX -= (body->posX + body->width) - block->posX;
+	}
+	// 右からあたったか
+	else if (body->moveX < 0.0f)
+	{
+		// 右に押し出す
+		body->posX += (block->posX + block->width) - body->posX;
+	}
+
+	// 移動量は0にする
+	body->moveX = 0.0f;
+}
+
+void ResolveNormalBlockY(Body* body, const BlockData* block)
+{
+	// 上からあたったか
+	if (body->moveY > 0.0f)
+	{
+		// 上に押し出す
+		body->posY -= (body->posY + body->height) - block->posY;
+		// 着地
+		body->isAir = false;
+	}
+	// 下からあたったか
+	else if (body->moveY < 0.0f)
+	{
+		// 下に押し出す
+		body->posY += (block->posY + block->height) - body->posY;
+	}
+
+	// 移動量は0にする
+	body->moveY = 0.0f;
 }
 
 BlockData* CreateBlock(MapChipType type, float posX, float posY)
@@ -66,8 +126,8 @@ BlockData* CreateBlock(MapChipType type, float posX, float posY)
 			block->posX = posX;
 			block->posY = posY;
 			block->type = type;
-			block->width = MAP_CHIP_WIDTH;
-			block->height = MAP_CHIP_HEIGHT;
+			block->width = (float)BLOCK_MASTER_DATA[type].width;
+			block->height = (float)BLOCK_MASTER_DATA[type].height;
 			return block;
 		}
 	}

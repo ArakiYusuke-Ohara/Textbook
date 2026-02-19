@@ -1,5 +1,8 @@
 #pragma once
 
+// ‘O•ûéŒ¾
+struct BlockData;
+
 struct Body
 {
 	bool isAir;
@@ -9,4 +12,7 @@ struct Body
 	float moveY;
 	float width;
 	float height;
+	float prevPosX;
+	float prevPosY;
+	const BlockData* groundBlock;
 };

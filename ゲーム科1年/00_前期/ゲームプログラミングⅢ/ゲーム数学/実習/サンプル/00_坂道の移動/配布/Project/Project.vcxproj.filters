@@ -138,6 +138,9 @@
     <ClCompile Include="Source\Camera\Camera.cpp">
       <Filter>Source\Camera</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Map\SlopeBlock.cpp">
+      <Filter>Source\Map</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Player\Player.h">
@@ -223,6 +226,9 @@
     </ClInclude>
     <ClInclude Include="Source\Collision\CollisionParameter.h">
       <Filter>Source\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Map\SlopeBlock.h">
+      <Filter>Source\Map</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

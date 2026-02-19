@@ -2,14 +2,19 @@
 #include "MapParameter.h"
 #include "MapChip.h"
 #include "Block.h"
+#include "SlopeBlock.h"
 #include "../Player/Player.h"
 #include "../Collision/Collision.h"
+#include "../Collision/CollisionParameter.h"
 
-// 坂の吸い寄せ範囲
-#define SLOPE_ATTRACTION (8.0f)
+#ifdef _DEBUG
+#include "../Input/Input.h"
+#endif
 
-// このCPPでしか使わない関数
-void ResolveSlope(Body* body, const BlockData* block);	// 坂の押し出し
+// このCPPしか使わない関数
+void ResolveMapchipX(Body* body, const MapChipData* mapchip);
+void ResolveMapchipY(Body* body, const MapChipData* mapchip);
+void PreviewSlope(Body* body, int range);
 
 void InitMap()
 {
@@ -25,6 +30,29 @@ void LoadMap()
 void StartMap()
 {
 	CreateMap();
+	StartBlock();
+}
+
+void StepMap()
+{
+	StepBlock();
+
+#ifdef _DEBUG
+
+	// Wキーでマップを読み直し
+	if (IsTriggerKey(KEY_W))
+	{
+		InitMapChip();
+		LoadMapChipData();
+		CreateMap();
+	}
+
+#endif
+}
+
+void UpdateMap()
+{
+	UpdateBlock();
 }
 
 void DrawMap()
@@ -35,9 +63,26 @@ void DrawMap()
 
 void FinMap()
 {
+	FinBlock();
 }
 
-void MoveWithMapCollision(Body* body, int range)
+/// <summary>
+/// マップと衝突解決
+/// </summary>
+/// <param name="body"></param>
+/// <param name="range"></param>
+void ResolveMapCollision(Body* body, int range)
+{
+	// 足元ブロック情報をリセット
+	body->groundBlock = NULL;
+
+	// X軸解決
+	ResolveMapCollisionX(body, range);
+	// Y軸解決
+	ResolveMapCollisionY(body, range);
+}
+
+void ResolveMapCollisionX(Body* body, int range)
 {
 	// 座標を添字に変換
 	int x = (int)((body->posX + body->width / 2) / MAP_CHIP_WIDTH);
@@ -52,6 +97,9 @@ void MoveWithMapCollision(Body* body, int range)
 	// X軸だけ移動する
 	body->posX += body->moveX;
 
+	// 坂を先に解決しないと付近のブロックに引っかかる
+	PreviewSlope(body, range);
+
 	// 左上からチェックしていく
 	for (int y = top; y <= bottom; y++)
 	{
@@ -64,36 +112,40 @@ void MoveWithMapCollision(Body* body, int range)
 			if (x < 0 || x >= MAP_CHIP_X_NUM) continue;
 
 			// マップチップ取得
-			MapChipData mapChipData = GetMapChipData(x, y);
+			const MapChipData* mapChipData = GetMapChipData(x, y);
 
 			// フラグチェック
-			if (!mapChipData.isCollision) continue;
-			// 通常ブロックのみ当たり判定する
-			if (mapChipData.type != NORMAL_BLOCK) continue;
+			if (!mapChipData->isCollision) continue;
+			// タイプ無しは無視
+			if (mapChipData->type == MAP_CHIP_NONE) continue;
 
 			// ブロックを取り出して当たり判定
-			BlockData* block = mapChipData.data;
-			if (CheckSquareSquare(	body->posX, body->posY, body->width, body->height, 
-									block->posX, block->posY, block->width, block->height ))
+			BlockData* block = mapChipData->data;
+			if (CheckSquareSquare(body->posX, body->posY, body->width, body->height,
+				block->posX, block->posY, block->width, block->height))
 			{
-				// 左からあたったか
-				if (body->moveX > 0.0f)
+				if (mapChipData->type == AUTO_DOOR)
 				{
-					// 左に押し出す
-					body->posX -= (body->posX + body->width) - block->posX;
+					int t = 0;
 				}
-				// 右からあたったか
-				else if (body->moveX < 0.0f)
-				{
-					// 右に押し出す
-					body->posX += (block->posX + block->width) - body->posX;
-				}
-
-				// 移動量は0にする
-				body->moveX = 0.0f;
+				// 衝突解決
+				ResolveMapchipX(body, mapChipData);
 			}
 		}
 	}
+}
+
+void ResolveMapCollisionY(Body* body, int range)
+{
+	// 座標を添字に変換
+	int x = (int)((body->posX + body->width / 2) / MAP_CHIP_WIDTH);
+	int y = (int)((body->posY + body->height / 2) / MAP_CHIP_HEIGHT);
+	// プレイヤーの左上にあるマップチップインデックス
+	int left = x - range;
+	int top = y - range;
+	// プレイヤーの右下にあるマップチップインデックス
+	int right = x + range;
+	int bottom = y + range;
 
 	// Y軸だけ移動する
 	body->posY += body->moveY;
@@ -110,41 +162,70 @@ void MoveWithMapCollision(Body* body, int range)
 			if (x < 0 || x >= MAP_CHIP_X_NUM) continue;
 
 			// マップチップ取得
-			MapChipData mapChipData = GetMapChipData(x, y);
+			const MapChipData* mapChipData = GetMapChipData(x, y);
 
 			// フラグチェック
-			if (!mapChipData.isCollision) continue;
-			// 通常ブロックのみ当たり判定する
-			if (mapChipData.type != NORMAL_BLOCK) continue;
+			if (!mapChipData->isCollision) continue;
+			// タイプ無しは無視
+			if (mapChipData->type == MAP_CHIP_NONE) continue;
 
 			// ブロックを取り出して当たり判定
-			BlockData* block = mapChipData.data;
+			BlockData* block = mapChipData->data;
 			if (CheckSquareSquare(body->posX, body->posY, body->width, body->height,
 				block->posX, block->posY, block->width, block->height))
 			{
-				// 上からあたったか
-				if (body->moveY > 0.0f)
-				{
-					// 上に押し出す
-					body->posY -= (body->posY + body->height) - block->posY;
-					// 着地
-					body->isAir = false;
-				}
-				// 下からあたったか
-				else if (body->moveY < 0.0f)
-				{
-					// 下に押し出す
-					body->posY += (block->posY + block->height) - body->posY;
-				}
-
-				// 移動量は0にする
-				body->moveY = 0.0f;
+				// 衝突解決
+				ResolveMapchipY(body, mapChipData);
 			}
 		}
 	}
 }
 
-void SlopeCollision(Body* body, int range)
+/// <summary>
+/// X軸の衝突解決
+/// </summary>
+/// <param name="body">当たり判定ボディ</param>
+/// <param name="mapchip">マップチップ</param>
+void ResolveMapchipX(Body* body, const MapChipData* mapchip)
+{
+	switch (mapchip->type)
+	{
+	case NORMAL_BLOCK:
+		// 通常ブロック
+		ResolveNormalBlockX(body, mapchip->data);
+		break;
+	case SLOPE_BLOCK:
+		// 坂ブロック
+		ResolveSlopeBlockX(body, mapchip->data);
+		break;
+	default:
+		break;
+	}
+}
+
+/// <summary>
+/// Y軸の衝突解決
+/// </summary>
+/// <param name="body">当たり判定ボディ</param>
+/// <param name="mapchip">マップチップ</param>
+void ResolveMapchipY(Body* body, const MapChipData* mapchip)
+{
+	switch (mapchip->type)
+	{
+	case NORMAL_BLOCK:
+		// 通常ブロック
+		ResolveNormalBlockY(body, mapchip->data);
+		break;
+	case SLOPE_BLOCK:
+		// 坂ブロック
+		ResolveSlopeBlockY(body, mapchip->data);
+		break;
+	default:
+		break;
+	}
+}
+
+void PreviewSlope(Body* body, int range)
 {
 	// 座標を添字に変換
 	int x = (int)((body->posX + body->width / 2) / MAP_CHIP_WIDTH);
@@ -168,56 +249,21 @@ void SlopeCollision(Body* body, int range)
 			if (x < 0 || x >= MAP_CHIP_X_NUM) continue;
 
 			// マップチップ取得
-			MapChipData mapChipData = GetMapChipData(x, y);
+			const MapChipData* mapChipData = GetMapChipData(x, y);
 
 			// フラグチェック
-			if (!mapChipData.isCollision) continue;
-			// 通常ブロックのみ当たり判定する
-			if (mapChipData.type != SLOPE_BLOCK) continue;
+			if (!mapChipData->isCollision) continue;
+			// 坂以外は無視
+			if (mapChipData->type != SLOPE_BLOCK) continue;
 
 			// ブロックを取り出して当たり判定
-			BlockData* block = mapChipData.data;
+			BlockData* block = mapChipData->data;
 			if (CheckSquareSquare(body->posX, body->posY, body->width, body->height,
 				block->posX, block->posY, block->width, block->height))
 			{
-				// 押し出して解決
-				ResolveSlope(body, block);
+				// 衝突解決
+				PreviewSlopeBlock(body, block);
 			}
 		}
-	}
-}
-
-void ResolveSlope(Body* body, const BlockData* block)
-{
-	// 坂道の始点（左側）
-	float startX = block->posX;
-	float startY = block->posY + block->width;
-	// 坂道の終点（右側）
-	float endX = block->posX + block->width;
-	float endY = block->posY;
-	// プレイヤーの足先のX座標
-	float playerFootX = body->posX + body->width;
-	// プレイヤーの足先座標は坂の端を超えてはいけない
-	if (playerFootX < block->posX) playerFootX = block->posX;
-	if (playerFootX > (block->posX + block->width)) playerFootX = (block->posX + block->width);
-
-	// ① 傾きの値は「Yの増加量 / Xの増加量」
-
-
-	// ② 始点の値と傾きの値を使って切片を計算する
-
-
-	// ③ プレイヤーのX座標から坂道の高さを計算する（結果をslopeYに入れる）
-	float slopeY = 0.0f;
-
-	// 坂の高さからある程度上から吸い寄せないと、下るときに浮いてしまう
-	if ((body->posY + body->height) >= (slopeY - SLOPE_ATTRACTION))
-	{
-		// 着地
-		body->moveY = 0.0f;
-		body->isAir = false;
-
-		// 坂とめり込んでいる分だけ上へ移動
-		body->posY -= (body->posY + body->height) - slopeY;
 	}
 }

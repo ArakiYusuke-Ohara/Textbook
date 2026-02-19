@@ -1,15 +1,18 @@
 #pragma once
-#include "MapParameter.h"
-#include "../Collision/CollisionParameter.h"
+
+// 前方宣言
+struct Body;
+struct MapChipData;
 
 void InitMap();
 void LoadMap();
 void StartMap();
+void StepMap();
+void UpdateMap();
 void DrawMap();
 void FinMap();
 
-// 通常ブロック
-void MoveWithMapCollision(Body* body, int range);
-
-// 坂ブロック
-void SlopeCollision(Body* body, int range);		// 当たり判定
+// 当たり判定関数
+void ResolveMapCollision(Body* body, int range);	// 通常ブロック
+void ResolveMapCollisionX(Body* body, int range);	// 通常ブロック
+void ResolveMapCollisionY(Body* body, int range);	// 通常ブロック

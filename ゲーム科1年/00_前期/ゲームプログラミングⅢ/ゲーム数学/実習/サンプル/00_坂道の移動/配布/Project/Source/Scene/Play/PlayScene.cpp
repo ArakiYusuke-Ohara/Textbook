@@ -5,10 +5,6 @@
 #include "../../Camera/Camera.h"
 #include "../../Collision/Collision.h"
 
-
-// 背景のスピード
-#define BACK_GROUND_SPEED (-1.5f)
-
 void InitPlayScene()
 {
 	// プレイヤー初期化
@@ -41,6 +37,9 @@ void StartPlayScene()
 
 void StepPlayScene()
 {
+	// マップステップ
+	StepMap();
+
 	// プレイヤーステップ
 	StepPlayer();
 
@@ -51,6 +50,8 @@ void StepPlayScene()
 void UpdatePlayScene()
 {
 	// マップ更新
+	UpdateMap();
+
 	// プレイヤー更新
 	UpdatePlayer();
 }
