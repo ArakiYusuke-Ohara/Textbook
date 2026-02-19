@@ -55,18 +55,18 @@ void UpdateScore()
 }
 
 // スコア表示UI生成
-void CreateScoreUI(VECTOR pos)
+void CreateScoreUI(float posX, float posY)
 {
 	char text[256];
 	sprintf_s(text, SCORE_STRING, g_Score);
-	g_UIScore = CreateUIText(pos, text);
+	g_UIScore = CreateUIText(posX, posY, text);
 }
 
-void CreateHiScoreUI(VECTOR pos)
+void CreateHiScoreUI(float posX, float posY)
 {
 	char text[256];
 	sprintf_s(text, HI_SCORE_STRING, g_HiScore);
-	g_UIHiScore = CreateUIText(pos, text);
+	g_UIHiScore = CreateUIText(posX, posY, text);
 }
 
 // スコア設定

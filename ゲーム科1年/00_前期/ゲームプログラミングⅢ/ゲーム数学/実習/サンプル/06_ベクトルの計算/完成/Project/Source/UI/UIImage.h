@@ -17,7 +17,8 @@ struct UIImageData
 {
 	bool active;
 	int handle;
-	VECTOR pos;
+	float posX;
+	float posY;
 };
 
 // 各ロジックごとの関数
@@ -29,7 +30,7 @@ void DrawUIImage();
 void FinUIImage();
 
 // UIImageを生成する
-void CreateUIImage(UIImageType type, VECTOR pos);
+void CreateUIImage(UIImageType type, float posX, float posY);
 
 // 表示中のUIImageを未使用にする
 // シーンの切り替え時などで使う

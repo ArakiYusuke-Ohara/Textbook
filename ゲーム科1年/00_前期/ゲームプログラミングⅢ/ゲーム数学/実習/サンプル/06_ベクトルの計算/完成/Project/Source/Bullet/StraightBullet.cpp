@@ -1,6 +1,8 @@
+#include "DxLib.h"
 #include "StraightBullet.h"
 #include "../Effect/AnimationEffect.h"
 #include "../Sound/SoundManager.h"
+#include "../Math/MyMath.h"
 
 #define HIT_EFFECT_INTERVAL (1)
 #define HIT_EFFECT_OFFSET_X (-10.0f)
@@ -22,10 +24,8 @@ void InitStraightBullet()
 	{
 		bullet->handle = 0;
 		bullet->life = 0;
-		bullet->pos.x = 0.0f;
-		bullet->pos.y = 0.0f;
-		bullet->move.x = 0.0f;
-		bullet->move.y = 0.0f;
+		bullet->pos = {};
+		bullet->move = {};
 		bullet->radius = 0.0f;
 		bullet->active = false;
 	}
@@ -84,8 +84,7 @@ void UpdateStraightBullet()
 		if (!bullet->active)continue;
 
 		// 移動
-		bullet->pos.x += bullet->move.x;
-		bullet->pos.y += bullet->move.y;
+		bullet->pos = VecAdd(bullet->pos, bullet->move);
 
 		// 寿命処理
 		if (bullet->life <= 0)
@@ -137,12 +136,10 @@ void FireStraightBullet(StraightBulletType type, FireBulletData fireData, Bullet
 			bullet->handle = g_BulletHandle[type];
 
 			// 座標設定
-			bullet->pos.x = fireData.pos.x;
-			bullet->pos.y = fireData.pos.y;
+			bullet->pos = fireData.pos;
 
 			// 移動量設定
-			bullet->move.x = fireData.move.x;
-			bullet->move.y = fireData.move.y;
+			bullet->move = fireData.move;
 
 			// 画像から幅と高さを取得
 			int w, h;
@@ -176,7 +173,7 @@ void StraightBulletHitEnemy(int index)
 
 	// エフェクトを表示
 	VECTOR effectPos = bullet->pos;
-	StartAnimationEffect(PLAYER_NORMAL_SHOT_HIT, effectPos, HIT_EFFECT_INTERVAL, false);
+	StartAnimationEffect(PLAYER_NORMAL_SHOT_HIT, effectPosX, effectPosY, HIT_EFFECT_INTERVAL, false);
 
 	// ヒットSE再生
 	PlaySE(SE_PLAYRE_SHOT_HIT);
@@ -191,5 +188,5 @@ void StraightBulletHitPlayer(int index)
 
 	// エフェクトを表示
 	VECTOR effectPos = bullet->pos;
-	StartAnimationEffect(ENEMY_BULLET_HIT, effectPos, HIT_EFFECT_INTERVAL, false);
+	StartAnimationEffect(ENEMY_BULLET_HIT, effectPosX, effectPosY, HIT_EFFECT_INTERVAL, false);
 }

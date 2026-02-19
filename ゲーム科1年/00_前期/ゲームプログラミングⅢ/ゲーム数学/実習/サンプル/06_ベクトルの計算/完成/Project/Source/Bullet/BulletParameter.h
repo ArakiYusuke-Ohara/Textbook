@@ -1,7 +1,6 @@
 #pragma once
 #include "DxLib.h"
 
-
 #define STRAIGHT_BULLET_MAX (1024)
 
 // ”­Ë‚·‚é’eŠÛ‚ÌƒJƒeƒSƒŠ

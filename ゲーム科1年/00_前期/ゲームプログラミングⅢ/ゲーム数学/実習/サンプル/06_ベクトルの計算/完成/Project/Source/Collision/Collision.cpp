@@ -7,20 +7,21 @@
 
 // 矩形と点の当たり判定
 // 引数
-// squarePos:矩形の左上座標
+// squarePosX:矩形の左上X座標
+// squarePosY:矩形の左上Y座標
 // squareWidth:矩形の横幅
 // squareHeight:矩形の高さ
 // pointX:点のX座標
 // pointY:点のY座標
 // 戻り値
 // 当たっていればtrue
-bool CheckSquarePoint(VECTOR squarePos, float squareWidth, float squareHeight, VECTOR pointPos)
+bool CheckSquarePoint(float squarePosX, float squarePosY, float squareWidth, float squareHeight, float pointX, float pointY)
 {
 	// 点のX座標が矩形の間にあるか
-	if (pointPos.x >= squarePos.x && pointPos.x <= (squarePos.x + squareWidth))
+	if (pointX >= squarePosX && pointX <= (squarePosX + squareWidth))
 	{
 		// 点のY座標が矩形の間にあるか
-		if (pointPos.y >= squarePos.y && (pointPos.y <= squarePos.y + squareHeight))
+		if (pointY >= squarePosY && (pointY <= squarePosY + squareHeight))
 		{
 			// 当たっている
 			return true;
@@ -32,33 +33,35 @@ bool CheckSquarePoint(VECTOR squarePos, float squareWidth, float squareHeight, V
 
 // 矩形と矩形の当たり判定
 // 引数
-// squareAPos:矩形Aの左上座標
+// squareA_PosX:矩形Aの左上X座標
+// squareA_PosY:矩形Aの左上Y座標
 // squareA_Width:矩形Aの横幅
 // squareA_Height:矩形Aの高さ
-// squareBPos:矩形Bの左上座標
+// squareB_PosX:矩形Bの左上X座標
+// squareB_PosY:矩形Bの左上Y座標
 // squareB_Width:矩形Bの横幅
 // squareB_Height:矩形Bの高さ
 // 戻り値
 // 当たっていればtrue
-bool CheckSquareSquare(VECTOR squareAPos, float squareA_Width, float squareA_Height, VECTOR squareBPos, float squareB_Width, float squareB_Height)
+bool CheckSquareSquare(float squareA_PosX, float squareA_PosY, float squareA_Width, float squareA_Height, float squareB_PosX, float squareB_PosY, float squareB_Width, float squareB_Height)
 {
 	// 矩形Aの各辺の位置を計算する
-	float leftA = squareAPos.x;
-	float rightA = squareAPos.x + squareA_Width;
-	float topA = squareAPos.y;
-	float bottomA = squareAPos.y + squareA_Height;
+	float leftA = squareA_PosX;
+	float rightA = squareA_PosX + squareA_Width;
+	float topA = squareA_PosY;
+	float bottomA = squareA_PosY + squareA_Height;
 
 	// 矩形Bの各辺の位置を計算する
-	float leftB = squareBPos.x;
-	float rightB = squareBPos.x + squareB_Width;
-	float topB = squareBPos.y;
-	float bottomB = squareBPos.y + squareB_Height;
+	float leftB = squareB_PosX;
+	float rightB = squareB_PosX + squareB_Width;
+	float topB = squareB_PosY;
+	float bottomB = squareB_PosY + squareB_Height;
 
 	// 左右の辺がめり込んでいるかチェック
-	if (rightA >= leftB && leftA <= rightB)
+	if (rightA > leftB && leftA < rightB)
 	{
 		// 上下の片がめり込んでいるかチェック
-		if (bottomA >= topB && topA <= bottomB)
+		if (bottomA > topB && topA < bottomB)
 		{
 			// 当たっている
 			return true;
@@ -70,16 +73,17 @@ bool CheckSquareSquare(VECTOR squareAPos, float squareA_Width, float squareA_Hei
 
 // 円と点の当たり判定
 // 引数
-// circlePos:円の中心座標
+// circlePosX:円の中心座標（X）
+// circlePosY:円の中心座用（Y）
 // circleRadius:円の半径
 // pointX:点のX座標
 // pointY:点のY座標
 // 戻り値
 // 当たっていればtrue
-bool CheckCirclePoint(VECTOR circlePos, float circleRadius, VECTOR pointPos)
+bool CheckCirclePoint(float circlePosX, float circlePosY, float circleRadius, float pointX, float pointY)
 {
 	// 円の中心から点までの距離を計算する
-	float distance = sqrtf((pointPos.x - circlePos.x) * (pointPos.x - circlePos.x) + (pointPos.y - circlePos.y) * (pointPos.y - circlePos.y));
+	float distance = sqrtf((pointX - circlePosX) * (pointX - circlePosX) + (pointY - circlePosY) * (pointY - circlePosY));
 
 	// 求めた距離が半径の長さ以下であれば当たっている
 	if (distance <= circleRadius)
@@ -92,16 +96,18 @@ bool CheckCirclePoint(VECTOR circlePos, float circleRadius, VECTOR pointPos)
 
 // 円と点の当たり判定
 // 引数
-// circleAPos:円Aの中心座標
+// circleA_PosX:円Aの中心座標（X）
+// circleA_PosY:円Aの中心座用（Y）
 // circleA_Radius:円Aの半径
-// circleBPos:円Bの中心座標
+// circleB_PosX:円Bの中心座標（X）
+// circleB_PosX:円Bの中心座用（Y）
 // circleB_Radius:円Bの半径
 // 戻り値
 // 当たっていればtrue
-bool CheckCircleCircle(VECTOR circleAPos, float circleA_Radius, VECTOR circleBPos, float circleB_Radius)
+bool CheckCircleCircle(float circleA_PosX, float circleA_PosY, float circleA_Radius, float circleB_PosX, float circleB_PosY, float circleB_Radius)
 {
 	// 円の中心間の距離を計算する
-	float distance = sqrtf((circleBPos.x - circleAPos.x) * (circleBPos.x - circleAPos.x) + (circleBPos.y - circleAPos.y) * (circleBPos.y - circleAPos.y));
+	float distance = sqrtf((circleB_PosX - circleA_PosX) * (circleB_PosX - circleA_PosX) + (circleB_PosY - circleA_PosY) * (circleB_PosY - circleA_PosY));
 
 	// 中心間の距離が2つの円の半径の合計以下であれば当たっている
 	if (distance <= (circleA_Radius + circleB_Radius))
@@ -111,12 +117,3 @@ bool CheckCircleCircle(VECTOR circleAPos, float circleA_Radius, VECTOR circleBPo
 
 	return false;
 }
-
-void CheckCollision()
-{
-	// ここに当たり判定の処理を書く
-
-	// プレイヤーとマップの当たり判定
-	ChceckMapPlayerCollision();
-}
-

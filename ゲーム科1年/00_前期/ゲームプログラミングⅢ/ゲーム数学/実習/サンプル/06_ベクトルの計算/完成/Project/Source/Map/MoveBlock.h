@@ -1,13 +1,9 @@
 #pragma once
+// ëOï˚êÈåæ
+struct BlockData;
+struct Body;
 
-#include "MapParameter.h"
-
-void InitMoveBlock();
-void LoadMoveBlock();
-void StartMoveBlock();
-void StepMoveBlock();
-void UpdateMoveBlock();
-void DrawMoveBlock();
-void FinMoveBlock();
-
-MoveBlockData GetMoveBlockData();
+void StepMoveBlock(BlockData* block);
+void UpdateMoveBlock(BlockData* block);
+void ResolveMoveBlockX(Body* body, const BlockData* block);
+void ResolveMoveBlockY(Body* body, const BlockData* block);

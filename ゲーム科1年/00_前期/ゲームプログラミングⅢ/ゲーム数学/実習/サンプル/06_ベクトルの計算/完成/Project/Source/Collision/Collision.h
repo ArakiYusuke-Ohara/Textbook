@@ -1,26 +1,13 @@
 #pragma once
 
-struct BoxCollision
-{
-	VECTOR pos;
-	float width;
-	float height;
-};
-
-// 関数のプロトタイプ宣言
-
 // 矩形と点の当たり判定
-bool CheckSquarePoint(VECTOR squarePos, float squareWidth, float squareHeight, VECTOR pointPos);
+bool CheckSquarePoint(float squarePosX, float squarePosY, float squareWidth, float squareHeight, float pointX, float pointY);
 
 // 矩形と矩形の当たり判定
-bool CheckSquareSquare(VECTOR squareAPos, float squareA_Width, float squareA_Height, VECTOR squareBPos, float squareB_Width, float squareB_Height);
+bool CheckSquareSquare(float squareA_PosX, float squareA_PosY, float squareA_Width, float squareA_Height, float squareB_PosX, float squareB_PosY, float squareB_Width, float squareB_Height);
 
 // 円と点の当たり判定
-bool CheckCirclePoint(VECTOR circlePos, float circleRadius, VECTOR pointPos);
+bool CheckCirclePoint(float circlePosX, float circlePosY, float circleRadius, float pointX, float pointY);
 
 // 円と円の当たり判定
-bool CheckCircleCircle(VECTOR circleAPos, float circleA_Radius, VECTOR circleBPos, float circleB_Radius);
-
-// 各当たり判定を行う
-void CheckCollision();
-
+bool CheckCircleCircle(float circleA_PosX, float circleA_PosY, float circleA_Radius, float circleB_PosX, float circleB_PosY, float circleB_Radius);

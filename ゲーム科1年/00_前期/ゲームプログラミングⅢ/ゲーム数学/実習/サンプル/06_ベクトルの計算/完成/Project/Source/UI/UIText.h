@@ -6,7 +6,8 @@ struct UITextData
 {
 	bool active;
 	char text[UI_TEXT_LENGTH_MAX];
-	VECTOR pos;
+	float posX;
+	float posY;
 };
 
 // 各ロジックごとの関数
@@ -18,7 +19,7 @@ void DrawUIText();
 void FinUIText();
 
 // UITextを生成
-UITextData* CreateUIText(VECTOR pos, const char* text);
+UITextData* CreateUIText(float posX, float posY, const char* text);
 
 // 指定したUITextに文字列を設定
 void SetUIText(UITextData* uiText, const char* text);
