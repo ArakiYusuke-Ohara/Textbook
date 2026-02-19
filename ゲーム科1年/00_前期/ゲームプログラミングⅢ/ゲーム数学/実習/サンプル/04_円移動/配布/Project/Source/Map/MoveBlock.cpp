@@ -1,162 +1,77 @@
 #include "MoveBlock.h"
-#include "../Camera/Camera.h"
+#include "MapParameter.h"
+#include "../Collision/CollisionParameter.h"
 #include <math.h>
 
-#define MOVE_BLOCK_ARCH_RANGE (300.0f)	// •ú•¨ü‚Ì‰¡•
-#define MOVE_BLOCK_SIN_SPEED (0.03f)	// Sin”gˆÚ“®‚Ì‘¬“x
-#define MOVE_BLOCK_CIRCLE_RADIUS (100.0f)
-#define MOVE_BLOCK_CIRCLE_SPEED (0.03f)	// Sin”gˆÚ“®‚Ì‘¬“x
+#define MOVE_SPEED (0.02f)
+#define MOVE_RANGE (100.0f)
 
-MoveBlockData g_MoveBlockData = { 0 };
-
-void UpdateArchBlock();	// •ú•¨üˆÚ“®XV
-void UpdateSinBlock();	// Sin”gˆÚ“®XV
-void UpdateCircleBlock();	// ‰~ˆÚ“®XV
-
-
-void InitMoveBlock()
+void StepMoveBlock(BlockData* block)
 {
-	g_MoveBlockData.active = false;
-	g_MoveBlockData.handle = 0;
-	g_MoveBlockData.dir = 0;
-	g_MoveBlockData.posX = 0.0f;
-	g_MoveBlockData.posY = 0.0f;
-	g_MoveBlockData.startX = 0.0f;
-	g_MoveBlockData.startY = 0.0f;
-	g_MoveBlockData.archTopX = 0.0f;
-	g_MoveBlockData.archTopY = 0.0f;
-	g_MoveBlockData.sinAngle = 0.0f;
-	g_MoveBlockData.sinRange = 0.0f;
-	g_MoveBlockData.mode = MOVE_BLOCK_MODE_NONE;
-}
+	// ‡@ Sin”g—p‚ÌŠp“x‚ğ‰ÁZ‚·‚é
+	block->sin += MOVE_SPEED;
 
-void LoadMoveBlock()
-{
-	g_MoveBlockData.handle = LoadGraph("Data/Map/ArchBlock.png");
-}
-
-void StartMoveBlock()
-{
-	// ƒ‚[ƒhİ’è
-	g_MoveBlockData.mode = MOVE_BLOCK_MODE_CIRCLE;
-	// ‰ŠúˆÊ’u
-	g_MoveBlockData.startX = 500.0f;
-	g_MoveBlockData.startY = 500.0f;
-	g_MoveBlockData.posX = g_MoveBlockData.startX;
-	g_MoveBlockData.posY = g_MoveBlockData.startY;
-	// Sin”g‚ÅˆÚ“®‚·‚é”ÍˆÍ
-	g_MoveBlockData.sinRange = 100.0f;
-}
-
-void StepMoveBlock()
-{
-}
-
-void UpdateMoveBlock()
-{
-	// ˆÚ“®‘O‚ÌÀ•W‚ğ‹L˜^
-	g_MoveBlockData.oldX = g_MoveBlockData.posX;
-	g_MoveBlockData.oldY = g_MoveBlockData.posY;
-
-	switch (g_MoveBlockData.mode)
+	// ‡A Šp“x‚Í0`2ƒÎ‚Ì”ÍˆÍ‚Éû‚ß‚é
+	if (block->sin > DX_TWO_PI_F)
 	{
-	// •ú•¨üˆÚ“®
-	case MOVE_BLOCK_MODE_ARCH:
-		UpdateArchBlock();
-		break;
-
-	// Sin”gˆÚ“®
-	case MOVE_BLOCK_MODE_SIN:
-		UpdateSinBlock();
-		break;
-
-		// ‰~ˆÚ“®
-	case MOVE_BLOCK_MODE_CIRCLE:
-		UpdateCircleBlock();
-		break;
+		block->sin -= DX_TWO_PI_F;
 	}
 }
 
-void DrawMoveBlock()
+void UpdateMoveBlock(BlockData* block)
 {
-	CameraData camera = GetCamera();
+	// ‡B sinfŠÖ”‚ÉŠp“x‚ğ“n‚·‚ªA‚»‚Ì‚Ü‚Ü‚¾‚Æ’l‚ª¬‚³‚·‚¬‚é‚Ì‚Å
+	//    MOVE_RANGE‚ÅŠ|‚¯Z‚µ‚ÄˆÚ“®•‚Æ‚·‚é
+	float sin = sinf(block->sin) * MOVE_RANGE;
 
-	DrawGraph((int)(g_MoveBlockData.posX - camera.posX), (int)(g_MoveBlockData.posY - camera.posY), g_MoveBlockData.handle, TRUE);
+	// ‡C Å‰‚É”z’u‚³‚ê‚½ˆÊ’u‚©‚çsin‚¾‚¯—£‚ê‚½•ª‚ªYÀ•W‚Æ‚È‚é
+	block->posY = block->startPosY + sin;
+
+	// ˆÚ“®—Ê‚ğŒvZ‚µ‚Ä‚¨‚­
+	block->moveX = block->posX - block->prevPosX;
+	block->moveY = block->posY - block->prevPosY;
 }
 
-void FinMoveBlock()
+void ResolveMoveBlockX(Body* body, const BlockData* block)
 {
-	DeleteGraph(g_MoveBlockData.handle);
-}
-
-MoveBlockData GetMoveBlockData()
-{
-	return g_MoveBlockData;
-}
-
-void UpdateArchBlock()
-{
-	// ‰E‚ÖˆÚ“®
-	g_MoveBlockData.posX += ARCH_BLOCK_SPEED * g_MoveBlockData.dir;
-
-	// ‚í‚©‚è‚â‚·‚¢–¼‘O‚Ì•Ï”‚ÉŠi”[
-	float x = g_MoveBlockData.startX;
-	float y = g_MoveBlockData.startY;
-	float h = g_MoveBlockData.archTopX;
-	float k = g_MoveBlockData.archTopY;
-
-	// ‡@ •ú•¨ü‚Ì•û’ö®‚É‰ŠúˆÊ’u‚Æ’¸“_À•W‚ğ‘ã“ü‚µ‚Äa‚ğ‹‚ß‚é
-	float a = (y - k) / ((x - h) * (x - h));
-
-	// ‡A Œ»İ‚ÌXÀ•W‚Æ’¸“_À•W‚Æa‚ğ‘ã“ü‚µ‚ÄYÀ•W‚ğ‹‚ß‚é
-	g_MoveBlockData.posY = a * ((g_MoveBlockData.posX - h) * (g_MoveBlockData.posX - h)) + k;
-
-	// ˆê’è”ÍˆÍ¶‰E‚Å‰•œ‚³‚¹‚é
-	float rightEnd = g_MoveBlockData.startX + MOVE_BLOCK_ARCH_RANGE;
-	// ‰E’[‚É“’B‚µ‚½‚ç”½‘Î•ûŒü‚Ö
-	if (g_MoveBlockData.posX > rightEnd)
+	// ¶‚©‚ç‚ ‚½‚Á‚½‚©
+	if ((body->prevPosX + body->width) <= block->prevPosX)
 	{
-		g_MoveBlockData.posX = rightEnd;
-		g_MoveBlockData.dir = -g_MoveBlockData.dir;
+		// ¶‚É‰Ÿ‚µo‚·
+		body->posX -= (body->posX + body->width) - block->posX;
 	}
-	// ¶’[‚É“’B‚µ‚½‚ç”½‘Î•ûŒü‚Ö
-	else if (g_MoveBlockData.posX < g_MoveBlockData.startX)
+	// ‰E‚©‚ç‚ ‚½‚Á‚½‚©
+	else if (body->prevPosX >= (block->prevPosX + block->width))
 	{
-		g_MoveBlockData.posX = g_MoveBlockData.startX;
-		g_MoveBlockData.dir = -g_MoveBlockData.dir;
+		// ‰E‚É‰Ÿ‚µo‚·
+		body->posX += (block->posX + block->width) - body->posX;
 	}
+
+	// ˆÚ“®—Ê‚Í0‚É‚·‚é
+	body->moveX = 0.0f;
+
 }
 
-void UpdateSinBlock()
+void ResolveMoveBlockY(Body* body, const BlockData* block)
 {
-	// ‡@ ƒuƒƒbƒN‚ÌYÀ•W‚ÍŠJnˆÊ’u‚©‚çSin”g‚¾‚¯ˆÚ“®‚µ‚½êŠ
-	float sin = sinf(g_MoveBlockData.sinAngle) * g_MoveBlockData.sinRange;
-	g_MoveBlockData.posY = g_MoveBlockData.startY + sin;
-
-	// ‡A Sin”g‚É“n‚·Šp“x‚ğ‰ÁZ‚·‚é
-	g_MoveBlockData.sinAngle += MOVE_BLOCK_SIN_SPEED;
-
-	// ‡B Šp“x‚Í0`2ƒÎ‚Ì”ÍˆÍ‚Éû‚ß‚é
-	if (g_MoveBlockData.sinAngle > DX_TWO_PI_F)
+	// ã‚©‚ç‚ ‚½‚Á‚½‚©
+	if ((body->prevPosY + body->height) <= block->prevPosY)
 	{
-		g_MoveBlockData.sinAngle -= DX_TWO_PI_F;
+		// ã‚É‰Ÿ‚µo‚·
+		body->posY -= (body->posY + body->height) - block->posY;
+		// ’…’n
+		body->isAir = false;
+		// ‘«Œ³ƒuƒƒbƒN‚Æ‚µ‚Ä“o˜^
+		body->groundBlock = block;
+		// ˆÚ“®—Ê‚Í0‚É‚·‚é
+		body->moveY = 0.0f;
 	}
-}
-
-void UpdateCircleBlock()
-{
-	// ‡@ ‰~ˆÚ“®‚ÌXˆÚ“®’l‚Í ”¼Œa * cosƒÆ
-
-
-	// ‡A ‰~ˆÚ“®‚ÌYˆÚ“®’l‚Í ”¼Œa * sinƒÆ
-
-
-	// ‡B OŠpŠÖ”‚É“n‚·Šp“x‚ğ‰ÁZ
-
-
-	// ‡B Šp“x‚Í0`2ƒÎ‚Ì”ÍˆÍ‚Éû‚ß‚é
-
-
-
-
+	// ‰º‚©‚ç‚ ‚½‚Á‚½‚©
+	else if (body->prevPosY >= (block->prevPosY + block->height))
+	{
+		// ‰º‚É‰Ÿ‚µo‚·
+		body->posY += (block->posY + block->height) - body->posY;
+		// ˆÚ“®—Ê‚ÍƒuƒƒbƒN‚É‡‚í‚¹‚é
+		body->moveY = block->moveY;
+	}
 }
