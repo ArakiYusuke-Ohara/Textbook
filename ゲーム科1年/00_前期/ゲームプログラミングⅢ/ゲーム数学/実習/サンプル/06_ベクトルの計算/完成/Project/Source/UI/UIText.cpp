@@ -16,8 +16,7 @@ void InitUIText()
 	for (int i = 0; i < UI_TEXT_MAX; i++, uiText++)
 	{
 		uiText->active = false;
-		uiText->posX = 0.0f;
-		uiText->posY = 0.0f;
+		uiText->pos = {};
 		memset(uiText->text, 0, sizeof(uiText->text));
 	}
 }
@@ -43,7 +42,7 @@ void DrawUIText()
 		if (!uiText->active) continue;
 
 		// 描画
-		DrawStringToHandle((int)uiText->posX, (int)uiText->posY, uiText->text, GetColor(255, 255, 255), g_PlaySceneFontHandle);
+		DrawStringToHandle((int)uiText->pos.x, (int)uiText->pos.y, uiText->text, GetColor(255, 255, 255), g_PlaySceneFontHandle);
 	}
 }
 
@@ -52,7 +51,7 @@ void FinUIText()
 }
 
 // UITextを生成
-UITextData* CreateUIText(float posX, float posY, const char* text)
+UITextData* CreateUIText(VECTOR pos, const char* text)
 {
 	UITextData* uiText = g_UITextData;
 	for (int i = 0; i < UI_TEXT_MAX; i++, uiText++)
@@ -64,8 +63,7 @@ UITextData* CreateUIText(float posX, float posY, const char* text)
 			uiText->active = true;
 
 			// 座標
-			uiText->posX = posX;
-			uiText->posY = posY;
+			uiText->pos = pos;
 
 			// テキスト
 			strcpy_s(uiText->text, text);

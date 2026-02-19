@@ -172,8 +172,7 @@ void StraightBulletHitEnemy(int index)
 	bullet->active = false;
 
 	// エフェクトを表示
-	VECTOR effectPos = bullet->pos;
-	StartAnimationEffect(PLAYER_NORMAL_SHOT_HIT, effectPosX, effectPosY, HIT_EFFECT_INTERVAL, false);
+	StartAnimationEffect(PLAYER_NORMAL_SHOT_HIT, bullet->pos, HIT_EFFECT_INTERVAL, false);
 
 	// ヒットSE再生
 	PlaySE(SE_PLAYRE_SHOT_HIT);
@@ -187,6 +186,5 @@ void StraightBulletHitPlayer(int index)
 	bullet->active = false;
 
 	// エフェクトを表示
-	VECTOR effectPos = bullet->pos;
-	StartAnimationEffect(ENEMY_BULLET_HIT, effectPosX, effectPosY, HIT_EFFECT_INTERVAL, false);
+	StartAnimationEffect(ENEMY_BULLET_HIT, bullet->pos, HIT_EFFECT_INTERVAL, false);
 }

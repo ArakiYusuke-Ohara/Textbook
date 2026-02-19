@@ -1,12 +1,13 @@
 #pragma once
+#include "DxLib.h"
 
 // スコア初期化
 void InitScore();
 void UpdateScore();
 
 // スコア表示UI生成
-void CreateScoreUI(float posX, float posY);
-void CreateHiScoreUI(float posX, float posY);
+void CreateScoreUI(VECTOR pos);
+void CreateHiScoreUI(VECTOR pos);
 
 // スコア設定
 void SetScore(int score);

@@ -1,4 +1,5 @@
 #pragma once
+#include "DxLib.h"
 
 #define UI_TEXT_LENGTH_MAX (256)
 
@@ -6,8 +7,7 @@ struct UITextData
 {
 	bool active;
 	char text[UI_TEXT_LENGTH_MAX];
-	float posX;
-	float posY;
+	VECTOR pos;
 };
 
 // 各ロジックごとの関数
@@ -19,7 +19,7 @@ void DrawUIText();
 void FinUIText();
 
 // UITextを生成
-UITextData* CreateUIText(float posX, float posY, const char* text);
+UITextData* CreateUIText(VECTOR pos, const char* text);
 
 // 指定したUITextに文字列を設定
 void SetUIText(UITextData* uiText, const char* text);

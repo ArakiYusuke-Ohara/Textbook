@@ -109,8 +109,8 @@ void ResolveMapCollisionX(Body* body, int range)
 
 			// ブロックを取り出して当たり判定
 			BlockData* block = mapChipData->data;
-			if (CheckSquareSquare(body->pos.x, body->pos.y, body->width, body->height,
-				block->pos.x, block->pos.y, block->width, block->height))
+			if (CheckSquareSquare(	body->pos, body->width, body->height,
+									block->pos, block->width, block->height))
 			{
 				// 衝突解決
 				ResolveMapchipX(body, mapChipData);
@@ -155,8 +155,8 @@ void ResolveMapCollisionY(Body* body, int range)
 
 			// ブロックを取り出して当たり判定
 			BlockData* block = mapChipData->data;
-			if (CheckSquareSquare(body->pos.x, body->pos.y, body->width, body->height,
-				block->pos.x, block->pos.y, block->width, block->height))
+			if (CheckSquareSquare(	body->pos, body->width, body->height,
+									block->pos, block->width, block->height))
 			{
 				// 衝突解決
 				ResolveMapchipY(body, mapChipData);
@@ -274,8 +274,8 @@ void PreviewSlope(Body* body, int range)
 
 			// ブロックを取り出して当たり判定
 			BlockData* block = mapChipData->data;
-			if (CheckSquareSquare(body->pos.x, body->pos.y, body->width, body->height,
-				block->pos.x, block->pos.y, block->width, block->height))
+			if (CheckSquareSquare(	body->pos, body->width, body->height,
+									block->pos, block->width, block->height))
 			{
 				// 衝突解決
 				PreviewSlopeBlock(body, block);

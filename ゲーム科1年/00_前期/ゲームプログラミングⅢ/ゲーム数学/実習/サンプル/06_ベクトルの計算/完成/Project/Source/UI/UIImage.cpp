@@ -16,8 +16,7 @@ void InitUIImage()
 	{
 		ui->active = false;
 		ui->handle = 0;
-		ui->posX = 0.0f;
-		ui->posY = 0.0f;
+		ui->pos = {};
 	}
 }
 
@@ -44,7 +43,7 @@ void DrawUIImage()
 	{
 		if (!ui->active) continue;
 
-		DrawGraph((int)ui->posX, (int)ui->posY, ui->handle, TRUE);
+		DrawGraph((int)ui->pos.x, (int)ui->pos.y, ui->handle, TRUE);
 	}
 }
 
@@ -57,7 +56,7 @@ void FinUIImage()
 }
 
 // UIImageÇê∂ê¨Ç∑ÇÈ
-void CreateUIImage(UIImageType type, float posX, float posY)
+void CreateUIImage(UIImageType type, VECTOR pos)
 {
 	UIImageData* ui = g_UIImageData;
 	for (int i = 0; i < UI_IMAGE_MAX; i++, ui++)
@@ -72,8 +71,7 @@ void CreateUIImage(UIImageType type, float posX, float posY)
 			ui->handle = g_UIImageHandle[type];
 
 			// ç¿ïW
-			ui->posX = posX;
-			ui->posY = posY;
+			ui->pos = pos;
 
 			break;
 		}

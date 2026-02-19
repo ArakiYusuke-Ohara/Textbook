@@ -15,15 +15,13 @@ void InitBlock()
 	for (int i = 0; i < BLOCK_MAX; i++, block++)
 	{
 		block->active = false;
-		block->posX = 0.0f;
-		block->posY = 0.0f;
-		block->moveX = 0.0f;
-		block->moveY = 0.0f;
+		block->pos = {};
+		block->move = {};
 		block->type = MAP_CHIP_NONE;
 		block->width = 0.0f;
 		block->height = 0.0f;
-		block->startPosX = 0.0f;
-		block->startPosY = 0.0f;
+		block->startPos = {};
+		block->prevPos = {};
 	}
 }
 
@@ -43,8 +41,8 @@ void StartBlock()
 	for (int i = 0; i < BLOCK_MAX; i++, block++)
 	{
 		// 配置位置を記憶
-		block->startPosX = block->posX;
-		block->startPosY = block->posY;
+		block->startPos.x = block->pos.x;
+		block->startPos.y = block->pos.y;
 
 		// タイプごとの開始処理
 		switch (block->type)
@@ -63,8 +61,8 @@ void StepBlock()
 	{
 		// 全ブロック共通処理
 		// 前回の座標を記録
-		block->prevPosX = block->posX;
-		block->prevPosY = block->posY;
+		block->prevPos.x = block->pos.x;
+		block->prevPos.y = block->pos.y;
 
 		// タイプごとのステップ処理
 		switch (block->type)
@@ -107,7 +105,7 @@ void DrawBlock()
 	{
 		if (block->active)
 		{
-			DrawGraph((int)(block->posX - camera.posX), (int)(block->posY - camera.posY), block->handle, TRUE);
+			DrawGraph((int)(block->pos.x - camera.pos.x), (int)(block->pos.y - camera.pos.y), block->handle, TRUE);
 		}
 	}
 }
@@ -123,44 +121,44 @@ void FinBlock()
 void ResolveNormalBlockX(Body* body, const BlockData* block)
 {
 	// 左からあたったか
-	if (body->moveX > 0.0f)
+	if (body->move.x > 0.0f)
 	{
 		// 左に押し出す
-		body->posX -= (body->posX + body->width) - block->posX;
+		body->pos.x -= (body->pos.x + body->width) - block->pos.x;
 	}
 	// 右からあたったか
-	else if (body->moveX < 0.0f)
+	else if (body->move.x < 0.0f)
 	{
 		// 右に押し出す
-		body->posX += (block->posX + block->width) - body->posX;
+		body->pos.x += (block->pos.x + block->width) - body->pos.x;
 	}
 
 	// 移動量は0にする
-	body->moveX = 0.0f;
+	body->move.x = 0.0f;
 }
 
 void ResolveNormalBlockY(Body* body, const BlockData* block)
 {
 	// 上からあたったか
-	if (body->moveY > 0.0f)
+	if (body->move.y > 0.0f)
 	{
 		// 上に押し出す
-		body->posY -= (body->posY + body->height) - block->posY;
+		body->pos.y -= (body->pos.y + body->height) - block->pos.y;
 		// 着地
 		body->isAir = false;
 	}
 	// 下からあたったか
-	else if (body->moveY < 0.0f)
+	else if (body->move.y < 0.0f)
 	{
 		// 下に押し出す
-		body->posY += (block->posY + block->height) - body->posY;
+		body->pos.y += (block->pos.y + block->height) - body->pos.y;
 	}
 
 	// 移動量は0にする
-	body->moveY = 0.0f;
+	body->move.y = 0.0f;
 }
 
-BlockData* CreateBlock(MapChipType type, float posX, float posY)
+BlockData* CreateBlock(MapChipType type, VECTOR pos)
 {
 	// 未使用のブロックを探す
 	BlockData* block = g_Blocks;
@@ -171,8 +169,7 @@ BlockData* CreateBlock(MapChipType type, float posX, float posY)
 			// ブロック生成
 			block->active = true;
 			block->handle = g_BlockHandle[type];
-			block->posX = posX;
-			block->posY = posY;
+			block->pos = pos;
 			block->type = type;
 			block->width = (float)BLOCK_MASTER_DATA[type].width;
 			block->height = (float)BLOCK_MASTER_DATA[type].height;

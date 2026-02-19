@@ -169,8 +169,8 @@ void DrawPlayer()
 	CameraData camera = GetCamera();
 
 	// 画像の余白が大きいため位置調整が必要
-	int x = (int)(g_PlayerData.body.pos.x + PLAYER_DRAW_OFFSET_X - camera.pos.x);
-	int y = (int)(g_PlayerData.body.pos.y + PLAYER_DRAW_OFFSET_Y - camera.pos.y);
+	float x = g_PlayerData.body.pos.x + PLAYER_DRAW_OFFSET_X - camera.pos.x;
+	float y = g_PlayerData.body.pos.y + PLAYER_DRAW_OFFSET_Y - camera.pos.y;
 
 	// アニメーション描画でプレイヤーを描画する
 	PlayerAnimationType animType = g_PlayerData.playAnim;

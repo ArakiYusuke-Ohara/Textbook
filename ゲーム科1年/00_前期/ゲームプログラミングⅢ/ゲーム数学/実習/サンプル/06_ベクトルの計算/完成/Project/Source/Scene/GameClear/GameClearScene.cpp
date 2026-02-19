@@ -38,9 +38,9 @@ void StartGameClearScene()
 {
 	// スコアUI生成
 	// スコア
-	CreateScoreUI(436.0f, 450.0f);
+	CreateScoreUI(VGet(436.0f, 450.0f, 0.0f));
 	// ハイスコア
-	CreateHiScoreUI(390, 315);
+	CreateHiScoreUI(VGet(390, 315, 0.0f));
 
 	// BGM再生
 	PlayBGM(BGM_GAME_CLEAR);

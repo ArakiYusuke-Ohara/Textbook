@@ -1,4 +1,5 @@
 #pragma once
+#include "DxLib.h"
 
 // UIImageの種類
 enum UIImageType
@@ -17,8 +18,7 @@ struct UIImageData
 {
 	bool active;
 	int handle;
-	float posX;
-	float posY;
+	VECTOR pos;
 };
 
 // 各ロジックごとの関数
@@ -30,7 +30,7 @@ void DrawUIImage();
 void FinUIImage();
 
 // UIImageを生成する
-void CreateUIImage(UIImageType type, float posX, float posY);
+void CreateUIImage(UIImageType type, VECTOR pos);
 
 // 表示中のUIImageを未使用にする
 // シーンの切り替え時などで使う

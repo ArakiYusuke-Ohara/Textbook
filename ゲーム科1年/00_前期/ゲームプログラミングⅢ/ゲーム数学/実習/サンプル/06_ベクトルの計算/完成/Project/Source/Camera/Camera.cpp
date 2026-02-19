@@ -18,21 +18,21 @@ void StepCamera()
 	PlayerData player = GetPlayer();
 
 	// プレイヤーがスクロールラインを超えたらカメラ移動する
-	if (player.body.posX >= CAMERA_SCROLL_START_X)
+	if (player.body.pos.x >= CAMERA_SCROLL_START_X)
 	{
 		// ラインを超えている分だけ移動する
-		g_CameraData.posX = player.body.posX - CAMERA_SCROLL_START_X;
+		g_CameraData.pos.x = player.body.pos.x - CAMERA_SCROLL_START_X;
 	}
 	else
 	{
 		// 超えていなければ定位置
-		g_CameraData.posX = 0.0f;
+		g_CameraData.pos.x = 0.0f;
 	}
 }
 
 void DrawCamera()
 {
-	DrawFormatString(0, 20, GetColor(255, 255, 255), "カメラの座標＝[%f, %f]", g_CameraData.posX, g_CameraData.posY);
+	DrawFormatString(0, 20, GetColor(255, 255, 255), "カメラの座標＝[%f, %f]", g_CameraData.pos.x, g_CameraData.pos.y);
 }
 
 CameraData GetCamera()

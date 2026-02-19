@@ -1,4 +1,5 @@
 #pragma once
+#include "DxLib.h"
 #include "MapParameter.h"
 
 // ëOï˚êÈåæ
@@ -15,5 +16,5 @@ void FinBlock();
 void ResolveNormalBlockX(Body* body, const BlockData* block);
 void ResolveNormalBlockY(Body* body, const BlockData* block);
 
-BlockData* CreateBlock(MapChipType type, float posX, float posY);
+BlockData* CreateBlock(MapChipType type, VECTOR pos);
 BlockData* GetBlocks();
