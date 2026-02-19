@@ -30,7 +30,7 @@ bool CheckSquarePoint(float squarePosX, float squarePosY, float squareWidth, flo
 	return false;
 }
 
-// 矩形と点の当たり判定
+// 矩形と矩形の当たり判定
 // 引数
 // squareA_PosX:矩形Aの左上X座標
 // squareA_PosY:矩形Aの左上Y座標
@@ -57,10 +57,10 @@ bool CheckSquareSquare(float squareA_PosX, float squareA_PosY, float squareA_Wid
 	float bottomB = squareB_PosY + squareB_Height;
 
 	// 左右の辺がめり込んでいるかチェック
-	if (rightA >= leftB && leftA <= rightB)
+	if (rightA > leftB && leftA < rightB)
 	{
 		// 上下の片がめり込んでいるかチェック
-		if (bottomA >= topB && topA <= bottomB)
+		if (bottomA > topB && topA < bottomB)
 		{
 			// 当たっている
 			return true;
