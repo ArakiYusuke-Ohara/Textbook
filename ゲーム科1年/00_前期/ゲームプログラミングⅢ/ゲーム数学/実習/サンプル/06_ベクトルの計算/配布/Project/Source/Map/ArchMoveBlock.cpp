@@ -1,38 +1,48 @@
-#include "MoveBlock.h"
+#include "ArchMoveBlock.h"
 #include "MapParameter.h"
 #include "../Collision/CollisionParameter.h"
-#include <math.h>
 
-#define MOVE_SPEED (0.02f)
-#define MOVE_RANGE (100.0f)
+#define ARCH_WIDTH	(200.0f)
+#define ARCH_HEIGHT	(100.0f)
+#define ARCH_SPEED	(0.5f)
 
-void StepMoveBlock(BlockData* block)
+void StartArchMoveBlock(BlockData* block)
 {
-	// ‡@ Sin”g—p‚ÌŠp“x‚ð‰ÁŽZ‚·‚é
-	block->sin += MOVE_SPEED;
+	block->move.x = ARCH_SPEED;
+}
 
-	// ‡A Šp“x‚Í0`2ƒÎ‚Ì”ÍˆÍ‚ÉŽû‚ß‚é
-	if (block->sin > DX_TWO_PI_F)
+void StepArchMoveBlock(BlockData* block)
+{
+	// ’[‚Ü‚Ås‚Á‚½‚çŒü‚«‚ð”½“]
+	if (block->pos.x > (block->startPos.x + ARCH_WIDTH) || block->pos.x < block->startPos.x)
 	{
-		block->sin -= DX_TWO_PI_F;
+		block->move.x = -block->move.x;
 	}
 }
 
-void UpdateMoveBlock(BlockData* block)
+void UpdateArchMoveBlock(BlockData* block)
 {
-	// ‡B sinfŠÖ”‚ÉŠp“x‚ð“n‚·‚ªA‚»‚Ì‚Ü‚Ü‚¾‚Æ’l‚ª¬‚³‚·‚¬‚é‚Ì‚Å
-	//    MOVE_RANGE‚ÅŠ|‚¯ŽZ‚µ‚ÄˆÚ“®•‚Æ‚·‚é
-	float sin = sinf(block->sin) * MOVE_RANGE;
+	// ‰E‚ÖˆÚ“®
+	block->pos.x += block->move.x;
 
-	// ‡C Å‰‚É”z’u‚³‚ê‚½ˆÊ’u‚©‚çsin‚¾‚¯—£‚ê‚½•ª‚ªYÀ•W‚Æ‚È‚é
-	block->pos.y = block->startPos.y + sin;
+	// ‚í‚©‚è‚â‚·‚¢–¼‘O‚Ì•Ï”‚ÉŠi”[
+	float x = block->startPos.x;
+	float y = block->startPos.y;
+	float h = block->startPos.x + (ARCH_WIDTH * 0.5f);
+	float k = block->startPos.y - ARCH_HEIGHT;
+
+	// ‡@ •ú•¨ü‚Ì•û’öŽ®‚É‰ŠúˆÊ’u‚Æ’¸“_À•W‚ð‘ã“ü‚µ‚Äa‚ð‹‚ß‚é
+	float a = (y - k) / ((x - h) * (x - h));
+
+	// ‡A Œ»Ý‚ÌXÀ•W‚Æ’¸“_À•W‚Æa‚ð‘ã“ü‚µ‚ÄYÀ•W‚ð‹‚ß‚é
+	block->pos.y = a * ((block->pos.x - h) * (block->pos.x - h)) + k;
 
 	// ˆÚ“®—Ê‚ðŒvŽZ‚µ‚Ä‚¨‚­
 	block->move.x = block->pos.x - block->prevPos.x;
 	block->move.y = block->pos.y - block->prevPos.y;
 }
 
-void ResolveMoveBlockX(Body* body, const BlockData* block)
+void ResolveArchMoveBlockX(Body* body, const BlockData* block)
 {
 	// ¶‚©‚ç‚ ‚½‚Á‚½‚©
 	if ((body->prevPos.x + body->width) <= block->prevPos.x)
@@ -52,7 +62,7 @@ void ResolveMoveBlockX(Body* body, const BlockData* block)
 
 }
 
-void ResolveMoveBlockY(Body* body, const BlockData* block)
+void ResolveArchMoveBlockY(Body* body, const BlockData* block)
 {
 	// ã‚©‚ç‚ ‚½‚Á‚½‚©
 	if ((body->prevPos.y + body->height) <= block->prevPos.y)
@@ -73,5 +83,7 @@ void ResolveMoveBlockY(Body* body, const BlockData* block)
 		body->pos.y += (block->pos.y + block->height) - body->pos.y;
 		// ˆÚ“®—Ê‚ÍƒuƒƒbƒN‚É‡‚í‚¹‚é
 		body->move.y = block->move.y;
+
 	}
+
 }

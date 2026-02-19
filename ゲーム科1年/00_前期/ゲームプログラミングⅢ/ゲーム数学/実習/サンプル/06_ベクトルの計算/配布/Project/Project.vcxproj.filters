@@ -141,7 +141,16 @@
     <ClCompile Include="Source\Map\AutoDoor.cpp">
       <Filter>Source\Map</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Map\SlopeBlock.cpp">
+      <Filter>Source\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Map\ArchMoveBlock.cpp">
+      <Filter>Source\Map</Filter>
+    </ClCompile>
     <ClCompile Include="Source\Map\MoveBlock.cpp">
+      <Filter>Source\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Map\CircleMoveBlock.cpp">
       <Filter>Source\Map</Filter>
     </ClCompile>
   </ItemGroup>
@@ -227,10 +236,22 @@
     <ClInclude Include="Source\Camera\Camera.h">
       <Filter>Source\Camera</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Collision\CollisionParameter.h">
+      <Filter>Source\Collision</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Map\AutoDoor.h">
       <Filter>Source\Map</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Map\SlopeBlock.h">
+      <Filter>Source\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Map\ArchMoveBlock.h">
+      <Filter>Source\Map</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Map\MoveBlock.h">
+      <Filter>Source\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Map\CircleMoveBlock.h">
       <Filter>Source\Map</Filter>
     </ClInclude>
   </ItemGroup>

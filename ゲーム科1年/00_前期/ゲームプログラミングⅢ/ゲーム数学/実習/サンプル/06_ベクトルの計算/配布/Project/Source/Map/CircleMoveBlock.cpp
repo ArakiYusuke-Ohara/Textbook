@@ -4,35 +4,39 @@
 #include <math.h>
 
 #define MOVE_SPEED (0.02f)
-#define MOVE_RANGE (100.0f)
+#define RADIUS (100.0f)
 
-void StepMoveBlock(BlockData* block)
+void StepCircleMoveBlock(BlockData* block)
 {
-	// ‡@ Sin”g—p‚ÌŠp“x‚ð‰ÁŽZ‚·‚é
+	// ‡@ ŽOŠpŠÖ”—p‚ÌŠp“x‚ð‰ÁŽZ‚·‚é
 	block->sin += MOVE_SPEED;
+	block->cos += MOVE_SPEED;
 
 	// ‡A Šp“x‚Í0`2ƒÎ‚Ì”ÍˆÍ‚ÉŽû‚ß‚é
 	if (block->sin > DX_TWO_PI_F)
 	{
 		block->sin -= DX_TWO_PI_F;
 	}
+	if (block->cos > DX_TWO_PI_F)
+	{
+		block->cos -= DX_TWO_PI_F;
+	}
 }
 
-void UpdateMoveBlock(BlockData* block)
+void UpdateCircleMoveBlock(BlockData* block)
 {
-	// ‡B sinfŠÖ”‚ÉŠp“x‚ð“n‚·‚ªA‚»‚Ì‚Ü‚Ü‚¾‚Æ’l‚ª¬‚³‚·‚¬‚é‚Ì‚Å
-	//    MOVE_RANGE‚ÅŠ|‚¯ŽZ‚µ‚ÄˆÚ“®•‚Æ‚·‚é
-	float sin = sinf(block->sin) * MOVE_RANGE;
+	// ‡B ‰~ˆÚ“®Žž‚ÌXˆÚ“®’l‚Í ”¼Œa * cosƒÆ
+	block->pos.x = block->startPos.x + RADIUS * cosf(block->cos);
 
-	// ‡C Å‰‚É”z’u‚³‚ê‚½ˆÊ’u‚©‚çsin‚¾‚¯—£‚ê‚½•ª‚ªYÀ•W‚Æ‚È‚é
-	block->pos.y = block->startPos.y + sin;
+	// ‡C ‰~ˆÚ“®Žž‚ÌYˆÚ“®’l‚Í ”¼Œa * sinƒÆ
+	block->pos.y = block->startPos.y + RADIUS * sinf(block->sin);
 
 	// ˆÚ“®—Ê‚ðŒvŽZ‚µ‚Ä‚¨‚­
 	block->move.x = block->pos.x - block->prevPos.x;
 	block->move.y = block->pos.y - block->prevPos.y;
 }
 
-void ResolveMoveBlockX(Body* body, const BlockData* block)
+void ResolveCircleMoveBlockX(Body* body, const BlockData* block)
 {
 	// ¶‚©‚ç‚ ‚½‚Á‚½‚©
 	if ((body->prevPos.x + body->width) <= block->prevPos.x)
@@ -52,7 +56,7 @@ void ResolveMoveBlockX(Body* body, const BlockData* block)
 
 }
 
-void ResolveMoveBlockY(Body* body, const BlockData* block)
+void ResolveCircleMoveBlockY(Body* body, const BlockData* block)
 {
 	// ã‚©‚ç‚ ‚½‚Á‚½‚©
 	if ((body->prevPos.y + body->height) <= block->prevPos.y)
