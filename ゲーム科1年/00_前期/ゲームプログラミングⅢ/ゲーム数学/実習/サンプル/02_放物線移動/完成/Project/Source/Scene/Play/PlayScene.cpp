@@ -5,10 +5,6 @@
 #include "../../Camera/Camera.h"
 #include "../../Collision/Collision.h"
 
-
-// 背景のスピード
-#define BACK_GROUND_SPEED (-1.5f)
-
 void InitPlayScene()
 {
 	// プレイヤー初期化
@@ -58,9 +54,6 @@ void UpdatePlayScene()
 
 	// プレイヤー更新
 	UpdatePlayer();
-	
-	// 当たり判定
-	CheckCollision();
 }
 
 void DrawPlayScene()
