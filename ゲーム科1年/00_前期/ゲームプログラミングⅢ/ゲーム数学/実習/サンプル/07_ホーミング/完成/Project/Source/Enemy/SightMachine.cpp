@@ -48,7 +48,7 @@ void StepSightMachine()
 		PlayerData player = GetPlayer();
 
 		// ① 自身の座標からプレイヤーの座標までのベクトルを生成
-		VECTOR bulletMove = VecCreate(g_SightMachineData.pos, player.pos);
+		VECTOR bulletMove = VecCreate(g_SightMachineData.pos, player.body.pos);
 
 		// ② ①のベクトルを正規化
 		bulletMove = VecNormalize(bulletMove);

@@ -1,13 +1,9 @@
 #pragma once
+// ëOï˚êÈåæ
+struct BlockData;
+struct Body;
 
-#include "MapParameter.h"
-
-void InitAutoDoor();
-void LoadAutoDoor();
-void StartAutoDoor();
-void StepAutoDoor();
-void UpdateAutoDoor();
-void DrawAutoDoor();
-void FinAutoDoor();
-
-AutoDoorData GetAutoDoorData();
+void StepAutoDoor(BlockData* block);
+void UpdateAutoDoor(BlockData* block);
+void ResolveAutoDoorX(Body* body, const BlockData* block);
+void ResolveAutoDoorY(Body* body, const BlockData* block);

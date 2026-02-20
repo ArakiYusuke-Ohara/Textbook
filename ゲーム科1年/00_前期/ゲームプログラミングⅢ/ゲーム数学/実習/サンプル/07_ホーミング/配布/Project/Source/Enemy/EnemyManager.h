@@ -8,6 +8,3 @@ void StepEnemy();
 void UpdateEnemy();
 void DrawEnemy();
 void FinEnemy();
-
-// “G‚ð”z’u
-void StepEnemySpawnSystem();

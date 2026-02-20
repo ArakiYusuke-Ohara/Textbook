@@ -65,7 +65,7 @@
       <UniqueIdentifier>{6fecde98-0f85-46ba-b924-f5e8a06796c1}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Math">
-      <UniqueIdentifier>{734609a7-08cf-4584-8130-a1b80ed22bda}</UniqueIdentifier>
+      <UniqueIdentifier>{e784464f-6b33-41a7-a7fe-a474cff1fac0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -108,9 +108,6 @@
     <ClCompile Include="Source\Bullet\StraightBullet.cpp">
       <Filter>Source\Bullet</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Enemy\EnemyManager.cpp">
-      <Filter>Source\Enemy</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Effect\AnimationEffect.cpp">
       <Filter>Source\Effect</Filter>
     </ClCompile>
@@ -144,11 +141,23 @@
     <ClCompile Include="Source\Map\AutoDoor.cpp">
       <Filter>Source\Map</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Map\SlopeBlock.cpp">
+      <Filter>Source\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Map\ArchMoveBlock.cpp">
+      <Filter>Source\Map</Filter>
+    </ClCompile>
     <ClCompile Include="Source\Map\MoveBlock.cpp">
+      <Filter>Source\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Map\CircleMoveBlock.cpp">
       <Filter>Source\Map</Filter>
     </ClCompile>
     <ClCompile Include="Source\Math\MyMath.cpp">
       <Filter>Source\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Enemy\EnemyManager.cpp">
+      <Filter>Source\Enemy</Filter>
     </ClCompile>
     <ClCompile Include="Source\Enemy\SightMachine.cpp">
       <Filter>Source\Enemy</Filter>
@@ -197,9 +206,6 @@
     <ClInclude Include="Source\Bullet\BulletParameter.h">
       <Filter>Source\Bullet</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Enemy\EnemyManager.h">
-      <Filter>Source\Enemy</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Effect\AnimationEffectParameter.h">
       <Filter>Source\Effect</Filter>
     </ClInclude>
@@ -236,19 +242,34 @@
     <ClInclude Include="Source\Camera\Camera.h">
       <Filter>Source\Camera</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Collision\CollisionParameter.h">
+      <Filter>Source\Collision</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Map\AutoDoor.h">
+      <Filter>Source\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Map\SlopeBlock.h">
+      <Filter>Source\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Map\ArchMoveBlock.h">
       <Filter>Source\Map</Filter>
     </ClInclude>
     <ClInclude Include="Source\Map\MoveBlock.h">
       <Filter>Source\Map</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Map\CircleMoveBlock.h">
+      <Filter>Source\Map</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Math\MyMath.h">
       <Filter>Source\Math</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Enemy\SightMachine.h">
+    <ClInclude Include="Source\Enemy\EnemyManager.h">
       <Filter>Source\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="Source\Enemy\EnemyParameter.h">
+      <Filter>Source\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Enemy\SightMachine.h">
       <Filter>Source\Enemy</Filter>
     </ClInclude>
   </ItemGroup>

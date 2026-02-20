@@ -46,7 +46,7 @@ void LoadTitleScene()
 	// 背景は背景システムを使う
 	LoadBackGround("Data/Title/TitleBG.png", BACK_GROUND_LAYER_1);
 	// 背景を下にスクロールさせる
-	SetBackGroundMove(VGet(BACK_GROUND_SPEED, 0.0f, 0.0f), BACK_GROUND_LAYER_1);
+	SetBackGroundMove(BACK_GROUND_SPEED, 0.0f, BACK_GROUND_LAYER_1);
 
 	// 各画像をロード
 	g_BGHandle = LoadGraph("Data/Title/TitleBG.png");

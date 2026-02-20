@@ -2,102 +2,93 @@
 #include "MapParameter.h"
 #include "MapChip.h"
 #include "Block.h"
+#include "SlopeBlock.h"
 #include "AutoDoor.h"
+#include "ArchMoveBlock.h"
 #include "MoveBlock.h"
+#include "CircleMoveBlock.h"
 #include "../Player/Player.h"
+#include "../Collision/Collision.h"
+#include "../Collision/CollisionParameter.h"
 
-// キャラクターの周囲何マスまでチェックするか
-#define CHECK_ROUND_NUM (2)
-
-void CheckNormalX(int left, int top, int right, int bottom);
-void CheckNormalY(int left, int top, int right, int bottom);
-void CheckSlopeX(int left, int top, int right, int bottom);
-void CheckSlopeY(int left, int top, int right, int bottom);
-void CheckAutoDoorX();
-void CheckAutoDoorY();
-void CheckMoveBlockX();
-void CheckMoveBlockY();
+// このCPPしか使わない関数
+void ResolveMapchipX(Body* body, const MapChipData* mapchip);
+void ResolveMapchipY(Body* body, const MapChipData* mapchip);
+void PreviewSlope(Body* body, int range);
 
 void InitMap()
 {
-	InitAutoDoor();
-	InitMoveBlock();
+	InitBlock();
 }
 
 void LoadMap()
 {
 	LoadMapChipData();
 	LoadBlock();
-	LoadAutoDoor();
-	LoadMoveBlock();
 }
 
 void StartMap()
 {
 	CreateMap();
-	StartAutoDoor();
-	StartMoveBlock();
+	StartBlock();
 }
 
 void StepMap()
 {
-	StepAutoDoor();
-	StepMoveBlock();
+	StepBlock();
 }
 
 void UpdateMap()
 {
-	UpdateAutoDoor();
-	UpdateMoveBlock();
+	UpdateBlock();
 }
 
 void DrawMap()
 {
 	// ブロック描画
 	DrawBlock();
-
-	// 自動ドア描画
-	DrawAutoDoor();
-
-	// 放物線移動ブロック描画
-	DrawMoveBlock();
 }
 
 void FinMap()
 {
 	FinBlock();
-
-	FinAutoDoor();
-
-	FinMoveBlock();
 }
 
-void ChceckMapPlayerCollision()
+/// <summary>
+/// マップと衝突解決
+/// </summary>
+/// <param name="body"></param>
+/// <param name="range"></param>
+void ResolveMapCollision(Body* body, int range)
 {
-	PlayerData player = GetPlayer();
-	// プレイヤーの足元の座標をマップチップのインデックスに変換
-	int playerX = (int)(player.pos.x / MAP_CHIP_WIDTH);
-	int playerY = (int)((player.pos.y + PLAYER_HEIGHT) / MAP_CHIP_HEIGHT);
+	// 足元ブロック情報をリセット
+	body->groundBlock = NULL;
+
+	// X軸解決
+	ResolveMapCollisionX(body, range);
+	// Y軸解決
+	ResolveMapCollisionY(body, range);
+}
+
+void ResolveMapCollisionX(Body* body, int range)
+{
+	// 座標を添字に変換
+	int x = (int)((body->pos.x + body->width / 2) / MAP_CHIP_WIDTH);
+	int y = (int)((body->pos.y + body->height / 2) / MAP_CHIP_HEIGHT);
 	// プレイヤーの左上にあるマップチップインデックス
-	int left = playerX - CHECK_ROUND_NUM;
-	int top = playerY - CHECK_ROUND_NUM;
+	int left = x - range;
+	int top = y - range;
 	// プレイヤーの右下にあるマップチップインデックス
-	int right = playerX + CHECK_ROUND_NUM;
-	int bottom = playerY + CHECK_ROUND_NUM;
+	int right = x + range;
+	int bottom = y + range;
 
+	// X軸だけ移動する
+	body->pos.x += body->move.x;
 
-	CheckSlopeY(left, top, right, bottom);
-	CheckNormalY(left, top, right, bottom);
-	CheckAutoDoorY();
-	CheckMoveBlockY();
-	CheckSlopeX(left, top, right, bottom);
-	CheckNormalX(left, top, right, bottom);
-	CheckAutoDoorX();
-	CheckMoveBlockX();
-}
+	// 坂を先に解決しないと付近のブロックに引っかかる
+	PreviewSlope(body, range);
 
-void CheckNormalX(int left, int top, int right, int bottom)
-{
+	// 左上からチェックしていく
 	for (int y = top; y <= bottom; y++)
 	{
 		// マップチップからはみ出したら処理しなくていい
@@ -108,18 +99,42 @@ void CheckNormalX(int left, int top, int right, int bottom)
 			// マップチップからはみ出したら処理しなくていい
 			if (x < 0 || x >= MAP_CHIP_X_NUM) continue;
 
-			MapChipData mapChipData = GetMapChipData(x, y);
+			// マップチップ取得
+			const MapChipData* mapChipData = GetMapChipData(x, y);
 
-			// MAP_CHIP_NONEの場合は何もしない
-			if (mapChipData.mapChip != NORMAL_BLOCK) continue;
+			// フラグチェック
+			if (!mapChipData->isCollision) continue;
+			// タイプ無しは無視
+			if (mapChipData->type == MAP_CHIP_NONE) continue;
 
-			PlayerHitNormalBlockX(mapChipData);
+			// ブロックを取り出して当たり判定
+			BlockData* block = mapChipData->data;
+			if (CheckSquareSquare(	body->pos, body->width, body->height,
+									block->pos, block->width, block->height))
+			{
+				// 衝突解決
+				ResolveMapchipX(body, mapChipData);
+			}
 		}
 	}
 }
 
-void CheckNormalY(int left, int top, int right, int bottom)
+void ResolveMapCollisionY(Body* body, int range)
 {
+	// 座標を添字に変換
+	int x = (int)((body->pos.x + body->width / 2) / MAP_CHIP_WIDTH);
+	int y = (int)((body->pos.y + body->height / 2) / MAP_CHIP_HEIGHT);
+	// プレイヤーの左上にあるマップチップインデックス
+	int left = x - range;
+	int top = y - range;
+	// プレイヤーの右下にあるマップチップインデックス
+	int right = x + range;
+	int bottom = y + range;
+
+	// Y軸だけ移動する
+	body->pos.y += body->move.y;
+
+	// 左上からチェックしていく
 	for (int y = top; y <= bottom; y++)
 	{
 		// マップチップからはみ出したら処理しなくていい
@@ -130,18 +145,115 @@ void CheckNormalY(int left, int top, int right, int bottom)
 			// マップチップからはみ出したら処理しなくていい
 			if (x < 0 || x >= MAP_CHIP_X_NUM) continue;
 
-			MapChipData mapChipData = GetMapChipData(x, y);
+			// マップチップ取得
+			const MapChipData* mapChipData = GetMapChipData(x, y);
 
-			// MAP_CHIP_NONEの場合は何もしない
-			if (mapChipData.mapChip != NORMAL_BLOCK) continue;
+			// フラグチェック
+			if (!mapChipData->isCollision) continue;
+			// タイプ無しは無視
+			if (mapChipData->type == MAP_CHIP_NONE) continue;
 
-			PlayerHitNormalBlockY(mapChipData);
+			// ブロックを取り出して当たり判定
+			BlockData* block = mapChipData->data;
+			if (CheckSquareSquare(	body->pos, body->width, body->height,
+									block->pos, block->width, block->height))
+			{
+				// 衝突解決
+				ResolveMapchipY(body, mapChipData);
+			}
 		}
 	}
 }
 
-void CheckSlopeX(int left, int top, int right, int bottom)
+/// <summary>
+/// X軸の衝突解決
+/// </summary>
+/// <param name="body">当たり判定ボディ</param>
+/// <param name="mapchip">マップチップ</param>
+void ResolveMapchipX(Body* body, const MapChipData* mapchip)
 {
+	switch (mapchip->type)
+	{
+	case NORMAL_BLOCK:
+		// 通常ブロック
+		ResolveNormalBlockX(body, mapchip->data);
+		break;
+	case SLOPE_BLOCK:
+		// 坂ブロック
+		ResolveSlopeBlockX(body, mapchip->data);
+		break;
+	case AUTO_DOOR:
+		// 自動ドア
+		ResolveAutoDoorX(body, mapchip->data);
+		break;
+	case ARCH_MOVE_BLOCK:
+		// 放物線移動
+		ResolveArchMoveBlockX(body, mapchip->data);
+		break;
+	case MOVE_BLOCK:
+		// 移動ブロック
+		ResolveMoveBlockX(body, mapchip->data);
+		break;
+	case CIRCLE_MOVE_BLOCK:
+		// 円移動
+		ResolveCircleMoveBlockX(body, mapchip->data);
+		break;
+	default:
+		break;
+	}
+}
+
+/// <summary>
+/// Y軸の衝突解決
+/// </summary>
+/// <param name="body">当たり判定ボディ</param>
+/// <param name="mapchip">マップチップ</param>
+void ResolveMapchipY(Body* body, const MapChipData* mapchip)
+{
+	switch (mapchip->type)
+	{
+	case NORMAL_BLOCK:
+		// 通常ブロック
+		ResolveNormalBlockY(body, mapchip->data);
+		break;
+	case SLOPE_BLOCK:
+		// 坂ブロック
+		ResolveSlopeBlockY(body, mapchip->data);
+		break;
+	case AUTO_DOOR:
+		// 自動ドア
+		ResolveAutoDoorY(body, mapchip->data);
+		break;
+	case ARCH_MOVE_BLOCK:
+		// 放物線移動
+		ResolveArchMoveBlockY(body, mapchip->data);
+		break;
+	case MOVE_BLOCK:
+		// 移動ブロック
+		ResolveMoveBlockY(body, mapchip->data);
+		break;
+	case CIRCLE_MOVE_BLOCK:
+		// 円移動ブロック
+		ResolveCircleMoveBlockY(body, mapchip->data);
+		break;
+	default:
+		break;
+	}
+}
+
+void PreviewSlope(Body* body, int range)
+{
+	// 座標を添字に変換
+	int x = (int)((body->pos.x + body->width / 2) / MAP_CHIP_WIDTH);
+	int y = (int)((body->pos.y + body->height / 2) / MAP_CHIP_HEIGHT);
+	// プレイヤーの左上にあるマップチップインデックス
+	int left = x - range;
+	int top = y - range;
+	// プレイヤーの右下にあるマップチップインデックス
+	int right = x + range;
+	int bottom = y + range;
+
+	// 左上からチェックしていく
 	for (int y = top; y <= bottom; y++)
 	{
 		// マップチップからはみ出したら処理しなくていい
@@ -152,67 +264,22 @@ void CheckSlopeX(int left, int top, int right, int bottom)
 			// マップチップからはみ出したら処理しなくていい
 			if (x < 0 || x >= MAP_CHIP_X_NUM) continue;
 
-			MapChipData mapChipData = GetMapChipData(x, y);
+			// マップチップ取得
+			const MapChipData* mapChipData = GetMapChipData(x, y);
 
-			// MAP_CHIP_NONEの場合は何もしない
-			if (mapChipData.mapChip != SLOPE_BLOCK) continue;
+			// フラグチェック
+			if (!mapChipData->isCollision) continue;
+			// 坂以外は無視
+			if (mapChipData->type != SLOPE_BLOCK) continue;
 
-			PlayerHitSlopeBlockX(mapChipData);
+			// ブロックを取り出して当たり判定
+			BlockData* block = mapChipData->data;
+			if (CheckSquareSquare(	body->pos, body->width, body->height,
+									block->pos, block->width, block->height))
+			{
+				// 衝突解決
+				PreviewSlopeBlock(body, block);
+			}
 		}
 	}
 }
-
-void CheckSlopeY(int left, int top, int right, int bottom)
-{
-	for (int y = top; y <= bottom; y++)
-	{
-		// マップチップからはみ出したら処理しなくていい
-		if (y < 0 || y >= MAP_CHIP_Y_NUM) continue;
-
-		for (int x = left; x <= right; x++)
-		{
-			// マップチップからはみ出したら処理しなくていい
-			if (x < 0 || x >= MAP_CHIP_X_NUM) continue;
-
-			MapChipData mapChipData = GetMapChipData(x, y);
-
-			// MAP_CHIP_NONEの場合は何もしない
-			if (mapChipData.mapChip != SLOPE_BLOCK) continue;
-
-			PlayerHitSlopeBlockY(mapChipData);
-		}
-	}
-}
-
-void CheckAutoDoorX()
-{
-	// 自動ドアデータ取得
-	AutoDoorData autoDoor = GetAutoDoorData();
-	// プレイヤーと自動ドアの当たり判定
-	PlayerHitAutoDoorX(autoDoor);
-}
-
-void CheckAutoDoorY()
-{
-	// 自動ドアデータ取得
-	AutoDoorData autoDoor = GetAutoDoorData();
-	// プレイヤーと自動ドアの当たり判定
-	PlayerHitAutoDoorY(autoDoor);
-}
-
-void CheckMoveBlockX()
-{
-	// 放物線移動ブロック取得
-	MoveBlockData archBlock = GetMoveBlockData();
-	// プレイヤーとの当たり判定
-	PlayerHitMoveBlockX(archBlock);
-}
-
-void CheckMoveBlockY()
-{
-	// 放物線移動ブロック取得
-	MoveBlockData archBlock = GetMoveBlockData();
-	// プレイヤーとの当たり判定
-	PlayerHitMoveBlockY(archBlock);
-}
-
