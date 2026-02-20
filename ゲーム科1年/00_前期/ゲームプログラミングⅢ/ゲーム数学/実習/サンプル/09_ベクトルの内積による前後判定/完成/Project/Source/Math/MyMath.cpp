@@ -78,11 +78,3 @@ VECTOR VecCross3D(VECTOR vecA, VECTOR vecB)
 	return result;
 }
 
-VECTOR GetDirXY(float angle)
-{
-	VECTOR result = { 0 };
-	result.x = cosf(angle);
-	result.y = sinf(angle);
-
-	return result;
-}

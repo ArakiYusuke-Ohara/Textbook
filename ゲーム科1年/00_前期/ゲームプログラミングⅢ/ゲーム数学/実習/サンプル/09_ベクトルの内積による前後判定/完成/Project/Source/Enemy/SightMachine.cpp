@@ -39,7 +39,7 @@ void StepSightMachine()
 	PlayerData player = GetPlayer();
 
 	// エネミーからプレイヤーまでのベクトルを作る
-	VECTOR playerVec = VecCreate(g_SightMachineData.pos, player.pos);
+	VECTOR playerVec = VecCreate(g_SightMachineData.pos, player.body.pos);
 
 
 	// 現在向いている向きを計算

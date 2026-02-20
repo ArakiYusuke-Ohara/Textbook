@@ -28,7 +28,7 @@ void LoadGameClearScene()
 	// 背景ロード
 	LoadBackGround("Data/Title/TitleBG.png", BACK_GROUND_LAYER_1);
 	// 背景スクロール
-	SetBackGroundMove(VGet(BACK_GROUND_SPEED, 0.0f, 0.0f), BACK_GROUND_LAYER_1);
+	SetBackGroundMove(BACK_GROUND_SPEED, 0.0f, BACK_GROUND_LAYER_1);
 
 	// GameClear文字画像
 	g_GameClearHandle = LoadGraph("Data/GameClear/GameClear.png");
@@ -40,7 +40,7 @@ void StartGameClearScene()
 	// スコア
 	CreateScoreUI(VGet(436.0f, 450.0f, 0.0f));
 	// ハイスコア
-	CreateHiScoreUI(VGet(390.0f, 315.0f, 0.0f));
+	CreateHiScoreUI(VGet(390, 315, 0.0f));
 
 	// BGM再生
 	PlayBGM(BGM_GAME_CLEAR);

@@ -9,5 +9,6 @@ VECTOR VecNormalize(VECTOR vec);				// ベクトルの正規化
 float VecDot(VECTOR vecA, VECTOR vecB);			// ベクトルの内積
 float VecCross2D(VECTOR vecA, VECTOR vecB);		// ベクトルの外積（2D）
 VECTOR VecCross3D(VECTOR vecA, VECTOR vecB);	// ベクトルの外積（3D）
-VECTOR GetDirXY(float angle);
+
+
 

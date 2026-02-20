@@ -39,7 +39,7 @@ void StepSightMachine()
 	PlayerData player = GetPlayer();
 
 	// エネミーからプレイヤーまでのベクトルを作る
-	VECTOR playerVec = VecCreate(g_SightMachineData.pos, player.pos);
+	VECTOR playerVec = VecCreate(g_SightMachineData.pos, player.body.pos);
 
 
 	// 現在向いている向きを計算
@@ -53,7 +53,7 @@ void StepSightMachine()
 
 
 	// ② 内積の結果が正であればプレイヤーは前方にいる
-	if (0)
+	if ( 0 )
 	{
 		// 外積を計算する
 		float cross = VecCross2D(playerVec, g_SightMachineData.dir);

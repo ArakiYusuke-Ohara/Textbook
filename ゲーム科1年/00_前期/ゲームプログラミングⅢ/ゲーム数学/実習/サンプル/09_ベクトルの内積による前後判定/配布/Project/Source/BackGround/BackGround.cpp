@@ -1,5 +1,6 @@
 #include "DxLib.h"
 #include "BackGround.h"
+#include "../Math/MyMath.h"
 
 #define BACK_GROUND_WIDTH	(1600)
 #define BACK_GROUND_HEIGHT	(900)
@@ -18,10 +19,8 @@ void InitBackGround()
 	for (int i = 0; i < BACK_GROUND_LAYER_MAX; i++)
 	{
 		g_BackGroundData[i].handle = 0;
-		g_BackGroundData[i].pos.x = 0.0f;
-		g_BackGroundData[i].pos.y = 0.0f;
-		g_BackGroundData[i].move.x = 0.0f;
-		g_BackGroundData[i].move.y = 0.0f;
+		g_BackGroundData[i].pos = {};
+		g_BackGroundData[i].move = {};
 	}
 }
 
@@ -39,8 +38,7 @@ void UpdateBackGround()
 	// 移動
 	for (int i = 0; i < BACK_GROUND_LAYER_MAX; i++)
 	{
-		g_BackGroundData[i].pos.x += g_BackGroundData[i].move.x;
-		g_BackGroundData[i].pos.y += g_BackGroundData[i].move.y;
+		g_BackGroundData[i].pos = VecAdd(g_BackGroundData[i].pos, g_BackGroundData[i].move);
 
 		// スクロールのループ
 		if (g_BackGroundData[i].pos.x > BACK_GROUND_WIDTH)
@@ -99,8 +97,8 @@ void FinBackGround()
 	}
 }
 
-void SetBackGroundMove(VECTOR move, BackGroundLayer layer)
+void SetBackGroundMove(float moveX, float moveY, BackGroundLayer layer)
 {
-	g_BackGroundData[layer].move.x = move.x;
-	g_BackGroundData[layer].move.y = move.y;
+	g_BackGroundData[layer].move.x = moveX;
+	g_BackGroundData[layer].move.y = moveY;
 }
