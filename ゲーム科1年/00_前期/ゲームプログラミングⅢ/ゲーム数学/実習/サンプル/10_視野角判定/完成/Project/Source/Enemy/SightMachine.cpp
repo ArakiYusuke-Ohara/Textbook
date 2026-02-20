@@ -53,10 +53,10 @@ void StepSightMachine()
 	g_SightMachineData.dir = VecNormalize(g_SightMachineData.dir);
 
 	// 視野範囲にプレイヤーがいたら回転する
-	if (CheckFieldOfView(player.pos))
+	if (CheckFieldOfView(player.body.pos))
 	{
 		// エネミーからプレイヤーまでのベクトルを作る
-		VECTOR playerVec = VecCreate(g_SightMachineData.pos, player.pos);
+		VECTOR playerVec = VecCreate(g_SightMachineData.pos, player.body.pos);
 
 		// プレイヤーまでのベクトルと向きのベクトルの外積を求める
 		float cross = VecCross2D(playerVec, g_SightMachineData.dir);

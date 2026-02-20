@@ -1,26 +1,14 @@
 #pragma once
-
-struct BoxCollision
-{
-	VECTOR pos;
-	float width;
-	float height;
-};
-
-// 関数のプロトタイプ宣言
+#include "DxLib.h"
 
 // 矩形と点の当たり判定
-bool CheckSquarePoint(VECTOR squarePos, float squareWidth, float squareHeight, VECTOR pointPos);
+bool CheckSquarePoint(VECTOR squarePos, float squareWidth, float squareHeight, VECTOR point);
 
 // 矩形と矩形の当たり判定
-bool CheckSquareSquare(VECTOR squareAPos, float squareA_Width, float squareA_Height, VECTOR squareBPos, float squareB_Width, float squareB_Height);
+bool CheckSquareSquare(VECTOR posA, float widthA, float heightA, VECTOR posB, float widthB, float heightB);
 
 // 円と点の当たり判定
-bool CheckCirclePoint(VECTOR circlePos, float circleRadius, VECTOR pointPos);
+bool CheckCirclePoint(VECTOR circlePos, float circleRadius, VECTOR point);
 
 // 円と円の当たり判定
-bool CheckCircleCircle(VECTOR circleAPos, float circleA_Radius, VECTOR circleBPos, float circleB_Radius);
-
-// 各当たり判定を行う
-void CheckCollision();
-
+bool CheckCircleCircle(VECTOR posA, float radA, VECTOR posB, float radB);

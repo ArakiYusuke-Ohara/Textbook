@@ -30,7 +30,7 @@ void LoadGameOverScene()
 	// 背景ロード
 	LoadBackGround("Data/Title/TitleBG.png", BACK_GROUND_LAYER_1);
 	// 背景スクロール
-	SetBackGroundMove(VGet(BACK_GROUND_SPEED, 0.0f, 0.0f), BACK_GROUND_LAYER_1);
+	SetBackGroundMove(BACK_GROUND_SPEED, 0.0f, BACK_GROUND_LAYER_1);
 
 	// GameOver文字画像
 	g_GameOverHandle = LoadGraph("Data/GameOver/GameOver.png");

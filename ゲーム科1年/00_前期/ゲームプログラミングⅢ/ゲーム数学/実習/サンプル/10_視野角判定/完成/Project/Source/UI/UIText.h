@@ -1,4 +1,5 @@
 #pragma once
+#include "DxLib.h"
 
 #define UI_TEXT_LENGTH_MAX (256)
 

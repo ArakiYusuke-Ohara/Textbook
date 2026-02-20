@@ -10,8 +10,7 @@ void InitAnimation(AnimationData* animData)
 	animData->frameWidth = 0;
 	animData->frameHeight = 0;
 	animData->timer = 0;
-	animData->pos.x = 0.0f;
-	animData->pos.y = 0.0f;
+	animData->pos = VGet(0.0f, 0.0f, 0.0f);
 }
 
 void StartAnimation(AnimationData* animData, VECTOR pos, int interval, int frameNum, int width, int height, bool isLoop)
@@ -20,8 +19,7 @@ void StartAnimation(AnimationData* animData, VECTOR pos, int interval, int frame
 	animData->active = true;
 
 	// 座標設定
-	animData->pos.x = pos.x;
-	animData->pos.y = pos.y;
+	animData->pos = pos;
 
 	// インターバル設定
 	animData->interval = interval;
@@ -80,7 +78,7 @@ void UpdateAnimation(AnimationData* animData)
 
 void DrawAnimation(AnimationData* animData, bool isTurnX, bool isTurnY)
 {
-	DrawAnimation(animData, animData->pos);
+	DrawAnimation(animData, animData->pos, isTurnX, isTurnY);
 }
 
 void DrawAnimation(AnimationData* animData, VECTOR pos, bool isTurnX, bool isTurnY)

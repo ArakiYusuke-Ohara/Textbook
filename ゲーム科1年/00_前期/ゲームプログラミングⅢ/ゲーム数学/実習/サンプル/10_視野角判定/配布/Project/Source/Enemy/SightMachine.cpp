@@ -53,10 +53,10 @@ void StepSightMachine()
 	g_SightMachineData.dir = VecNormalize(g_SightMachineData.dir);
 
 	// 視野範囲にプレイヤーがいたら回転する
-	if (CheckFieldOfView(player.pos))
+	if (CheckFieldOfView(player.body.pos))
 	{
 		// エネミーからプレイヤーまでのベクトルを作る
-		VECTOR playerVec = VecCreate(g_SightMachineData.pos, player.pos);
+		VECTOR playerVec = VecCreate(g_SightMachineData.pos, player.body.pos);
 
 		// プレイヤーまでのベクトルと向きのベクトルの外積を求める
 		float cross = VecCross2D(playerVec, g_SightMachineData.dir);
@@ -119,23 +119,22 @@ void DrawSightMachine()
 
 	// 視野範囲を１ドットずつ半透明で描画
 	// （めちゃくちゃ重いので確認用のみで使うこと）
-	//int left = (int)(g_SightMachineData.pos.x - SIGHT_MACHINE_FOV_RANGE);
-	//int right = (int)(g_SightMachineData.pos.x + SIGHT_MACHINE_FOV_RANGE);
-	//int top = (int)(g_SightMachineData.pos.y - SIGHT_MACHINE_FOV_RANGE);
-	//int bottom = (int)(g_SightMachineData.pos.y + SIGHT_MACHINE_FOV_RANGE);
-
-	//SetDrawBlendMode(DX_BLENDMODE_ALPHA, 100);
-	//for (int i = left; i < right; i++)
-	//{
-	//	for (int j = top; j < bottom; j++)
-	//	{
-	//		if (CheckFieldOfView(VGet((float)i, (float)j, 0.0f)))
-	//		{
-	//			DrawPixel((int)(i - camera.pos.x), (int)(j - camera.pos.y), GetColor(255, 0, 0));
-	//		}
-	//	}
-	//}
-	//SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+	int left = (int)(g_SightMachineData.pos.x - SIGHT_MACHINE_FOV_RANGE);
+	int right = (int)(g_SightMachineData.pos.x + SIGHT_MACHINE_FOV_RANGE);
+	int top = (int)(g_SightMachineData.pos.y - SIGHT_MACHINE_FOV_RANGE);
+	int bottom = (int)(g_SightMachineData.pos.y + SIGHT_MACHINE_FOV_RANGE);
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 100);
+	for (int i = left; i < right; i++)
+	{
+		for (int j = top; j < bottom; j++)
+		{
+			if (CheckFieldOfView(VGet((float)i, (float)j, 0.0f)))
+			{
+				DrawPixel((int)(i - camera.pos.x), (int)(j - camera.pos.y), GetColor(255, 0, 0));
+			}
+		}
+	}
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 }
 
 void FinSightMachine()
@@ -152,7 +151,7 @@ bool CheckFieldOfView(VECTOR targetPos)
 
 
 	// ③ ターゲットまでの距離が視野範囲よりも近いか判定
-	if (0)
+	if ( 0 )
 	{
 		// ④ ①のベクトルを正規化する
 
@@ -166,7 +165,7 @@ bool CheckFieldOfView(VECTOR targetPos)
 
 
 		// ⑦ ⑤ >= ⑥ であれば視野範囲にターゲットがいる
-		if (0)
+		if ( 0 )
 		{
 			return true;
 		}

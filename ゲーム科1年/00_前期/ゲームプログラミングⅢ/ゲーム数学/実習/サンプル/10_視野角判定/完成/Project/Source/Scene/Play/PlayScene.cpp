@@ -1,32 +1,28 @@
 #include "DxLib.h"
 #include "../../Scene/SceneManager.h"
-#include "../../Enemy/EnemyManager.h"
 #include "../../Map/MapManager.h"
-#include "../../Bullet/BulletManager.h"
 #include "../../Player/Player.h"
 #include "../../Camera/Camera.h"
 #include "../../Collision/Collision.h"
-
-
-// 背景のスピード
-#define BACK_GROUND_SPEED (-1.5f)
+#include "../../Enemy/EnemyManager.h"
+#include "../../Bullet/BulletManager.h"
 
 void InitPlayScene()
 {
 	// プレイヤー初期化
 	InitPlayer();
 
-	// エネミー初期化
-	InitEnemy();
-
-	// バレット初期化
-	InitBullet();
-
 	// マップ初期化
 	InitMap();
 
 	// カメラ初期化
 	InitCamera();
+
+	// エネミー初期化
+	InitEnemy();
+
+	// 弾丸初期化
+	InitBullet();
 }
 
 void LoadPlayScene()
@@ -34,14 +30,14 @@ void LoadPlayScene()
 	// プレイヤーロード
 	LoadPlayer();
 
-	// エネミーロード
-	LoadEnemy();
-
-	// バレットロード
-	LoadBullet();
-
 	// マップをロード
 	LoadMap();
+
+	// エネミーをロード
+	LoadEnemy();
+
+	// 弾丸をロード
+	LoadBullet();
 }
 
 void StartPlayScene()
@@ -49,11 +45,11 @@ void StartPlayScene()
 	// プレイヤー開始
 	StartPlayer();
 
-	// エネミー開始
-	StartEnemy();
-
 	// マップを開始
 	StartMap();
+
+	// エネミーを開始
+	StartEnemy();
 }
 
 void StepPlayScene()
@@ -67,7 +63,7 @@ void StepPlayScene()
 	// エネミーステップ
 	StepEnemy();
 
-	// バレットステップ
+	// 弾丸ステップ
 	StepBullet();
 
 	// カメラステップ
@@ -85,11 +81,8 @@ void UpdatePlayScene()
 	// エネミー更新
 	UpdateEnemy();
 
-	// バレット更新
+	// 弾丸更新
 	UpdateBullet();
-	
-	// 当たり判定
-	CheckCollision();
 }
 
 void DrawPlayScene()
@@ -97,14 +90,14 @@ void DrawPlayScene()
 	// マップ描画
 	DrawMap();
 
+	// 弾丸描画
+	DrawBullet();
+
 	// プレイヤー描画
 	DrawPlayer();
 
 	// エネミー描画
 	DrawEnemy();
-
-	// バレット描画
-	DrawBullet();
 
 	// カメラ描画
 	DrawCamera();
@@ -121,6 +114,6 @@ void FinPlayScene()
 	// エネミー終了
 	FinEnemy();
 
-	// バレット終了
+	// 弾丸終了
 	FinBullet();
 }
