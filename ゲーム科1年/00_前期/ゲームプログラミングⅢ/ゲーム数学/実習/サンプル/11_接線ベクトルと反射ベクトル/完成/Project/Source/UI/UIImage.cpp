@@ -16,8 +16,7 @@ void InitUIImage()
 	{
 		ui->active = false;
 		ui->handle = 0;
-		ui->pos.x = 0.0f;
-		ui->pos.y = 0.0f;
+		ui->pos = {};
 	}
 }
 
@@ -72,8 +71,7 @@ void CreateUIImage(UIImageType type, VECTOR pos)
 			ui->handle = g_UIImageHandle[type];
 
 			// À•W
-			ui->pos.x = pos.x;
-			ui->pos.y = pos.y;
+			ui->pos = pos;
 
 			break;
 		}

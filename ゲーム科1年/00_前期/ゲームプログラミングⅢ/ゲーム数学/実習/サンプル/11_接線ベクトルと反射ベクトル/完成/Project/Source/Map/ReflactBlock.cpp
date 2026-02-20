@@ -1,53 +1,83 @@
+#include "DxLib.h"
 #include "ReflactBlock.h"
+#include "../Player/Player.h"
 #include "../Math/MyMath.h"
-#include "../Camera/Camera.h"
 
-ReflactBlockData g_ReflactBlockData = { 0 };
-
-void InitReflactBlock()
+void ResolveReflactBlockX(Body* body, const BlockData* block)
 {
-	g_ReflactBlockData.active = false;
-	g_ReflactBlockData.handle = 0;
-	g_ReflactBlockData.pos = VGet(0.0f, 0.0f, 0.0f);
-	g_ReflactBlockData.normal = VGet(0.0f, 0.0f, 0.0f);
+	// 左からあたったか
+	if (body->move.x > 0.0f)
+	{
+		// 左に押し出す
+		body->pos.x -= (body->pos.x + body->width) - block->pos.x;
+		if (body->reflactPower > 0.0f)
+		{
+			// 左向き法線で反射
+			VECTOR ref = VecReflact(body->move, VGet(-1.0f, 0.0f, 0.0f));
+			body->move = VecScale(ref, body->reflactPower);
+		}
+		else
+		{
+			// 反射しない
+			body->move.x = 0.0f;
+		}
+	}
+	// 右からあたったか
+	else if (body->move.x < 0.0f)
+	{
+		// 右に押し出す
+		body->pos.x += (block->pos.x + block->width) - body->pos.x;
+		if (body->reflactPower > 0.0f)
+		{
+			// 右向き法線で反射
+			VECTOR ref = VecReflact(body->move, VGet(1.0f, 0.0f, 0.0f));
+			body->move = VecScale(ref, body->reflactPower);
+		}
+		else
+		{
+			// 反射しない
+			body->move.x = 0.0f;
+		}
+	}
 }
 
-void LoadReflactBlock()
+void ResolveReflactBlockY(Body* body, const BlockData* block)
 {
-	g_ReflactBlockData.handle = LoadGraph("Data/Map/ReflactBlock.png");
-}
+	// 上からあたったか
+	if (body->move.y > 0.0f)
+	{
+		// 上に押し出す
+		body->pos.y -= (body->pos.y + body->height) - block->pos.y;
+		// 着地
+		body->isAir = false;
 
-void StartReflactBlock()
-{
-	g_ReflactBlockData.pos = VGet(50.0f, 750.0f, 0.0f);
-
-	// 法線は右向きで固定
-	// 回転を考慮する場合はまた別の計算が必要
-	g_ReflactBlockData.normal = VGet(1.0f, 0.0f, 0.0f);
-
-}
-
-void StepReflactBlock()
-{
-}
-
-void UpdateReflactBlock()
-{
-}
-
-void DrawReflactBlock()
-{
-	CameraData camera = GetCameraData();
-	VECTOR pos = VecCreate(camera.pos, g_ReflactBlockData.pos);
-	DrawGraph((int)pos.x, (int)pos.y, g_ReflactBlockData.handle, TRUE);
-}
-
-void FinReflactBlock()
-{
-	DeleteGraph(g_ReflactBlockData.handle);
-}
-
-ReflactBlockData GetReflactBlock()
-{
-	return g_ReflactBlockData;
+		if (body->reflactPower > 0.0f)
+		{
+			// 上向き法線で反射
+			VECTOR ref = VecReflact(body->move, VGet(0.0f, -1.0f, 0.0f));
+			body->move = VecScale(ref, body->reflactPower);
+		}
+		else
+		{
+			// 反射しない
+			body->move.y = 0.0f;
+		}
+	}
+	// 下からあたったか
+	else if (body->move.y < 0.0f)
+	{
+		// 下に押し出す
+		body->pos.y += (block->pos.y + block->height) - body->pos.y;
+		if (body->reflactPower > 0.0f)
+		{
+			// 下向き法線で反射
+			VECTOR ref = VecReflact(body->move, VGet(0.0f, 1.0f, 0.0f));
+			body->move = VecScale(ref, body->reflactPower);
+		}
+		else
+		{
+			// 反射しない
+			body->move.y = 0.0f;
+		}
+	}
 }

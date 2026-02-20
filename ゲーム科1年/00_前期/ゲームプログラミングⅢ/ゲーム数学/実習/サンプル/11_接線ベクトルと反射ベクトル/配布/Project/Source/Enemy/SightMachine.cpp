@@ -13,7 +13,9 @@
 #define SIGHT_MACHINE_ROTATION_SPEED	(0.03f)
 
 #define SIGHT_MACHINE_VIEWING_ANGLE		(2.5f)
-#define SIGHT_MACHINE_FOV				(200.0f)
+#define SIGHT_MACHINE_FOV_RANGE				(200.0f)
+
+#define BULLET_REFLACT_POWER	(1.0f)
 
 SightMachineData g_SightMachineData = { 0 };
 
@@ -37,7 +39,7 @@ void StartSightMachine()
 {
 	g_SightMachineData.pos = VGet(500.0f, 600.0f, 0.0f);
 	g_SightMachineData.bulletInterval = SIGHT_MACHINE_BULLET_INTERVAL;
-	g_SightMachineData.angle = 2.7f;
+	g_SightMachineData.angle = 0.0f;
 }
 
 void StepSightMachine()
@@ -53,10 +55,10 @@ void StepSightMachine()
 	g_SightMachineData.dir = VecNormalize(g_SightMachineData.dir);
 
 	// 視野範囲にプレイヤーがいたら回転する
-	if (CheckFieldOfView(player.pos))
+	if (CheckFieldOfView(player.body.pos))
 	{
 		// エネミーからプレイヤーまでのベクトルを作る
-		VECTOR playerVec = VecCreate(g_SightMachineData.pos, player.pos);
+		VECTOR playerVec = VecCreate(g_SightMachineData.pos, player.body.pos);
 
 		// プレイヤーまでのベクトルと向きのベクトルの外積を求める
 		float cross = VecCross2D(playerVec, g_SightMachineData.dir);
@@ -94,6 +96,7 @@ void StepSightMachine()
 		fireData.life = SIGHT_MACHINE_BULLET_LIFE;
 		fireData.pos = g_SightMachineData.pos;
 		fireData.move = bulletMove;
+		fireData.reflactPower = BULLET_REFLACT_POWER;
 
 		// バレット発射
 		FireBullet(BULLET_CATEGORY_STRAIGHT, (int)STRAIGHT_BULLET_TYPE_SIGHT_MACHINE, fireData, BULLET_COLLISION_TAG_ENEMY);
@@ -114,8 +117,27 @@ void UpdateSightMachine()
 
 void DrawSightMachine()
 {
-	CameraData camera = GetCameraData();
+	CameraData camera = GetCamera();
 	DrawRotaGraph((int)(g_SightMachineData.pos.x - camera.pos.x), (int)(g_SightMachineData.pos.y - camera.pos.y), 1.0, g_SightMachineData.angle, g_SightMachineData.handle, TRUE);
+
+	// 視野範囲を１ドットずつ半透明で描画
+	// （めちゃくちゃ重いので確認用のみで使うこと）
+	//int left = (int)(g_SightMachineData.pos.x - SIGHT_MACHINE_FOV_RANGE);
+	//int right = (int)(g_SightMachineData.pos.x + SIGHT_MACHINE_FOV_RANGE);
+	//int top = (int)(g_SightMachineData.pos.y - SIGHT_MACHINE_FOV_RANGE);
+	//int bottom = (int)(g_SightMachineData.pos.y + SIGHT_MACHINE_FOV_RANGE);
+	//SetDrawBlendMode(DX_BLENDMODE_ALPHA, 100);
+	//for (int i = left; i < right; i++)
+	//{
+	//	for (int j = top; j < bottom; j++)
+	//	{
+	//		if (CheckFieldOfView(VGet((float)i, (float)j, 0.0f)))
+	//		{
+	//			DrawPixel((int)(i - camera.pos.x), (int)(j - camera.pos.y), GetColor(255, 0, 0));
+	//		}
+	//	}
+	//}
+	//SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 }
 
 void FinSightMachine()
@@ -132,7 +154,7 @@ bool CheckFieldOfView(VECTOR targetPos)
 	float targetDistance = VecLong(targetVec);
 
 	// ③ ターゲットまでの距離が視野範囲よりも近いか判定
-	if (targetDistance <= SIGHT_MACHINE_FOV)
+	if (targetDistance <= SIGHT_MACHINE_FOV_RANGE)
 	{
 		// ④ ①のベクトルを正規化する
 		targetVec = VecNormalize(targetVec);

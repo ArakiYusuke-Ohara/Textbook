@@ -9,6 +9,6 @@ void InitCamera();
 void StepCamera();
 void DrawCamera();
 
-CameraData GetCameraData();
+CameraData GetCamera();
 
 

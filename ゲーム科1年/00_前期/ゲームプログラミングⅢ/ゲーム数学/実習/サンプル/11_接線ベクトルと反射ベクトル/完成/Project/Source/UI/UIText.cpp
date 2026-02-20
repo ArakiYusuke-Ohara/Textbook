@@ -16,8 +16,7 @@ void InitUIText()
 	for (int i = 0; i < UI_TEXT_MAX; i++, uiText++)
 	{
 		uiText->active = false;
-		uiText->pos.x = 0.0f;
-		uiText->pos.y = 0.0f;
+		uiText->pos = {};
 		memset(uiText->text, 0, sizeof(uiText->text));
 	}
 }
@@ -64,8 +63,7 @@ UITextData* CreateUIText(VECTOR pos, const char* text)
 			uiText->active = true;
 
 			// 座標
-			uiText->pos.x = pos.x;
-			uiText->pos.y = pos.y;
+			uiText->pos = pos;
 
 			// テキスト
 			strcpy_s(uiText->text, text);

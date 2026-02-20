@@ -2,12 +2,15 @@
 #include "../Effect/AnimationEffect.h"
 #include "../Sound/SoundManager.h"
 #include "../Camera/Camera.h"
-#include "../Map/MapParameter.h"
 #include "../Math/MyMath.h"
+#include "../Map/MapManager.h"
+#include "../Map/MapParameter.h"
 
 #define HIT_EFFECT_INTERVAL (1)
 #define HIT_EFFECT_OFFSET_X (-10.0f)
 #define HIT_EFFECT_OFFSET_Y (-10.0f)
+#define CHECK_ROUND_NUM (16)
+
 
 StraightBulletData g_StraightBulletData[STRAIGHT_BULLET_MAX] = { 0 };
 
@@ -25,11 +28,7 @@ void InitStraightBullet()
 	{
 		bullet->handle = 0;
 		bullet->life = 0;
-		bullet->pos.x = 0.0f;
-		bullet->pos.y = 0.0f;
-		bullet->move.x = 0.0f;
-		bullet->move.y = 0.0f;
-		bullet->radius = 0.0f;
+		bullet->body = {};
 		bullet->active = false;
 	}
 
@@ -85,14 +84,19 @@ void UpdateStraightBullet()
 		// 生きている弾だけ処理する
 		if (!bullet->active)continue;
 
-		// 移動
-		bullet->pos.x += bullet->move.x;
-		bullet->pos.y += bullet->move.y;
+		// 当たり判定付き移動
+		ResolveMapCollision(&bullet->body, CHECK_ROUND_NUM);
 
-		// 寿命処理
+		// ブロックに当たった かつ 反射しないブロックだったら死亡
+		if (bullet->body.hitBlock && !bullet->body.hitBlock->isReflact)
+		{
+			bullet->active = false;
+		}
+
+		// 寿命チェック
 		if (bullet->life <= 0)
 		{
-			// 寿命が過ぎたら生存フラグを折る
+			// 生存フラグを折る
 			bullet->active = false;
 		}
 	}
@@ -107,8 +111,8 @@ void DrawStraightBullet()
 		// 生きている弾だけ描画する
 		if (!bullet->active) continue;
 
-		CameraData camera = GetCameraData();
-		DrawGraph((int)(bullet->pos.x - camera.pos.x), (int)(bullet->pos.y - camera.pos.y), bullet->handle, TRUE);
+		CameraData camera = GetCamera();
+		DrawGraph((int)(bullet->body.pos.x - camera.pos.x), (int)(bullet->body.pos.y - camera.pos.y), bullet->handle, TRUE);
 	}
 }
 
@@ -140,24 +144,25 @@ void FireStraightBullet(StraightBulletType type, FireBulletData fireData, Bullet
 			bullet->handle = g_BulletHandle[type];
 
 			// 座標設定
-			bullet->pos.x = fireData.pos.x;
-			bullet->pos.y = fireData.pos.y;
+			bullet->body.pos = fireData.pos;
 
 			// 移動量設定
-			bullet->move.x = fireData.move.x;
-			bullet->move.y = fireData.move.y;
+			bullet->body.move = fireData.move;
 
 			// 画像から幅と高さを取得
 			int w, h;
 			GetGraphSize(bullet->handle, &w, &h);
-			bullet->width = (float)w;
-			bullet->height = (float)h;
+			bullet->body.width = (float)w;
+			bullet->body.height = (float)h;
 
 			// 画像が正方形の前提で半径を設定
-			bullet->radius = bullet->width / 2;
+			bullet->body.radius = (float)w / 2;
 
 			// 当たり判定タグ設定
 			bullet->tag = tag;
+
+			// 反射するかどうか
+			bullet->body.reflactPower = fireData.reflactPower;
 
 			// 1発発射したら抜ける
 			break;
@@ -178,8 +183,7 @@ void StraightBulletHitEnemy(int index)
 	bullet->active = false;
 
 	// エフェクトを表示
-	VECTOR effectPos = bullet->pos;
-	StartAnimationEffect(PLAYER_NORMAL_SHOT_HIT, effectPos, HIT_EFFECT_INTERVAL, false);
+	StartAnimationEffect(PLAYER_NORMAL_SHOT_HIT, bullet->body.pos, HIT_EFFECT_INTERVAL, false);
 
 	// ヒットSE再生
 	PlaySE(SE_PLAYRE_SHOT_HIT);
@@ -193,14 +197,5 @@ void StraightBulletHitPlayer(int index)
 	bullet->active = false;
 
 	// エフェクトを表示
-	VECTOR effectPos = bullet->pos;
-	StartAnimationEffect(ENEMY_BULLET_HIT, effectPos, HIT_EFFECT_INTERVAL, false);
-}
-
-void StraightBulletHitReflactBlock(StraightBulletData* bullet, void* block)
-{
-	ReflactBlockData* reflactBlock = (ReflactBlockData*)block;
-
-	// 反射ベクトルを計算して移動ベクトルとする
-	bullet->move = VecTangent(bullet->move, reflactBlock->normal);
+	StartAnimationEffect(ENEMY_BULLET_HIT, bullet->body.pos, HIT_EFFECT_INTERVAL, false);
 }

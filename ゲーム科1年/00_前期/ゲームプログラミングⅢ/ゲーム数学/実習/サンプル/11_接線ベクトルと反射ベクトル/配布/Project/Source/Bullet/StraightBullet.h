@@ -18,4 +18,3 @@ StraightBulletData* GetStraightBullet();
 // “–‚½‚è”»’èŠÖ˜A
 void StraightBulletHitEnemy(int index);
 void StraightBulletHitPlayer(int index);
-void StraightBulletHitReflactBlock(StraightBulletData* bullet, void* block);

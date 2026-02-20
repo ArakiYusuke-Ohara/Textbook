@@ -7,75 +7,56 @@
 #define MAP_CHIP_WIDTH (50.0f)
 #define MAP_CHIP_HEIGHT (50.0f)
 
-#define AUTO_DOOR_WIDTH (50.0f)
-#define AUTO_DOOR_HEIGHT (100.0f)
-
-#define ARCH_BLOCK_WIDTH (150.0f)
-#define ARCH_BLOCK_HEIGHT (50.0f)
-#define ARCH_BLOCK_SPEED (0.5f)
-
-#define REFLACT_BLOCK_WIDTH (50.0f)
-#define REFLACT_BLOCK_HEIGHT (100.0f)
-
-
 enum MapChipType
 {
 	MAP_CHIP_NONE,
 	NORMAL_BLOCK,
 	SLOPE_BLOCK,
-	MAP_CHIP_TYPE_MAX,
-};
-
-enum MoveBlockMode
-{
-	MOVE_BLOCK_MODE_ARCH,	// ï˙ï®ê¸à⁄ìÆ
-	MOVE_BLOCK_MODE_SIN,	// Sinîgà⁄ìÆ
-	MOVE_BLOCK_MODE_CIRCLE,	// â~à⁄ìÆ
-	MOVE_BLOCK_MODE_NONE = -1
+	AUTO_DOOR,
+	ARCH_MOVE_BLOCK,
+	MOVE_BLOCK,
+	CIRCLE_MOVE_BLOCK,
+	REFLACT_BLOCK,
+	BLOCK_TYPE_MAX,
 };
 
 struct BlockData
 {
 	bool active;
+	bool isReflact;
 	int handle;
 	MapChipType type;
 	VECTOR pos;
+	VECTOR move;
+	float width;
+	float height;
+	VECTOR startPos;
+	VECTOR prevPos;
+	float sin;
+	float cos;
 };
 
 struct MapChipData
 {
-	int mapChip;
+	bool isCollision;
+	int type;
 	BlockData* data;
 };
 
-struct AutoDoorData
+struct BlockMasterData
 {
-	bool active;
-	bool isOpen;
-	VECTOR pos;
-	VECTOR startPos;
-	int handle;
+	int width;
+	int height;
+	bool isReflact;
 };
-
-struct MoveBlockData
+static const BlockMasterData BLOCK_MASTER_DATA[BLOCK_TYPE_MAX] =
 {
-	bool active;
-	int handle;
-	int dir;
-	VECTOR pos;
-	VECTOR startPos;
-	VECTOR oldPos;
-	VECTOR archTopPos;
-	float sinAngle;
-	float sinRange;
-	float circleAngle;
-	MoveBlockMode mode;
-};
-
-struct ReflactBlockData
-{
-	bool active;
-	int handle;
-	VECTOR pos;
-	VECTOR normal;
+	{ 0, 0, false },			// MAP_CHIP_NONE
+	{ 50, 50, false },		// NORMAL_BLOCK
+	{ 50, 50, false },			// SLOPE_BLOCK
+	{ 50, 100, false },			// AUTO_DOOR
+	{ 150, 50, false },	// ARCH_MOVE_BLOCK
+	{ 150, 50, false },			// MOVE_BLOCK
+	{ 150, 50, false },	// CIRCLE_MOVE_BLOCK
+	{ 50, 100, true },		// REFLACT_BLOCK
 };
