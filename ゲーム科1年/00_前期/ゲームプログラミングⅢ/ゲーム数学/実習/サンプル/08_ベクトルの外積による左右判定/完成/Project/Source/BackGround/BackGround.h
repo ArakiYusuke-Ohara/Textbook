@@ -18,4 +18,4 @@ void DrawBackGround();
 void FinBackGround();
 
 // ”wŒi‚ÌˆÚ“®—Êİ’è
-void SetBackGroundMove(VECTOR move, BackGroundLayer layer);
+void SetBackGroundMove(float moveX, float moveY, BackGroundLayer layer);
