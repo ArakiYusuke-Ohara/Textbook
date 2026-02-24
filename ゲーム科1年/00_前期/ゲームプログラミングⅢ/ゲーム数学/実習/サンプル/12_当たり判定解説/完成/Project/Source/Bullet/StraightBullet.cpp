@@ -11,6 +11,7 @@
 #define HIT_EFFECT_OFFSET_Y (-10.0f)
 #define CHECK_ROUND_NUM (16)
 
+#define REFLACT_POWER (1.0f)
 
 StraightBulletData g_StraightBulletData[STRAIGHT_BULLET_MAX] = { 0 };
 
@@ -87,6 +88,12 @@ void UpdateStraightBullet()
 		// 当たり判定付き移動
 		ResolveMapCollision(&bullet->body, CHECK_ROUND_NUM);
 
+		// 何かに当たり反射しないのであれば志望
+		if (bullet->body.hitBody && !(bullet->body.hitBody->reflact))
+		{
+			bullet->active = false;
+		}
+
 		// 寿命チェック
 		if (bullet->life <= 0)
 		{
@@ -154,6 +161,9 @@ void FireStraightBullet(StraightBulletType type, FireBulletData fireData, Bullet
 
 			// 当たり判定タグ設定
 			bullet->tag = tag;
+
+			// 反射力は固定
+			bullet->body.reflactPower = REFLACT_POWER;
 
 			// 1発発射したら抜ける
 			break;

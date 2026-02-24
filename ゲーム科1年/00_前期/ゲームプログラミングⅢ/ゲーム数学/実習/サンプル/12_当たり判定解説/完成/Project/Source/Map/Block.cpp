@@ -3,6 +3,7 @@
 #include "ArchMoveBlock.h"
 #include "MoveBlock.h"
 #include "CircleMoveBlock.h"
+#include "ReflactBlock.h"
 #include "../Camera/Camera.h"
 #include "../Collision/CollisionParameter.h"
 
@@ -46,6 +47,7 @@ void StartBlock()
 		switch (block->type)
 		{
 			case ARCH_MOVE_BLOCK:	StartArchMoveBlock(block);	break;
+			case REFLACT_BLOCK:		StartReflactBlock(block);	break;
 
 			default: break;
 		}

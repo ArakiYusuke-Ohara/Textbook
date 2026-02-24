@@ -9,6 +9,7 @@ struct BlockData;
 struct Body
 {
 	bool isAir;
+	bool reflact;
 	VECTOR pos;
 	VECTOR move;
 	float width;

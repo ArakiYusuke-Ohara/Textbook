@@ -3,12 +3,9 @@
 #include "../Player/Player.h"
 #include "../Math/MyMath.h"
 
-#define REFLACT_POWER (1.0f)
-
-void StartReflactBlock(Body* body)
+void StartReflactBlock(BlockData* block)
 {
-	// ”½ŽË—Í‚ðÝ’è
-	body->reflactPower = REFLACT_POWER;
+	block->body.reflact = true;
 }
 
 void ResolveReflactBlockX(Body* body, const BlockData* block)
