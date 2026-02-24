@@ -1,7 +1,7 @@
 #include "DxLib.h"
 #include "Collision.h"
 #include "CollisionParameter.h"
-#include <math.h>
+#include "../Math/MyMath.h"
 
 // 矩形と点の当たり判定
 bool CheckSquarePoint(VECTOR squarePos, float squareWidth, float squareHeight, VECTOR point)
@@ -79,6 +79,7 @@ bool CheckCircleCircle(VECTOR posA, float radA, VECTOR posB, float radB)
 	return false;
 }
 
+// X軸の衝突解決
 void ResolveCollisionX(Body* self, const Body* other)
 {
 	// 左からあたったか
@@ -96,9 +97,9 @@ void ResolveCollisionX(Body* self, const Body* other)
 
 	// 移動量は0にする
 	self->move.x = 0.0f;
-
 }
 
+// Y軸の衝突解決
 void ResolveCollisionY(Body* self, const Body* other)
 {
 	// 上からあたったか
@@ -109,7 +110,7 @@ void ResolveCollisionY(Body* self, const Body* other)
 		// 着地
 		self->isAir = false;
 		// 足元ブロックとして登録
-		self->groundBlock = other;
+		self->groundBody = other;
 		// 移動量は0にする
 		self->move.y = 0.0f;
 	}
@@ -121,9 +122,4 @@ void ResolveCollisionY(Body* self, const Body* other)
 		// 移動量はブロックに合わせる
 		self->move.y = other->move.y;
 	}
-	else
-	{
-		int t = 0;
-	}
-
 }

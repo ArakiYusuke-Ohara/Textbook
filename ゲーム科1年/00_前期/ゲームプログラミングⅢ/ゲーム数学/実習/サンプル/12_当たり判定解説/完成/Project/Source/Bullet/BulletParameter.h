@@ -39,7 +39,6 @@ struct StraightBulletData
 struct FireBulletData
 {
 	int life;
-	float reflactPower;
 	VECTOR pos;
 	VECTOR move;
 };

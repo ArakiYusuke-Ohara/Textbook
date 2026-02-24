@@ -16,6 +16,6 @@ struct Body
 	float radius;
 	float reflactPower;
 	VECTOR prevPos;
-	const Body* hitBlock;
-	const Body* groundBlock;
+	const Body* hitBody;
+	const Body* groundBody;
 };

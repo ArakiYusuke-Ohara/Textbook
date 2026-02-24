@@ -15,8 +15,6 @@
 #define SIGHT_MACHINE_VIEWING_ANGLE		(2.5f)
 #define SIGHT_MACHINE_FOV_RANGE				(200.0f)
 
-#define BULLET_REFLACT_POWER	(1.0f)
-
 SightMachineData g_SightMachineData = { 0 };
 
 // このCPPでしか使わない関数
@@ -44,7 +42,6 @@ void StartSightMachine()
 
 void StepSightMachine()
 {
-	return;
 	// プレイヤーの情報を取得
 	PlayerData player = GetPlayer();
 
@@ -97,7 +94,6 @@ void StepSightMachine()
 		fireData.life = SIGHT_MACHINE_BULLET_LIFE;
 		fireData.pos = g_SightMachineData.pos;
 		fireData.move = bulletMove;
-		fireData.reflactPower = BULLET_REFLACT_POWER;
 
 		// バレット発射
 		FireBullet(BULLET_CATEGORY_STRAIGHT, (int)STRAIGHT_BULLET_TYPE_SIGHT_MACHINE, fireData, BULLET_COLLISION_TAG_ENEMY);

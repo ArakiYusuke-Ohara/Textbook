@@ -1,5 +1,6 @@
 #pragma once
 #include "DxLib.h"
+#include <math.h>
 
 VECTOR VecCreate(VECTOR start, VECTOR end);		// ベクトル生成
 VECTOR VecAdd(VECTOR vecA, VECTOR vecB);		// ベクトルの足し算

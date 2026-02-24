@@ -146,10 +146,12 @@ void UpdatePlayer()
 		g_PlayerData.body.pos.y += PLAYER_GROUND_SNAP;
 		ResolveMapCollisionY(&g_PlayerData.body, PLAYER_CHECK_ROUND_NUM);
 
-		if (g_PlayerData.body.groundBlock != NULL)
+		// 乗ったブロックの情報があるか
+		if (g_PlayerData.body.groundBody != NULL)
 		{
-			g_PlayerData.body.pos.x += g_PlayerData.body.groundBlock->move.x;
-			g_PlayerData.body.pos.y += g_PlayerData.body.groundBlock->move.y;
+			// ブロックが動いている分プレイヤーも動かす
+			g_PlayerData.body.pos.x += g_PlayerData.body.groundBody->move.x;
+			g_PlayerData.body.pos.y += g_PlayerData.body.groundBody->move.y;
 			ResolveMapCollisionY(&g_PlayerData.body, PLAYER_CHECK_ROUND_NUM);
 		}
 	}

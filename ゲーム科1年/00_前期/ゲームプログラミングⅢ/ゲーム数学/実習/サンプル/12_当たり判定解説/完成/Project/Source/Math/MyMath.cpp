@@ -1,5 +1,4 @@
 #include "MyMath.h"
-#include <math.h>
 
 VECTOR VecCreate(VECTOR start, VECTOR end)
 {

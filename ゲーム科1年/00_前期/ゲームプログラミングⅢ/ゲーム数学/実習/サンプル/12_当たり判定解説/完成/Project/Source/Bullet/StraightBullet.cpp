@@ -155,9 +155,6 @@ void FireStraightBullet(StraightBulletType type, FireBulletData fireData, Bullet
 			// “–‚½‚è”»’èƒ^ƒOÝ’è
 			bullet->tag = tag;
 
-			// ”½ŽË‚·‚é‚©‚Ç‚¤‚©
-			bullet->body.reflactPower = fireData.reflactPower;
-
 			// 1”­”­ŽË‚µ‚½‚ç”²‚¯‚é
 			break;
 		}

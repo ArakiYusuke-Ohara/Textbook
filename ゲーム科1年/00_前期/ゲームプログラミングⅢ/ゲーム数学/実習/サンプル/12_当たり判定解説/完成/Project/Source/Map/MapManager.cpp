@@ -63,8 +63,8 @@ void FinMap()
 void ResolveMapCollision(Body* self, int range)
 {
 	// 当たったブロック情報をリセット
-	self->groundBlock = NULL;
-	self->hitBlock = NULL;
+	self->groundBody = NULL;
+	self->hitBody = NULL;
 
 	// X軸解決
 	ResolveMapCollisionX(self, range);
@@ -116,7 +116,7 @@ void ResolveMapCollisionX(Body* self, int range)
 				// 衝突解決
 				ResolveMapchipX(self, mapChipData);
 				// 当たったブロックを登録
-				self->hitBlock = &block->body;
+				self->hitBody = &block->body;
 			}
 		}
 	}
@@ -163,7 +163,7 @@ void ResolveMapCollisionY(Body* self, int range)
 				// 衝突解決
 				ResolveMapchipY(self, mapChipData);
 				// 当たったブロックを登録
-				self->hitBlock = &block->body;
+				self->hitBody = &block->body;
 			}
 		}
 	}

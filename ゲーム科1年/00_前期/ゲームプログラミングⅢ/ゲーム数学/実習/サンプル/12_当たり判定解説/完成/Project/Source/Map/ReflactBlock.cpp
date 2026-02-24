@@ -3,6 +3,14 @@
 #include "../Player/Player.h"
 #include "../Math/MyMath.h"
 
+#define REFLACT_POWER (1.0f)
+
+void StartReflactBlock(Body* body)
+{
+	// îΩéÀóÕÇê›íË
+	body->reflactPower = REFLACT_POWER;
+}
+
 void ResolveReflactBlockX(Body* body, const BlockData* block)
 {
 	// ç∂Ç©ÇÁÇ†ÇΩÇ¡ÇΩÇ©
