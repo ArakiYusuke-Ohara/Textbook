@@ -44,19 +44,19 @@ void DebugCamera::Step()
 	m_Move = VGet(0.0f, 0.0f, 0.0f);
 
 	// ÉLÅ[ì¸óÕèàóù
-	if (Input::IsInputKey(Input::KEY_W))
+	if (Input::IsInputKey(Input::KEY_UP))
 	{
 		m_Move.y = MOVE_SPEED;
 	}
-	if (Input::IsInputKey(Input::KEY_A))
+	if (Input::IsInputKey(Input::KEY_LEFT))
 	{
 		m_Move.x = -MOVE_SPEED;
 	}
-	if (Input::IsInputKey(Input::KEY_S))
+	if (Input::IsInputKey(Input::KEY_DOWN))
 	{
 		m_Move.y = -MOVE_SPEED;
 	}
-	if (Input::IsInputKey(Input::KEY_D))
+	if (Input::IsInputKey(Input::KEY_RIGHT))
 	{
 		m_Move.x = MOVE_SPEED;
 	}
