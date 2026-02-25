@@ -196,6 +196,9 @@ void Player::HitStage(Stage* stage)
 	}
 
 	MV1SetPosition(m_Handle, m_Pos);
+
+	// ヒット結果は削除する必要がある
+
 }
 
 void Player::HitBlock(CollisionAABB* other)

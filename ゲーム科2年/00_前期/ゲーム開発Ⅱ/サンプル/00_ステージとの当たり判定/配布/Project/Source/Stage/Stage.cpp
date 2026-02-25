@@ -41,11 +41,7 @@ void Stage::Fin()
 
 }
 
-bool Stage::CheckCollisionSphere(VECTOR pos, float r)
+MV1_COLL_RESULT_POLY_DIM Stage::CheckCollisionSphere(VECTOR pos, float r)
 {
-	// ステージと球の当たり判定
-
-
-	// HitNumが0なら当たっていない
-	return 0;
+	return MV1_COLL_RESULT_POLY_DIM();
 }
