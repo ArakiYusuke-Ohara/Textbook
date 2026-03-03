@@ -1,50 +1,5 @@
 #include <stdio.h>
 
-// 練習用の構造体
-struct GameObject
-{
-	float x;
-	float y;
-	float w;
-	float h;
-	void(*onCollision)(GameObject);	// 当たった時に呼ばれる関数
-};
-
-// 練習用当たり判定関数
-void OnCollision(GameObject other);
-
-int main(void)
-{
-	GameObject player = {};
-	player.x = 50.0f;
-	player.y = 120.0f;
-	player.w = 20.0f;
-	player.h = 20.0f;
-	player.onCollision = OnCollision;
-
-	GameObject enemy = {};
-	enemy.x = 60.0f;
-	enemy.y = 130.0f;
-	enemy.w = 30.0f;
-	enemy.h = 40.0f;
-
-	// 当たり判定
-	if (player.x  < (enemy.x + enemy.w) && (player.x + player.w) > enemy.x &&
-		player.y  < (enemy.y + enemy.h) && (player.y + player.h) > enemy.y)
-	{
-		// 当たった時のイベント処理
-		player.onCollision(enemy);
-	}
-}
-
-void OnCollision(GameObject other)
-{
-	printf_s("当たったやつの座標（%.2f, %.2f）", other.x, other.y);
-}
-
-
-#if 0
-
 // 計算関数宣言
 int Add(int a, int b);
 int Sub(int a, int b);
@@ -67,6 +22,11 @@ int Add(int a, int b) { return a + b; }
 int Sub(int a, int b) { return a - b; }
 int Mul(int a, int b) { return a * b; }
 int Div(int a, int b) { return a / b; }
+
+
+
+#if 0
+
 
 // ゲームの状態
 enum GameState
@@ -120,6 +80,48 @@ void Init() { printf_s("初期化処理です"); }
 void Step() { printf_s("ステップ処理です"); }
 void Draw() { printf_s("描画処理です"); }
 void Fin() { printf_s("終了処理です"); }
+
+// 練習用の構造体
+struct GameObject
+{
+	float x;
+	float y;
+	float w;
+	float h;
+	void(*onCollision)(GameObject);	// 当たった時に呼ばれる関数
+};
+
+// 練習用当たり判定関数
+void OnCollision(GameObject other);
+
+int main(void)
+{
+	GameObject player = {};
+	player.x = 50.0f;
+	player.y = 120.0f;
+	player.w = 20.0f;
+	player.h = 20.0f;
+	player.onCollision = OnCollision;
+
+	GameObject enemy = {};
+	enemy.x = 60.0f;
+	enemy.y = 130.0f;
+	enemy.w = 30.0f;
+	enemy.h = 40.0f;
+
+	// 当たり判定
+	if (player.x  < (enemy.x + enemy.w) && (player.x + player.w) > enemy.x &&
+		player.y  < (enemy.y + enemy.h) && (player.y + player.h) > enemy.y)
+	{
+		// 当たった時のイベント処理
+		player.onCollision(enemy);
+	}
+}
+
+void OnCollision(GameObject other)
+{
+	printf_s("当たったやつの座標（%.2f, %.2f）", other.x, other.y);
+}
 
 
 #endif

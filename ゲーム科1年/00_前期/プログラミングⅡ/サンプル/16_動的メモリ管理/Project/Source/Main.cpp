@@ -13,6 +13,28 @@ struct EnemyData
 	float height;
 };
 
+#define ENEMY_MAX (30)
+EnemyData g_Enemies[ENEMY_MAX];
+
+int main(void)
+{
+	// sizeofでカッコ内を容量を取得できる
+	// 容量サイズ変数はsize_t型を使う
+	size_t enemyDataSize = sizeof(g_Enemies);
+
+	// まずは敵1体分の容量を表示してみる
+	// sizeofは型名でも使用することができる
+	printf_s("敵1体分の容量は %zu バイトです\n", sizeof(EnemyData));
+
+	// 敵の配列が全部で何バイトか表示してみる
+	printf_s("g_Enemiesの容量は %zu バイトです\n", enemyDataSize);
+
+	return 0;
+}
+
+
+#if 0
+
 // 各ステージの敵の最大数
 const int ENEMY_MAX[] =
 {
@@ -45,7 +67,7 @@ int main(void)
 	printf_s("敵1体分の容量は %zu バイトです\n", sizeof(EnemyData));
 
 	// 敵の配列が全部で何バイトか表示してみる
-	printf_s("ステージ%dのg_Enemiesの容量は %zu バイトです\n", 
+	printf_s("ステージ%dのg_Enemiesの容量は %zu バイトです\n",
 		stageNumber + 1, enemyNum * sizeof(EnemyData));
 
 	// 確保さえすれば配列と使い方は同じ
@@ -65,26 +87,5 @@ int main(void)
 
 	return 0;
 }
-
-#if 0
-#define ENEMY_MAX (30)
-
-EnemyData g_Enemies[ENEMY_MAX];
-
-int main(void)
-{
-	// sizeofでカッコ内を容量を取得できる
-	int enemyDataSize = sizeof(g_Enemies);
-
-	// まずは敵1体分の容量を表示してみる
-	// sizeofは型名でも使用することができる
-	printf_s("敵1体分の容量は %zu バイトです\n", (int)sizeof(EnemyData));
-
-	// 敵の配列が全部で何バイトか表示してみる
-	printf_s("g_Enemiesの容量は %zu バイトです\n", enemyDataSize);
-
-	return 0;
-}
-
 
 #endif
