@@ -1,27 +1,49 @@
 #include <stdio.h>
 
+struct PlayerData
+{
+	int hp;		// HP
+	int attack;	// 攻撃力
+};
+
+struct EnemyData
+{
+	int hp;		// HP
+	int attack;	// 攻撃力
+};
+
+// プレイヤーから敵へのダメージ
+void DamageFromPlayerToEnemy(const PlayerData* player, EnemyData* enemy);
+
+// 敵からプレイヤーへのダメージ
+void DamageFromEnemyToPlayer(PlayerData* player, const EnemyData* enemy);
+
 int main(void)
 {
-	// 変数
-	int numberList[3] = { 5, 7, 3 };
+	PlayerData player = { 10, 2 };
+	EnemyData enemy = { 15, 1 };
 
-	// ポインタ変数
-	int* pt = numberList;
+	DamageFromPlayerToEnemy(&player, &enemy);
+	DamageFromEnemyToPlayer(&player, &enemy);
 
-	// ポインタ変数は参照先を書き換えられる
-	*pt = 50;
-	*pt += 20;
-
-	// constポインタ変数
-	const int* constPt = numberList;
-
-	// constポインタ変数は参照先がconstでなくても変えられない
-	//*constPt = 100;
-
-	// ポインタ自身はずらせる
-	constPt += 2;
+	printf_s("プレイヤーのHP：%d\n", player.hp);
+	printf_s("敵のHP：%d\n", enemy.hp);
 
 	return 0;
+}
+
+// 間違ってもPlayerDataが変わらないようにconst
+void DamageFromPlayerToEnemy(const PlayerData* player, EnemyData* enemy)
+{
+	// 敵のHP減少
+	enemy->hp -= player->attack;
+}
+
+// 間違ってもEnemyDataが変わらないようにconst
+void DamageFromEnemyToPlayer(PlayerData* player, const EnemyData* enemy)
+{
+	// プレイヤーのHP減少
+	player->hp -= enemy->attack;
 }
 
 #if 0
@@ -47,6 +69,32 @@ int main(void)
 	return 0;
 }
 
+int main(void)
+{
+	// 変数
+	int numberList[3] = { 5, 7, 3 };
+
+	// ポインタ変数
+	int* pt = numberList;
+
+	// ポインタ変数は参照先を書き換えられる
+	*pt = 50;
+	*pt += 20;
+
+	// constポインタ変数
+	const int* constPt = numberList;
+
+	// constポインタ変数は参照先がconstでなくても変えられない
+	// *constPt = 100;
+
+	// numberList事態はconstではないので書き換えられる
+	numberList[0] = 100;
+
+	// ポインタ自身はずらせる
+	constPt += 2;
+
+	return 0;
+}
 
 struct PlayerData
 {
