@@ -12,6 +12,10 @@ Host::~Host()
 
 void Host::StartNetwork()
 {
+	// マッチング開始
+
+
+	// マッチング待ち状態へ
 
 }
 

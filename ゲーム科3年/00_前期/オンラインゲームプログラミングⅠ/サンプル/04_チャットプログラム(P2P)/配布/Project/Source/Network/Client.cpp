@@ -7,7 +7,7 @@
 Client::Client()
 {
 	m_PartnerHandle = 0;
-	m_State = NONE;
+	m_NWState = NW_STATE_NONE;
 	m_IPAddress = {};
 	m_NameInput = nullptr;
 	m_MessageInput = nullptr;
@@ -31,30 +31,30 @@ void Client::Init()
 
 	// 最初は名前入力
 	m_NameInput->Start();
-	m_State = INPUT_NAME;
+	m_NWState = NW_STATE_INPUT_NAME;
 }
 
 void Client::Update()
 {
-	switch (m_State)
+	switch (m_NWState)
 	{
-		case INPUT_NAME:		UpdateInputName(); break;
-		case WAITING:			UpdateWaiting(); break;
-		case INPUT_MESSAGE:		UpdateInputMessage(); break;
+		case NW_STATE_INPUT_NAME:			UpdateInputName(); break;
+		case NW_STATE_WAITING:				UpdateWaiting(); break;
+		case NW_STATE_INPUT_MESSAGE:		UpdateInputMessage(); break;
 	}
 }
 
 void Client::Draw()
 {
-	if (m_State == INPUT_NAME)
+	if (m_NWState == NW_STATE_INPUT_NAME)
 	{
 		DrawFormatString(0, 0, GetColor(255, 255, 255), "ユーザー名を入力");
 	}
-	else if (m_State == WAITING)
+	else if (m_NWState == NW_STATE_WAITING)
 	{
 		DrawWaiting();
 	}
-	else if (m_State == INPUT_MESSAGE)
+	else if (m_NWState == NW_STATE_INPUT_MESSAGE)
 	{
 		DrawFormatString(0, 0, GetColor(255, 255, 255), "メッセージを入力");
 		DrawFormatString(0, 840, GetColor(255, 255, 255), "Ctrl + Qで切断");
@@ -70,7 +70,7 @@ void Client::Draw()
 void Client::Fin()
 {
 	// 状態が接続中以降であれば切断
-	if (m_State >= WAITING)
+	if (m_NWState >= NW_STATE_WAITING)
 	{
 		Disconnect();
 	}
@@ -92,7 +92,7 @@ void Client::Disconnect()
 	// 切断
 	CloseNetWork(m_PartnerHandle);
 	m_PartnerHandle = 0;
-	m_State = INPUT_NAME;
+	m_NWState = NW_STATE_INPUT_NAME;
 
 	// メッセージ入力終了
 	m_MessageInput->Fin();
