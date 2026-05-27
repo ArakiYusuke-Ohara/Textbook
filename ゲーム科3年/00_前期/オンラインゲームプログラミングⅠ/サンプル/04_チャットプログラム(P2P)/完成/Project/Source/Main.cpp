@@ -152,8 +152,8 @@ void SetIP()
 	IPDATA ipData;
 	ipData.d1 = 10;
 	ipData.d2 = 50;
-	ipData.d3 = 164;
-	ipData.d4 = 100;
+	ipData.d3 = 174;
+	ipData.d4 = 6;
 	g_Client->SetIPAddress(ipData);
 
 	// ƒ`ƒƒƒbƒg‚Ö
