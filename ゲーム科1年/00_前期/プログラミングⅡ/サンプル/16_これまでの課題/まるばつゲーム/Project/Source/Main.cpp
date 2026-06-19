@@ -81,6 +81,8 @@ int main(void)
 		printf_s("‚Ğ‚«‚í‚¯‚¿‚á‚Á‚½BBB\n");
 	}
 
+	while (getchar() != '\n');
+	getchar();
 	return 0;
 }
 
