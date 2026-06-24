@@ -3,10 +3,10 @@
 int main(void)
 {
 	// numberAという箱に10を入れて記憶
-	int numberA;
+	int numberA = 0;
 
 	// numberBという箱に20を入れて記憶
-	int numberB;
+	int numberB = 0;
 
 	// 覚えておいたnumberAを画面に表示
 	printf_s("numberA = %d", numberA);
