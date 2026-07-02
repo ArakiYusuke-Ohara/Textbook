@@ -57,10 +57,10 @@ bool CheckSquareSquare(float squareA_PosX, float squareA_PosY, float squareA_Wid
 	float bottomB = squareB_PosY + squareB_Height;
 
 	// 左右の辺がめり込んでいるかチェック
-	if (rightA >= leftB && leftA <= rightB)
+	if (rightA > leftB && leftA < rightB)
 	{
 		// 上下の片がめり込んでいるかチェック
-		if (bottomA >= topB && topA <= bottomB)
+		if (bottomA > topB && topA < bottomB)
 		{
 			// 当たっている
 			return true;
@@ -74,15 +74,20 @@ void CheckCollision()
 {
 	// ここに当たり判定の処理を書く
 
-	// プレイヤーと青エネミーの当たり判定
-	PlayerData* player = GetPlayer();
-	BlueEnemyData* blueEnemy = GetBlueEnemy();
-
-	// 矩形同士の当たり判定
-	if (CheckSquareSquare(player->posX, player->posY, PLAYER_WIDTH, PLAYER_HEIGHT,
-		blueEnemy->posX, blueEnemy->posY, BLUE_ENEMY_WIDTH, BLUE_ENEMY_HEIGHT))
+	// 当たったら移動前の場所に戻す方法（簡単～普通の場合）
 	{
-		PlayerHitBlueEnemy(blueEnemy->posX, blueEnemy->posY, BLUE_ENEMY_WIDTH, BLUE_ENEMY_HEIGHT);
+		//PlayerData* player = GetPlayer();
+		//BlueEnemyData* blueEnemy = GetBlueEnemy();
+		//if (CheckSquareSquare(player->posX, player->posY, PLAYER_WIDTH, PLAYER_HEIGHT,
+		//	blueEnemy->posX, blueEnemy->posY, BLUE_ENEMY_WIDTH, BLUE_ENEMY_HEIGHT))
+		//{
+		//	PlayerHitBlueEnemy();
+		//}
+	}
+
+	// 当たりながらスライドする方法（難しい）
+	{
+		PlayerMoveAndCollision();
 	}
 }
 

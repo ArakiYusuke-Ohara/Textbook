@@ -2,6 +2,7 @@
 #include "Player.h"
 #include "../Input/Input.h"
 #include "../Collision/Collision.h"
+#include "../Enemy/BlueEnemy.h"
 
 PlayerData g_PlayerData = { 0 };
 
@@ -17,6 +18,10 @@ void InitPlayer()
 
 void StepPlayer()
 {
+	// 前回の座標を保存する
+	g_PlayerData.prevPosX = g_PlayerData.posX;
+	g_PlayerData.prevPosY = g_PlayerData.posY;
+
 	// ヒットフラグは毎回折る（当たり判定後に当たっていたら立てる）
 	g_PlayerData.hitFlag = false;
 
@@ -48,9 +53,9 @@ void StepPlayer()
 
 void UpdatePlayer()
 {
-	// 移動処理
-	g_PlayerData.posX += g_PlayerData.moveX;
-	g_PlayerData.posY += g_PlayerData.moveY;
+	// 当たりながらスライドする方法をやるにはここは削除
+	//g_PlayerData.posX += g_PlayerData.moveX;
+	//g_PlayerData.posY += g_PlayerData.moveY;
 }
 
 void DrawPlayer()
@@ -74,51 +79,64 @@ PlayerData* GetPlayer()
 	return &g_PlayerData;
 }
 
-void PlayerHitBlueEnemy(float enemyPosX, float enemyPosY, float enemyWidth, float enemyHeight)
+/// <summary>
+/// プレイヤーが青い敵に当たった
+/// </summary>
+void PlayerHitBlueEnemy()
 {
-	// 押し戻した後の座標を一時的に格納する変数
-	float resultX = g_PlayerData.posX;
-	float resultY = g_PlayerData.posY;
+	// 移動前の座標に戻せばめりこまない（簡単）
+	{
+		g_PlayerData.posX = g_PlayerData.prevPosX;
+		g_PlayerData.posY = g_PlayerData.prevPosY;
+	}
 
-	// Yの移動を戻して、先にXだけ移動した状態で判定する
-	float checkPosX = g_PlayerData.posX;
-	float checkPosY = g_PlayerData.posY - g_PlayerData.moveY;
+}
 
-	if (CheckSquareSquare(checkPosX, checkPosY, PLAYER_WIDTH, PLAYER_HEIGHT,
-		enemyPosX + 0.01f, enemyPosY + 0.01f, enemyWidth - 0.02f, enemyHeight - 0.02f))
+/// <summary>
+/// 移動と当たり判定を軸ごとにする
+/// </summary>
+void PlayerMoveAndCollision()
+{	
+	// 青い敵のデータ取得
+	BlueEnemyData* blueEnemy = GetBlueEnemy();
+
+	// X軸だけ移動する
+	g_PlayerData.posX += g_PlayerData.moveX;
+	// 当たり判定
+	if (CheckSquareSquare(g_PlayerData.posX, g_PlayerData.posY, PLAYER_WIDTH, PLAYER_HEIGHT,
+		blueEnemy->posX + 0.01f, blueEnemy->posY, BLUE_ENEMY_WIDTH, BLUE_ENEMY_HEIGHT))
 	{
 		// 右に移動していれば左に押し出す
 		if (g_PlayerData.moveX > 0.0f)
 		{
-			resultX -= (checkPosX + PLAYER_WIDTH) - enemyPosX;	// 左に押し出す
+			g_PlayerData.posX -= (g_PlayerData.posX + PLAYER_WIDTH) - blueEnemy->posX;	// 左に押し出す
 		}
 		// 左に移動していれば右に押し出す
 		else if (g_PlayerData.moveX < 0.0f)
 		{
-			resultX += (enemyPosX + enemyWidth) - checkPosX;	// 左に押し出す
+			g_PlayerData.posX += (blueEnemy->posX + BLUE_ENEMY_WIDTH) - g_PlayerData.posX;	// 左に押し出す
 		}
+
+		g_PlayerData.moveX = 0.0f;
 	}
 
-	// Xの移動を戻して、Yだけ移動した状態で判定する
-	checkPosX = g_PlayerData.posX - g_PlayerData.moveX;
-	checkPosY = g_PlayerData.posY;
-
-	if (CheckSquareSquare(checkPosX, checkPosY, PLAYER_WIDTH, PLAYER_HEIGHT,
-		enemyPosX + 0.01f, enemyPosY + 0.01f, enemyWidth - 0.02f, enemyHeight - 0.02f))
+	// Y軸だけ移動する
+	g_PlayerData.posY += g_PlayerData.moveY;
+	// 当たり判定
+	if (CheckSquareSquare(g_PlayerData.posX, g_PlayerData.posY, PLAYER_WIDTH, PLAYER_HEIGHT,
+		blueEnemy->posX, blueEnemy->posY, BLUE_ENEMY_WIDTH, BLUE_ENEMY_HEIGHT))
 	{
 		// 下に移動していれば上に押し出す
 		if (g_PlayerData.moveY > 0.0f)
 		{// 下に移動しているということは上からあたった
-			resultY -= (g_PlayerData.posY + PLAYER_HEIGHT) - enemyPosY;	// 上に押し出す
+			g_PlayerData.posY -= (g_PlayerData.posY + PLAYER_HEIGHT) - blueEnemy->posY;	// 上に押し出す
 		}
 		// 上に移動していれば下に押し出す
 		else if (g_PlayerData.moveY < 0.0f)
 		{// 上に移動しているということは下からあたった
-			resultY += (enemyPosY + enemyHeight) - g_PlayerData.posY;	// 下に押し出す
+			g_PlayerData.posY += (blueEnemy->posY + BLUE_ENEMY_HEIGHT) - g_PlayerData.posY;	// 下に押し出す
 		}
-	}
 
-	// 押し出した後の座標を設定
-	g_PlayerData.posX = resultX;
-	g_PlayerData.posY = resultY;
+		g_PlayerData.moveY = 0.0f;
+	}
 }
