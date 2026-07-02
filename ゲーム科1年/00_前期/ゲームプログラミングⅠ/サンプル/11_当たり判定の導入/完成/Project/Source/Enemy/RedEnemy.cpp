@@ -25,4 +25,5 @@ void DrawRedEnemy()
 
 void FinRedEnemy()
 {
+	DeleteGraph(g_RedEnemyData.handle);
 }

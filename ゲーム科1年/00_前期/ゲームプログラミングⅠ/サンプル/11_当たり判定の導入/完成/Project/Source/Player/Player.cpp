@@ -47,3 +47,8 @@ void FinPlayer()
 {
 	DeleteGraph(g_PlayerData.handle);
 }
+
+PlayerData* GetPlayer()
+{
+	return &g_PlayerData;
+}

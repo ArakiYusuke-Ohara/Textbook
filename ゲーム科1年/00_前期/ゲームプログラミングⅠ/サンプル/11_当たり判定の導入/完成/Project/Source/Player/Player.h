@@ -5,12 +5,6 @@
 #define PLAYER_DEFAULT_POS_Y (400.0f)
 #define PLAYER_MOVE_SPEED (10.0f)
 
-// 関数のプロトタイプ宣言
-void InitPlayer();
-void UpdatePlayer();
-void DrawPlayer();
-void FinPlayer();
-
 // プレイヤーデータ
 struct PlayerData
 {
@@ -20,3 +14,12 @@ struct PlayerData
 	float moveX;
 	float moveY;
 };
+
+// 関数のプロトタイプ宣言
+void InitPlayer();
+void UpdatePlayer();
+void DrawPlayer();
+void FinPlayer();
+
+// プレイヤーデータの取得
+PlayerData* GetPlayer();
