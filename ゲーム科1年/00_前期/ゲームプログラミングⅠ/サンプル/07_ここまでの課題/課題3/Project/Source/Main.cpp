@@ -6,7 +6,7 @@
 #define SCREEN_COLOR_DEPTH (32)	// 画面のカラービット数
 
 // 雲の設定
-#define CLOUD_NUM (3)		// 雲の数
+#define CLOUD_NUM (7)		// 雲の数
 #define CLOUD_WIDTH (370)	// 雲の幅
 #define CLOUD_HEIGHT (210)	// 雲の高さ
 
@@ -50,6 +50,8 @@ void GameInit()
 		// 雲の移動量を設定する
 		g_CloudData[i].moveX = i % 2 == 0 ? -2.0f : 2.0f;
 		g_CloudData[i].moveY = i % 2 == 0 ? 0.5f : -0.5f;
+		g_CloudData[i].moveX += i * 0.5f;
+		g_CloudData[i].moveY += i * 0.25f;
 	}
 }
 
@@ -64,6 +66,8 @@ void GameUpdate()
 		g_CloudData[i].posX += g_CloudData[i].moveX;
 		g_CloudData[i].posY += g_CloudData[i].moveY;
 
+		// To 本田先生
+		// 課題Exはこの部分を考えてもらいます
 		// 雲が通り過ぎたかをチェック
 		if (g_CloudData[i].posX <= -CLOUD_WIDTH)	// 左端
 		{
@@ -94,7 +98,7 @@ void GameUpdate()
 void GameDraw()
 {
 	// 空の画像を描画する
-	DrawGraph(0, 0, g_SkyHandle, TRUE);
+	// DrawGraph(0, 0, g_SkyHandle, TRUE);
 
 	// 太陽を描画
 	DrawGraph(-600, 0, g_SunHandle, TRUE);
