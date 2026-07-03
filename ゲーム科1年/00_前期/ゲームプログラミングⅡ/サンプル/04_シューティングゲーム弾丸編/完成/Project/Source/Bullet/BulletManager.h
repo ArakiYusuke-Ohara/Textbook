@@ -1,0 +1,13 @@
+#pragma once
+#include "BulletParameter.h"
+
+// íeëSëÃÇÃèàóù
+void InitAllBullet();
+void LoadAllBullet();
+void StepAllBullet();
+void UpdateAllBullet();
+void DrawAllBullet();
+void FinAllBullet();
+
+// íeî≠éÀ
+void RequestFireBullet(float posX, float posY, float moveX, float moveY);
