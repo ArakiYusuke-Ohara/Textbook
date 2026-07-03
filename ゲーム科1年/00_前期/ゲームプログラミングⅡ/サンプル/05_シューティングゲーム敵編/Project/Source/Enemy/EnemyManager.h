@@ -10,4 +10,5 @@ void DrawEnemy();
 void FinEnemy();
 
 EnemyBaseData** GetEnemy();
+int GetEnemyCount();
 void SpawnEnemy(EnemyType type, float posX, float posY);

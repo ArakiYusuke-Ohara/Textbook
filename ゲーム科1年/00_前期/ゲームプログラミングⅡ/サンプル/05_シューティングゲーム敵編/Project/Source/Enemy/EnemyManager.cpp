@@ -83,6 +83,11 @@ EnemyBaseData** GetEnemy()
 	return g_AllEnemyData;
 }
 
+int GetEnemyCount()
+{
+	return g_EnemyCount;
+}
+
 void SpawnEnemy(EnemyType type, float posX, float posY)
 {
 	// ”z’u‚µ‚½“G‚ğ‚±‚Ì•Ï”‚É“ü‚ê‚é

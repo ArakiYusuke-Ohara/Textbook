@@ -2,6 +2,7 @@
 #include "Bullet.h"
 #include "../Effect/AnimationEffect.h"
 #include "../Sound/SoundManager.h"
+#include "../Enemy/EnemyManager.h"
 
 #define HIT_EFFECT_INTERVAL (1)
 #define HIT_EFFECT_OFFSET_X (-10.0f)
@@ -127,6 +128,26 @@ BulletData* GetBullet()
 
 void CheckHitEnemy()
 {
+	// ポインターの配列を制御するにはダブルポインタを使う
+	EnemyBaseData** enemyPt = GetEnemy();
+	int enemyCount = GetEnemyCount();
+
+	for (int i = 0; i < enemyCount; i++, enemyPt++)
+	{
+		// ダブルポインターの中にポインターが格納されている
+		EnemyBaseData* enemy = (*enemyPt);
+
+		// 生きてるかチェック
+		if (!enemy->active) continue;
+
+		BulletData* bullet = g_BulletData;
+		for (int j = 0; j < BULLET_MAX; j++, bullet++)
+		{
+
+			if (!bullet->active) continue;
+		}
+	}
+
 
 }
 
