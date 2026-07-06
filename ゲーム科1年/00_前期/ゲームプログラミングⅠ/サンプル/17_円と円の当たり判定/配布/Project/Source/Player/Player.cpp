@@ -73,3 +73,8 @@ PlayerData* GetPlayer()
 {
 	return &g_PlayerData;
 }
+
+void PlayerHitWaterEnemy()
+{
+	g_PlayerData.hitFlag = true;
+}

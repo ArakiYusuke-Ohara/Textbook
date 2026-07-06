@@ -8,6 +8,7 @@
 // プレイヤーサイズ
 #define PLAYER_WIDTH	(64.0f)
 #define PLAYER_HEIGHT	(64.0f)
+#define PLAYER_RADIUS	(32.0f)
 
 // プレイヤーデータ
 struct PlayerData
@@ -29,3 +30,6 @@ void FinPlayer();
 
 // 取得関数
 PlayerData* GetPlayer();
+
+// 当たり判定
+void PlayerHitWaterEnemy();

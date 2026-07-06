@@ -102,19 +102,4 @@ void CheckCollision()
 	// 水色エネミーを取得
 	WaterEnemyData* waterEnemy = GetWaterEnemies();
 
-	// マウスポインタの座標取得
-	int mouseX, mouseY;
-	GetMousePoint(&mouseX, &mouseY);
-
-	for (int i = 0; i < WATER_ENEMY_NUM; i++, waterEnemy++)
-	{
-		// 中心座標を計算
-		float centerX = waterEnemy->posX + WATER_ENEMY_WIDTH / 2;
-		float centerY = waterEnemy->posY + WATER_ENEMY_HEIGHT / 2;
-
-		if (CheckCirclePoint(centerX, centerY, WATER_ENEMY_RADIUS, (float)mouseX, (float)mouseY))
-		{
-			HitWaterEnemy(i);
-		}
-	}
 }
