@@ -22,8 +22,8 @@ void UpdateBullet();
 void DrawBullet();
 void FinBullet();
 
-// ”­ËŠÖ”i•K‚¸BulletManager‚Å‚µ‚©ŒÄ‚Î‚È‚¢‚±‚Æj
-void FireBullet(int life, float posX, float posY, float moveX, float moveY, float radius);
+// ”­ËŠÖ”
+
 
 // ’eæ“¾
 BulletData* GetBullet();

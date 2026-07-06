@@ -38,8 +38,8 @@ void FinAllBullet()
 }
 
 // ’eŠÛ‚ğ”­Ë‚·‚é‚Æ‚«‚Í‚±‚ÌŠÖ”‚©‚çŒÄ‚Ô
-void RequestFireBullet(float posX, float posY, float moveX, float moveY)
+void RequestFireBullet(int life, float posX, float posY, float moveX, float moveY, float radius)
 {
 	// ”­Ë
-	FireBullet(posX, posY, moveX, moveY);
+	FireBullet(life, posX, posY, moveX, moveY, radius);
 }

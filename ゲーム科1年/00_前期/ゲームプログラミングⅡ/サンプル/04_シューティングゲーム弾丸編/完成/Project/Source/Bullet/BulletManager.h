@@ -1,5 +1,4 @@
 #pragma once
-#include "BulletParameter.h"
 
 // ’e‘S‘Ì‚Ìˆ—
 void InitAllBullet();
@@ -10,4 +9,4 @@ void DrawAllBullet();
 void FinAllBullet();
 
 // ’e”­Ë
-void RequestFireBullet(float posX, float posY, float moveX, float moveY);
+void RequestFireBullet(int life, float posX, float posY, float moveX, float moveY, float radius);
