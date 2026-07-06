@@ -26,4 +26,4 @@ void FinWaterEnemy();
 WaterEnemyData* GetWaterEnemies();
 
 // “–‚½‚è”»’è
-void HitWaterEnemy(int index);
+void WaterEnemyHitPlayer(int index);

@@ -52,7 +52,7 @@ void DrawWaterEnemy()
 
 		if (g_WaterEnemyData[i].hitFlag)
 		{
-			DrawString(0, 0, "マウスが当たった！！", GetColor(255, 255, 255));
+			DrawString(0, 20, "プレイヤーが当たった", GetColor(255, 255, 255));
 		}
 	}
 }
@@ -70,7 +70,7 @@ WaterEnemyData* GetWaterEnemies()
 	return g_WaterEnemyData;
 }
 
-void HitWaterEnemy(int index)
+void WaterEnemyHitPlayer(int index)
 {
 	g_WaterEnemyData[index].hitFlag = true;
 }
