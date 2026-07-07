@@ -132,24 +132,20 @@ void StepPlayer()
 	}
 
 	// Z入力
-	if (IsInputKey(KEY_Z))
+	if (IsTriggerKey(KEY_Z))
 	{
-		// インターバル時間がすぎてから撃つ
-		if (g_PlayerData.bulletIntervalTimer <= 0)
-		{
-			// 弾発射位置はちょっと前から
-			float fireX = g_PlayerData.posX + PLAYER_NORMAL_SHOT_OFFSET_X;
-			float fireY = g_PlayerData.posY + PLAYER_NORMAL_SHOT_OFFSET_Y;
+		// 弾発射位置はちょっと前から
+		float fireX = g_PlayerData.posX + PLAYER_NORMAL_SHOT_OFFSET_X;
+		float fireY = g_PlayerData.posY + PLAYER_NORMAL_SHOT_OFFSET_Y;
 
-			// 発射をリクエスト
-			RequestFireBullet(BULLET_LIFE, fireX, fireY, BULLET_SPEED, 0.0f, BULLET_RADIUS);
+		// 発射をリクエスト
+		RequestFireBullet(BULLET_LIFE, fireX, fireY, BULLET_SPEED, 0.0f, BULLET_RADIUS);
 
-			// 発射音再生
-			PlaySE(SE_PLAYRE_SHOT);
+		// 発射音再生
+		PlaySE(SE_PLAYRE_SHOT);
 
-			// インターバル設定
-			g_PlayerData.bulletIntervalTimer = PLAYER_NORMAL_SHOT_INTERVAL;
-		}
+		// インターバル設定
+		g_PlayerData.bulletIntervalTimer = PLAYER_NORMAL_SHOT_INTERVAL;
 	}
 
 	// 無敵中の処理

@@ -22,7 +22,7 @@ void UpdateBullet();
 void DrawBullet();
 void FinBullet();
 
-// ”­ËŠÖ”i•K‚¸BulletManager‚Å‚µ‚©ŒÄ‚Î‚È‚¢‚±‚Æj
+// ”­ËŠÖ”
 void FireBullet(int life, float posX, float posY, float moveX, float moveY, float radius);
 
 // ’eæ“¾

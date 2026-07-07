@@ -7,7 +7,7 @@
 #define HIT_EFFECT_OFFSET_X (-10.0f)
 #define HIT_EFFECT_OFFSET_Y (-10.0f)
 
-// 弾丸用の配列
+// 弾丸の配列
 
 
 // 各弾丸の画像ハンドル
