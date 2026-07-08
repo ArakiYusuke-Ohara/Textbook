@@ -38,31 +38,7 @@ void LoadAnimationEffect()
 // エフェクトステップ
 void StepAnimationEffect()
 {
-	AnimationEffectData* effect = g_AnimationEffectData;
-	for (int i = 0; i < ANIMATION_EFFECT_MAX; i++, effect++)
-	{
-		if (!effect->active) continue;
 
-		// 次のコマへ進めるか
-		if (effect->timer <= 0)
-		{
-			// 次のコマへ
-			effect->nowFrame++;
-			// タイマーリセット
-			effect->timer = effect->interval;
-
-			// 全コマ表示し終わったら非アクティブ
-			if (effect->nowFrame >= effect->frameNum)
-			{
-				effect->active = false;
-
-				// これ以上処理する必要なし
-				continue;
-			}
-		}
-
-		effect->timer--;
-	}
 }
 
 // エフェクト更新
