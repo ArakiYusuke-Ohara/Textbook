@@ -23,7 +23,7 @@ void DrawBullet();
 void FinBullet();
 
 // ”­ËŠÖ”
-void FireBullet(int life, float posX, float posY, float moveX, float moveY, float radius);
+
 
 // ’eæ“¾
 BulletData* GetBullet();
