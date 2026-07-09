@@ -76,10 +76,7 @@ void StartFlies()
 	};
 
 	// 出現処理
-	for (int i = 0; i < ENEMY_FLIES_MAX; i++)
-	{
-		SpawnFlies(LOCATE[i][0], LOCATE[i][1]);
-	}
+
 }
 
 void StepFlies()
@@ -142,34 +139,6 @@ EnemyFliesData* GetFlies()
 {
 	// 配列の先頭アドレスを返却する
 	return g_FliesData;
-}
-
-void SpawnFlies(float posX, float posY)
-{
-	// ポインタを使って配列を参照する
-	EnemyFliesData* flies = g_FliesData;
-	for (int i = 0; i < ENEMY_FLIES_MAX; i++, flies++)
-	{
-		// 未使用のFliesを探す
-		if (!flies->active)
-		{
-			// 生存フラグを立てる
-			flies->active = true;
-
-			// 画像ハンドル設定
-			flies->handle = g_EnemyFliesHandle;
-
-			// 座標設定
-			flies->posX = posX;
-			flies->posY = posY;
-
-			// 移動量リセット
-			flies->moveX = 0.0f;
-			flies->moveY = 0.0f;
-
-			break;
-		}
-	}
 }
 
 void FliesHitPlayer(int index)

@@ -23,8 +23,8 @@ void UpdateFlies();
 void DrawFlies();
 void FinFlies();
 
-// Flies‚ğoŒ»
-void SpawnFlies(float posX, float posY);
+// Flies‚ğoŒ»‚³‚¹‚é
+
 
 // Fliesæ“¾
 EnemyFliesData* GetFlies();

@@ -70,10 +70,7 @@ void StartDragonFly()
 	};
 
 	// 出現処理
-	for (int i = 0; i < ENEMY_DRAGON_FLY_MAX; i++)
-	{
-		SpawnDragonFly(LOCATE[i][0], LOCATE[i][1]);
-	}
+
 }
 
 void StepDragonFly()
@@ -91,9 +88,8 @@ void StepDragonFly()
 			// 上下は交互に
 			dragonFly->moveY = -dragonFly->moveY;
 
-			// タイマーリセット
+			// タイマーを再設定
 			dragonFly->timer = ENEMY_DRAGON_FLY_MOVE_INTERVAL;
-
 		}
 
 		dragonFly->timer--;
@@ -148,41 +144,6 @@ EnemyDragonFlyData* GetDragonFly()
 {
 	// 配列の先頭アドレスを返却する
 	return g_DragonFlyData;
-}
-
-void SpawnDragonFly(float posX, float posY)
-{
-	// ポインタを使って配列を参照する
-	EnemyDragonFlyData* dragonFly = g_DragonFlyData;
-	for (int i = 0; i < ENEMY_DRAGON_FLY_MAX; i++, dragonFly++)
-	{
-		// 未使用のDragonFlyを探す
-		if (!dragonFly->active)
-		{
-			// 生存フラグを立てる
-			dragonFly->active = true;
-
-			// 方向転換フラグを折る
-			dragonFly->isMoveChange = false;
-
-			// 画像ハンドル設定
-			dragonFly->handle = g_EnemyDragonFlyHandle;
-
-			// 座標設定
-			dragonFly->posX = posX;
-			dragonFly->posY = posY;
-
-			// 移動量リセット
-			dragonFly->moveX = 0.0f;
-			dragonFly->moveY = ENEMY_DRAGON_FLY_MOVE_Y;
-
-			// タイマーリセット
-			dragonFly->timer = 0;
-
-
-			break;
-		}
-	}
 }
 
 void DragonFlyHitPlayer(int index)
