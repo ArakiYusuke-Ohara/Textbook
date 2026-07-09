@@ -8,7 +8,6 @@ struct EnemyDragonFlyData
 {
 	int handle;
 	int timer;
-	int directionY;
 	float posX;
 	float posY;
 	float moveX;

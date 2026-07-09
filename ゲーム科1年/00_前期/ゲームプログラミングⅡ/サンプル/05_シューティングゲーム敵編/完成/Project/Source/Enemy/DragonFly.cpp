@@ -44,8 +44,6 @@ void InitDragonFly()
 
 		dragonFly->active = false;
 		dragonFly->isMoveChange = false;
-
-		dragonFly->directionY = 0;
 	}
 }
 
@@ -71,6 +69,7 @@ void StartDragonFly()
 				{1100.0f, 650.0f},
 	};
 
+	// 配置処理
 	for (int i = 0; i < ENEMY_DRAGON_FLY_MAX; i++)
 	{
 		SpawnDragonFly(LOCATE[i][0], LOCATE[i][1]);
@@ -89,11 +88,12 @@ void StepDragonFly()
 		// タイマーが0になったら方向転換
 		if (dragonFly->timer <= 0)
 		{
+			// 上下は交互に
+			dragonFly->moveY = -dragonFly->moveY;
+
+			// タイマーリセット
 			dragonFly->timer = ENEMY_DRAGON_FLY_MOVE_INTERVAL;
 
-			// 上下は交互に
-			dragonFly->directionY = -dragonFly->directionY;
-			dragonFly->moveY = ENEMY_DRAGON_FLY_MOVE_Y * dragonFly->directionY;
 		}
 
 		dragonFly->timer--;
@@ -168,16 +168,13 @@ void SpawnDragonFly(float posX, float posY)
 			// 画像ハンドル設定
 			dragonFly->handle = g_EnemyDragonFlyHandle;
 
-			// Y移動方向設定
-			dragonFly->directionY = 1;
-
 			// 座標設定
 			dragonFly->posX = posX;
 			dragonFly->posY = posY;
 
 			// 移動量リセット
 			dragonFly->moveX = 0.0f;
-			dragonFly->moveY = ENEMY_DRAGON_FLY_MOVE_Y * dragonFly->directionY;
+			dragonFly->moveY = ENEMY_DRAGON_FLY_MOVE_Y;
 
 			// タイマーリセット
 			dragonFly->timer = 0;
