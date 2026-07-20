@@ -2,13 +2,25 @@
 #include "AnimationEffect.h"
 #include "AnimationEffectParameter.h"
 
-// アニメーションエフェクトデータ
+#define ANIMATION_EFFECT_MAX 255
+
+struct AnimationEffectData
+{
+	bool active;
+	int handle;
+	int nowFrame;
+	int frameNum;
+	int frameWidth;
+	int frameHeight;
+	int timer;
+	int interval;
+	float posX;
+	float posY;
+};
 AnimationEffectData g_AnimationEffectData[ANIMATION_EFFECT_MAX] = { 0 };
 
-// エフェクトの画像ハンドル
 int g_AnimationEffectHandle[ANIMATION_EFFECT_TYPE_MAX];
 
-// エフェクト初期化
 void InitAnimationEffect()
 {
 	AnimationEffectData* effect = g_AnimationEffectData;
@@ -26,7 +38,6 @@ void InitAnimationEffect()
 	}
 }
 
-// エフェクトロード
 void LoadAnimationEffect()
 {
 	g_AnimationEffectHandle[PLAYER_NORMAL_SHOT_HIT] = LoadGraph("Data/Effect/PlayerNormalBulletHit.png");
@@ -35,38 +46,54 @@ void LoadAnimationEffect()
 	g_AnimationEffectHandle[ENEMY_BULLET_HIT] = LoadGraph("Data/Effect/KapuBulletHit.png");
 }
 
-// エフェクトステップ
 void StepAnimationEffect()
 {
+	AnimationEffectData* effect = g_AnimationEffectData;
+	for (int i = 0; i < ANIMATION_EFFECT_MAX; i++, effect++)
+	{
+		if (!effect->active) continue;
 
+		// 次のコマへ進めるか
+		if (effect->timer <= 0)
+		{
+			// 次のコマへ
+			effect->nowFrame++;
+			// タイマーリセット
+			effect->timer = effect->interval;
+
+			// 全コマ表示し終わったら非アクティブ
+			if (effect->nowFrame >= effect->frameNum)
+			{
+				effect->active = false;
+
+				// これ以上処理する必要なし
+				continue;
+			}
+		}
+
+		effect->timer--;
+	}
 }
 
-// エフェクト更新
 void UpdateAnimationEffect()
 {
 }
 
-// エフェクト描画
 void DrawAnimationEffect()
 {
 	AnimationEffectData* effect = g_AnimationEffectData;
 	for (int i = 0; i < ANIMATION_EFFECT_MAX; i++, effect++)
 	{
-		// 未使用のエフェクトは処理しない
 		if (!effect->active)continue;
 
-		// 1コマ分の横幅（effect->frameWidth）と
-		// 現在のコマ数（effect->nowFrame）から、
-		// 切り取る部分を計算する
+		// コマの切り取り位置計算（横１行の画像の想定）
+		int frameX = effect->frameWidth * effect->nowFrame;
 
-
-		// DrawRectGraph関数で描画すべきコマの部分だけ描画する
-
-
+		// 画像から表示するコマの部分だけ描画
+		DrawRectGraph((int)effect->posX, (int)effect->posY, frameX, 0, effect->frameWidth, effect->frameHeight, effect->handle, TRUE);
 	}
 }
 
-// エフェクト終了
 void FinAnimationEffect()
 {
 	for (int i = 0; i < ANIMATION_EFFECT_TYPE_MAX; i++)
@@ -75,8 +102,7 @@ void FinAnimationEffect()
 	}
 }
 
-// エフェクト再生
-void PlayAnimationEffect(AnimationEffectType type, float posX, float posY, int interval)
+void StartAnimationEffect(AnimationEffectType type, float posX, float posY, int interval)
 {
 	// マスターパラム取得
 	AnimationEffectMasterParameter param = ANIM_EFFECT_MASTER_PARAM[type];
