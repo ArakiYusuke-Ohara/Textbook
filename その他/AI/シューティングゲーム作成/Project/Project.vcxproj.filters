@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source">
+      <UniqueIdentifier>{063f4ceb-d950-4ab4-aed1-cc4d5f660b8e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Data">
+      <UniqueIdentifier>{3ce44179-5ba1-4437-9b35-9f6b1f0cc96c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Data\Player">
+      <UniqueIdentifier>{69158c0e-a15a-4c6b-a754-0e227f2c3614}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Data\Enemy">
+      <UniqueIdentifier>{a642f401-bd09-42c8-8c56-1d375f04cba0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Data\Bullet">
+      <UniqueIdentifier>{3d9eb512-afcf-4c5f-8e48-73e4f03fe988}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Source\Main.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Player.cpp" />
+    <ClCompile Include="Source\EnemyManager.cpp" />
+    <ClCompile Include="Source\ParticleSystem.cpp" />
+    <ClCompile Include="Source\BulletManager.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Source\Player.h" />
+    <ClInclude Include="Source\Enemy.h" />
+    <ClInclude Include="Source\EnemyManager.h" />
+    <ClInclude Include="Source\ParticleSystem.h" />
+    <ClInclude Include="Particle.h" />
+    <ClInclude Include="Source\BulletManager.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Data\Enemy\Enemy.png">
+      <Filter>Data\Enemy</Filter>
+    </Image>
+    <Image Include="Data\Bullet\PlayerBullet.png">
+      <Filter>Data\Bullet</Filter>
+    </Image>
+    <Image Include="Data\Player\Player.png">
+      <Filter>Data\Player</Filter>
+    </Image>
+  </ItemGroup>
+</Project>
