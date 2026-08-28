@@ -19,6 +19,7 @@ public:
 	void Draw();	// ï`âÊ
 	void Fin();		// èIóπ
 
+	VECTOR GetPos() { return m_Pos; }
 	CollisionAABB* GetAABB() { return m_AABB; }
 
 private:
