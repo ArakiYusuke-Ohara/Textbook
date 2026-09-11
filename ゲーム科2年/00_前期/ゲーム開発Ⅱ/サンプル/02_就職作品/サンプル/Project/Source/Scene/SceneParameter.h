@@ -5,7 +5,8 @@ enum SceneState
 	INIT,
 	LOAD,
 	START,
-	LOOP,
+	UPDATE,
+	DRAW,
 	FIN,
 	SCENE_STATE_MAX,
 	SCENE_STATE_NONE = -1
@@ -13,10 +14,7 @@ enum SceneState
 
 enum SceneType
 {
-	TITLE,
 	PLAY,
-	CLEAR,
-	TEST,
 	SCENE_TYPE_NONE = -1
 };
 

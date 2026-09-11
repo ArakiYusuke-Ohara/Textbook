@@ -12,11 +12,20 @@ ComponentManager::~ComponentManager()
 {
 }
 
-void ComponentManager::Update()
+void ComponentManager::Render()
 {
-	// ƒŒƒ“ƒ_ƒ‰[•`‰æ
+	// •`‰æ
 	for (Renderer* renderer : m_Renderers)
 	{
 		renderer->Render();
 	}
+}
+
+void ComponentManager::Fin()
+{
+	for (Renderer* renderer : m_Renderers)
+	{
+		delete renderer;
+	}
+	m_Renderers.clear();
 }

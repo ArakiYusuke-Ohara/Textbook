@@ -13,18 +13,18 @@ ResourceManager::~ResourceManager()
 	Fin();
 }
 
-Model* ResourceManager::LoadModel(const char* path)
+Model* ResourceManager::LoadModel(ModelID id)
 {
 	Model* model = new Model;
-	model->Load(path);
-	m_Resources.push_back(model);
+	model->Load(MODEL_PATH_LIST[id]);
+	m_Models[id] = model;
 
 	return model;
 }
 
 void ResourceManager::Fin()
 {
-	for (Resource* resource : m_Resources)
+	for (Resource* resource : m_Models)
 	{
 		delete resource;
 	}

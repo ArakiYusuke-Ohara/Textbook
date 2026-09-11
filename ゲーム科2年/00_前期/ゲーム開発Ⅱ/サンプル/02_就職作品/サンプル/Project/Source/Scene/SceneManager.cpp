@@ -1,8 +1,6 @@
 #include "SceneManager.h"
-#include "TitleScene.h"
 #include "PlayScene.h"
-#include "ClearScene.h"
-#include "TestScene.h"
+#include "../Component/ComponentManager.h"
 
 SceneManager* SceneManager::m_Instance = nullptr;
 
@@ -29,11 +27,11 @@ void SceneManager::Init()
 	m_StateFunc[INIT] = &SceneManager::InitScene;
 	m_StateFunc[LOAD] = &SceneManager::LoadScene;
 	m_StateFunc[START] = &SceneManager::StartScene;
-	m_StateFunc[LOOP] = &SceneManager::LoopScene;
+	m_StateFunc[UPDATE] = &SceneManager::UpdateScene;
 	m_StateFunc[FIN] = &SceneManager::FinScene;
 
 	// 最初のシーンを作成して初期化から開始
-	CreateScene(TITLE);
+	CreateScene(PLAY);
 	m_State = INIT;
 }
 
@@ -75,17 +73,18 @@ void SceneManager::LoadScene()
 
 void SceneManager::StartScene()
 {
-	// スタートしてループへ
+	// スタートして更新へ
 	m_NowScene->Start();
-	m_State = LOOP;
+	m_State = UPDATE;
 }
 
-void SceneManager::LoopScene()
+void SceneManager::UpdateScene()
 {
-	// ループ処理を順番に行う
-	m_NowScene->Step();
+	// 更新
 	m_NowScene->Update();
-	m_NowScene->Draw();
+
+	// 描画はComponentManagerが管理
+	ComponentManager::GetInstance()->Render();
 }
 
 void SceneManager::FinScene()
@@ -111,9 +110,6 @@ void SceneManager::CreateScene(SceneType type)
 	// 引数で渡されたシーンを生成して管理変数に保存する
 	switch (type)
 	{
-		case TITLE: m_NowScene = new TitleScene; break;
 		case PLAY: m_NowScene = new PlayScene; break;
-		case CLEAR: m_NowScene = new ClearScene; break;
-		case TEST: m_NowScene = new TitleScene; break;
 	}
 }
