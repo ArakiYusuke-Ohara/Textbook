@@ -27,7 +27,7 @@ private:
 	void InitScene();
 	void LoadScene();
 	void StartScene();
-	void LoopScene();
+	void UpdateScene();
 	void FinScene();
 
 	void CreateScene(SceneType type);

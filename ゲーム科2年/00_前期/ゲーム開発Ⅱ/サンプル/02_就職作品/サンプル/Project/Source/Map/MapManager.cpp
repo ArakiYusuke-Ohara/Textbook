@@ -1,7 +1,6 @@
 #include "MapManager.h"
 #include "MapParameter.h"
 #include "../Player/PlayerManager.h"
-#include "../Enemy/EnemyManager.h"
 #include <fstream>
 
 MapManager* MapManager::m_Instance = nullptr;

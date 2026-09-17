@@ -14,10 +14,11 @@ public:
 	static ComponentManager* GetInstance() { return m_Instance; }
 	static void DeleteInstance() { if (m_Instance) delete m_Instance; m_Instance = nullptr; }
 
+	void Render();
+	void Fin();
+
 	template<typename T>
 	void Register(T* component);
-
-	void Update();
 
 private:
 	static ComponentManager* m_Instance;

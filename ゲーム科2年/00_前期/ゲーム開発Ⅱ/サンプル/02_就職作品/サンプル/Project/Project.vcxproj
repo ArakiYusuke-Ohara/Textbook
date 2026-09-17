@@ -140,6 +140,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Source\Block\BlockManager.cpp" />
+    <ClCompile Include="Source\Block\BlockParameter.cpp" />
     <ClCompile Include="Source\Camera\Camera.cpp" />
     <ClCompile Include="Source\Camera\CameraBase.cpp" />
     <ClCompile Include="Source\Camera\CameraManager.cpp" />
@@ -151,13 +152,8 @@
     <ClCompile Include="Source\Component\ComponentManager.cpp" />
     <ClCompile Include="Source\Component\ModelRenderer.cpp" />
     <ClCompile Include="Source\Component\Renderer.cpp" />
-    <ClCompile Include="Source\Enemy\BlueEnemy.cpp" />
-    <ClCompile Include="Source\Enemy\EnemyBase.cpp" />
-    <ClCompile Include="Source\Enemy\EnemyManager.cpp" />
-    <ClCompile Include="Source\Enemy\RedEnemy.cpp" />
+    <ClCompile Include="Source\Component\Transform.cpp" />
     <ClCompile Include="Source\FPS\FPS.cpp" />
-    <ClCompile Include="Source\Goal\Goal.cpp" />
-    <ClCompile Include="Source\Goal\GoalManager.cpp" />
     <ClCompile Include="Source\Input\Input.cpp" />
     <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="Source\Map\MapManager.cpp" />
@@ -168,15 +164,9 @@
     <ClCompile Include="Source\Resource\Model.cpp" />
     <ClCompile Include="Source\Resource\Resource.cpp" />
     <ClCompile Include="Source\Resource\ResourceManager.cpp" />
-    <ClCompile Include="Source\Scene\ClearScene.cpp" />
     <ClCompile Include="Source\Scene\PlayScene.cpp" />
     <ClCompile Include="Source\Scene\SceneBase.cpp" />
     <ClCompile Include="Source\Scene\SceneManager.cpp" />
-    <ClCompile Include="Source\Scene\TestScene.cpp" />
-    <ClCompile Include="Source\Scene\TitleScene.cpp" />
-    <ClCompile Include="Source\StageObject\Floor\Floor.cpp" />
-    <ClCompile Include="Source\StageObject\StageObject.cpp" />
-    <ClCompile Include="Source\StageObject\StageObjectManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Block\BlockManager.h" />
@@ -192,13 +182,8 @@
     <ClInclude Include="Source\Component\ComponentManager.h" />
     <ClInclude Include="Source\Component\ModelRenderer.h" />
     <ClInclude Include="Source\Component\Renderer.h" />
-    <ClInclude Include="Source\Enemy\BlueEnemy.h" />
-    <ClInclude Include="Source\Enemy\EnemyBase.h" />
-    <ClInclude Include="Source\Enemy\EnemyManager.h" />
-    <ClInclude Include="Source\Enemy\RedEnemy.h" />
+    <ClInclude Include="Source\Component\Transform.h" />
     <ClInclude Include="Source\FPS\FPS.h" />
-    <ClInclude Include="Source\Goal\Goal.h" />
-    <ClInclude Include="Source\Goal\GoalManager.h" />
     <ClInclude Include="Source\Input\Input.h" />
     <ClInclude Include="Source\Library\json\json.hpp" />
     <ClInclude Include="Source\Map\MapManager.h" />
@@ -210,17 +195,10 @@
     <ClInclude Include="Source\Resource\Resource.h" />
     <ClInclude Include="Source\Resource\ResourceManager.h" />
     <ClInclude Include="Source\Resource\ResourceParameter.h" />
-    <ClInclude Include="Source\Scene\ClearScene.h" />
     <ClInclude Include="Source\Scene\PlayScene.h" />
     <ClInclude Include="Source\Scene\SceneBase.h" />
     <ClInclude Include="Source\Scene\SceneManager.h" />
     <ClInclude Include="Source\Scene\SceneParameter.h" />
-    <ClInclude Include="Source\Scene\TestScene.h" />
-    <ClInclude Include="Source\Scene\TitleScene.h" />
-    <ClInclude Include="Source\StageObject\Floor\Floor.h" />
-    <ClInclude Include="Source\StageObject\Floor\FloorParameter.h" />
-    <ClInclude Include="Source\StageObject\StageObject.h" />
-    <ClInclude Include="Source\StageObject\StageObjectManager.h" />
     <ClInclude Include="Source\Stage\MapParameter.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

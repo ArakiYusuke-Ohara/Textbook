@@ -2,11 +2,7 @@
 #include "CollisionAABB.h"
 #include "CollisionSphere.h"
 #include "../Player/PlayerManager.h"
-#include "../Goal/GoalManager.h"
 #include "../Player/Player.h"
-#include "../StageObject/Block/Block.h"
-#include "../StageObject/StageObjectManager.h"
-#include "../Goal/Goal.h"
 
 
 // Ã“I•Ï”‚Ì‰Šú‰»
@@ -143,8 +139,4 @@ void CollisionManager::DeleteSphere(CollisionSphere* targetSphere)
 
 void CollisionManager::CheckCollision()
 {
-	Player* player = PlayerManager::GetInstance()->GetPlayer();
-	auto objects = StageObjectManager::GetInstance()->GetStageObjects();
-
-	player->CheckHitStageObjects(objects);
 }

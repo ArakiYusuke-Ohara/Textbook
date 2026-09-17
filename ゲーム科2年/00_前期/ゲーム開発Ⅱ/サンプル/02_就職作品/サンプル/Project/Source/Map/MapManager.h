@@ -22,5 +22,4 @@ public:
 private:
 	static MapManager* m_Instance;
 	std::vector<MappingData> m_MappingData;
-	std::vector<
 };

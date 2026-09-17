@@ -1,13 +1,10 @@
 #include "DxLib.h"
-#include "Player/PlayerManager.h"
 #include "Camera/CameraManager.h"
-#include "Goal/GoalManager.h"
-#include "Collision/CollisionManager.h"
-#include "Enemy/EnemyManager.h"
+#include "Resource/ResourceManager.h"
+#include "Component/ComponentManager.h"
 #include "Scene/SceneManager.h"
 #include "Input/Input.h"
 #include "FPS/FPS.h"
-#include "StageObject/Floor/Floor.h"
 #include "MyMath/MyMath.h"
 
 #define SCREEN_WIDTH 1600
@@ -29,6 +26,12 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance, 
 
 	// 描画先を裏画面にする
 	SetDrawScreen(DX_SCREEN_BACK);
+
+	// リソースマネージャー生成
+	ResourceManager::CreateInstance();
+
+	// コンポーネントマネージャー生成
+	ComponentManager::CreateInstance();
 
 	// シーンマネージャー生成
 	SceneManager::CreateInstance();

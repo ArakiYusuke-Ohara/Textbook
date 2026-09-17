@@ -8,8 +8,11 @@ public:
 	virtual ~Model();
 
 	void Load(const char* path);
+	void Update();
 	void Draw();
 	void Fin();
+
+	int GetHandle() const { return m_Handle; }
 
 private:
 	int m_Handle;

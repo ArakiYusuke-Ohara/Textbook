@@ -22,20 +22,8 @@
     <Filter Include="Source\Collision">
       <UniqueIdentifier>{2941d3ea-568d-4d8d-8707-720da747d00b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Goal">
-      <UniqueIdentifier>{db3344a4-925e-45c7-9be9-5f1581ffedbf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Enemy">
-      <UniqueIdentifier>{8827e856-ceee-40ce-9810-ea3abbcfc67d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Scene">
       <UniqueIdentifier>{490f0a56-afdb-4188-b47b-311bcc0dc03a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\StageObject">
-      <UniqueIdentifier>{7f49bfd5-1b48-4bd7-accb-3da00448292d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\StageObject\Floor">
-      <UniqueIdentifier>{93d0fb30-3b0c-49ce-b300-db120bb73b35}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Library">
       <UniqueIdentifier>{97c95874-3b82-45d0-8736-31d0a26fb741}</UniqueIdentifier>
@@ -93,56 +81,14 @@
     <ClCompile Include="Source\Collision\CollisionSphere.cpp">
       <Filter>Source\Collision</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Goal\Goal.cpp">
-      <Filter>Source\Goal</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Goal\GoalManager.cpp">
-      <Filter>Source\Goal</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Camera\DebugCamera.cpp">
       <Filter>Source\Camera</Filter>
     </ClCompile>
     <ClCompile Include="Source\Camera\CameraBase.cpp">
       <Filter>Source\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Enemy\EnemyBase.cpp">
-      <Filter>Source\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Enemy\EnemyManager.cpp">
-      <Filter>Source\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Enemy\BlueEnemy.cpp">
-      <Filter>Source\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Enemy\RedEnemy.cpp">
-      <Filter>Source\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scene\SceneBase.cpp">
-      <Filter>Source\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scene\SceneManager.cpp">
-      <Filter>Source\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scene\TitleScene.cpp">
-      <Filter>Source\Scene</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Scene\PlayScene.cpp">
       <Filter>Source\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scene\TestScene.cpp">
-      <Filter>Source\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scene\ClearScene.cpp">
-      <Filter>Source\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\StageObject\StageObject.cpp">
-      <Filter>Source\StageObject</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\StageObject\Floor\Floor.cpp">
-      <Filter>Source\StageObject\Floor</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\StageObject\StageObjectManager.cpp">
-      <Filter>Source\StageObject</Filter>
     </ClCompile>
     <ClCompile Include="Source\Object\Object.cpp">
       <Filter>Source\Object</Filter>
@@ -173,6 +119,18 @@
     </ClCompile>
     <ClCompile Include="Source\Component\ComponentManager.cpp">
       <Filter>Source\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component\Transform.cpp">
+      <Filter>Source\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene\SceneBase.cpp">
+      <Filter>Source\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene\SceneManager.cpp">
+      <Filter>Source\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Block\BlockParameter.cpp">
+      <Filter>Source\Block</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -206,71 +164,20 @@
     <ClInclude Include="Source\Collision\CollisionSphere.h">
       <Filter>Source\Collision</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Goal\Goal.h">
-      <Filter>Source\Goal</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Goal\GoalManager.h">
-      <Filter>Source\Goal</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Camera\DebugCamera.h">
       <Filter>Source\Camera</Filter>
     </ClInclude>
     <ClInclude Include="Source\Camera\CameraBase.h">
       <Filter>Source\Camera</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Enemy\EnemyBase.h">
-      <Filter>Source\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Enemy\EnemyManager.h">
-      <Filter>Source\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Enemy\BlueEnemy.h">
-      <Filter>Source\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Enemy\RedEnemy.h">
-      <Filter>Source\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scene\SceneBase.h">
-      <Filter>Source\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scene\SceneManager.h">
-      <Filter>Source\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scene\TitleScene.h">
-      <Filter>Source\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scene\SceneParameter.h">
-      <Filter>Source\Scene</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Scene\PlayScene.h">
       <Filter>Source\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scene\TestScene.h">
-      <Filter>Source\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scene\ClearScene.h">
-      <Filter>Source\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\StageObject\StageObject.h">
-      <Filter>Source\StageObject</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\StageObject\Floor\Floor.h">
-      <Filter>Source\StageObject\Floor</Filter>
     </ClInclude>
     <ClInclude Include="Source\Library\json\json.hpp">
       <Filter>Source\Library\Json</Filter>
     </ClInclude>
     <ClInclude Include="Source\Stage\MapParameter.h">
       <Filter>Source\Map</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\StageObject\StageObjectManager.h">
-      <Filter>Source\StageObject</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\StageObject\Floor\FloorParameter.h">
-      <Filter>Source\StageObject\Floor</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Object\Object.h">
-      <Filter>Source\Object</Filter>
     </ClInclude>
     <ClInclude Include="Source\Component\Component.h">
       <Filter>Source\Component</Filter>
@@ -304,6 +211,21 @@
     </ClInclude>
     <ClInclude Include="Source\Resource\ResourceParameter.h">
       <Filter>Source\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component\Transform.h">
+      <Filter>Source\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene\SceneBase.h">
+      <Filter>Source\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene\SceneManager.h">
+      <Filter>Source\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene\SceneParameter.h">
+      <Filter>Source\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Object\Object.h">
+      <Filter>Source\Object</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
