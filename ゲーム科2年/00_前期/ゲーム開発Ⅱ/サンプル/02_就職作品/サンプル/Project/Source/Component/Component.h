@@ -5,7 +5,7 @@ class Object;
 class Component
 {
 public:
-	Component() = default;
+	Component();
 	virtual ~Component() = default;
 
 	virtual void Update();

@@ -13,11 +13,11 @@ ResourceManager::~ResourceManager()
 	Fin();
 }
 
-Model* ResourceManager::LoadModel(ModelID id)
+Model* ResourceManager::LoadModel(const char* path)
 {
 	Model* model = new Model;
-	model->Load(MODEL_PATH_LIST[id]);
-	m_Models[id] = model;
+	model->Load(path);
+	m_Models.push_back(model);
 
 	return model;
 }
@@ -28,4 +28,6 @@ void ResourceManager::Fin()
 	{
 		delete resource;
 	}
+
+	m_Models.clear();
 }

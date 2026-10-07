@@ -25,3 +25,8 @@ void Model::Fin()
 {
 	MV1DeleteModel(m_Handle);
 }
+
+int Model::Duplicate() const
+{
+	return MV1DuplicateModel(m_Handle);
+}

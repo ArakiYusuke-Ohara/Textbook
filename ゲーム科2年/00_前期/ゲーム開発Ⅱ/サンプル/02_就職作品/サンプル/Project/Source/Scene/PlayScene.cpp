@@ -27,6 +27,7 @@ void PlayScene::Load()
 
 void PlayScene::Start()
 {
+	BlockManager::GetInstance()->SpawnBlock(BLOCK_ID_GRASS, VGet(0.0f, 0.0f, 0.0f), VGet(0.0f, 0.0f, 0.0f), VGet(1.0f, 1.0f, 1.0f));
 }
 
 

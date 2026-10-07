@@ -12,7 +12,7 @@ public:
 	void Draw();
 	void Fin();
 
-	int GetHandle() const { return m_Handle; }
+	int Duplicate() const;
 
 private:
 	int m_Handle;

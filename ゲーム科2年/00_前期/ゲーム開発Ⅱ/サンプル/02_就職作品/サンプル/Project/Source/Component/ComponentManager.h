@@ -25,8 +25,8 @@ private:
 	std::vector<Renderer*> m_Renderers;
 };
 
-template<>
-inline void ComponentManager::Register<Renderer>(Renderer* component)
+template<typename T>
+inline void ComponentManager::Register(T* component)
 {
 	m_Renderers.push_back(component);
 }

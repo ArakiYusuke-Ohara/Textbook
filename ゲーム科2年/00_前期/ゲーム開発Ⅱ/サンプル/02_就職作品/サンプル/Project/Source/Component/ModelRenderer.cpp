@@ -4,6 +4,12 @@
 #include "../Component/Transform.h"
 #include "../Object/Object.h"
 
+ModelRenderer::ModelRenderer()
+{
+	m_Model = nullptr;
+	m_Handle = -1;
+}
+
 ModelRenderer::~ModelRenderer()
 {
 }
@@ -11,7 +17,7 @@ ModelRenderer::~ModelRenderer()
 void ModelRenderer::SetModel(Model* model)
 {
 	m_Model = model;
-	m_Handle = MV1DuplicateModel(model->GetHandle());
+	m_Handle = m_Model->Duplicate();
 }
 
 void ModelRenderer::Update()

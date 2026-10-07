@@ -1,16 +1,21 @@
 #pragma once
 #include "DxLib.h"
-#include "BlockParameter.h"
 #include <vector>
 #include <array>
 
 class Object;
 class Model;
 
+enum BlockID
+{
+	BLOCK_ID_GRASS,
+	BLOCK_ID_MAX
+};
+
 class BlockManager
 {
 public:
-	BlockManager() = default;
+	BlockManager();
 	~BlockManager();
 
 	static void CreateInstance() { if (!m_Instance) m_Instance = new BlockManager; }
@@ -25,7 +30,7 @@ public:
 
 private:
 	static BlockManager* m_Instance;
-	std::array<Model*, BLOCK_ID_MAX> m_BlockData;
+	std::array<Model*, BLOCK_ID_MAX> m_BlockModels;
 	std::vector<Object*> m_Blocks;
 
 };

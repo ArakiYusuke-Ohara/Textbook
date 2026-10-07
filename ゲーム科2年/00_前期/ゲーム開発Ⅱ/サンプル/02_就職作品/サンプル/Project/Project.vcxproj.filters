@@ -206,12 +206,6 @@
     <ClInclude Include="Source\Component\ComponentManager.h">
       <Filter>Source\Component</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Block\BlockParameter.h">
-      <Filter>Source\Block</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Resource\ResourceParameter.h">
-      <Filter>Source\Resource</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Component\Transform.h">
       <Filter>Source\Component</Filter>
     </ClInclude>

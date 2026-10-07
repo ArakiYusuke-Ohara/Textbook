@@ -170,7 +170,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Block\BlockManager.h" />
-    <ClInclude Include="Source\Block\BlockParameter.h" />
     <ClInclude Include="Source\Camera\Camera.h" />
     <ClInclude Include="Source\Camera\CameraBase.h" />
     <ClInclude Include="Source\Camera\CameraManager.h" />
@@ -194,7 +193,6 @@
     <ClInclude Include="Source\Resource\Model.h" />
     <ClInclude Include="Source\Resource\Resource.h" />
     <ClInclude Include="Source\Resource\ResourceManager.h" />
-    <ClInclude Include="Source\Resource\ResourceParameter.h" />
     <ClInclude Include="Source\Scene\PlayScene.h" />
     <ClInclude Include="Source\Scene\SceneBase.h" />
     <ClInclude Include="Source\Scene\SceneManager.h" />

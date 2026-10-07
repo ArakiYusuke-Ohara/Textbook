@@ -1,11 +1,16 @@
 #include "BlockManager.h"
-#include "BlockParameter.h"
 #include "../Resource/ResourceManager.h"
 #include "../Resource/Model.h"
 #include "../Object/Object.h"
 #include "../Component/ModelRenderer.h"
 
 BlockManager* BlockManager::m_Instance = nullptr;
+
+BlockManager::BlockManager()
+{
+	m_Blocks = {};
+	m_BlockModels = {};
+}
 
 BlockManager::~BlockManager()
 {
@@ -14,10 +19,7 @@ BlockManager::~BlockManager()
 
 void BlockManager::Load()
 {
-	for (const BlockParameter& data : BLOCK_MASTER_PARAM)
-	{
-		Model* model = ResourceManager::GetInstance()->LoadModel(data.modelID);
-	}
+	m_BlockModels[BLOCK_ID_GRASS] = ResourceManager::GetInstance()->LoadModel("Data/Block/Grass.x");
 }
 
 void BlockManager::Update()
@@ -45,8 +47,7 @@ Object* BlockManager::SpawnBlock(BlockID id, VECTOR pos, VECTOR rot, VECTOR scal
 
 	// モデルをセット
 	ModelRenderer* renderer = block->AddComponent<ModelRenderer>();
-	Model* model = ResourceManager::GetInstance()->GetModel(BLOCK_MASTER_PARAM[id].modelID);
-	renderer->SetModel(model);
+	renderer->SetModel(m_BlockModels[id]);
 
 	return block;
 }

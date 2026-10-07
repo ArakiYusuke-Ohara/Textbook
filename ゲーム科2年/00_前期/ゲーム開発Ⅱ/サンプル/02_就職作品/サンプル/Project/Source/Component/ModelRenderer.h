@@ -6,7 +6,7 @@ class Model;
 class ModelRenderer : public Renderer
 {
 public:
-	ModelRenderer() = default;
+	ModelRenderer();
 	virtual ~ModelRenderer();
 
 	void SetModel(Model* model);
