@@ -22,8 +22,10 @@ public:
 	VECTOR GetRot() { return m_Rot; }
 	VECTOR GetTarget() { return m_Target; }
 
+	void SetPos(VECTOR pos) { m_Pos = pos; }
 	void SetRot(VECTOR rot) { m_Rot = rot; }
 	void SetTarget(VECTOR target) { m_Target = target; }
+	void SetUpVec(VECTOR upVec) { m_UpVec = upVec; }
 
 // protectedは継承したクラスであればアクセスできるアクセス制限
 protected:

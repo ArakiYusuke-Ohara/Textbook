@@ -5,6 +5,7 @@
 enum CameraType
 {
 	CAMERA,
+	NORMAL_CAMERA,
 	DEBUG_CAMERA,
 	CAMERA_TYPE_MAX,
 	CAMERA_NONE = -1,
@@ -32,7 +33,7 @@ public:
 	void Fin();		// I—¹
 
 public:
-	void CreateCamera(CameraType type);
+	CameraBase* CreateCamera(CameraType type);
 
 	// ŠÇ—’†‚ÌƒJƒƒ‰‚ğæ“¾‚·‚é
 	CameraBase* GetCamera(CameraType type) { return m_Camera[type]; }

@@ -23,7 +23,7 @@ CameraManager::~CameraManager()
 	Fin();
 }
 
-void CameraManager::CreateCamera(CameraType type)
+CameraBase* CameraManager::CreateCamera(CameraType type)
 {
 	switch (type)
 	{
@@ -35,6 +35,8 @@ void CameraManager::CreateCamera(CameraType type)
 			if (m_Camera[DEBUG_CAMERA] == nullptr)m_Camera[DEBUG_CAMERA] = new DebugCamera;
 			break;
 	}
+
+	return m_Camera[type];
 }
 
 // デバッグカメラモードに切り替える
